@@ -1,0 +1,219 @@
+name: Build IPA
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/build-ipa.yml
+      - .github/ci/**
+
+env:
+  LLVM_VER: 15.0.7
+  LLVM_MINGW: llvm-mingw-20260421-ucrt-macos-universal
+  CMAKE_BUILD_PARALLEL_LEVEL: 4
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # LLVM 15 static libraries for iOS (airconv / DXMT). Slow, so it is cached.
+  # ---------------------------------------------------------------------------
+  llvm:
+    runs-on: macos-15
+    timeout-minutes: 300
+    steps:
+      - name: Cache LLVM for iOS
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            toolchains/llvm-ios-build/lib
+            toolchains/llvm-ios-build/include
+            toolchains/llvm-project/llvm/include
+          key: llvm-${{ env.LLVM_VER }}-ios-v1
+
+      - name: Build LLVM
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          set -euxo pipefail
+          brew install ninja || true
+          mkdir -p toolchains && cd toolchains
+          curl -fsSL https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/llvm-project-${LLVM_VER}.src.tar.xz | tar -xJ
+          mv llvm-project-${LLVM_VER}.src llvm-project
+          # Apple ld does not take --gc-sections; use -dead_strip on iOS too.
+          sed -i '' 's/MATCHES "Darwin")/MATCHES "Darwin|iOS")/g' llvm-project/llvm/cmake/modules/AddLLVM.cmake
+          CXXF="-include cstdint -Wno-deprecated-declarations -Wno-enum-constexpr-conversion"
+          cmake -G Ninja -S llvm-project/llvm -B llvm-host-build \
+            -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=AArch64 \
+            -DLLVM_ENABLE_PROJECTS= -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_BENCHMARKS=OFF \
+            -DCMAKE_CXX_FLAGS="$CXXF"
+          ninja -C llvm-host-build llvm-tblgen
+          cmake -G Ninja -S llvm-project/llvm -B llvm-ios-build \
+            -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_SYSROOT=iphoneos \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 -DCMAKE_BUILD_TYPE=Release \
+            -DLLVM_HOST_TRIPLE=arm64-apple-ios17.0 -DLLVM_DEFAULT_TARGET_TRIPLE=arm64-apple-ios17.0 \
+            -DLLVM_TARGET_ARCH=host -DLLVM_TARGETS_TO_BUILD= -DLLVM_ENABLE_PROJECTS= \
+            -DLLVM_BUILD_TOOLS=OFF -DLLVM_BUILD_UTILS=OFF -DLLVM_INCLUDE_TOOLS=OFF -DLLVM_INCLUDE_UTILS=OFF \
+            -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF -DLLVM_INCLUDE_BENCHMARKS=OFF \
+            -DLLVM_INCLUDE_DOCS=OFF -DLLVM_ENABLE_ZLIB=OFF -DLLVM_ENABLE_ZSTD=OFF \
+            -DLLVM_ENABLE_TERMINFO=OFF -DLLVM_ENABLE_LIBXML2=OFF -DLLVM_ENABLE_LIBEDIT=OFF \
+            -DLLVM_TABLEGEN="$PWD/llvm-host-build/bin/llvm-tblgen" \
+            -DCMAKE_CXX_FLAGS="$CXXF"
+          ninja -C llvm-ios-build
+          ls -la llvm-ios-build/lib/*.a | head -100
+
+  # ---------------------------------------------------------------------------
+  # Unix-side Wine libraries, GnuTLS, FreeType, FEXCore.
+  # ---------------------------------------------------------------------------
+  native:
+    runs-on: macos-15
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Tools
+        run: |
+          brew install ninja meson bison flex llvm sevenzip ccache || true
+          echo "$(brew --prefix bison)/bin" >> $GITHUB_PATH
+          echo "$(brew --prefix flex)/bin" >> $GITHUB_PATH
+          xcodebuild -version
+
+      - name: llvm-mingw
+        run: |
+          mkdir -p toolchains
+          curl -fsSL https://github.com/mstorsjo/llvm-mingw/releases/download/20260421/${LLVM_MINGW}.tar.xz | tar -xJ -C toolchains/
+
+      - name: FreeType
+        run: |
+          git clone --depth 1 --branch VER-2-13-3 https://github.com/freetype/freetype.git research/freetype
+          bash build/freetype-ios/build.sh
+
+      - name: GnuTLS
+        run: bash build/gnutls-ios/build.sh 2>&1 | tail -50
+
+      - name: Configure Wine (build-macos)
+        run: |
+          set -x
+          export PATH="$PWD/toolchains/$LLVM_MINGW/bin:$PATH"
+          mkdir -p wine/build-macos && cd wine/build-macos
+          OPTS="--without-x --disable-tests --without-freetype --without-gnutls --without-gstreamer --without-sdl --without-vulkan --without-opencl --without-cups --without-krb5 --without-pcap --without-usb --without-capi --without-sane --without-gphoto --without-netapi --without-pcsclite --without-inotify"
+          ../configure --enable-archs=aarch64 $OPTS > configure.log 2>&1 || {
+            tail -40 configure.log
+            echo "native configure failed, trying x86_64 host under Rosetta"
+            rm -rf ./*
+            arch -x86_64 /bin/bash ../configure --enable-win64 $OPTS > configure.log 2>&1 || { tail -60 configure.log; exit 1; }
+          }
+          tail -20 configure.log
+          make -k -j4 include/all > make-include.log 2>&1 || make -k -j4 -C include > make-include.log 2>&1 || true
+          tail -30 make-include.log
+          ls include | head -50
+          ls include/dwrite.h include/dwrite_3.h || make -j4 include/dwrite.h include/dwrite_3.h || true
+          cd .. && ln -sfn build-macos build-arm64ec
+
+      - name: ntdll unix
+        run: bash build/ntdll-unix/build.sh; for f in build/ntdll-unix/obj/*.err; do [ -s "$f" ] && { echo "== $f"; head -30 "$f"; }; done; test -f app/Madeira/libntdll_unix.a
+
+      - name: win32u unix
+        if: always()
+        run: bash build/win32u-unix/build.sh || { for f in build/win32u-unix/obj/*.err; do [ -s "$f" ] && { echo "== $f"; head -30 "$f"; }; done; exit 1; }
+
+      - name: wineserver
+        if: always()
+        run: |
+          bash .github/ci/wineserver-base.sh
+          bash build/wineserver/build.sh
+
+      - name: FEX
+        if: always()
+        run: bash build/fex-ios/build.sh 2>&1 | tail -80; test -f FEX/build-ios/FEXCore/Source/libFEXCore.a
+
+      - name: Collect
+        if: always()
+        run: |
+          mkdir -p out/app out/fex
+          cp app/Madeira/lib{ntdll_unix,win32u_unix,wineserver,gmp,nettle,hogweed,gnutls}.a out/app/ || true
+          tar --exclude='*.o' --exclude='CMakeFiles' -cf out/fex/build-ios.tar -C FEX/build-ios . || true
+          ls -la out/app out/fex
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-libs
+          path: out/
+
+  # ---------------------------------------------------------------------------
+  # DXMT unix side + Xcode app -> IPA
+  # ---------------------------------------------------------------------------
+  app:
+    needs: [llvm, native]
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            toolchains/llvm-ios-build/lib
+            toolchains/llvm-ios-build/include
+            toolchains/llvm-project/llvm/include
+          key: llvm-${{ env.LLVM_VER }}-ios-v1
+          fail-on-cache-miss: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: native-libs
+          path: out
+
+      - name: Stage native libs
+        run: |
+          cp out/app/*.a app/Madeira/
+          mkdir -p FEX/build-ios && tar -xf out/fex/build-ios.tar -C FEX/build-ios
+          ls -la app/Madeira/*.a
+
+      - name: DXMT unix
+        run: |
+          cd build/dxmt-ios
+          bash build.sh || { for f in obj/*.err; do [ -s "$f" ] && { echo "== $f"; head -40 "$f"; }; done; exit 1; }
+          xcrun -sdk iphoneos libtool -static -o libdxmt_combined.a obj/*.o ../../toolchains/llvm-ios-build/lib/*.a
+          cp libdxmt_combined.a ../../app/Madeira/
+
+      - name: VC++ runtime (best effort)
+        run: |
+          brew install sevenzip || true
+          mkdir -p app/Madeira/x86_64-vcruntime
+          bash .github/ci/fetch-vcruntime.sh || echo "::warning::VC++ runtime not bundled"
+          ls -la app/Madeira/x86_64-vcruntime
+
+      - name: Licences
+        run: bash build/stage-licenses.sh
+
+      - name: xcodebuild
+        run: |
+          set -o pipefail
+          xcodebuild -project app/Madeira.xcodeproj -target Madeira -configuration Debug -sdk iphoneos \
+            SYMROOT="$PWD/build/xc" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" build 2>&1 | tee xcodebuild.log | grep -E 'error|warning: .*linker|BUILD' | head -200
+
+      - name: Package IPA
+        run: |
+          APP=build/xc/Debug-iphoneos/Madeira.app
+          codesign --force --sign - --timestamp=none "$APP/d3d12/libmetalirconverter.dylib" || true
+          codesign --force --sign - --timestamp=none --entitlements app/Madeira/Madeira.entitlements "$APP"
+          mkdir -p Payload && cp -R "$APP" Payload/
+          zip -qry Madeira.ipa Payload
+          ls -la Madeira.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Madeira-ipa
+          path: Madeira.ipa
+          compression-level: 0
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: xcodebuild-log
+          path: xcodebuild.log
