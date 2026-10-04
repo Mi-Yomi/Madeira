@@ -158,6 +158,10 @@ def apply(source):
                 states.add("original")
             elif actual == entry["patched_sha256"]:
                 states.add("patched")
+            elif actual in entry.get("previous_patched_sha256", []):
+                # Only exact reviewed prior outputs may be upgraded. Preflight
+                # still reconstructs the current result from committed bytes.
+                states.add("previous:" + str(entry["previous_patched_sha256"].index(actual)))
             else:
                 raise ValueError("Unexpected FEX working source hash")
             originals[relative], before[relative], targets[relative] = original, data, target

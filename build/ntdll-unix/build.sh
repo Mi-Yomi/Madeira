@@ -54,10 +54,23 @@ compile_one() {
 # route dlopen/dlsym at the static symtab (gnutls_symtab_ios.c).
 CRYPTO_DIR="$REPO_ROOT/build/crypto-unix"
 GNUTLS_PREFIX="$REPO_ROOT/toolchains/gnutls-ios"
+# The host Wine header bootstrap uses --without-gnutls. Its config.h cannot
+# describe our separately built iOS GnuTLS 3.8.9 stack: bcrypt's entire unixlib
+# is guarded by HAVE_GNUTLS_CIPHER_INIT, and schannel's by SONAME_LIBGNUTLS.
+# crypt32 otherwise silently selects its unavailable-backend implementation.
+# Enable the real target backends only for these three static-shim consumers.
+# The soname is a lookup token for ios_gnutls_dlopen, not a shipped dylib.
+GNUTLS_FLAGS=(
+    -I"$GNUTLS_PREFIX/include"
+    -DHAVE_GNUTLS_CIPHER_INIT=1
+    '-DSONAME_LIBGNUTLS="libgnutls.dylib"'
+    -include "$CRYPTO_DIR/ios_gnutls_shim.h"
+)
 compile_unixlib() {
     local src=$1 name=$2 prefix=$3
     shift 3
     echo -n "  $name... "
+    rm -f "$OBJ_DIR/$name.o"
     if xcrun -sdk iphoneos clang \
         -arch arm64 -isysroot "$SDK" -miphoneos-version-min=17.0 \
         -O2 -fPIC -fvisibility=hidden -fno-stack-protector -fno-strict-aliasing \
@@ -96,11 +109,9 @@ compile_one "$CRYPTO_DIR/gnutls_symtab_ios.c" "gnutls_symtab_ios"
 compile_unixlib "$WINE_SRC/dlls/ws2_32/unixlib.c" "ws2_32_unixlib" "ws2_32" \
     -I"$WINE_SRC/dlls/ws2_32"
 compile_unixlib "$WINE_SRC/dlls/bcrypt/gnutls.c" "bcrypt_unixlib" "bcrypt" \
-    -I"$WINE_SRC/dlls/bcrypt" -I"$GNUTLS_PREFIX/include" \
-    -include "$CRYPTO_DIR/ios_gnutls_shim.h"
+    -I"$WINE_SRC/dlls/bcrypt" "${GNUTLS_FLAGS[@]}"
 compile_unixlib "$WINE_SRC/dlls/secur32/schannel_gnutls.c" "secur32_unixlib" "secur32" \
-    -I"$WINE_SRC/dlls/secur32" -I"$GNUTLS_PREFIX/include" \
-    -include "$CRYPTO_DIR/ios_gnutls_shim.h"
+    -I"$WINE_SRC/dlls/secur32" "${GNUTLS_FLAGS[@]}"
 # iOS-Madeira ml494 (#61 text wall): dwrite had NO unixlib, so every
 # __wine_unix_call from dwrite.dll failed and get_glyph_bbox never ran —
 # every glyph run reported an EMPTY bbox and Chromium drew no text at all.
@@ -111,8 +122,7 @@ compile_unixlib "$BUILD_DIR/dwrite_freetype_ios.c" "dwrite_unixlib" "dwrite" \
     -I"$WINE_SRC/dlls/dwrite" -I"$REPO_ROOT/research/freetype/include" \
     -I"$REPO_ROOT/wine/build-arm64ec/include"
 compile_unixlib "$CRYPTO_DIR/crypt32_unixlib_ios.c" "crypt32_unixlib" "crypt32" \
-    -I"$WINE_SRC/dlls/crypt32" -I"$GNUTLS_PREFIX/include" \
-    -include "$CRYPTO_DIR/ios_gnutls_shim.h"
+    -I"$WINE_SRC/dlls/crypt32" "${GNUTLS_FLAGS[@]}"
 # iOS-Madeira 2026-08-03 (#79 transport): in-process NSI TCP connection
 # tables (nsiproxy.sys is not shipped; PE nsi.dll falls back to this).
 compile_one "$BUILD_DIR/nsi_unixlib_ios.c" "nsi_unixlib_ios"
@@ -163,7 +173,7 @@ else
     FAILED_FILES="$FAILED_FILES wg_parser_apple_ios"
 fi
 
-for src in $WINE_SRC/dlls/ntdll/unix/*.c; do
+for src in "$WINE_SRC"/dlls/ntdll/unix/*.c; do
     name=$(basename "$src" .c)
 
     # Use patched versions for specific files
@@ -213,6 +223,12 @@ if [ "$FAILED" -gt 0 ]; then
     echo "Not linking: $FAILED compilation failures (full diagnostics in $OBJ_DIR)" >&2
     exit 1
 fi
+
+# A compiler exit code of zero also accepts an entirely #ifdef-ed-out source.
+# Check definitions in the actual objects, not just archive member filenames,
+# before staging a native dependency set for the much longer graphics/app build.
+python3 "$BUILD_DIR/check-crypto-link-tables.py" \
+    --nm "$(xcrun -sdk iphoneos -f nm)" "$OBJ_DIR"
 
 echo "=== Building libntdll_unix.a ==="
 ar rcs "$OBJ_DIR/libntdll_unix.a" \

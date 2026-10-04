@@ -348,7 +348,8 @@ def record(path: Path, ready: bool) -> None:
                       "rust_targets": ["rustup", "target", "list", "--installed"]})
         if command("git", "rev-parse", "HEAD", cwd=ROOT / "research/freetype") != FREETYPE_COMMIT:
             raise ValueError("FreeType source differs from its pin")
-    tracked_inputs = [".github/ci/ensure-metal-toolchain.py", "build/rppairing-ios/Cargo.lock", "build/gnutls-ios/src/SHA256SUMS",
+    tracked_inputs = [".github/ci/ensure-metal-toolchain.py", "build/ntdll-unix/build.sh",
+                      "build/ntdll-unix/check-crypto-link-tables.py", "build/rppairing-ios/Cargo.lock", "build/gnutls-ios/src/SHA256SUMS",
                       "build/ffmpeg/src/SHA256SUMS", ".github/workflows/native-bootstrap.yml"]
     tracked_inputs += [str(p.relative_to(ROOT)) for directory in ("build/gnutls-ios/src", "build/ffmpeg/src")
                        for p in (ROOT / directory).glob("*.tar.*")]

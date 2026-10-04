@@ -51,6 +51,16 @@ compiler (FFmpeg explicitly disables it).
   commit `42608f77f20749dd6ddc9e0536788eaad70ea4b5`
 - Separate native and ARM64EC Wine trees generate real headers. Failed header
   generation or compilation is fatal; stale archives cannot satisfy the stage
+- The header-only Wine configure deliberately uses `--without-gnutls`; target
+  crypto features therefore come from the separately built iOS GnuTLS stack.
+  `build/ntdll-unix/build.sh` explicitly enables `HAVE_GNUTLS_CIPHER_INIT` and
+  `SONAME_LIBGNUTLS` only for the three static-shim consumers: bcrypt, secur32
+  (schannel), and crypt32. The soname is a static-shim lookup token, not a dylib
+  dependency. Before archiving or copying, their real objects must define both
+  native and WoW64 call tables and reference the GnuTLS shim. This catches empty
+  successful compilations and crypt32's unavailable-backend fallback. It does
+  not replace runtime TLS, certificate-validation, or crypto correctness tests.
+  Portable regressions: `python3 tests/host/check-crypto-link-tables.py`
 - FEX builds all seven app-linked static archives. Its pinned source has two
   iOS-host-only diagnostic reporters outside their declaration guard. A local,
   hash/revision-checked Madeira build repair puts the existing reporters under
@@ -64,6 +74,13 @@ compiler (FFmpeg explicitly disables it).
   optional same-source Apple IR reproduction records format/target evidence
   separately from the required native archive/build-provenance gate. It never
   makes bitcode acceptable in deliverable archives
+- The Apple FEX configuration disables rpmalloc and uses system allocation.
+  Its snapshot reporter is now compiled only when `ENABLE_FEX_ALLOCATOR` links
+  the real rpmalloc provider; allocator-enabled builds retain the original
+  producer/drain behavior. This removes a diagnostic-only undefined symbol,
+  without adding an allocator or a fake snapshot implementation. The repair
+  accepts only original bytes or the exact previous/current reviewed hashes.
+  Portable regressions: `python3 tests/host/check-fex-snapshot-link.py`
 - Wineserver builds its base
   from current sources, overlays the maintained iOS objects, and validates
   the archive members and required symbol renames before replacing an output

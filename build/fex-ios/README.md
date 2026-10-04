@@ -2,7 +2,7 @@
 
 `build.sh` applies the ordered patches in `source-repairs.json` before
 configuring the seven app-linked native static archives. It does not change
-FEX's submodule pin, commit, index, build targets, or compiler definitions.
+FEX's submodule pin, commit, index, build targets, or allocator configuration.
 
 The pinned fork commit `1adb337a2f2270434ba731346438c072337a5d5f` declares
 `IosFfsBypassLog` and `IosCbEntryLog` only under `FEX_IOS_HOST` in
@@ -13,12 +13,46 @@ Mach-O builds do not define this PE-host option and therefore fail to compile.
 The failure was reproduced by Madeira's native bootstrap at main-fork commit
 `323a3be939728de1507a8601cfeb7eee4603bd9a` (GitHub job `111436639274`).
 
-The two-line patch gives the two reporter blocks the same guard as their
+The reporter guard gives the two reporter blocks the same guard as their
 producers. It leaves reporting fully active for both ARM64EC and non-EC
 `FEX_IOS_HOST` builds, including WoW64's existing zeroed FFS fallback. It adds
 no fake counters and does not define `FEX_IOS_HOST` globally, which would
 change unrelated ABI and execution paths. The following low/invalid guest-RIP
 rejection remains outside the guard in every build mode.
+
+## Allocator diagnostic link dependency
+
+The unsigned app build at commit `8ababe8266cbdd48251124bcd6cbf41df495fcb8`
+(run `37219502185`) compiled the native archives and app sources, then failed
+to link `_rpm_cas_snapshot_take` from `Core.cpp.o`. This is an allocator-specific
+diagnostic accidentally retained in a build without its allocator. The pinned
+[FEX root CMake](https://github.com/willfaust/FEX/blob/1adb337a2f2270434ba731346438c072337a5d5f/CMakeLists.txt)
+explicitly disables both jemalloc and rpmalloc for Apple. Despite its historical
+name, `JemallocLibs` then contains
+[system-allocator wrappers](https://github.com/willfaust/FEX/blob/1adb337a2f2270434ba731346438c072337a5d5f/FEXCore/Source/Utils/AllocatorHooks.cpp),
+not an omitted rpmalloc implementation. The actual allocation-free snapshot
+producer/drain is in pinned
+[rpmalloc `812c2b9`](https://github.com/willfaust/rpmalloc/blob/812c2b9cf4310ffacf14e6b64066e78ab0c394b5/rpmalloc/rpmalloc.c).
+
+`0003-guard-core-allocator-diagnostics.patch` supersedes `0001`, retaining its
+reporter fix and guarding only the rpmalloc POD declaration and diagnostic drain
+with the value-aware `ENABLE_FEX_ALLOCATOR` feature test. The surrounding compile
+summary and execution paths remain unchanged. `0004-wire-rpmalloc-snapshot-feature.patch`
+sets that definition for `Core.cpp` only inside the existing CMake branch which
+enables and links the real rpmalloc provider. Both undefined and explicitly zero
+values omit the diagnostic; enabled builds keep its original body and real
+symbol dependency. No stub, weak-symbol fallback, or extra native allocator is
+introduced. The old two-line patch remains checked in as review history.
+
+`python3 tests/host/check-fex-snapshot-link.py` reproduces the original undefined
+symbol using extracted source, inspects object/executable symbols, and links/runs
+allocator-disabled fixtures with no snapshot definition or reference. Enabled
+fixtures require the real extracted C producer and verify the captured fields
+and one-time drain, including PE-host feature combinations. The test also checks
+enabled preprocessor equivalence and configures/builds a small real CMake
+on/off/reconfigured-off link fixture when CMake is installed; an absent CMake is
+reported as an explicit skip. These tests do not compile the full allocator,
+exercise its CAS loops, or substitute for the actual iOS app link in CI.
 
 ## CASPAL diagnostic platform split
 
@@ -42,9 +76,12 @@ this fixes native compilation, not unsupported misaligned atomic emulation.
 `source-repairs.json` is the checked-in source-of-truth: exact revision,
 original/patched source SHA-256, and patch SHA-256. `apply-source-repairs.py`
 accepts only that revision and its exact committed source. Each repair owns
-disjoint files that must be wholly original or wholly repaired; unknown edits
-and partly applied repairs fail. A previous known repair may already be applied
-when a new repair is added. All patches are first applied to committed bytes in
+disjoint files that must be wholly original, wholly repaired, or match an exact
+reviewed prior output explicitly listed in `previous_patched_sha256`; unknown
+edits and partly applied repairs fail. The Core upgrade accepts only the old
+reporter repair's exact hash in addition to the pinned original and new output.
+A previous known repair may already be applied when a new repair is added.
+All patches are first applied to committed bytes in
 a disposable directory, checking every output and touched path before changing
 the FEX checkout. It then replaces only changed files and verifies every result.
 If a write fails, it attempts to restore its own exact writes while preserving

@@ -10,6 +10,27 @@
 // Only the surrounding C++ harness is synthetic. Declarations, reporter bodies,
 // and low-RIP rejection below retain the pinned source text for patch testing.
 #include <cstdint>
+#include <array>
+#include <atomic>
+#include <chrono>
+#include <cstring>
+
+/* iOS-Madeira ml622: mirror of rpmalloc's POD snapshot (rpmalloc.c). Declared here
+ * rather than in a shared header because rpmalloc is C and vendored; keep the two
+ * definitions in sync — the drain below is the only consumer. */
+extern "C" {
+struct rpm_cas_snapshot {
+  unsigned long long page_addr, block_addr, heap_addr, owner_teb;
+  unsigned long long prev_token, cur_token, ret_addr, atomic_addr;
+  unsigned int size_class, page_type, block_index, list_size;
+  unsigned int fail_changed, fail_unchanged, fail_invalid, quarantined;
+  unsigned int block_count, block_used, is_full, which_loop;
+};
+int rpm_cas_snapshot_take(struct rpm_cas_snapshot* out);
+}
+#include <condition_variable>
+#include <fcntl.h>
+#include <functional>
 #include <string_view>
 static int ffs_reports, callback_reports, invalid_reports;
 namespace LogMan::Msg {
@@ -112,5 +133,87 @@ uint64_t Report(uint64_t GuestRIP) {
   }
 
   return GuestRIP;
+}
+
+// Minimal surroundings for the unchanged production summary body below.
+static volatile uint64_t g_cb_total, g_cb_real_compiles;
+struct SnapshotCache { uint64_t GetL1Pointer() { return 0; } };
+struct SnapshotThread { SnapshotCache* LookupCache; };
+struct SnapshotFrame {
+  SnapshotThread* Thread;
+  struct { uint64_t L1Pointer, L1Mask; } State;
+};
+void SnapshotReport() {
+  uint64_t GuestRIP = 0x123456;
+  SnapshotFrame* Frame = nullptr;
+  /* iOS-Madeira 2026-05-18 low-noise summary. Replaces per-call log (which
+   * was producing ~180K lines/run for hot RIP 0x140028d46 alone, each
+   * amplified ~6× by Wine's file trace). Counters: g_cb_total bumped
+   * every CompileBlock call; g_cb_real_compiles bumped after cache miss
+   * proves we actually compile (see below at LookupCache fallthrough).
+   * Boyer-Moore-style 1-slot hot-RIP estimator. Summary every 16K calls. */
+  {
+    static volatile uint64_t g_cb_last_summary_total = 0;
+    static volatile uint64_t g_cb_hot_rip = 0;
+    static volatile uint64_t g_cb_hot_rip_count = 0;
+    if (GuestRIP == g_cb_hot_rip) {
+      __sync_add_and_fetch(&g_cb_hot_rip_count, 1);
+    } else if (g_cb_hot_rip_count == 0) {
+      g_cb_hot_rip = GuestRIP;
+      __sync_add_and_fetch(&g_cb_hot_rip_count, 1);
+    } else {
+      __sync_sub_and_fetch(&g_cb_hot_rip_count, 1);
+    }
+    uint64_t total = __sync_add_and_fetch(&g_cb_total, 1);
+    if ((total - g_cb_last_summary_total) >= 16384) {
+      g_cb_last_summary_total = total;
+      uint64_t reals = g_cb_real_compiles;
+      /* iOS-Madeira 2026-07-03 perf hunt: also print the JIT-visible L1
+       * lookup fields. The emitted dispatcher L1 probe reads
+       * State.L1Pointer/L1Mask; the measured ~15K CompileBlock calls per
+       * frame (~60us each = the whole frame time) with 99% cache hits mean
+       * that probe is missing for blocks the C++ path finds instantly. If
+       * State.L1Pointer here is 0 (or differs from the LookupCache's own
+       * pointer), the emitted probe reads the iOS-emulated zero page and
+       * silently misses every time — no crash, pure 60us tax per lookup. */
+      auto* T = Frame ? Frame->Thread : nullptr;
+      LogMan::Msg::EFmt("[CB_SUMMARY] total={} real_compiles={} cache_hits={} "
+                        "hit_rate={}%  hottest_rip≈0x{:x} repeats~{} "
+                        "L1ptr=0x{:x} L1mask=0x{:x} cacheL1=0x{:x}",
+                        total, reals,
+                        total - reals,
+                        (total > 0) ? (100 * (total - reals) / total) : 0,
+                        g_cb_hot_rip, g_cb_hot_rip_count,
+                        Frame ? Frame->State.L1Pointer : 0,
+                        Frame ? Frame->State.L1Mask : 0,
+                        (T && T->LookupCache) ? T->LookupCache->GetL1Pointer() : 0);
+
+      /* iOS-Madeira ml622: drain the rpmalloc remote-free CAS snapshot HERE —
+       * outside rpmalloc, where formatting is safe. The allocator side only ever
+       * copies scalars into a POD and sets a flag; it must never format, because
+       * LogMan/fmt can allocate and re-enter the very allocator that is stuck
+       * (that is how ml620 killed itself).
+       *
+       * Read the counters, not the total: fail_changed vs fail_unchanged is the
+       * discriminator, and fail_invalid outranks both. ⚠️ A changed token is NOT
+       * automatically healthy contention — it can equally be page reuse or a
+       * foreign writer, so check block_index/list_size against block_count before
+       * concluding anything. */
+      {
+        rpm_cas_snapshot Snap;
+        if (rpm_cas_snapshot_take(&Snap)) {
+          LogMan::Msg::EFmt("[rpm-cas] ml622 loop={} {} page=0x{:x} block=0x{:x} heap=0x{:x} atomic=0x{:x} "
+                            "teb=0x{:x} ret=0x{:x} class={} ptype={} idx={}/{} list_size={} used={} is_full={} "
+                            "prev_token=0x{:x} cur_token=0x{:x} | fail changed={} unchanged={} invalid={}",
+                            Snap.which_loop, Snap.quarantined ? "QUARANTINED (block leaked, spin abandoned)" : "spinning",
+                            Snap.page_addr, Snap.block_addr, Snap.heap_addr, Snap.atomic_addr, Snap.owner_teb,
+                            Snap.ret_addr, Snap.size_class, Snap.page_type, Snap.block_index, Snap.block_count,
+                            Snap.list_size, Snap.block_used, Snap.is_full, Snap.prev_token, Snap.cur_token,
+                            Snap.fail_changed, Snap.fail_unchanged, Snap.fail_invalid);
+        }
+      }
+    }
+  }
+
 }
 }

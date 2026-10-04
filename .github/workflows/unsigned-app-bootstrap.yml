@@ -12,6 +12,16 @@ on:
       - app/MadeiraJITHelper/**
       - tests/host/check-app-bootstrap.py
       - tests/host/check-app-workflow.py
+      - tests/host/check-crypto-link-tables.py
+      - tests/host/check-fex-snapshot-link.py
+      - build/fex-ios/**
+      - build/ntdll-unix/**
+      - build/crypto-unix/**
+      - build/llvm-ios/**
+      - build/dxmt-ios/**
+      - FEX
+      - wine
+      - dxmt
 
 permissions:
   contents: read
@@ -37,6 +47,9 @@ jobs:
           python3 tests/host/check-app-workflow.py
           python3 tests/host/check-graphics-bootstrap.py
           python3 tests/host/check-native-bootstrap-artifacts.py
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-snapshot-link.py
+          python3 tests/host/check-crypto-link-tables.py
   unsigned-app:
     needs: portable-validation
     if: github.event.repository.private == false
@@ -71,6 +84,9 @@ jobs:
           python3 tests/host/check-app-bootstrap.py
           python3 tests/host/check-app-workflow.py
           python3 tests/host/check-graphics-bootstrap.py
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-snapshot-link.py
+          python3 tests/host/check-crypto-link-tables.py
       - name: Build and validate native dependencies first
         timeout-minutes: 35
         # Includes the previously authorized official Metal setup and its gate.

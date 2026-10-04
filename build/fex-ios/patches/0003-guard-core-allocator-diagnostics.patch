@@ -1,0 +1,50 @@
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -64,6 +64,7 @@
+ #include <chrono>
+ #include <cstring>
+ 
++#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR
+ /* iOS-Madeira ml622: mirror of rpmalloc's POD snapshot (rpmalloc.c). Declared here
+  * rather than in a shared header because rpmalloc is C and vendored; keep the two
+  * definitions in sync — the drain below is the only consumer. */
+@@ -77,6 +78,7 @@
+ };
+ int rpm_cas_snapshot_take(struct rpm_cas_snapshot* out);
+ }
++#endif
+ #include <condition_variable>
+ #include <fcntl.h>
+ #include <functional>
+@@ -1464,6 +1466,7 @@
+   }
+ #endif
+ 
++#ifdef FEX_IOS_HOST
+   /* iOS-Madeira ml304 (task #51): REPORT CallbackPtr ENTRY ON ITS OWN, not via the bogus-RIP path.
+    *
+    * ml302 proved the JITCallback prologue writes the bad State.rip, and ml303 added an LR witness --
+@@ -1514,6 +1517,7 @@
+                         IosCbEntryLog[4], IosCbEntryLog[5], IosCbEntryLog[7]);
+     }
+   }
++#endif
+ 
+   /* iOS-Madeira: refuse to compile obviously-invalid guest RIPs. After a
+    * NULL-vtable virtual call (`call [rax+8]` with rax=0), control flow
+@@ -1955,6 +1959,7 @@
+                         Frame ? Frame->State.L1Mask : 0,
+                         (T && T->LookupCache) ? T->LookupCache->GetL1Pointer() : 0);
+ 
++#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR
+       /* iOS-Madeira ml622: drain the rpmalloc remote-free CAS snapshot HERE —
+        * outside rpmalloc, where formatting is safe. The allocator side only ever
+        * copies scalars into a POD and sets a flag; it must never format, because
+@@ -1979,6 +1984,7 @@
+                             Snap.fail_changed, Snap.fail_unchanged, Snap.fail_invalid);
+         }
+       }
++#endif
+     }
+   }
+ 

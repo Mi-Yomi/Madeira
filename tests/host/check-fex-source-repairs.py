@@ -34,9 +34,17 @@ class FEXSourceRepairTests(unittest.TestCase):
         self.target = self.source / self.entry["path"]
         self.target.parent.mkdir(parents=True)
         self.original = FIXTURE.read_bytes()
-        self.patched = self.original.replace(
+        self.previous_patched = self.original.replace(
             b"  /* iOS-Madeira ml304 (task #51): REPORT", b"#ifdef FEX_IOS_HOST\n  /* iOS-Madeira ml304 (task #51): REPORT"
         ).replace(b"\n\n  /* iOS-Madeira: refuse", b"\n#endif\n\n  /* iOS-Madeira: refuse")
+        guard = b"#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR\n"
+        self.patched = self.previous_patched.replace(
+            b"/* iOS-Madeira ml622: mirror", guard + b"/* iOS-Madeira ml622: mirror", 1
+        ).replace(b"int rpm_cas_snapshot_take(struct rpm_cas_snapshot* out);\n}\n",
+                  b"int rpm_cas_snapshot_take(struct rpm_cas_snapshot* out);\n}\n#endif\n", 1
+        ).replace(b"      /* iOS-Madeira ml622: drain", guard + b"      /* iOS-Madeira ml622: drain", 1
+        ).replace(b"                            Snap.fail_changed, Snap.fail_unchanged, Snap.fail_invalid);\n        }\n      }\n",
+                  b"                            Snap.fail_changed, Snap.fail_unchanged, Snap.fail_invalid);\n        }\n      }\n#endif\n", 1)
         self.target.write_bytes(self.original)
         self.caspal_repair = self.spec["repairs"][1]
         self.caspal_entry, = self.caspal_repair["files"]
@@ -54,6 +62,14 @@ class FEXSourceRepairTests(unittest.TestCase):
 #endif
 ''')
         self.caspal_target.write_bytes(self.caspal_original)
+        self.cmake_repair = self.spec["repairs"][2]
+        self.cmake_entry, = self.cmake_repair["files"]
+        self.cmake_target = self.source / self.cmake_entry["path"]
+        self.cmake_original = FIXTURE.with_name("fex-rpmalloc-target.cmake").read_bytes()
+        self.cmake_patched = self.cmake_original.replace(b"if (ENABLE_FEX_ALLOCATOR)\n", b"if (ENABLE_FEX_ALLOCATOR)\n"
+            b"  # Core drains rpmalloc diagnostics only when their real provider is linked.\n"
+            b"  set_property(SOURCE Interface/Core/Core.cpp APPEND PROPERTY COMPILE_DEFINITIONS ENABLE_FEX_ALLOCATOR=1)\n")
+        self.cmake_target.write_bytes(self.cmake_original)
         (self.source / ".gitignore").write_text("/build-ios/\n")
         subprocess.run(["git", "init", "-q", str(self.source)], check=True)
         self.git("add", ".")
@@ -62,8 +78,11 @@ class FEXSourceRepairTests(unittest.TestCase):
         self.spec["source_revision"] = self.git("rev-parse", "HEAD").decode().strip()
         self.entry["original_sha256"] = module.sha256(self.original)
         self.entry["patched_sha256"] = module.sha256(self.patched)
+        self.entry["previous_patched_sha256"] = [module.sha256(self.previous_patched)]
         self.caspal_entry["original_sha256"] = module.sha256(self.caspal_original)
         self.caspal_entry["patched_sha256"] = module.sha256(self.caspal_patched)
+        self.cmake_entry["original_sha256"] = module.sha256(self.cmake_original)
+        self.cmake_entry["patched_sha256"] = module.sha256(self.cmake_patched)
         for repair in self.spec["repairs"]:
             patch = self.root / repair["patch"]
             patch.parent.mkdir(parents=True, exist_ok=True)
@@ -76,7 +95,7 @@ class FEXSourceRepairTests(unittest.TestCase):
         return subprocess.check_output(["git", "-C", str(self.source), *args], stderr=subprocess.PIPE)
 
     def reject(self, message):
-        before = {path: path.read_bytes() for path in (self.target, self.caspal_target)}
+        before = {path: path.read_bytes() for path in (self.target, self.caspal_target, self.cmake_target)}
         record = self.source / module.RECORD
         previous_record = record.read_bytes() if record.exists() else None
         with self.assertRaisesRegex(ValueError, message):
@@ -130,12 +149,14 @@ class FEXSourceRepairTests(unittest.TestCase):
                     module.checked_path(alias, relative, "FEX repair source")
         self.assertEqual((outside / "source.cpp").read_bytes(), self.original)
 
-    def test_patch_is_exactly_two_preprocessor_lines(self):
+    def test_core_patch_only_adds_three_feature_guards(self):
         patch = (ROOT / self.repair["patch"]).read_bytes()
         self.assertEqual(module.sha256(patch), self.repair["patch_sha256"])
         added = [line for line in patch.decode().splitlines() if line.startswith("+") and not line.startswith("+++")]
         removed = [line for line in patch.decode().splitlines() if line.startswith("-") and not line.startswith("---")]
-        self.assertEqual(added, ["+#ifdef FEX_IOS_HOST", "+#endif"])
+        self.assertEqual(added, ["+#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR", "+#endif",
+                                "+#ifdef FEX_IOS_HOST", "+#endif",
+                                "+#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR", "+#endif"])
         self.assertEqual(removed, [])
 
     def test_clean_patch_idempotence_and_provenance(self):
@@ -150,8 +171,41 @@ class FEXSourceRepairTests(unittest.TestCase):
         self.assertEqual(self.git("rev-parse", "HEAD").decode().strip(), self.spec["source_revision"])
         self.assertEqual(self.git("diff", "--cached"), b"")
         self.assertEqual(self.caspal_target.read_bytes(), self.caspal_patched)
+        self.assertEqual(self.cmake_target.read_bytes(), self.cmake_patched)
         self.assertEqual(self.git("diff", "--name-only").decode().splitlines(),
-                         sorted([self.entry["path"], self.caspal_entry["path"]]))
+                         sorted([self.entry["path"], self.caspal_entry["path"], self.cmake_entry["path"]]))
+
+    def test_upgrade_exact_previous_repaired_core(self):
+        self.target.write_bytes(self.previous_patched)
+        self.caspal_target.write_bytes(self.caspal_patched)
+        module.apply(self.source)
+        module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.cmake_target.read_bytes(), self.cmake_patched)
+        self.assertEqual(json.loads((self.source / module.RECORD).read_text()), self.spec)
+        self.assertEqual(self.git("diff", "--cached"), b"")
+
+    def test_previous_core_with_any_unreviewed_edit_rejected(self):
+        self.target.write_bytes(self.previous_patched + b"// local change\n")
+        self.reject("working source hash")
+
+    def test_prior_core_upgrade_does_not_bypass_later_patch_preflight(self):
+        self.target.write_bytes(self.previous_patched)
+        self.cmake_entry["patched_sha256"] = "0" * 64
+        self.reject("repaired source hash mismatch")
+
+    def test_prior_core_upgrade_rolls_back_on_record_failure(self):
+        self.target.write_bytes(self.previous_patched)
+        real_write = module.atomic_write
+        def fail_record(target, data):
+            if target == self.source / module.RECORD:
+                raise OSError("injected record failure")
+            real_write(target, data)
+        with mock.patch.object(module, "atomic_write", side_effect=fail_record):
+            with self.assertRaisesRegex(OSError, "injected record failure"):
+                module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.previous_patched)
+        self.assertEqual(self.cmake_target.read_bytes(), self.cmake_original)
 
     def test_wrong_revision_rejected(self):
         self.spec["source_revision"] = "0" * 40
