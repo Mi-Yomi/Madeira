@@ -19,6 +19,8 @@ fixtures = importlib.util.module_from_spec(loader)
 loader.loader.exec_module(fixtures)
 GUARD = "#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR\n"
 SYMBOL = "rpm_cas_snapshot_take"
+LOGGER_LOCATION = '#line 1 "snapshot-logger-fixture"\n'
+MAIN_LOCATION = '#line 1 "snapshot-main-fixture"\n'
 
 
 def region(text, start, end):
@@ -58,7 +60,7 @@ class SnapshotLinkTests(unittest.TestCase):
         return '''#include <cassert>
 #include <string_view>
 #include <tuple>
-''' + declarations + '''
+''' + declarations + LOGGER_LOCATION + '''
 static int reports = 0, summaries = 0;
 namespace LogMan::Msg {
 template<class... Args> void EFmt(const char* format, Args... args) {
@@ -89,7 +91,7 @@ template<class... Args> void EFmt(const char* format, Args... args) {
 }
 void Drain() {
   ++summaries; // Work surrounding the diagnostic must remain active.
-''' + drain + '''
+''' + drain + MAIN_LOCATION + '''
 }
 #if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR
 extern "C" void publish_test_snapshot();
@@ -178,12 +180,39 @@ void publish_test_snapshot(void) {
                 self.run_command([str(executable)])
 
     def test_enabled_preprocessor_output_preserves_exact_consumer(self):
+        # Darwin's assert expands __LINE__ into __assert_rtn's arguments. The
+        # added production guards move the synthetic logger/main physically;
+        # stable #line boundaries keep their diagnostics comparable without
+        # stripping any expanded code, expressions, fields or numeric values.
         outputs = []
         for text in (self.original, self.patched):
             source = self.root / "preprocess.cpp"
             source.write_text(self.consumer(text))
             outputs.append(self.run_command(["c++", "-std=c++20", "-DENABLE_FEX_ALLOCATOR=1", "-E", "-P", str(source)]).stdout)
         self.assertEqual(*outputs)
+
+    def test_line_sensitive_assertion_fixture_preserves_code_comparison(self):
+        def preprocess(text, stable_locations=True):
+            consumer = self.consumer(text).replace(
+                "#include <cassert>\n",
+                "#define assert(expression) fixture_assertion(__LINE__, #expression)\n", 1)
+            if not stable_locations:
+                consumer = consumer.replace(LOGGER_LOCATION, "", 1).replace(MAIN_LOCATION, "", 1)
+            source = self.root / "line-sensitive.cpp"
+            source.write_text(consumer)
+            return self.run_command(["c++", "-std=c++20", "-DENABLE_FEX_ALLOCATOR=1", "-E", "-P", str(source)]).stdout
+        original_raw, patched_raw = [preprocess(text, False) for text in (self.original, self.patched)]
+        self.assertNotEqual(original_raw, patched_raw)
+        original_lines = re.findall(r"fixture_assertion\((\d+),", original_raw)
+        patched_lines = re.findall(r"fixture_assertion\((\d+),", patched_raw)
+        self.assertTrue(original_lines)
+        self.assertEqual(len(original_lines), len(patched_lines))
+        self.assertNotEqual(original_lines, patched_lines)
+        original_stable, patched_stable = [preprocess(text) for text in (self.original, self.patched)]
+        self.assertEqual(original_stable, patched_stable)
+        # Stable locations must not conceal an actual production diagnostic edit.
+        changed = self.patched.replace("Snap.fail_changed, Snap.fail_unchanged", "Snap.fail_invalid, Snap.fail_unchanged", 1)
+        self.assertNotEqual(preprocess(changed), original_stable)
 
     def test_cmake_definition_is_source_scoped_and_tied_to_real_provider(self):
         original = self.fixture.cmake_original.decode()
@@ -234,7 +263,10 @@ target_link_libraries(snapshot_probe PRIVATE JemallocLibs)
                 self.run_command([cmake, "-S", str(project), "-B", str(build),
                                   "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_C_FLAGS=", "-DCMAKE_CXX_FLAGS=",
                                   "-DENABLE_FEX_ALLOCATOR=" + ("ON" if enabled else "OFF")])
-                self.run_command([cmake, "--build", str(build), "--target", "snapshot_probe", "--parallel", "2"])
+                # Darwin's Make 3.81 can miss flags/object changes inside one
+                # timestamp tick. Keep the same CMake tree to test property
+                # reconfiguration, but rebuild actual objects deterministically.
+                self.run_command([cmake, "--build", str(build), "--clean-first", "--target", "snapshot_probe", "--parallel", "2"])
                 entries = json.loads((build / "compile_commands.json").read_text())
                 for filename in ("Interface/Core/Core.cpp", "Utils/AllocatorHooks.cpp"):
                     entry, = [item for item in entries if Path(item["file"]) == source / filename]

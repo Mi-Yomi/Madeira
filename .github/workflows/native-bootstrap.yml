@@ -26,6 +26,8 @@ on:
       - build/wineserver/**
       - build/rppairing-ios/**
       - tests/host/check-native-bootstrap*.py
+      - tests/host/check-fex-snapshot-link.py
+      - tests/host/check-crypto-link-tables.py
 
 permissions:
   contents: read
