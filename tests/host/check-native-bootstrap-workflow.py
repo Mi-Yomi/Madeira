@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import textwrap
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,6 +88,25 @@ class LogTests(unittest.TestCase):
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_runtime_paths_initialized_in_step_context(self):
+        text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
+        self.assertNotIn("${{ runner.", text)
+        step = text.split("- name: Initialize diagnostics", 1)[1].split("- name: Checkout", 1)[0]
+        script = textwrap.dedent(step.split("run: |", 1)[1])
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runtime = root / "runner temp with spaces"
+            runtime.mkdir()
+            exports = root / "github-env"
+            result = subprocess.run(["bash", "-eu", "-c", script], capture_output=True, text=True,
+                                    env=dict(os.environ, RUNNER_TEMP=str(runtime), GITHUB_ENV=str(exports)))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(exports.read_text().splitlines(), [
+                f"NATIVE_LOG_DIR={runtime}/madeira-native-logs",
+                f"NATIVE_ARTIFACT_DIR={runtime}/madeira-native-artifacts",
+            ])
+            self.assertTrue((runtime / "madeira-native-logs/scope.txt").is_file())
+
     def test_no_automatic_artifact_upload_or_broadened_permissions(self):
         text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
         self.assertIn("runs-on: xcode-27", text)

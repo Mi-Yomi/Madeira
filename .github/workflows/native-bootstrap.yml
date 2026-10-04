@@ -69,11 +69,13 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: '1'
       HOMEBREW_NO_INSTALL_CLEANUP: '1'
       HOMEBREW_NO_ANALYTICS: '1'
-      NATIVE_LOG_DIR: ${{ runner.temp }}/madeira-native-logs
-      NATIVE_ARTIFACT_DIR: ${{ runner.temp }}/madeira-native-artifacts
     steps:
       - name: Initialize diagnostics
         run: |
+          # runner paths exist at step execution, not in job-level env context.
+          NATIVE_LOG_DIR="$RUNNER_TEMP/madeira-native-logs"
+          NATIVE_ARTIFACT_DIR="$RUNNER_TEMP/madeira-native-artifacts"
+          printf 'NATIVE_LOG_DIR=%s\nNATIVE_ARTIFACT_DIR=%s\n' "$NATIVE_LOG_DIR" "$NATIVE_ARTIFACT_DIR" >> "$GITHUB_ENV"
           mkdir -p "$NATIVE_LOG_DIR"
           printf '%s\n' 'First native stage only: no IPA, app link, signing, LLVM or DXMT build.' > "$NATIVE_LOG_DIR/scope.txt"
       - name: Checkout pinned source and public submodules
