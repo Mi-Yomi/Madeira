@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "component": "FEX",
+  "source_repository": "https://github.com/willfaust/FEX.git",
+  "source_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "repairs": [
+    {
+      "id": "ios-diagnostic-reporter-guard-v1",
+      "patch": "build/fex-ios/patches/0001-guard-ios-diagnostic-reporters.patch",
+      "patch_sha256": "59e7ce069aa52a0a9e7cb7327996799101f8b381a194a101a2dcce27ba56e38a",
+      "files": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "original_sha256": "26f6809cd187203a8d8dbb6d26249059944f0896b246716c8c066e495d77b858",
+          "patched_sha256": "799d283a9e3b807d945d0bd9acdffea4367a8a351f49ce38e7204448ae7cab25"
+        }
+      ]
+    }
+  ]
+}

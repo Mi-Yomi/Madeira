@@ -33,6 +33,8 @@ jobs:
       - name: Check native-bootstrap failure handling and artifact validation
         run: |
           python3 tests/host/check-native-bootstrap-scripts.py
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-metal-toolchain-setup.py
           python3 tests/host/check-native-bootstrap-artifacts.py
           python3 tests/host/check-native-bootstrap-workflow.py
       - name: Check Blender probe syntax

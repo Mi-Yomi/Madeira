@@ -88,33 +88,12 @@ class LogTests(unittest.TestCase):
 
 
 class WorkflowTests(unittest.TestCase):
-    def test_missing_metal_is_explicit_and_nonfatal_only_for_native_stage(self):
+    def test_metal_setup_uses_explicit_authorized_opt_in(self):
         text = (ROOT / ".github/ci/native-bootstrap.sh").read_text()
-        script = text.split("# Optional Metal probe:", 1)[1].split("# End optional Metal probe.", 1)[0]
-        script = "\n".join(script.splitlines()[1:])
-        self.assertNotIn("-downloadComponent", script)
-        for mode, status in (("available", "available"), ("missing", "unavailable"), ("missing-metallib", "unavailable")):
-            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                tool = root / "xcrun"
-                tool.write_text('''#!/bin/bash
-printf '%s\\n' "$*" >> "$TRACE"
-case "$*" in
-  '--sdk iphoneos metal --version') [ "$MODE" != missing ] ;;
-  '--sdk iphoneos --find metallib') [ "$MODE" != missing-metallib ] ;;
-  *) exit 2 ;;
-esac
-''')
-                tool.chmod(0o755)
-                trace = root / "trace"
-                env = dict(os.environ, PATH=str(root) + os.pathsep + os.environ["PATH"],
-                           NATIVE_LOG_DIR=str(root), MODE=mode, TRACE=str(trace))
-                result = subprocess.run(["bash", "-eu", "-c", script], env=env, capture_output=True, text=True)
-                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                self.assertEqual((root / "metal-toolchain-status.txt").read_text().strip(), status)
-                self.assertIn("--sdk iphoneos metal --version", trace.read_text())
-                if status == "unavailable":
-                    self.assertIn("DXMT shaders/app build remain blocked", result.stdout)
+        self.assertIn('python3 .github/ci/ensure-metal-toolchain.py --allow-install --log-dir "$NATIVE_LOG_DIR"', text)
+        self.assertNotIn("-license accept", text)
+        self.assertNotIn("-runFirstLaunch", text)
+        self.assertNotIn("# Optional Metal probe:", text)
 
     def test_runtime_paths_initialized_in_step_context(self):
         text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()

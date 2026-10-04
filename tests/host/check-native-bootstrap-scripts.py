@@ -44,6 +44,15 @@ class NativeBootstrapTests(unittest.TestCase):
         fex = self.root / 'build/fex-ios'
         fex.mkdir()
         shutil.copy2(ROOT / 'build/fex-ios/build.sh', fex / 'build.sh')
+        # The real patch/revision gate is exercised in check-fex-source-repairs.py.
+        # This synthetic tree mocks only that subprocess, while proving ordering
+        # and failure propagation in the actual build.sh orchestration.
+        (fex / 'apply-source-repairs.py').write_text('''import os, sys
+from pathlib import Path
+root = Path(os.environ['FIXTURE_ROOT'])
+with (root / 'fex-events').open('a') as out: out.write('repair\\n')
+if os.getenv('FAIL_REPAIR'): sys.exit('fixture source repair rejected')
+''')
         (self.root / 'wine/build-macos/include').mkdir(parents=True)
         (self.root / 'wine/build-macos/include/config.h').touch()
         (self.root / 'wine/server').mkdir()
@@ -100,6 +109,7 @@ sys.exit(subprocess.run([os.environ['REAL_OBJCOPY'], *sys.argv[1:]]).returncode)
         self.tool('cmake', '''
 args = sys.argv[1:]
 with (root / 'cmake.jsonl').open('a') as log: log.write(json.dumps(args) + '\\n')
+with (root / 'fex-events').open('a') as log: log.write(('build' if '--build' in args else 'configure') + '\\n')
 if '--build' not in args:
     if os.getenv('FAIL_CONFIGURE'): sys.exit(6)
     build = Path(args[args.index('-B') + 1]); build.mkdir(parents=True, exist_ok=True)
@@ -213,6 +223,8 @@ else:
         cache.parent.mkdir(parents=True)
         cache.write_text('old incomplete configure')
         self.run_script('build/fex-ios/build.sh')
+        self.assertEqual((self.root / 'fex-events').read_text().splitlines(),
+                         ['repair', 'configure', 'build'])
         configure, build = map(json.loads, (self.root / 'cmake.jsonl').read_text().splitlines())
         self.assertIn('-DCMAKE_SYSTEM_PROCESSOR=arm64', configure)
         self.assertIn('-DTUNE_CPU=none', configure)
@@ -229,6 +241,12 @@ else:
                         {'FAIL_BUILD': '1'}, {'BUILD_JOBS': '0'}):
             with self.subTest(failure=failure):
                 self.run_script('build/fex-ios/build.sh', success=False, **failure)
+
+    def test_fex_source_repair_failure_stops_before_configure(self):
+        result = self.run_script('build/fex-ios/build.sh', success=False, FAIL_REPAIR='1')
+        self.assertIn('fixture source repair rejected', result.stderr)
+        self.assertEqual((self.root / 'fex-events').read_text().splitlines(), ['repair'])
+        self.assertFalse((self.root / 'cmake.jsonl').exists())
 
 
 if __name__ == '__main__':

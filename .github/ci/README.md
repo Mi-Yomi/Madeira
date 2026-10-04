@@ -9,12 +9,15 @@ and [installed Xcode/SDK image](https://github.com/actions/runner-images/blob/ma
 
 The stage verifies exact recursive submodule commits, the iOS 27 SDK, tracked
 tarballs/converter inputs, checksum-pinned llvm-mingw and commit-pinned FreeType.
-Optional Metal tool availability is reported separately for later stages. It builds FreeType, the crypto stack, FFmpeg, seven FEX
+The authorized Apple Metal component setup prepares the later shader stages;
+its exact install/verification outcome is recorded separately. It builds FreeType, the crypto stack, FFmpeg, seven FEX
 archives, separate native/ARM64EC Wine header trees, Wine's three native
 libraries and Rust pairing. Header generation and compilation failures are
-fatal. The generated crypto symbol table must contain its bootstrap essentials.
-No Apple installer, LLVM source build, DXMT build, Windows DLL farm, app link,
-IPA, signing or device test is attempted.
+fatal. The pinned FEX diagnostic guard repair is checked by revision/source
+hash before configure; successful provenance verifies the unchanged submodule
+revision, exact patch inputs, applied record and resulting source bytes. The generated crypto symbol table must contain its bootstrap essentials.
+No separate Metal Shader Converter installer, LLVM source build, DXMT build,
+Windows DLL farm, app link, IPA, signing or device test is attempted.
 
 `native-artifacts.py` checks all 20 expected archives member by member. Every
 object must be little-endian arm64 Mach-O with an explicit iOS platform command;
@@ -43,6 +46,8 @@ Portable local checks, requiring no Apple SDK or downloaded toolchain:
 python3 tests/host/check-native-bootstrap-artifacts.py
 python3 tests/host/check-native-bootstrap-workflow.py
 python3 tests/host/check-native-bootstrap-scripts.py
+python3 tests/host/check-fex-source-repairs.py
+python3 tests/host/check-metal-toolchain-setup.py
 for script in .github/ci/*.sh build/fex-ios/build.sh build/freetype-ios/build.sh build/gnutls-ios/build.sh build/ffmpeg/build.sh build/ntdll-unix/build.sh build/wineserver/*.sh; do
   bash -n "$script"
 done
@@ -52,11 +57,26 @@ The fixtures test iOS/host/mixed/malformed archives, complete-bundle gating,
 strict generated-header failure handling, capped log output and build-script
 orchestration. They do not substitute for native compilation.
 
-## Metal component boundary
+## Authorized Metal component setup
 
-The native-only stage does not compile Metal shaders. It executes a Metal
-version probe and records `available` or `unavailable`; finding an xcrun stub
-alone is not success. Missing Metal is non-fatal only here, with an explicit
-warning that later DXMT/app work is blocked. No Apple component is downloaded
-and no license prompt is accepted. Future shader/app jobs must require a real
-working Metal toolchain before attempting those targets.
+The native libraries do not compile Metal shaders, but later DXMT/app work does.
+The audited Xcode 27.0 / 27A266a image has a discovery stub instead of the optional
+Metal compiler. `ensure-metal-toolchain.py` probes by execution, and only its
+explicit `--allow-install` mode may use Apple's documented component downloader.
+Download/use is subject to the [Xcode and Apple SDKs Agreement](https://www.apple.com/legal/sla/docs/xcode.pdf),
+EA2002 dated 2026-06-08. Review and authorize those terms before enabling this
+mode outside the currently authorized temporary-runner build.
+
+No broad update, `-license accept`, other component, login or payment action is
+performed. New terms/auth/payment indications stop execution. The helper pins
+the Xcode version, build and developer directory; checks Apple signatures on
+separate entrypoint/component executables; and requires a disposable iOS
+shader compilation and link. The receipt distinguishes attempted download,
+command result and verified availability. A found shim or success exit from
+the downloader alone is not sufficient.
+
+Limits are 300 seconds for download and 420 seconds overall, both inside the
+existing 35-minute build budget. Compact receipt fields/hash are printed in
+normal job logs and copied into successful native provenance; artifact uploads
+remain off for automatic pushes. No successful installation is claimed until
+the native run produces the actual verified receipt.

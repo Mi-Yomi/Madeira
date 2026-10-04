@@ -167,6 +167,73 @@ def source_modules(root: Path = ROOT) -> list[dict]:
     return result
 
 
+FEX_REPAIR_SPEC = "build/fex-ios/source-repairs.json"
+FEX_REPAIR_RECORD = "FEX/build-ios/madeira-source-repairs.json"
+
+
+def repair_file(base: Path, relative: str) -> Path:
+    if not isinstance(relative, str) or any(part in ("", ".", "..") for part in relative.split("/")) or "\\" in relative:
+        raise ValueError("Unsafe FEX repair path")
+    path = base / relative
+    if not path.is_file() or path.is_symlink() or not path.resolve().is_relative_to(base.resolve()):
+        raise ValueError(f"Missing or unsafe FEX repair file: {relative}")
+    return path
+
+
+def fex_repair_spec() -> tuple[dict, list[str]]:
+    spec = json.loads(repair_file(ROOT, FEX_REPAIR_SPEC).read_text())
+    if spec.get("schema_version") != 1 or spec.get("component") != "FEX" or not re.fullmatch(r"[0-9a-f]{40}", spec.get("source_revision", "")):
+        raise ValueError("Invalid FEX repair specification")
+    inputs = [FEX_REPAIR_SPEC, "build/fex-ios/apply-source-repairs.py"]
+    if not isinstance(spec.get("repairs"), list) or not spec["repairs"]:
+        raise ValueError("Empty FEX repair specification")
+    for repair in spec["repairs"]:
+        patch = repair_file(ROOT, repair["patch"])
+        if sha256(patch) != repair["patch_sha256"]:
+            raise ValueError("FEX repair patch differs from its specification")
+        inputs.append(repair["patch"])
+    return spec, inputs
+
+
+def verified_fex_repairs(document: dict) -> dict:
+    spec, inputs = fex_repair_spec()
+    for name in inputs:
+        if sha256(repair_file(ROOT, name)) != document.get("input_sha256", {}).get(name):
+            raise ValueError(f"FEX repair input changed since provenance recording: {name}")
+    sources = [item for item in document.get("submodules", []) if item.get("path") == "FEX"]
+    if len(sources) != 1 or sources[0]["commit"] != spec["source_revision"] or sources[0]["repository"] != spec["source_repository"]:
+        raise ValueError("FEX repair does not match recorded submodule")
+    if command("git", "rev-parse", "HEAD", cwd=ROOT / "FEX") != spec["source_revision"]:
+        raise ValueError("FEX revision changed after provenance recording")
+    if json.loads(repair_file(ROOT, FEX_REPAIR_RECORD).read_text()) != spec:
+        raise ValueError("Applied FEX repair metadata differs from reviewed specification")
+    names = []
+    for repair in spec["repairs"]:
+        for item in repair["files"]:
+            if item["path"] in names:
+                raise ValueError("Duplicate FEX repaired source")
+            names.append(item["path"])
+            if sha256(repair_file(ROOT / "FEX", item["path"])) != item["patched_sha256"]:
+                raise ValueError(f"FEX repaired source differs from verified result: {item['path']}")
+    changed = set(command("git", "diff", "--name-only", "--no-renames", "HEAD", cwd=ROOT / "FEX").splitlines())
+    if changed != set(names):
+        raise ValueError("FEX tracked changes differ from reviewed repair files")
+    return spec
+
+
+def metal_receipt(path: Path) -> dict:
+    if not path.is_file() or path.is_symlink() or path.stat().st_size > 1024 * 1024:
+        raise ValueError("Missing or oversized Metal setup receipt")
+    receipt = json.loads(path.read_text())
+    if receipt.get("schema") != 1 or receipt.get("status") != "available" or receipt.get("smoke_test", {}).get("status") != "passed":
+        raise ValueError("Metal setup receipt does not establish available compiler and shader smoke")
+    for name in ("metal-compiler", "metallib-linker"):
+        tool = receipt.get("verified_executables", {}).get(name, {})
+        if tool.get("verification_passed") is not True or tool.get("requirement") != "anchor apple" or not re.fullmatch(r"[0-9a-f]{64}", tool.get("sha256", "")):
+            raise ValueError(f"Missing verified Apple component evidence: {name}")
+    return receipt
+
+
 def record(path: Path, ready: bool) -> None:
     repo = os.environ.get("GITHUB_REPOSITORY", "Mi-Yomi/Madeira")
     if not re.fullmatch(r"[\w.-]+/[\w.-]+", repo):
@@ -197,10 +264,12 @@ def record(path: Path, ready: bool) -> None:
                       "rust_targets": ["rustup", "target", "list", "--installed"]})
         if command("git", "rev-parse", "HEAD", cwd=ROOT / "research/freetype") != FREETYPE_COMMIT:
             raise ValueError("FreeType source differs from its pin")
-    tracked_inputs = ["build/rppairing-ios/Cargo.lock", "build/gnutls-ios/src/SHA256SUMS",
+    tracked_inputs = [".github/ci/ensure-metal-toolchain.py", "build/rppairing-ios/Cargo.lock", "build/gnutls-ios/src/SHA256SUMS",
                       "build/ffmpeg/src/SHA256SUMS", ".github/workflows/native-bootstrap.yml"]
     tracked_inputs += [str(p.relative_to(ROOT)) for directory in ("build/gnutls-ios/src", "build/ffmpeg/src")
                        for p in (ROOT / directory).glob("*.tar.*")]
+    _, repair_inputs = fex_repair_spec()
+    tracked_inputs += repair_inputs
     usage = shutil.disk_usage(ROOT)
     document = {
         "schema": 1, "stage": "native-dependencies-only", "recorded_utc": datetime.now(timezone.utc).isoformat(),
@@ -217,6 +286,10 @@ def record(path: Path, ready: bool) -> None:
         "compile_jobs": int(os.environ.get("JOBS", "2")), "dependencies_ready": ready,
         "disk_bytes": {"total": usage.total, "used": usage.used, "free": usage.free},
     }
+    if ready:
+        receipt_path = Path(os.environ["NATIVE_LOG_DIR"]) / "metal-toolchain-provenance.json"
+        document["metal_toolchain"] = metal_receipt(receipt_path)
+        document["metal_receipt_sha256"] = sha256(receipt_path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(document, indent=2) + "\n")
     print(f"Recorded exact source/tool provenance: {path}")
@@ -237,6 +310,7 @@ def collect(provenance: Path, output: Path) -> None:
     document = json.loads(provenance.read_text())
     if not document["dependencies_ready"] or document["source_commit"] != command("git", "rev-parse", "HEAD"):
         raise ValueError("Provenance does not match the prepared source")
+    source_repairs = verified_fex_repairs(document)
     verified = {}
     for name in EXPECTED_ARCHIVES:
         verified[name] = validate_archive(ROOT / name)
@@ -269,7 +343,8 @@ def collect(provenance: Path, output: Path) -> None:
         destination = temporary / "notices" / name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, destination)
-    document.update({"crypto_symbol_table": crypto_symbols(ROOT / "build/crypto-unix/gnutls_symtab_ios.c"),
+    document.update({"source_repairs": source_repairs,
+                     "crypto_symbol_table": crypto_symbols(ROOT / "build/crypto-unix/gnutls_symtab_ios.c"),
                      "verified_utc": datetime.now(timezone.utc).isoformat(), "archives": verified,
                      "notice_sha256": {name: sha256(ROOT / name) for name in sorted(notices)},
                      "generated_inputs_sha256": {

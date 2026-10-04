@@ -6,6 +6,7 @@ R="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 B="$R/FEX/build-ios"
 JOBS="${BUILD_JOBS:-2}"
 case "$JOBS" in ''|*[!0-9]*|0) echo "BUILD_JOBS must be a positive integer" >&2; exit 1;; esac
+python3 "$R/build/fex-ios/apply-source-repairs.py"
 cmake -S "$R/FEX" -B "$B" -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_SYSTEM_PROCESSOR=arm64 \
     -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_SYSROOT=iphoneos \
     -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 -DCMAKE_BUILD_TYPE=Release -DTUNE_CPU=none \

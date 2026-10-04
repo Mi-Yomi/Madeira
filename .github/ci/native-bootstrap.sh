@@ -25,24 +25,18 @@ SDK_VERSION="$(xcrun --sdk iphoneos --show-sdk-version)"
 case "$SDK_VERSION" in 27.*) ;; *) echo "Expected iOS 27 SDK, found $SDK_VERSION"; exit 1 ;; esac
 case "$(xcodebuild -version | sed -n '1p')" in 'Xcode 27'*) ;; *) echo 'Expected Xcode 27'; exit 1 ;; esac
 xcrun --sdk iphoneos --find clang
-# Optional Metal probe: this stage compiles no shaders (FFmpeg disables Metal).
-# A present xcrun path may be a stub, so test execution, not only discovery.
-# Missing Metal remains a required gate for later DXMT/app work; never install it here.
-if xcrun --sdk iphoneos metal --version && xcrun --sdk iphoneos --find metallib; then
-    printf '%s\n' available > "$NATIVE_LOG_DIR/metal-toolchain-status.txt"
-    echo 'Metal Toolchain is available; shader/app stages are still not run here.'
-else
-    printf '%s\n' unavailable > "$NATIVE_LOG_DIR/metal-toolchain-status.txt"
-    echo 'Metal Toolchain unavailable: native C/C++/Rust stage may proceed, but DXMT shaders/app build remain blocked.'
-fi
-# End optional Metal probe.
+# The approved optional Apple component is installed only if actually missing.
+# Xcode agreement EA2002 (2026-06-08): https://www.apple.com/legal/sla/docs/xcode.pdf
+# The helper fails on new terms/auth/payment, verification failure or smoke failure.
+# Its seven-minute cap is included in this stage's existing 35-minute budget.
+python3 .github/ci/ensure-metal-toolchain.py --allow-install --log-dir "$NATIVE_LOG_DIR"
 df -h .
 # Clean builds only: no stale archives/headers/markers can create a false pass.
 for path in FEX/build-ios wine/build-macos wine/build-arm64ec build/freetype-ios/build build/gnutls-ios/obj build/ffmpeg/obj build/ntdll-unix/obj build/win32u-unix/obj build/wineserver/obj build/wineserver/libwineserver_base.a build/rppairing-ios/target toolchains/gnutls-ios toolchains/ffmpeg-ios; do
     [ ! -e "$path" ] || { echo "Refusing non-clean build path: $path"; exit 1; }
 done
 # These source tarballs and Apple's redistributable converter are already tracked.
-# No Apple installer is fetched, extracted or accepted by this stage.
+# The Metal component above uses only Apple's documented downloader.
 (cd build/gnutls-ios/src && shasum -a 256 -c SHA256SUMS)
 (cd build/ffmpeg/src && shasum -a 256 -c SHA256SUMS)
 (cd madeira-d3d12/third_party/metal-shader-converter && shasum -a 256 -c SHA256SUMS)

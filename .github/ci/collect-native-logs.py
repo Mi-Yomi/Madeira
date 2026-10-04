@@ -55,3 +55,19 @@ if manifest.is_file():
     print("\n=== Provenance (explicit fields only) ===")
     for key in ("source_url", "source_commit", "submodules", "freetype", "llvm_mingw", "tool_versions", "disk_bytes"):
         print(f"{key}: {json.dumps(source[key], sort_keys=True)}")
+
+# Keep actual toolchain evidence accessible even when artifact uploads are off.
+metal = DEST / "metal-toolchain-provenance.json"
+if metal.is_file() and not metal.is_symlink() and metal.stat().st_size <= 1024 * 1024:
+    import hashlib, json
+    receipt = json.loads(metal.read_text())
+    summary = {key: receipt.get(key) for key in (
+        "status", "download_attempted", "download_result", "xcode_version", "sdk_version",
+        "approved_agreement", "official_source", "selected_developer_dir", "component_root",
+        "compiler_version", "entrypoints_are_component_binaries", "smoke_test", "error")}
+    summary["receipt_sha256"] = hashlib.sha256(metal.read_bytes()).hexdigest()
+    summary["executables"] = {name: {key: value.get(key) for key in (
+        "path", "sha256", "requirement", "verification_passed")}
+        for name, value in receipt.get("verified_executables", {}).items()}
+    print("\n=== Metal setup result (allowlisted receipt fields) ===")
+    print(json.dumps(summary, sort_keys=True))

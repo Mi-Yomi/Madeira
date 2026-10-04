@@ -28,11 +28,21 @@ It starts with portable failure-injection tests, then uses the standard
 The [runner inventory](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md)
 currently lists Xcode 27 and the iOS 27 SDK; the job verifies the actual native
 compiler and SDK instead of accepting a missing prerequisite or license prompt.
-Metal tool execution is probed separately: the current runner has a discovery
-stub without the optional Metal Toolchain. This does not block the native-only
-C/C++/Rust stage (FFmpeg explicitly disables Metal), but remains a blocker for
-later DXMT shader generation and the app's three Metal source files. No Apple
-component is downloaded or license accepted by this workflow.
+The audited image has a Metal discovery stub without the optional component.
+The authorized temporary-runner setup may install only Apple's compatible
+Metal Toolchain using its documented downloader, under the linked Xcode and
+Apple SDKs Agreement EA2002 (2026-06-08). The helper requires explicit
+`--allow-install`, pins Xcode 27.0 / 27A266a and its developer directory, and
+stops on any new terms, sign-in or payment indication. It never invokes
+`-license accept`, a broad update or another component installer.
+
+Metal setup has a 300-second download / 420-second total cap inside the existing
+35-minute build budget. Actual Apple-signed compiler/linker paths, versions and
+a disposable iOS shader compile/link smoke must pass. Receipt fields and hashes
+are retained in standard job logs and successful native provenance; a configured
+workflow or located shim is not an installation result. These checks prepare
+later DXMT/app stages; native C/C++/Rust libraries themselves need no Metal
+compiler (FFmpeg explicitly disables it).
 
 - Native job timeout: 45 minutes, including a 35-minute build step; at most
   two compile jobs. No signing account, new secret or larger paid runner
@@ -41,7 +51,13 @@ component is downloaded or license accepted by this workflow.
   commit `42608f77f20749dd6ddc9e0536788eaad70ea4b5`
 - Separate native and ARM64EC Wine trees generate real headers. Failed header
   generation or compilation is fatal; stale archives cannot satisfy the stage
-- FEX builds all seven app-linked static archives. Wineserver builds its base
+- FEX builds all seven app-linked static archives. Its pinned source has two
+  iOS-host-only diagnostic reporters outside their declaration guard. A local,
+  hash/revision-checked Madeira build repair puts the existing reporters under
+  `FEX_IOS_HOST`; it changes no external repository or submodule pin. The patch,
+  original/result source hashes and applied record are validated and included
+  in native provenance (see `build/fex-ios/README.md`)
+- Wineserver builds its base
   from current sources, overlays the maintained iOS objects, and validates
   the archive members and required symbol renames before replacing an output
 - Every non-index member of all 20 required dependency archives is checked as

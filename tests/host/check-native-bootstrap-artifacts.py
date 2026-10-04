@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Portable negative fixtures for CI iOS archives and complete-bundle gating."""
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import struct
@@ -30,6 +31,93 @@ def member(name, data, bsd=False):
 
 def archive(*members):
     return b"!<arch>\n" + b"".join(members)
+
+
+def repair_fixture(root):
+    revision = "f" * 40
+    relative = "FEXCore/Source/Interface/Core/Core.cpp"
+    patch = "build/fex-ios/patches/reviewed.patch"
+    data = {
+        patch: b"reviewed patch\n",
+        "build/fex-ios/apply-source-repairs.py": b"# fixture apply script\n",
+        "FEX/" + relative: b"reviewed patched source\n",
+    }
+    spec = {"schema_version": 1, "component": "FEX", "source_repository": "https://github.com/willfaust/FEX.git",
+            "source_revision": revision, "repairs": [{"id": "fixture", "patch": patch,
+                "patch_sha256": hashlib.sha256(data[patch]).hexdigest(), "files": [{"path": relative,
+                    "original_sha256": "0" * 64, "patched_sha256": hashlib.sha256(data["FEX/" + relative]).hexdigest()}]}]}
+    encoded = (json.dumps(spec, indent=2) + "\n").encode()
+    data[module.FEX_REPAIR_SPEC] = encoded
+    data[module.FEX_REPAIR_RECORD] = encoded
+    for name, payload in data.items():
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(payload)
+    document = {"dependencies_ready": True, "source_commit": "fixture",
+                "submodules": [{"path": "FEX", "commit": revision, "repository": spec["source_repository"]}],
+                "input_sha256": {name: hashlib.sha256(data[name]).hexdigest() for name in (
+                    module.FEX_REPAIR_SPEC, patch, "build/fex-ios/apply-source-repairs.py")}}
+    def command(*args, cwd=None):
+        if cwd == root / "FEX":
+            if args == ("git", "rev-parse", "HEAD"):
+                return revision
+            if args == ("git", "diff", "--name-only", "--no-renames", "HEAD"):
+                return relative
+            raise AssertionError(args)
+        return "fixture"
+    return document, command
+
+
+class RepairProvenanceTests(unittest.TestCase):
+    def test_verified_and_tampered_repair_evidence(self):
+        for mutation in (None, "source", "patch", "metadata", "revision", "extra-change", "record-missing", "spec"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                document, command = repair_fixture(root)
+                if mutation == "source":
+                    (root / "FEX/FEXCore/Source/Interface/Core/Core.cpp").write_text("unexpected source")
+                elif mutation == "patch":
+                    (root / "build/fex-ios/patches/reviewed.patch").write_text("unexpected patch")
+                elif mutation == "metadata":
+                    (root / module.FEX_REPAIR_RECORD).write_text("{}")
+                elif mutation == "record-missing":
+                    (root / module.FEX_REPAIR_RECORD).unlink()
+                elif mutation == "spec":
+                    spec = json.loads((root / module.FEX_REPAIR_SPEC).read_text())
+                    spec["repairs"][0]["files"][0]["path"] = "../../outside"
+                    (root / module.FEX_REPAIR_SPEC).write_text(json.dumps(spec))
+                    document["input_sha256"][module.FEX_REPAIR_SPEC] = module.sha256(root / module.FEX_REPAIR_SPEC)
+                    (root / module.FEX_REPAIR_RECORD).write_text(json.dumps(spec))
+                original_command = command
+                if mutation == "revision":
+                    command = lambda *args, **kwargs: "e" * 40
+                elif mutation == "extra-change":
+                    command = lambda *args, **kwargs: (original_command(*args, **kwargs) + "\nother.cpp") if "diff" in args else original_command(*args, **kwargs)
+                with mock.patch.object(module, "ROOT", root), mock.patch.object(module, "command", side_effect=command):
+                    if mutation is None:
+                        self.assertEqual(module.verified_fex_repairs(document)["component"], "FEX")
+                    else:
+                        with self.assertRaises(ValueError):
+                            module.verified_fex_repairs(document)
+
+
+class MetalReceiptTests(unittest.TestCase):
+    def test_available_signed_smoke_receipt_required(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "metal.json"
+            receipt = {"schema": 1, "status": "available", "smoke_test": {"status": "passed"},
+                       "verified_executables": {name: {"verification_passed": True,
+                           "requirement": "anchor apple", "sha256": "f" * 64}
+                           for name in ("metal-compiler", "metallib-linker")}}
+            path.write_text(json.dumps(receipt))
+            self.assertEqual(module.metal_receipt(path)["status"], "available")
+            for field in ("status", "smoke", "signature"):
+                invalid = json.loads(json.dumps(receipt))
+                if field == "status": invalid["status"] = "running"
+                elif field == "smoke": invalid["smoke_test"]["status"] = "failed"
+                else: invalid["verified_executables"]["metal-compiler"]["verification_passed"] = False
+                path.write_text(json.dumps(invalid))
+                with self.assertRaises(ValueError): module.metal_receipt(path)
 
 
 class ArchiveTests(unittest.TestCase):
@@ -108,7 +196,8 @@ class BundleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             manifest = root / "input.json"
-            manifest.write_text(json.dumps({"dependencies_ready": True, "source_commit": "fixture"}))
+            document, command = repair_fixture(root)
+            manifest.write_text(json.dumps(document))
             for name in module.EXPECTED_ARCHIVES:
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -125,7 +214,7 @@ class BundleTests(unittest.TestCase):
             (root / "build/crypto-unix/gnutls_symtab_ios.c").write_text('\n'.join(
                 f'{{ "{name}", &ios_gts_{i} }},' for i, name in enumerate((
                     "gnutls_global_init", "gnutls_init", "gnutls_handshake", "gnutls_cipher_init", "gnutls_x509_crt_init"))))
-            with mock.patch.object(module, "ROOT", root), mock.patch.object(module, "command", return_value="fixture"):
+            with mock.patch.object(module, "ROOT", root), mock.patch.object(module, "command", side_effect=command):
                 last = root / module.EXPECTED_ARCHIVES[-1]
                 last.unlink()
                 with self.assertRaises(ValueError):
@@ -139,6 +228,7 @@ class BundleTests(unittest.TestCase):
                 module.collect(manifest, root / "complete")
                 result = json.loads((root / "complete/provenance.json").read_text())
                 self.assertEqual(set(result["archives"]), set(module.EXPECTED_ARCHIVES))
+                self.assertEqual(result["source_repairs"]["component"], "FEX")
                 self.assertEqual(len(list((root / "complete/libraries").rglob("*.a"))), 20)
                 self.assertTrue((root / "complete/notices/LICENSE").exists())
                 self.assertFalse(list((root / "complete").rglob("*.o")))
