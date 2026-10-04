@@ -709,7 +709,10 @@ final class LibraryModel: ObservableObject {
                 url = url.appendingPathComponent(matches[0], isDirectory: true)
             }
             url = url.resolvingSymlinksInPath().standardizedFileURL
-            guard url.path == root.path || url.path.hasPrefix(root.path + "/") else {
+            // A separator followed by a combining mark forms one Swift
+            // Character. Compare filesystem bytes, not grapheme prefixes.
+            guard url.path.utf8.elementsEqual(root.path.utf8) ||
+                  url.path.utf8.starts(with: (root.path + "/").utf8) else {
                 throw LibraryError.message("The working folder must stay inside this Madeira prefix's C: drive.")
             }
         }

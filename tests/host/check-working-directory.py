@@ -129,9 +129,11 @@ with tempfile.TemporaryDirectory(prefix='madeira-working-directory-') as temp:
     outside = prefix / 'drive_c-other'; outside.mkdir()
     (drive / 'outside').symlink_to(outside, target_is_directory=True)
     (drive / 'inside').symlink_to(project, target_is_directory=True)
+    (drive / 'root-link').symlink_to(drive, target_is_directory=True)
     filesystem = [('DEFAULT', drive, 'C:\\'), ('C:\\', drive, 'C:\\'),
                   ('c:/My Project/База/', project, 'C:\\My Project\\База\\'),
                   ('C:\\inside', project, 'C:\\inside\\'),
+                  ('C:\\root-link', drive, 'C:\\root-link\\'),
                   ('C:\\my project\\База', project, 'C:\\my project\\База\\'),
                   ('C:\\́folder', combined, 'C:\\́folder\\')]
     if os.uname().sysname == 'Darwin':
@@ -157,6 +159,8 @@ with tempfile.TemporaryDirectory(prefix='madeira-working-directory-') as temp:
         start = lib.index('    static func validateWorkingDirectory(')
         finish = lib.index('\n    }', start) + len('\n    }')
         swift_filesystem = lib[start:finish]
+        assert 'url.path.utf8.starts(with: (root.path + "/").utf8)' in swift_filesystem
+        assert 'url.path.hasPrefix' not in swift_filesystem
         swift = '''import Foundation
         enum LibraryError: Error { case message(String) }
         HELPER
@@ -170,7 +174,10 @@ with tempfile.TemporaryDirectory(prefix='madeira-working-directory-') as temp:
             let actual = try? LibraryWorkingDirectory.canonical(fixture.input)
             precondition(actual == fixture.expected, "canonical mismatch: \\(fixture.input)")
         }
-        for value in ["C:\\\\", "C:\\\\inside", "c:/My Project/База/", "c:/my project/база/", "C:/́folder/"] { try LibraryModel.validateWorkingDirectory(value) }
+        for value in ["C:\\\\", "C:\\\\inside", "C:\\\\root-link", "c:/My Project/База/", "c:/my project/база/", "C:/́folder/"] {
+            do { try LibraryModel.validateWorkingDirectory(value) }
+            catch { fatalError("working-folder fixture \\(value.debugDescription) failed: \\(error)") }
+        }
         try LibraryModel.validateWorkingDirectory(nil)
         for value in ["C:\\\\outside", "C:\\\\missing", "C:\\\\plain.txt", "C:\\\\..\\\\drive_c-other"] {
             do { try LibraryModel.validateWorkingDirectory(value); fatalError("accepted invalid folder") }
