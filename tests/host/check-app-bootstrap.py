@@ -3,6 +3,7 @@
 import contextlib
 import hashlib
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -249,6 +250,116 @@ class SafetyTests(unittest.TestCase):
             (root / "link").symlink_to(root / "file")
             for path in ("../file", "/file", "dir/../file", "dir//file", "dir\\file", "link"):
                 with self.subTest(path=path), self.assertRaises(ValueError): gate.relative_file(root, path)
+
+
+class BuildModeTests(unittest.TestCase):
+    def exercise_build(self, root, mode, mutation=None):
+        """Synthetic Mach-O/ZIP fixtures only: never launches Xcode or ditto."""
+        seed = root / "synthetic/Madeira.app"
+        resources, framework, converter = fixture(seed)
+        put(root / "app/Madeira/source.c", b"fixture source")
+        put(root / gate.FRAMEWORK_SOURCE, (seed / "Frameworks/StikJIT.framework/StikJIT").read_bytes())
+        receipt = put(root / "native/provenance.json", b"fixture native receipt")
+        products, intermediates, stage = (root / name for name in ("products", "objects", "diagnostics"))
+        evidence = {"source_commit": "a" * 40, "native_receipt_sha256": gate.digest(receipt),
+                    "prerequisite_sha256": {gate.FRAMEWORK_SOURCE: framework}, "scope": gate.SCOPE}
+        pe = {name: value for name, value in resources.items() if name.endswith((".dll", ".exe"))}
+        calls = []
+        def fake_run(args):
+            calls.append(list(map(str, args)))
+            if args[0] == "bash":
+                self.assertEqual(args, ["bash", "build/stage-licenses.sh"])
+            elif args[0] == "xcodebuild":
+                shutil.copytree(seed, products / "Debug-iphoneos/Madeira.app")
+            elif args[0] == "ditto" and args[1] == "--norsrc":
+                shutil.copytree(args[2], args[3])
+                if mutation == "staged-app": (Path(args[3]) / "Madeira").write_bytes(macho(platform=1))
+            elif args[0] == "ditto" and args[1] == "-c":
+                zip_payload(args[-1], args[-2])
+                if mutation == "zip": Path(args[-1]).write_bytes(b"invalid synthetic ZIP")
+            else:
+                raise AssertionError(args)
+        def fake_git(*args):
+            if args == ("rev-parse", "--show-toplevel"): return str(root)
+            if args == ("rev-parse", "HEAD"): return "a" * 40
+            if args[0] == "ls-files": return "app/Madeira/source.c\0"
+            raise AssertionError(args)
+        def fake_output(args, **kwargs):
+            if args == ["xcodebuild", "-version"]: return "Xcode 27.0\nBuild version fixture\n"
+            if args == ["xcrun", "--sdk", "iphoneos", "--show-sdk-version"]: return "27.0\n"
+            if args == ["uname", "-m"]: return "arm64\n"
+            raise AssertionError(args)
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(mock.patch.object(gate, "ROOT", root))
+            stack.enter_context(mock.patch.object(gate, "CONVERTER_SHA256", converter))
+            stack.enter_context(mock.patch.object(gate.sys, "platform", "darwin"))
+            stack.enter_context(mock.patch.object(gate, "prerequisites", return_value=evidence))
+            stack.enter_context(mock.patch.object(gate, "resource_inputs", return_value=(resources, pe)))
+            stack.enter_context(mock.patch.object(gate, "git", side_effect=fake_git))
+            stack.enter_context(mock.patch.object(gate.subprocess, "check_output", side_effect=fake_output))
+            stack.enter_context(mock.patch.object(gate, "run", side_effect=fake_run))
+            app_validation = stack.enter_context(mock.patch.object(gate, "validate_app", wraps=gate.validate_app))
+            zip_validation = stack.enter_context(mock.patch.object(gate, "verify_zip", wraps=gate.verify_zip))
+            output = stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+            # No keyword is passed in the ordinary mode, exercising the actual
+            # function default, not only an explicit False test configuration.
+            options = {} if mode == "default" else {"package": True}
+            if mutation:
+                with self.assertRaises((ValueError, zipfile.BadZipFile)):
+                    gate.build(receipt, products, intermediates, stage, **options)
+                self.assertFalse((stage / "provenance.json").exists())
+                if mutation == "staged-app":
+                    self.assertFalse((stage / "Madeira-unsigned.ipa").exists())
+                    zip_validation.assert_not_called()
+                else:
+                    zip_validation.assert_called_once()
+                return
+            gate.build(receipt, products, intermediates, stage, **options)
+            result = json.loads((stage / "provenance.json").read_text())
+            summary = json.loads(output.getvalue())
+            self.assertEqual(result["status"], "passed")
+            self.assertIn("CODE_SIGNING_ALLOWED=NO", result["build_command"])
+            self.assertIn("CODE_SIGNING_REQUIRED=NO", result["build_command"])
+            if mode == "default":
+                self.assertEqual({path.name for path in stage.iterdir()}, {"provenance.json"})
+                self.assertFalse(list(root.rglob("*.ipa")))
+                self.assertFalse(any(call[0] == "ditto" for call in calls))
+                self.assertEqual(app_validation.call_count, 1)
+                zip_validation.assert_not_called()
+                self.assertEqual(result["packaging"], {"requested": False, "status": "not_requested"})
+                self.assertEqual(result["scope"], gate.SCOPE)
+                self.assertEqual(summary["packaging"], "not_requested")
+                self.assertNotIn("ipa_sha256", result)
+                self.assertNotIn("ipa_bytes", summary)
+            else:
+                self.assertEqual(app_validation.call_count, 2)
+                zip_validation.assert_called_once_with(stage / "Madeira-unsigned.ipa", stage / "Payload")
+                self.assertEqual(len([call for call in calls if call[0] == "ditto"]), 2)
+                self.assertEqual(result["packaging"], {"requested": True, "status": "passed"})
+                self.assertEqual(result["ipa_sha256"], gate.digest(stage / "Madeira-unsigned.ipa"))
+                self.assertEqual(result["scope"], gate.PACKAGE_SCOPE)
+                self.assertEqual(summary["packaging"], "passed")
+
+    def test_default_links_validates_and_writes_diagnostics_without_packaging(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.exercise_build(Path(directory).resolve(), "default")
+
+    def test_explicit_package_opt_in_revalidates_app_and_zip(self):
+        with tempfile.TemporaryDirectory() as directory:
+            self.exercise_build(Path(directory).resolve(), "package")
+
+    def test_opt_in_cannot_bypass_package_validation(self):
+        for mutation in ("staged-app", "zip"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                self.exercise_build(Path(directory).resolve(), "package", mutation)
+
+    def test_cli_requires_explicit_package_flag(self):
+        for extra, expected in (([], False), (["--package"], True)):
+            args = ["build_unsigned.py", "--native-receipt", "native.json", "--products", "products",
+                    "--intermediates", "objects", "--stage", "diagnostics", *extra]
+            with self.subTest(extra=extra), mock.patch.object(gate.sys, "argv", args), mock.patch.object(gate, "build") as build:
+                gate.main()
+                build.assert_called_once_with(Path("native.json"), Path("products"), Path("objects"), Path("diagnostics"), package=expected)
 
 
 class PreflightTests(unittest.TestCase):

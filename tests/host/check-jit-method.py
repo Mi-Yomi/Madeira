@@ -51,7 +51,7 @@ wait = function(stik, "static func waitForDebugger(")
 require("timeout: TimeInterval = 90" in wait and "if ready {" in wait,
         "StikDebug attach has a finite 90-second readiness timeout")
 ready = function(stik, "static var ready: Bool")
-require("jit_check_debugged()" in ready and "isDebuggerAttached()" in ready,
+require("SigningStatus.current.debugged" in ready and "isDebuggerAttached()" in ready,
         "readiness requires CS_DEBUGGED and a live debugger")
 
 # Automatic selection is deterministic: installed StikDebug first, otherwise

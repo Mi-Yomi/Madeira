@@ -1,6 +1,10 @@
-# Unsigned Debug app gate
+# Unsigned Debug app link gate
 
-Run this only after `.github/ci/native-bootstrap.sh` and the complete graphics
+The default invocation **does not create an IPA**. It links and validates the
+unsigned app, then writes a diagnostic receipt. The automatic app job is paused;
+these commands document the driver, not permission to restart a build or package.
+
+Run only after `.github/ci/native-bootstrap.sh` and the complete graphics
 bootstrap in the **same fresh Xcode 27 ARM64 runner checkout**, native first.
 Keep `FEX/build-ios` and its generated headers; restoring the archive bundle is
 not enough. No app/device success is implied by the native or graphics gates.
@@ -10,7 +14,7 @@ python3 build/app-ios/build_unsigned.py \
   --native-receipt "$NATIVE_ARTIFACT_DIR/provenance.json" \
   --products "$RUNNER_TEMP/madeira-app-products" \
   --intermediates "$RUNNER_TEMP/madeira-app-intermediates" \
-  --stage "$RUNNER_TEMP/madeira-app-stage"
+  --stage "$RUNNER_TEMP/madeira-app-diagnostics"
 ```
 
 The three output paths must not exist, including empty directories or dangling
@@ -24,20 +28,37 @@ remain those in the project. There is no shared-scheme requirement.
 
 After a successful link it validates the app, helper and StikJIT Mach-O platform
 and architecture, unchanged tracked converter bytes, processed bundle metadata,
-resources and notices. It uses `ditto` to copy `Payload/Madeira.app` and create
-`Madeira-unsigned.ipa` locally, verifies every ZIP file against that validated
-app, and writes `provenance.json` plus a compact hash/scope line. The IPA remains ephemeral on the runner; persistent storage or delivery needs
-separate authorization. No signing,
-archive/export, provisioning request, cache, upload or installation is performed.
-The converter may retain its pre-existing vendor signature; “unsigned” means
-this gate performs no signing of the package or its contents.
+resources and notices. By default, `--stage` contains only `provenance.json`:
+its packaging status is `not_requested`, and there is no `Payload` directory,
+IPA file or `ditto` invocation. A compact log summary describes only this link
+and bundle-validation scope.
+
+## Optional packaging requires explicit authorization and opt-in
+
+Packaging remains disabled unless `--package` is explicitly supplied to the
+same command. Do not add that flag while the user's stop on IPA creation is in
+effect. A technical flag does not replace authorization to resume packaging.
+
+When separately authorized, `--package` uses `ditto` to copy
+`Payload/Madeira.app` and create `Madeira-unsigned.ipa` under the fresh `--stage`
+directory. It revalidates the staged app and every ZIP file, executable mode and
+empty runtime placeholder, then records the IPA hash and packaging status
+`passed` in `provenance.json`. A packaging failure does not write a passed
+receipt. The IPA remains ephemeral on the runner; persistent storage or
+delivery requires separate authorization.
+
+Neither mode performs signing, Xcode archive/export, provisioning requests,
+caching, uploads or installation. The converter may retain its pre-existing
+vendor signature; “unsigned” means this gate performs no signing of its contents.
 
 Guest PE binaries are **tracked inputs reused, not source-rebuilt**. Their exact
 hashes are in the receipt. The 32-bit Wine runtime and x86_64 VC runtime are
-missing. A passed gate establishes only unsigned app linking and local package
-integrity, never device launch, JIT, rendering, 1C or Blender compatibility.
+missing. A passed default gate establishes only unsigned app linking and bundle
+validation. An explicitly requested package gate also establishes local package
+integrity. Neither establishes device launch, JIT, rendering, 1C or Blender
+compatibility.
 
-Portable regression checks (no Xcode or external downloads):
+Portable regression checks (synthetic fixtures; no Xcode or external downloads):
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 tests/host/check-app-bootstrap.py

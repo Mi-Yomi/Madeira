@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Fail-closed local Debug app gate after native20 and graphics in one checkout.
 
-This does not build guest PE binaries, sign, export, install, upload or use a
-cache. The resulting IPA is an unsigned packaging experiment, not a device or
-1C/Blender success result. Apple's tracked converter retains its original bytes.
+The default invocation only links/validates the app and writes diagnostics;
+it never creates an IPA. Local packaging requires explicit --package opt-in.
+This does not rebuild guest PE binaries, sign, export, install, upload or use a
+cache. Neither mode establishes device or 1C/Blender success. Apple's tracked
+converter retains its original bytes.
 """
 from __future__ import annotations
 
@@ -38,8 +40,10 @@ REQUIRED_NOTICES = (*GENERATED_LICENSES, "d3d12/NOTICE.txt", "d3d12/METAL-SHADER
                     "legal/LICENSES-rppairing-crates.txt", "legal/LICENSE-StikJIT-MPL-2.0.txt")
 GRAPHICS_RECEIPTS = ("toolchains/llvm-host-build/madeira-build.json", "toolchains/llvm-ios-build/madeira-build.json",
                      "build/dxmt-ios/shader-headers/provenance.json", "build/dxmt-ios/graphics-build.json")
-SCOPE = ("Unsigned Debug app link and local IPA packaging only. Tracked guest PE binaries reused, not source-rebuilt; "
-         "32-bit runtime missing; x86_64 VC runtime absent. No installation, device, rendering, JIT, 1C or Blender validation.")
+LIMITATIONS = ("Tracked guest PE binaries reused, not source-rebuilt; 32-bit runtime missing; x86_64 VC runtime absent. "
+               "No installation, device, rendering, JIT, 1C or Blender validation.")
+SCOPE = "Unsigned Debug app link and bundle validation only; no IPA created. " + LIMITATIONS
+PACKAGE_SCOPE = "Unsigned Debug app link, bundle validation and explicitly requested local IPA packaging only. " + LIMITATIONS
 
 
 def regular(path):
@@ -356,7 +360,7 @@ def run(args):
     return subprocess.run(list(map(str, args)), cwd=ROOT, env=common.environment(), check=True)
 
 
-def build(native_receipt, products, intermediates, stage):
+def build(native_receipt, products, intermediates, stage, *, package=False):
     products, intermediates, stage = fresh_outputs(products, intermediates, stage)
     native_receipt = native_receipt.parent.resolve() / native_receipt.name
     evidence = prerequisites(native_receipt)
@@ -389,24 +393,34 @@ def build(native_receipt, products, intermediates, stage):
     app = products / "Debug-iphoneos/Madeira.app"
     framework_hash = evidence["prerequisite_sha256"][FRAMEWORK_SOURCE]
     built = validate_app(app, resources, framework_hash)
-    # Recheck before creating; never reuse a prior stage or package.
+    # Recheck before creating; never reuse prior diagnostics or a package.
     if stage.exists() or stage.is_symlink():
-        raise ValueError("Package stage appeared during build")
+        raise ValueError("Diagnostic stage appeared during build")
     stage.mkdir(parents=True)
-    payload = stage / "Payload"
-    payload.mkdir()
-    run(["ditto", "--norsrc", app, payload / "Madeira.app"])
-    staged = validate_app(payload / "Madeira.app", resources, framework_hash)
-    if staged != built:
-        raise ValueError("Staged app differs from validated product")
-    ipa = stage / "Madeira-unsigned.ipa"
-    run(["ditto", "-c", "-k", "--norsrc", "--keepParent", payload, ipa])
     evidence.update({"schema_version": 1, "status": "passed", "build_command": command,
-                     "app": built, "ipa_sha256": verify_zip(ipa, payload), "ipa_bytes": ipa.stat().st_size,
+                     "app": built, "scope": SCOPE, "packaging": {"requested": False, "status": "not_requested"},
                      "signing": "disabled; pre-existing vendor converter signature/bytes preserved"})
+    summary = {"status": "passed", "source_commit": evidence["source_commit"],
+               "tracked_guest_pe_files": len(pe), "scope": SCOPE, "packaging": "not_requested"}
+    # Packaging is never inferred from paths, environment variables or receipts.
+    # The CLI opt-in is a technical guard, not authorization to ignore a user stop.
+    if package:
+        payload = stage / "Payload"
+        payload.mkdir()
+        run(["ditto", "--norsrc", app, payload / "Madeira.app"])
+        staged = validate_app(payload / "Madeira.app", resources, framework_hash)
+        if staged != built:
+            raise ValueError("Staged app differs from validated product")
+        ipa = stage / "Madeira-unsigned.ipa"
+        run(["ditto", "-c", "-k", "--norsrc", "--keepParent", payload, ipa])
+        ipa_hash = verify_zip(ipa, payload)
+        evidence.update({"scope": PACKAGE_SCOPE, "packaging": {"requested": True, "status": "passed"},
+                         "ipa_sha256": ipa_hash, "ipa_bytes": ipa.stat().st_size})
+        summary.update({"scope": PACKAGE_SCOPE, "packaging": "passed", "ipa_sha256": ipa_hash,
+                        "ipa_bytes": ipa.stat().st_size})
     (stage / "provenance.json").write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n")
-    print(json.dumps({"status": "passed", "source_commit": evidence["source_commit"], "ipa_sha256": evidence["ipa_sha256"],
-                      "ipa_bytes": evidence["ipa_bytes"], "tracked_guest_pe_files": len(pe), "scope": SCOPE}, sort_keys=True))
+    print(json.dumps(summary, sort_keys=True))
+
 
 
 def main():
@@ -414,10 +428,13 @@ def main():
     parser.add_argument("--native-receipt", type=Path, required=True)
     parser.add_argument("--products", type=Path, required=True)
     parser.add_argument("--intermediates", type=Path, required=True)
-    parser.add_argument("--stage", type=Path, required=True)
+    parser.add_argument("--stage", type=Path, required=True,
+                        help="Fresh diagnostic output directory; also package destination with --package")
+    parser.add_argument("--package", action="store_true",
+                        help="Explicitly opt in to local unsigned IPA staging and verification (default: no IPA)")
     args = parser.parse_args()
     try:
-        build(args.native_receipt, args.products, args.intermediates, args.stage)
+        build(args.native_receipt, args.products, args.intermediates, args.stage, package=args.package)
     except (ValueError, OSError, KeyError, TypeError, plistlib.InvalidFileException, zipfile.BadZipFile, subprocess.CalledProcessError) as error:
         raise SystemExit(str(error)) from error
 

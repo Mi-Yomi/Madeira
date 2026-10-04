@@ -7,6 +7,12 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_full_app_job_is_paused_and_no_package_opt_in(self):
+        text = (ROOT / ".github/workflows/unsigned-app-bootstrap.yml").read_text()
+        job = text.split("  unsigned-app:", 1)[1]
+        self.assertIn("    if: false\n", job.split("    steps:", 1)[0])
+        self.assertNotIn("--package", text)
+
     def test_bounded_public_runner_without_storage_or_credentials(self):
         text = (ROOT / ".github/workflows/unsigned-app-bootstrap.yml").read_text()
         for required in ("runs-on: xcode-27", "timeout-minutes: 45", "contents: read", "persist-credentials: false",

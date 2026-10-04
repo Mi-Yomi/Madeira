@@ -1,5 +1,33 @@
 import UIKit
 
+// MARK: - One-shot early pool ownership
+// Adapted from upstream caf5d9ac84011011ed632715217b5d1810a509a4.
+// The address is only ours until the first release attempt; malloc/Metal may
+// reuse it before a later JIT retry. Serialize the claim and its deallocation.
+final class JITEarlyPoolReleaseGate: @unchecked Sendable {
+    enum Outcome {
+        case absent
+        case alreadyAttempted
+        case attempted(Int32)
+    }
+
+    private let lock = NSLock()
+    private var attempted = false
+
+    func release(base: UInt, size: UInt,
+                 deallocate: (UInt, UInt) -> Int32) -> Outcome {
+        guard base != 0 && size != 0 else { return .absent }
+        lock.lock()
+        defer { lock.unlock() }
+        guard !attempted else { return .alreadyAttempted }
+        // Even an error must not permit a later request to unmap an address
+        // range whose ownership may have changed. Report that error honestly.
+        attempted = true
+        return .attempted(deallocate(base, size))
+    }
+}
+// MARK: - StikDebug integration
+
 /// Helper to enable JIT via StikDebug/StikJIT URL scheme.
 /// Opens StikDebug with Madeira's bundled script, polls for CS_DEBUGGED,
 /// then allocates JIT memory and detaches the debugger.
@@ -126,13 +154,16 @@ enum StikJITHelper {
     /// CS_DEBUGGED alone is not enough: it stays set after a debugger leaves, which
     /// is the state StikDebug's own app list (attach, then detach) leaves behind.
     static var ready: Bool {
-        guard jit_check_debugged() else { return false }
+        // The same csops flag without one log line on every readiness poll.
+        guard SigningStatus.current.debugged else { return false }
         return !attachCheck || poolTaken || isDebuggerAttached()
     }
 
     /// CS_DEBUGGED is set but nothing can answer a pool request: JIT has to be
     /// enabled again, through Madeira, before a game can start.
-    static var flaggedWithoutDebugger: Bool { jit_check_debugged() && !ready }
+    static var flaggedWithoutDebugger: Bool { SigningStatus.current.debugged && !ready }
+
+    private static let earlyPoolReleaseGate = JITEarlyPoolReleaseGate()
 
     /// Allocate a JIT memory pool via BRK #0xf00d WITHOUT detaching the debugger.
     /// The debugger stays attached so Wine can use BRK to prepare PE code pages.
@@ -341,11 +372,19 @@ enum StikJITHelper {
         var plugs: [(vm_address_t, vm_size_t)] = []
         let earlyPoolBase = vm_address_t(madeira_early_pool_base)
         let earlyPoolSize = vm_address_t(madeira_early_pool_size)
-        if earlyPoolBase != 0 {
-            vm_deallocate(mach_task_self_, earlyPoolBase, vm_size_t(earlyPoolSize))
-            LogStore.shared.log(String(format: "ml1040: released the early pool placeholder 0x%lx+%luMB for the debugger",
-                                       Int(earlyPoolBase), Int(earlyPoolSize >> 20)))
-        } else {
+        switch earlyPoolReleaseGate.release(base: earlyPoolBase, size: earlyPoolSize, deallocate: { base, size in
+            vm_deallocate(mach_task_self_, vm_address_t(base), vm_size_t(size))
+        }) {
+        case .alreadyAttempted:
+            LogStore.shared.log("Early JIT pool placeholder release was already attempted; its old address range is not unmapped again")
+        case .attempted(let result):
+            if result == KERN_SUCCESS {
+                LogStore.shared.log(String(format: "ml1040: released the early pool placeholder 0x%lx+%luMB for the debugger",
+                                           Int(earlyPoolBase), Int(earlyPoolSize >> 20)))
+            } else {
+                LogStore.shared.log("Early JIT pool placeholder release failed (kr=\(result)); its old address range will not be retried", level: .error)
+            }
+        case .absent:
             LogStore.shared.log("ml1040: no early pool placeholder was obtained — placement is left to chance", level: .error)
             // ml1135: what was already mapped above the window at image load (user_tag
             // is the VM_MEMORY_* allocation tag; 0 = untagged anonymous memory).
