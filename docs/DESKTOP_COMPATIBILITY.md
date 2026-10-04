@@ -71,6 +71,44 @@ This changes software text entry, not the physical keyboard's US scan layout
 or clipboard integration. Win32/1C text widgets and UIKit alerts still require
 on-device acceptance tests.
 
+## Second desktop-launch batch
+
+This batch builds on the first published compatibility commit, `b569c5d`.
+
+- **Working folder:** ordinary library entries can now select an existing
+  absolute `C:\` folder in Game details. Empty means the executable's folder;
+  Steam keeps its own launch configuration. Exact spelling is preferred, with
+  unique Unicode case-insensitive matches for typed Windows folders. Ambiguous
+  matches are rejected. Spaces/Cyrillic and the root of
+  `C:\` are supported. Relative paths, other drives, ambiguous components,
+  missing folders and symlink escapes are rejected rather than silently
+  launching in another folder. Native validation is repeated immediately
+  before Wine starts. This supports relative project/script/data paths; it
+  does not create a 1C infobase or install application dependencies.
+- **Complete argument limit:** a separate stale front-end check still capped
+  library launches at 1023 bytes. It now uses the same 4095-byte limit as the
+  production parser and profile validator; regression checks cover the path
+  through the front end as well.
+- **Launch diagnostics:** common Windows loader/status failures now distinguish
+  missing modules/functions, incompatible image formats, failed DLL/assembly
+  initialization, unsupported CPU instructions and missing working folders.
+  These explain the status without inventing a particular missing dependency.
+- **Default log privacy:** the launch bridge no longer prints argument values;
+  global/game configuration logging omits values too. This matters for 1C
+  credentials and connection strings. It is not a log sanitizer: guest output,
+  opted-in Wine tracing, crash dumps and configuration files can still contain
+  private data. Review exports before sharing; avoid passwords in saved launch
+  profiles where possible.
+- **Hidden windows:** the compositor's frame update now requires `WS_VISIBLE`
+  as well as nonempty geometry, so moving/resizing a hidden window does not
+  itself reveal its layer. Window stacking and child-surface grouping remain
+  separate unresolved device-validation work.
+
+Working-folder tests exercise the actual C/Swift normalization and real
+filesystem/symlink confinement. Existing library serialization and Steam
+launch tests cover default/override/reset behavior. No device acceptance is
+implied by these helper tests.
+
 ## Blender: backend work remains
 
 Current built-in OpenGL is explicitly absent:
@@ -80,6 +118,14 @@ Current built-in OpenGL is explicitly absent:
 - `build/win32u-unix/driver_ios.c`: the OpenGL and Vulkan driver entry points
   return `STATUS_NOT_IMPLEMENTED`
 - `build/wine-i386/build.sh`: Vulkan is excluded from the 32-bit build
+
+The GL-absent bridge now also writes Wine's required all-ones “unavailable”
+result for `wglGetProcAddress`, with distinct native/WoW64 argument layouts.
+Previously the untouched zero result could be interpreted as the first entry
+in Wine's extension table for any requested extension name. Lifecycle calls
+still permit loading `opengl32.dll`, while capability discovery fails safely.
+This is an ABI correctness fix, not a graphics backend. The ABI is pinned to
+[Wine 4f5b197](https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/dlls/opengl32/wgl.c#L1333).
 
 Direct3D-to-Metal support does not implement Blender's OpenGL/Vulkan UI.
 Check requirements against the exact Blender version. Current requirements
@@ -196,3 +242,10 @@ submodules, Swift, newer Python compression support and FFmpeg fixtures.
 Do not count missing prerequisites as passed tests or treat this focused
 workflow as the full suite. See [BUILDING.md](BUILDING.md) for the full build
 chain and its still-unverified clean-machine steps.
+
+The next-build audit also found 16 required static archives absent from the
+clean checkout, empty native submodule directories and missing cross-toolchains.
+An unsigned `xcodebuild` job cannot fix those prerequisites by turning signing
+off. The user's target is iPhone 16 Pro Max on iOS 27; the existing Madeira app
+opens, but its exact installed build and these changes' device behavior have
+not been verified.

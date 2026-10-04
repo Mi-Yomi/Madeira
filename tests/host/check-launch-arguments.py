@@ -27,9 +27,9 @@ path_builder = bridge.split('        char exe_path[1024];', 1)[1].split('// Opti
 path_builder = 'char exe_path[1024];' + path_builder
 directory_helper = bridge[bridge.index('static int madeira_set_launch_directory('):]
 directory_helper = directory_helper.split('\nstatic void *wine_process_thread(', 1)[0]
-directory_selection = bridge[bridge.index('        unsetenv("MADEIRA_INITIAL_CWD");'):]
-directory_selection = directory_selection.split('        // Record this thread', 1)[0]
-assert directory_selection.count('madeira_set_launch_directory(g_prefix_path, windir, wine_cwd);') == 2
+assert 'madeira_prepare_launch_directory(exe_path, g_prefix_path)' in bridge
+assert 'launch refused' in bridge
+assert 'extra_argv[i]);' not in section  # argument values must not enter default logs
 
 # Known outputs, including quoted desktop paths and arguments previously lost
 # beyond the native bridge's undocumented 16-token / 1023-byte cutoffs.
@@ -82,6 +82,15 @@ harness = r'''
 static int chdir_calls, chdir_result;
 static const char *launch_workdir;
 static char captured_cwd[8192], captured_pwd[8192], captured_windows_cwd[8192];
+static int escape_directory;
+static char *test_realpath(const char *path, char *output) {
+    if (strlen(path) >= PATH_MAX) { errno = ENAMETOOLONG; return NULL; }
+    if (escape_directory && strstr(path, "/drive_c/")) strcpy(output, "/elsewhere");
+    else strcpy(output, path);
+    size_t n = strlen(output);
+    if (n && output[n - 1] == '/') output[n - 1] = 0;
+    return output;
+}
 static int test_chdir(const char *path) {
     chdir_calls++;
     strcpy(captured_cwd, path);
@@ -105,21 +114,35 @@ static char *test_getenv(const char *key) {
     assert(!strcmp(key, "MADEIRA_WORKDIR"));
     return (char *)launch_workdir;
 }
+static int madeira_resolve_launch_directory(const char *prefix, const char *relative, char *resolved) {
+    char root[PATH_MAX], source[PATH_MAX + 1024 + 16], base[PATH_MAX + 16];
+    int n = snprintf(base, sizeof(base), "%s/drive_c", prefix);
+    if (n < 0 || n >= (int)sizeof(base)) { errno = ENAMETOOLONG; return -1; }
+    if (!test_realpath(base, root)) return -1;
+    n = snprintf(source, sizeof(source), "%s/drive_c/%s", prefix, relative);
+    if (n < 0 || n >= (int)sizeof(source)) { errno = ENAMETOOLONG; return -1; }
+    if (!test_realpath(source, resolved)) return -1;
+    size_t size = strlen(root);
+    if (strncmp(root, resolved, size) || (resolved[size] && resolved[size] != '/')) { errno = EACCES; return -1; }
+    return 0;
+}
+#define realpath test_realpath
 #define chdir test_chdir
 #define setenv test_setenv
 #define unsetenv test_unsetenv
 #define getenv test_getenv
 DIRECTORY_HELPER
-static void select_directory(const char *madeira_exe, const char *g_prefix_path) {
-    DIRECTORY_SELECTION
+static int select_directory(const char *madeira_exe, const char *g_prefix_path) {
+    return madeira_prepare_launch_directory(madeira_exe, g_prefix_path);
 }
+#undef realpath
 #undef chdir
 #undef setenv
 #undef unsetenv
 #undef getenv
 
 static void reset_directory_test(void) {
-    chdir_calls = chdir_result = 0;
+    chdir_calls = chdir_result = escape_directory = 0;
     launch_workdir = NULL;
     captured_cwd[0] = 0;
     strcpy(captured_pwd, "/old/cwd");
@@ -153,22 +176,50 @@ static void check_directories(void) {
 
     /* Bare names and non-C paths must not reuse a previous launch override or
      * reinterpret a different drive / short relative path as drive_c. */
-    const char *other_paths[] = {"app.exe", "D:\\Data\\app.exe", "\\", "C:", "C:\\", NULL};
+    const char *other_paths[] = {"app.exe", "D:\\Data\\app.exe", "\\", "C:", NULL};
     for (int i = 0; other_paths[i]; i++) {
         reset_directory_test();
         select_directory(other_paths[i], "/prefix");
         assert(chdir_calls == 0 && !captured_windows_cwd[0]);
     }
 
-    char prefix[1024], path[1024], expected[8192];
+    reset_directory_test();
+    assert(select_directory("C:\\app.exe", "/prefix") == 0);
+    assert(chdir_calls == 1 && !strcmp(captured_pwd, "/prefix/drive_c"));
+    assert(!strcmp(captured_windows_cwd, "C:\\"));
+
+    reset_directory_test();
+    assert(select_directory("C:/Data Folder/app.exe", "/prefix") == 0);
+    assert(!strcmp(captured_pwd, "/prefix/drive_c/Data Folder"));
+    assert(!strcmp(captured_windows_cwd, "C:\\Data Folder\\"));
+
+    reset_directory_test();
+    launch_workdir = "c:/Working Folder/База/";
+    assert(select_directory("C:\\app.exe", "/prefix") == 0);
+    assert(!strcmp(captured_windows_cwd, "C:\\Working Folder\\База\\"));
+
+    reset_directory_test();
+    launch_workdir = "C:\\";
+    assert(select_directory("C:\\Game\\app.exe", "/prefix") == 0);
+    assert(!strcmp(captured_pwd, "/prefix/drive_c") && !strcmp(captured_windows_cwd, "C:\\"));
+
+    const char *invalid[] = {"D:\\Folder", "C:relative", "C:\\..\\escape", "C:\\Bad.\\name", "C:\\bad*", NULL};
+    for (int i = 0; invalid[i]; i++) {
+        reset_directory_test(); launch_workdir = invalid[i];
+        assert(select_directory("C:\\Game\\app.exe", "/prefix") == -1);
+        assert(errno == EINVAL && !chdir_calls && !captured_windows_cwd[0] && launch_workdir == NULL);
+    }
+    reset_directory_test(); escape_directory = 1;
+    launch_workdir = "C:\\EscapeLink";
+    assert(select_directory("C:\\Game\\app.exe", "/prefix") == -1);
+    assert(errno == EACCES && !chdir_calls && !captured_windows_cwd[0]);
+
+    char prefix[1024], path[1024];
     memset(prefix, 'p', 1023); prefix[1023] = 0;
     memset(path, 'a', 1023); memcpy(path, "C:\\", 3); path[1019] = '\\'; path[1023] = 0;
     reset_directory_test();
-    select_directory(path, prefix);
-    path[1019] = 0;
-    snprintf(expected, sizeof(expected), "%s/drive_c/%s", prefix, path + 3);
-    assert(chdir_calls == 1 && !strcmp(captured_pwd, expected));
-    assert(strlen(captured_windows_cwd) == 1020);
+    assert(select_directory(path, prefix) == -1);
+    assert(errno == ENAMETOOLONG && !chdir_calls);
 
     /* Oversized composed paths are refused before chdir or environment writes. */
     char too_long[4096]; memset(too_long, 'x', sizeof(too_long) - 1); too_long[4095] = 0;
@@ -219,7 +270,7 @@ int main(void) {
     assert(madeira_parse_launch_arguments(NULL, storage, argv) == 0 && argv[0] == NULL);
     return ferror(stdin) ? 1 : 0;
 }
-'''.replace('PATH_BUILDER', path_builder).replace('DIRECTORY_HELPER', directory_helper).replace('DIRECTORY_SELECTION', directory_selection)
+'''.replace('PATH_BUILDER', path_builder).replace('DIRECTORY_HELPER', directory_helper)
 
 with tempfile.TemporaryDirectory(prefix='madeira-launch-arguments-') as tmp:
     tmp = Path(tmp)

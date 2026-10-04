@@ -774,28 +774,112 @@ static void madeira_publish_host_probe(void)
     dprintf(STDERR_FILENO, "[WineProc] FEX host feature probe: %s\n", buf);
 }
 
-/* Publish the launch directory only after changing to the complete native
- * path. An unavailable or overlong folder must not become a fictitious PWD. */
+/* Use Unicode case-insensitive comparison without changing the process locale.
+ * Exact on-disk spelling always wins; an ambiguous folded match is refused. */
+static int madeira_working_names_equal(const char *left, const char *right)
+{
+    CFStringRef a = CFStringCreateWithCString(NULL, left, kCFStringEncodingUTF8);
+    CFStringRef b = CFStringCreateWithCString(NULL, right, kCFStringEncodingUTF8);
+    int equal = a && b && CFStringCompare(a, b, kCFCompareCaseInsensitive) == kCFCompareEqualTo;
+    if (a) CFRelease(a);
+    if (b) CFRelease(b);
+    return equal;
+}
+
+static int madeira_path_is_within(const char *root, const char *path)
+{
+    size_t size = strlen(root);
+    return !strncmp(root, path, size) && (!path[size] || path[size] == '/');
+}
+
+/* Component-wise lookup gives typed Windows folders their expected case
+ * behavior on iOS's case-sensitive filesystem. Recheck confinement after
+ * every symlink, before enumerating the next component. */
+static int madeira_resolve_launch_directory(const char *prefix, const char *relative,
+                                            char resolved[PATH_MAX])
+{
+    char root_path[PATH_MAX + 16], root[PATH_MAX], candidate[PATH_MAX], name[1024];
+    int length = snprintf(root_path, sizeof(root_path), "%s/drive_c", prefix);
+    if (length < 0 || length >= (int)sizeof(root_path)) { errno = ENAMETOOLONG; return -1; }
+    if (!realpath(root_path, root)) return -1;
+    strcpy(resolved, root);
+    for (const char *part = relative; *part; ) {
+        const char *end = strchr(part, '/');
+        size_t size = end ? (size_t)(end - part) : strlen(part);
+        if (!size || size >= sizeof(name)) { errno = EINVAL; return -1; }
+        memcpy(name, part, size); name[size] = 0;
+        length = snprintf(candidate, sizeof(candidate), "%s/%s", resolved, name);
+        if (length < 0 || length >= (int)sizeof(candidate)) { errno = ENAMETOOLONG; return -1; }
+        struct stat st;
+        if (lstat(candidate, &st)) {
+            if (errno != ENOENT) return -1;
+            DIR *dir = opendir(resolved);
+            if (!dir) return -1;
+            struct dirent *entry;
+            unsigned matches = 0;
+            int read_error = 0;
+            char matched[1024];
+            for (;;) {
+                errno = 0;
+                entry = readdir(dir);
+                if (!entry) { read_error = errno; break; }
+                if (!madeira_working_names_equal(entry->d_name, name)) continue;
+                if (++matches > 1) break;
+                snprintf(matched, sizeof(matched), "%s", entry->d_name);
+            }
+            if (closedir(dir) && !read_error) read_error = errno;
+            if (read_error) { errno = read_error; return -1; }
+            if (matches != 1) { errno = matches ? EEXIST : ENOENT; return -1; }
+            length = snprintf(candidate, sizeof(candidate), "%s/%s", resolved, matched);
+            if (length < 0 || length >= (int)sizeof(candidate)) { errno = ENAMETOOLONG; return -1; }
+        }
+        if (!realpath(candidate, resolved)) return -1;
+        if (!madeira_path_is_within(root, resolved)) { errno = EACCES; return -1; }
+        part = end ? end + 1 : part + size;
+    }
+    return 0;
+}
+
+/* Resolve a complete native folder before publishing it to Wine. Both the
+ * library and config-driven launches must keep relative writes inside C:. */
 static int madeira_set_launch_directory(const char *prefix, const char *relative_dir,
                                        const char *windows_dir)
 {
-    char unix_dir[PATH_MAX + 1024 + 16];
-    int length = snprintf(unix_dir, sizeof(unix_dir), "%s/drive_c/%s", prefix, relative_dir);
-    if (length < 0 || length >= (int)sizeof(unix_dir)) {
-        dprintf(STDERR_FILENO, "[WineProc] launch directory exceeds native path buffer; leaving cwd unchanged\n");
-        errno = ENAMETOOLONG;
-        return -1;
+    char resolved_dir[PATH_MAX];
+    if (madeira_resolve_launch_directory(prefix, relative_dir, resolved_dir)) return -1;
+    if (chdir(resolved_dir)) return -1;
+    if (setenv("PWD", resolved_dir, 1) || setenv("MADEIRA_INITIAL_CWD", windows_dir, 1)) return -1;
+    dprintf(STDERR_FILENO, "[WineProc] launch working directory selected\n");
+    return 0;
+}
+
+/* Select a general library/Steam override, or the executable's own folder.
+ * Root executables and bare system32/syswow64 names get a real default too. */
+static int madeira_prepare_launch_directory(const char *exe_path, const char *prefix)
+{
+    char workdir[1024], requested[1024], relative[1024], windows[1026];
+    const char *override = getenv("MADEIRA_WORKDIR");
+    int explicit_folder = override && *override;
+    int valid = 0;
+    unsetenv("MADEIRA_INITIAL_CWD");
+    if (explicit_folder) valid = madeira_normalize_working_directory(override, workdir);
+    unsetenv("MADEIRA_WORKDIR"); /* never reuse an override in a later session */
+    if (explicit_folder && valid) { errno = EINVAL; return -1; }
+    if (!explicit_folder) {
+        size_t length = strlen(exe_path);
+        if (length >= sizeof(requested)) { errno = ENAMETOOLONG; return -1; }
+        memcpy(requested, exe_path, length + 1);
+        for (char *p = requested; *p; p++) if (*p == '/') *p = '\\';
+        char *last = strrchr(requested, '\\');
+        /* A config-driven non-C launch keeps Wine's normal drive resolution. */
+        if (!last || (requested[0] != 'C' && requested[0] != 'c') || requested[1] != ':') return 0;
+        if (last == requested + 2) last[1] = 0; else *last = 0;
+        if (madeira_normalize_working_directory(requested, workdir)) { errno = EINVAL; return -1; }
     }
-    int rc = chdir(unix_dir);
-    int error = rc ? errno : 0;
-    if (!rc) {
-        setenv("PWD", unix_dir, 1);
-        setenv("MADEIRA_INITIAL_CWD", windows_dir, 1);
-    }
-    dprintf(STDERR_FILENO, "[WineProc] chdir(%s) = %d errno=%d%s\n",
-            unix_dir, rc, error, rc ? "; launch cwd not published" : "; launch cwd published");
-    errno = error;
-    return rc;
+    strcpy(relative, workdir + 3);
+    for (char *p = relative; *p; p++) if (*p == '\\') *p = '/';
+    snprintf(windows, sizeof(windows), "%s%s", workdir, strlen(workdir) > 3 ? "\\" : "");
+    return madeira_set_launch_directory(prefix, relative, windows);
 }
 
 static void *wine_process_thread(void *arg) {
@@ -1101,8 +1185,8 @@ static void *wine_process_thread(void *arg) {
              * environment variables (EnvLoader over the process environment, which
              * Wine builds from ours), so this turns every FEX option -- TSO emulation,
              * multiblock, SMC checks, x87 precision -- into a file edit instead of a
-             * rebuild. Lines starting with # are comments. Logged, so a run's log
-             * always says what it ran with. */
+             * rebuild. Lines starting with # are comments. Keys are logged, but
+             * values may contain credentials and must stay out of default logs. */
             {
                 /* ml1095: "env.NAME = value" lines of madeira.cfg; the legacy
                  * madeira-env.txt (KEY=VALUE lines) only when madeira.cfg is absent. */
@@ -1128,8 +1212,8 @@ static void *wine_process_thread(void *arg) {
                     if (!line.length || [line hasPrefix:@"#"] || eq.location == NSNotFound || eq.location == 0) continue;
                     NSString *k = [line substringToIndex:eq.location], *v = [line substringFromIndex:eq.location + 1];
                     setenv(k.UTF8String, v.UTF8String, 1);
-                    LOG("madeira.cfg env: %{public}s=%{public}s", k.UTF8String, v.UTF8String);
-                    fprintf(stderr, "[madeira-env] ml1062 %s=%s\n", k.UTF8String, v.UTF8String);
+                    LOG("madeira.cfg env: %{public}s=<omitted>", k.UTF8String);
+                    fprintf(stderr, "[madeira-env] %s=<omitted>\n", k.UTF8String);
                 }
                 /* The library game's own lines ($MADEIRA_CFG_GAME, written by
                  * LibraryEntry.applyEnvironment): its env.NAME lines come after
@@ -1146,8 +1230,8 @@ static void *wine_process_thread(void *arg) {
                     NSString *v = [[line substringFromIndex:eq.location + 1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                     if (!k.length) continue;
                     setenv(k.UTF8String, v.UTF8String, 1);
-                    LOG("game config env: %{public}s=%{public}s", k.UTF8String, v.UTF8String);
-                    fprintf(stderr, "[madeira-env] game %s=%s\n", k.UTF8String, v.UTF8String);
+                    LOG("game config env: %{public}s=<omitted>", k.UTF8String);
+                    fprintf(stderr, "[madeira-env] game %s=<omitted>\n", k.UTF8String);
                 }
                 /* Fastsync is the default sync engine: with neither inproc-sync nor
                  * env.MADEIRA_FASTSYNC in madeira.cfg, Wine gets MADEIRA_FASTSYNC=auto,
@@ -1477,66 +1561,22 @@ static void *wine_process_thread(void *arg) {
         argv[argc++] = exe_path;
         for (int i = 0; i < extra_argc; i++) argv[argc++] = extra_argv[i];
         argv[argc] = NULL;
-        dprintf(STDERR_FILENO, "[WineProc] argv[1] = %s\n", exe_path);
-        for (int i = 0; i < extra_argc; i++) {
-            dprintf(STDERR_FILENO, "[WineProc] argv[%d] = %s\n", 2 + i, extra_argv[i]);
-        }
+        /* Arguments can contain 1C credentials, connection strings or scripts.
+         * Preserve only the count in the app's default launch diagnostic. */
+        dprintf(STDERR_FILENO, "[WineProc] launch argument count=%d (values omitted)\n", extra_argc);
 
-        /* iOS-Madeira: chdir to the unix path that maps to the exe's Wine
-         * directory BEFORE __wine_main. Wine inherits the iOS app sandbox
-         * cwd, which becomes a `unix\private\var\mobile\...\Documents\wine\`
-         * Wine path — and Thumper's relative cache opens (e.g.,
-         * "cache/721e72f7.pc") then resolve to doubled paths that don't
-         * exist. Per GPT diagnosis 2026-05-12. Only chdir for full-path EXE
-         * launches; bare-name launches (cube, hello-x64) use C:\windows\system32.
-         *
-         * A Steam game started as its own program ("Start with: The game") may carry
-         * the working folder Steam's launch configuration names, in MADEIRA_WORKDIR
-         * (a C:\ folder of the prefix, for this launch only; cleared here). That folder
-         * is used instead of the exe's own. */
-        unsetenv("MADEIRA_INITIAL_CWD"); /* never inherit a previous session's override */
-        const char *launch_workdir = getenv("MADEIRA_WORKDIR");   /* set by the library for one launch: Steam's working folder; not a setting */
-        char workdir[512] = "";
-        if (launch_workdir && (launch_workdir[0] == 'C' || launch_workdir[0] == 'c') && launch_workdir[1] == ':' &&
-            launch_workdir[2] == '\\' && launch_workdir[3] && !strstr(launch_workdir, "..") &&
-            strlen(launch_workdir) < sizeof(workdir) - 2)
-            snprintf(workdir, sizeof(workdir), "%s", launch_workdir);
-        unsetenv("MADEIRA_WORKDIR");
-        if (workdir[0]) {
-            char windir[512], wine_cwd[520];
-            snprintf(windir, sizeof(windir), "%s", workdir + 3);
-            for (char *p = windir; *p; p++) if (*p == '\\') *p = '/';
-            snprintf(wine_cwd, sizeof(wine_cwd), "%s\\", workdir);
-            madeira_set_launch_directory(g_prefix_path, windir, wine_cwd);
-        } else if ((madeira_exe[0] == 'C' || madeira_exe[0] == 'c') &&
-                   madeira_exe[1] == ':' && madeira_exe[2] == '\\') {
-            /* Convert "C:\Program Files\Thumper\X.exe" → unix path */
-            const char *after_drive = madeira_exe + 3; /* skip "C:\" */
-            char *last_sep = strrchr(madeira_exe, '\\');
-            if (last_sep && last_sep > madeira_exe + 3) {
-                /* Get "Program Files\Thumper" from "C:\Program Files\Thumper\X.exe" */
-                size_t dir_len = (size_t)(last_sep - after_drive);
-                char windir[1024]; /* bounded by the validated exe_path above */
-                memcpy(windir, after_drive, dir_len);
-                windir[dir_len] = 0;
-                /* Translate backslashes to forward slashes */
-                for (char *p = windir; *p; p++) if (*p == '\\') *p = '/';
-                /* Also set the iOS-specific override so env_ios.c's
-                 * get_initial_directory bypasses unix_to_nt_file_name (which
-                 * fails to resolve drive_c via dosdevices on iOS). */
-                char wine_cwd[1026];
-                /* Strip trailing exe name from madeira_exe to get the dir part */
-                {
-                    const char *exe = madeira_exe;
-                    size_t dir_len = (size_t)(last_sep - exe);
-                    if (dir_len < sizeof(wine_cwd) - 2) {
-                        memcpy(wine_cwd, exe, dir_len);
-                        wine_cwd[dir_len] = '\\';
-                        wine_cwd[dir_len + 1] = 0;
-                        madeira_set_launch_directory(g_prefix_path, windir, wine_cwd);
-                    }
-                }
-            }
+        /* iOS-Madeira: chdir before __wine_main so relative data/project paths
+         * resolve under the selected C: folder, including C:\ itself. Refuse
+         * a missing/invalid folder rather than silently use another directory. */
+        if (madeira_prepare_launch_directory(exe_path, g_prefix_path)) {
+            dprintf(STDERR_FILENO, "[WineProc] launch working directory unavailable (errno=%d); launch refused\n", errno);
+            wine_ios_exit_code = (int)0xc000003a; /* STATUS_OBJECT_PATH_NOT_FOUND */
+            wine_launched_process_did_exit(wine_ios_exit_code);
+            close(pending_client_fd);
+            unsetenv("WINESERVERSOCKET");
+            wineserver_stop();
+            g_wine_running = 0;
+            return NULL;
         }
 
         // Record this thread so wine_ios_exit knows where to longjmp

@@ -739,6 +739,17 @@ static BOOL winios_CreateWindowSurface( HWND hwnd, BOOL layered, const RECT *sur
     return TRUE;
 }
 
+/* A nonempty visible rect describes geometry, not WS_VISIBLE. A hidden
+ * dialog can still be moved/resized with that rect; forwarding visible=1
+ * would unhide its compositor layer. WindowPosChanged runs after Wine has
+ * updated the window style, so use that state rather than treating a missing
+ * SWP_HIDEWINDOW as a show request. Child/ancestor composition is unchanged. */
+static BOOL winios_window_frame_visible( const RECT *rect, UINT swp_flags, UINT style )
+{
+    return !IsRectEmpty( rect ) && !(swp_flags & SWP_HIDEWINDOW) && (style & WS_VISIBLE) != 0;
+}
+/* end winios_window_frame_visible */
+
 /* pWindowPosChanged wrapper: dereference window_rects HERE (Winios.m
  * cannot include wine headers) and forward plain ints for the layer
  * frame; chain to the Winios.m hook afterwards. */
@@ -754,7 +765,7 @@ static void winios_drv_window_pos_changed( HWND hwnd, HWND insert_after, HWND ow
     {
         const RECT *v = &new_rects->visible;
         const RECT *c = &new_rects->client;
-        int visible = !IsRectEmpty( v ) && !(swp_flags & SWP_HIDEWINDOW);
+        int visible = winios_window_frame_visible( v, swp_flags, get_window_long( hwnd, GWL_STYLE ) );
         winios_window_frame( hwnd, v->left, v->top, v->right - v->left, v->bottom - v->top, visible,
                              c->left, c->top, c->right - c->left, c->bottom - c->top );
         if (visible && surface && winios_game_windows()) winios_note_dialog_thread( hwnd, v );

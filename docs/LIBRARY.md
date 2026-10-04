@@ -325,3 +325,17 @@ path. `tests/host/check-library-sections.py` covers the library page's
 sections (order, texts, collapsing, search, layout, pull to refresh).
 `tests/host/check-steam-library.py`
 covers the owned library and downloads (`docs/STEAM_LIBRARY.md`).
+
+## Desktop applications: working folder
+
+For a regular executable, Game details → Working folder accepts an existing
+absolute path inside the prefix's `C:\` drive, for example
+`C:\Projects\Мой проект`. Leave it empty to start in the executable's folder.
+The `C:\` root is valid too. Steam entries continue using Steam's configured
+working folder. Invalid, missing or out-of-prefix folders stop the launch
+instead of silently changing where relative files are read or written.
+
+Launch arguments remain Windows-style arguments, not shell commands. The full
+limit is 64 arguments and 4095 UTF-8 bytes. Default Madeira launch/config logs
+omit values, but saved profiles, guest output and opt-in Wine traces can contain
+credentials; inspect exported logs before sharing them.

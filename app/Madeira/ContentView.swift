@@ -2487,13 +2487,17 @@ struct ContentView: View {
 
     /// The rest of Play, with JIT on: checks the entry's launch profile and starts it.
     private func startLibraryEntry(_ entry: LibraryEntry) {
-        do { if entry.desktop != true { _ = try LibraryModel.executable(entry.launchRelativePath) }; try entry.validate() }
+        do {
+            if entry.desktop != true { _ = try LibraryModel.executable(entry.launchRelativePath) }
+            try entry.validate()
+            try LibraryModel.validateWorkingDirectory(entry.launchWorkingWindowsPath)
+        }
         catch {
             library.error = error.localizedDescription
             logStore.log("[launch-preflight] profile validation failed: \(error.localizedDescription)", level: .error)
             return
         }
-        guard entry.launchWindowsPath.utf8.count < 1024, entry.launchArguments.utf8.count < 1024 else {
+        guard entry.launchWindowsPath.utf8.count < 1024, entry.launchArguments.utf8.count < 4096 else {
             library.error = "The executable path or launch arguments are too long."; return
         }
         entry.configureLaunch()
@@ -2528,7 +2532,7 @@ struct ContentView: View {
         GamepadInput.shared.reserveSessionSlot(touchControls: TouchControlsModel.shared.offersControllerInput)
         if MadeiraConfig.present {
             let cfg = MadeiraConfig.all().sorted { $0.key < $1.key }
-            logStore.log("madeira.cfg: " + (cfg.isEmpty ? "(empty)" : cfg.map { "\($0.key)=\($0.value)" }.joined(separator: " ")))
+            logStore.log("madeira.cfg: \(cfg.count) setting(s) applied; values omitted")
         } else {
             logStore.log("madeira.cfg absent: legacy madeira-*.txt files apply")
         }

@@ -100,6 +100,7 @@ enum GamepadInput { static let keyboardMouseAvailable = true }   // LibraryEntry
 enum LibraryError: LocalizedError { case message(String) }
 func env(_ name: String) -> String? { getenv(name).map { String(cString: $0) } }
 '''
+swift += block(lib, 'enum LibraryWorkingDirectory') + '\n'
 swift += block(lib, 'struct LibraryEntry: Codable, Identifiable') + '\n'
 swift += block(lib, 'enum SyncEngine: String, CaseIterable, Identifiable') + '\n'
 swift += '\n'.join(l for l in display.splitlines() if not l.startswith('import ')) + '\n'
@@ -163,6 +164,15 @@ expect(env("MADEIRA_EXE") == steamFolder, "no program: the folder (ContentView r
 game.configureLaunch()
 expect(env("MADEIRA_STEAM_APPID") == nil && env("MADEIRA_STEAM_APPPATH") == nil && env("MADEIRA_WORKDIR") == nil,
        "any other launch clears the direct start's identity and folder")
+
+game.workingDirectory = "C:\\Projects\\База"
+expect((try? game.validate()) != nil, "ordinary app accepts a custom C: working folder")
+game.configureLaunch()
+expect(env("MADEIRA_WORKDIR") == game.workingDirectory, "ordinary app exports its working folder")
+let directoryRoundTrip = (try? JSONEncoder().encode(game)).flatMap { try? JSONDecoder().decode(LibraryEntry.self, from: $0) }
+expect(directoryRoundTrip?.workingDirectory == game.workingDirectory, "working folder survives library persistence")
+game.workingDirectory = nil; game.configureLaunch()
+expect(env("MADEIRA_WORKDIR") == nil, "clearing folder restores executable default")
 
 // Engine switches: only x87 precision, and only when chosen (FEX's default otherwise).
 expect(!game.reducedX87, "reduced-precision x87 is off for new entries")

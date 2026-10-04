@@ -40,6 +40,11 @@ for contract in [
     assert contract in compact, 'launch validator contract missing: ' + contract
 assert compact.index('launchArguments.utf8.count<4096') < compact.index('Array(launchArguments.utf8)'), (
     'reject an oversized command before allocating the byte scanner')
+frontend = (root / 'app/Madeira/ContentView.swift').read_text()
+launch = frontend.split('private func startLibraryEntry(', 1)[1].split('entry.configureLaunch()', 1)[0]
+assert 'entry.launchArguments.utf8.count < 4096' in launch
+assert 'entry.launchArguments.utf8.count < 1024' not in launch
+assert 'validateWorkingDirectory(entry.launchWorkingWindowsPath)' in launch
 print('PASS: production validator uses Windows escaped/doubled-quote rules and native bounds', flush=True)
 if options.source_only:
     print('SKIP: compiled Swift launch validation (--source-only)')
@@ -89,10 +94,15 @@ for _ in range(2500):
     assert len(command.encode()) < 4096 and len(arguments) <= 64
     cases.append((command, True))
 
+helper_start = source.index('enum LibraryWorkingDirectory {')
+helper_end = source.index('\n}\n', helper_start) + 3
+working_helper = source[helper_start:helper_end]
+
 harness = r'''
 import Foundation
 
 enum LibraryError: Error { case message(String) }
+WORKING_HELPER
 struct LibraryEntry {
     var resolution = "1280x720"
     var fpsMode = 0
@@ -100,7 +110,7 @@ struct LibraryEntry {
     var windowsPath = "C:\\test.exe"
     var launchArguments: String { arguments }
     var launchWindowsPath: String { windowsPath }
-    var steamWorkingWindowsPath: String? = nil
+    var launchWorkingWindowsPath: String? = nil
     var config: String? = nil
 
     VALIDATION
@@ -123,7 +133,7 @@ for (index, fixture) in fixtures.enumerated() {
     }
 }
 print("PASS: \(fixtures.count) compiled production launch-validator cases")
-'''.replace('VALIDATION', validation)
+'''.replace('VALIDATION', validation).replace('WORKING_HELPER', working_helper)
 
 with tempfile.TemporaryDirectory(prefix='madeira-launch-validation-') as tmp:
     main, executable = Path(tmp) / 'main.swift', Path(tmp) / 'check'

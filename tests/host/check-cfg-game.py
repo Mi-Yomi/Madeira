@@ -98,8 +98,8 @@ with tempfile.TemporaryDirectory(prefix="madeira-cfg-game-") as tmp:
     check(r["pool"] == "384", "no madeira.cfg: game file wins over the legacy file", r)
 
 bridge = read("app/Madeira/WineProcessBridge.m")
-i_cfg = bridge.index('fprintf(stderr, "[madeira-env] ml1062 %s=%s\\n"')
-i_game = bridge.index('fprintf(stderr, "[madeira-env] game %s=%s\\n"')
+i_cfg = bridge.index('fprintf(stderr, "[madeira-env] %s=<omitted>\\n"')
+i_game = bridge.index('fprintf(stderr, "[madeira-env] game %s=<omitted>\\n"')
 i_fast = bridge.index("madeira_cfg_sync_engine() == MADEIRA_SYNC_FASTSYNC && !getenv(\"MADEIRA_FASTSYNC\")")
 check(i_cfg < i_game < i_fast, "bridge: game env lines after madeira.cfg's, before the fastsync default")
 

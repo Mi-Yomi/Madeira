@@ -163,11 +163,12 @@ identity = identity[:identity.index('unsetenv("MADEIRA_STEAM_APPPATH");')]
 require('setenv("SteamAppId",  direct_app, 1);' in identity and 'strspn(direct_app, "0123456789") == strlen(direct_app)' in identity
         and '} else {' in identity and 'unsetenv("MADEIRA_STEAM_APPID");' in identity,
         "bridge: a direct start publishes its game's own identity once (digits only, a C: folder); every other launch keeps the previous identity")
-workdir = bridge[bridge.index('const char *launch_workdir = getenv("MADEIRA_WORKDIR");'):]
-workdir = workdir[:workdir.index('} else if ((madeira_exe')]
-require('unsetenv("MADEIRA_WORKDIR");' in workdir and '!strstr(launch_workdir, "..")' in workdir and
-        'madeira_set_launch_directory(g_prefix_path, windir, wine_cwd);' in workdir,
+workdir = bridge[bridge.index('static int madeira_prepare_launch_directory('):]
+workdir = workdir[:workdir.index('static void *wine_process_thread(')]
+require('unsetenv("MADEIRA_WORKDIR");' in workdir and 'madeira_normalize_working_directory(override, workdir)' in workdir and
+        'madeira_set_launch_directory(prefix, relative, windows);' in workdir,
         "bridge: Steam's working folder applies to one launch, only as a C: folder of the prefix")
+
 apply = library[library.index('    func applyEnvironment() {'):]
 apply = apply[:apply.index('\n    }\n')]
 require('if let cpuCount, (1..<64).contains(cpuCount) { setenv("MADEIRA_CPU_COUNT"' in apply and

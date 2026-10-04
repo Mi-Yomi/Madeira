@@ -46,7 +46,7 @@ wow64 = {
     "dwrite_unix_call_funcs": "dwrite_unix_call_wow64_funcs",
     "nsi_unix_call_funcs": "nsi_unix_call_wow64_funcs",
     "ios_stub_unix_call_table": "ios_stub_unix_call_table",
-    "ios_gl_stub_unix_call_table": "ios_gl_stub_unix_call_table",
+    "ios_gl_stub_unix_call_table": "ios_gl_stub_unix_call_wow64_table",
 }
 assert "extern const void *dxmt_winemetal_unix_call_wow64_funcs[];" in src
 branches = re.split(r"\n        \} else ", chain[chain.index('if (match && strstr(match, "winemetal"))'):])

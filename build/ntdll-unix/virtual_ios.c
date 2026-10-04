@@ -8792,21 +8792,65 @@ static NTSTATUS ios_stub_unix_call_ok(void *args) {
  * (opengl32 funcs_count = 3107). */
 #define IOS_STUB_TABLE_SIZE 4096
 static unixlib_entry_t ios_stub_unix_call_table[IOS_STUB_TABLE_SIZE];
-/* opengl32 variant: process_attach / thread_attach / process_detach
+/* opengl32 variants: process_attach / thread_attach / process_detach
  * (codes 0-2 in dlls/opengl32/unixlib.h) return SUCCESS so DllMain lets
  * the DLL load; every real wgl/gl call fails with NOT_SUPPORTED (no host
  * GL on iOS — DXMT is D3D-only, callers must treat GL as absent). */
 static unixlib_entry_t ios_gl_stub_unix_call_table[IOS_STUB_TABLE_SIZE];
+static unixlib_entry_t ios_gl_stub_unix_call_wow64_table[IOS_STUB_TABLE_SIZE];
+
+/* Wine's PE wglGetProcAddress does NOT return a native procedure pointer
+ * directly.  It reads an extension_procs[] index from args.ret, regardless
+ * of the Unix-call status; only (PROC)-1 means "not available".  Leaving
+ * its zero-initialized ret untouched advertises extension_procs[0] for ANY
+ * name, including an unknown one.  A caller could then jump to a function
+ * with the wrong signature, instead of detecting that GL is absent.
+ *
+ * These layouts and slot 8 match dlls/opengl32/unixlib.h in the pinned
+ * Wine 4f5b19718f4de88ecc5cb0dc08b119497a67ba8f.  Keep the native and
+ * WoW64 tables distinct now that this entry writes an output field.  The
+ * argument block is already a host pointer; its embedded teb/name pointers
+ * are deliberately not dereferenced (in particular, no WoW64 +B is needed).
+ * tests/host/check-gl-absent.py checks the ABI against Wine when available. */
+#define IOS_GL_GET_PROC_ADDRESS 8
+struct ios_gl_get_proc_address_params
+{
+    void *teb;
+    const char *name;
+    void *ret;
+};
+struct ios_gl_get_proc_address_params32
+{
+    ULONG teb;
+    ULONG name;
+    ULONG ret;
+};
+
+static NTSTATUS ios_gl_get_proc_address_absent( void *args )
+{
+    struct ios_gl_get_proc_address_params *params = args;
+    params->ret = (void *)(ULONG_PTR)-1;
+    return STATUS_NOT_SUPPORTED;
+}
+
+static NTSTATUS ios_gl_get_proc_address_absent_wow64( void *args )
+{
+    struct ios_gl_get_proc_address_params32 *params = args;
+    params->ret = ~(ULONG)0;
+    return STATUS_NOT_SUPPORTED;
+}
 
 static pthread_once_t ios_stub_tables_once = PTHREAD_ONCE_INIT;
 static void ios_init_stub_tables(void)
 {
     unsigned int i;
     for (i = 0; i < IOS_STUB_TABLE_SIZE; i++)
-        ios_stub_unix_call_table[i] = ios_gl_stub_unix_call_table[i] = ios_stub_unix_call;
-    ios_gl_stub_unix_call_table[0] = ios_stub_unix_call_ok;  /* process_attach */
-    ios_gl_stub_unix_call_table[1] = ios_stub_unix_call_ok;  /* thread_attach */
-    ios_gl_stub_unix_call_table[2] = ios_stub_unix_call_ok;  /* process_detach */
+        ios_stub_unix_call_table[i] = ios_gl_stub_unix_call_table[i] =
+            ios_gl_stub_unix_call_wow64_table[i] = ios_stub_unix_call;
+    for (i = 0; i < 3; i++)  /* process_attach, thread_attach, process_detach */
+        ios_gl_stub_unix_call_table[i] = ios_gl_stub_unix_call_wow64_table[i] = ios_stub_unix_call_ok;
+    ios_gl_stub_unix_call_table[IOS_GL_GET_PROC_ADDRESS] = ios_gl_get_proc_address_absent;
+    ios_gl_stub_unix_call_wow64_table[IOS_GL_GET_PROC_ADDRESS] = ios_gl_get_proc_address_absent_wow64;
 }
 
 /* DXMT's unix call table, statically linked into Madeira.app via
@@ -9121,9 +9165,9 @@ static NTSTATUS load_builtin_unixlib( void *module, BOOL wow, const void **funcs
             match = secname;
         /* Each branch only names the
          * library's pair of tables; ios_bind_unixlib_table() below picks the
-         * one that matches the caller's bitness and logs it.  The stub tables
-         * are listed for both because their entries ignore `args` entirely,
-         * so they have no layout to get wrong. */
+         * one that matches the caller's bitness and logs it.  The generic
+         * stub table ignores `args` entirely; GL has distinct tables for
+         * wglGetProcAddress's bitness-dependent output field. */
         const char *libname = NULL;
         const void *funcs64 = NULL, *funcs_wow64 = NULL;
         if (match && strstr(match, "winemetal")) {
@@ -9231,7 +9275,8 @@ static NTSTATUS load_builtin_unixlib( void *module, BOOL wow, const void **funcs
             WARN_(module)("iOS: module %p (%s) -> GL-absent stub table (attach ok, wgl/gl NOT_SUPPORTED)\n",
                           module, match);
             libname = "opengl32 (GL-absent stub table)";
-            funcs64 = funcs_wow64 = (const void *)ios_gl_stub_unix_call_table;
+            funcs64 = (const void *)ios_gl_stub_unix_call_table;
+            funcs_wow64 = (const void *)ios_gl_stub_unix_call_wow64_table;
         } else {
             pthread_once( &ios_stub_tables_once, ios_init_stub_tables );
             WARN_(module)("iOS: no unix .so for module %p (unix_path=%s, modname=%s, mapped=%s), using stub table\n",

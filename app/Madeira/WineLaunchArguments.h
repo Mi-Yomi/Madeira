@@ -62,4 +62,37 @@ static int madeira_parse_launch_arguments(const char *input,
     return argc;
 }
 
+
+/* A working folder is an absolute C: directory inside drive_c, never a device,
+ * UNC or drive-relative path. Normalize separators and reject ambiguous dot /
+ * Win32-trimmed components instead of accidentally writing in another folder.
+ * UTF-8 bytes are preserved. Output excludes a trailing slash except C:\. */
+static int madeira_normalize_working_directory(const char *input, char output[1024])
+{
+    size_t length = input ? strlen(input) : 0, write = 3, read = 3;
+    output[0] = 0;
+    if (length < 3 || length >= 1024 || (input[0] != 'C' && input[0] != 'c') ||
+        input[1] != ':' || (input[2] != '\\' && input[2] != '/')) return -1;
+    memcpy(output, "C:\\", 3);
+    while (read < length)
+    {
+        while (input[read] == '\\' || input[read] == '/') read++;
+        if (!input[read]) break;
+        size_t start = read;
+        while (input[read] && input[read] != '\\' && input[read] != '/')
+        {
+            unsigned char c = (unsigned char)input[read++];
+            if (c < 32 || strchr(":*?\"<>|", c)) { output[0] = 0; return -1; }
+        }
+        size_t count = read - start;
+        if (input[read - 1] == '.' || input[read - 1] == ' ')
+        { output[0] = 0; return -1; }
+        if (write > 3) output[write++] = '\\';
+        memcpy(output + write, input + start, count);
+        write += count;
+    }
+    output[write] = 0;
+    return 0;
+}
+
 #endif

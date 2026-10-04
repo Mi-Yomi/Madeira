@@ -148,6 +148,52 @@ enum FrontendChoice {
     }
 }
 
+/// Describe the loader's status without guessing a missing DLL or logging a
+/// command that may contain credentials. Detailed Wine logs remain opt-in.
+enum LibraryLaunchFailure {
+    static func message(_ status: UInt32) -> String {
+        let reason: String
+        switch status {
+        case 0xC0000005: reason = "A memory access violation occurred."
+        case 0xC0000017: reason = "A memory allocation failed."
+        case 0xC000001D: reason = "The program used an unsupported CPU instruction. Check its CPU requirements and the AVX/AVX2 launch option."
+        case 0xC000003A: reason = "A required path or the selected working folder could not be found. Check that the working folder exists inside C:\\."
+        case 0xC000007B: reason = "A Windows image has an invalid format. Check that the program and its DLLs have compatible bitness and are intact."
+        case 0xC0000135: reason = "A required Windows module could not be loaded. Check the diagnostic log for the module name and the installed DLL farm."
+        case 0xC0000139: reason = "A required Windows function was not found. Check the diagnostic log for its DLL and function name."
+        case 0xC0000142: reason = "A Windows DLL failed to initialize. Check the first DLL error in the diagnostic log."
+        case 0xC0150002: reason = "A side-by-side assembly could not be activated. Check the program's runtime and assembly dependencies."
+        default: reason = "Export the diagnostic log to investigate the failure."
+        }
+        return "The application stopped with Windows error 0x\(String(status, radix: 16, uppercase: true)). \(reason)"
+    }
+}
+
+/// Pure path rules shared with WineLaunchArguments.h. The native bridge repeats
+/// validation for settings supplied outside the library.
+enum LibraryWorkingDirectory {
+    static func canonical(_ path: String) throws -> String {
+        guard path.utf8.count < 1024 else {
+            throw LibraryError.message("Use a working folder under 1024 UTF-8 bytes.")
+        }
+        let bytes = Array(path.utf8)
+        guard bytes.count >= 3, [UInt8(67), 99].contains(bytes[0]),
+              bytes[1] == 58, bytes[2] == 92 || bytes[2] == 47 else {
+            throw LibraryError.message("Use an absolute working folder inside C:\\, under 1024 UTF-8 bytes.")
+        }
+        // Windows separators are bytes, not Swift grapheme clusters: a leading
+        // combining mark may otherwise combine with the preceding backslash.
+        let components = bytes.dropFirst(3).split(whereSeparator: { $0 == 92 || $0 == 47 })
+        for part in components {
+            guard !part.contains(where: { $0 < 32 || [58, 42, 63, 34, 60, 62, 124].contains($0) }),
+                  part.last != 46, part.last != 32 else {
+                throw LibraryError.message("The working folder contains an invalid or ambiguous path component.")
+            }
+        }
+        return "C:\\" + components.map { String(decoding: $0, as: UTF8.self) }.joined(separator: "\\")
+    }
+}
+
 /// One game in the library and its launch profile, stored in
 /// Documents/madeira-library.json (version 1). New fields must be optional so
 /// older files keep decoding; unknown keys are ignored.
@@ -165,6 +211,8 @@ struct LibraryEntry: Codable, Identifiable {
     /// starting screen's background, when no cover file is chosen.
     var steamID: Int?
     var arguments = ""
+    /// Optional absolute C: working folder. nil keeps the executable's folder.
+    var workingDirectory: String?
     /// The virtual monitor's size ("WxH"): the session default a game renders
     /// for (GuestDisplay.configureSessionDefault), and the Desktop entry's
     /// desktop size. New entries default to 1408x648, a wide shape near the
@@ -280,6 +328,12 @@ struct LibraryEntry: Codable, Identifiable {
         return "C:\\" + (folder.isEmpty ? relativePath : relativePath + "/" + folder).replacingOccurrences(of: "/", with: "\\")
     }
 
+    /// Steam retains its own launch configuration; other entries may choose a folder.
+    var launchWorkingWindowsPath: String? {
+        if desktop == true { return nil }
+        return startsSteamGameDirectly ? steamWorkingWindowsPath : workingDirectory
+    }
+
     static let desktopID = UUID(uuidString: "AF046C35-C32A-497B-92BC-0BBD14F8CB61")!
     static var desktopEntry: LibraryEntry {
         var entry = LibraryEntry(title: "Desktop", relativePath: "windows/system32/explorer.exe", bits: 64)
@@ -298,9 +352,10 @@ struct LibraryEntry: Codable, Identifiable {
         guard size.count == 2, (320...4096).contains(size[0]), (240...4096).contains(size[1]),
               (0...3).contains(fpsMode), !arguments.contains("\0"), !windowsPath.contains("\0"),
               !launchArguments.contains("\0"), !launchWindowsPath.contains("\0"),
-              launchWindowsPath.utf8.count < 1024, (steamWorkingWindowsPath?.utf8.count ?? 0) < 512 else {
+              launchWindowsPath.utf8.count < 1024 else {
             throw LibraryError.message("The saved launch profile contains invalid display or argument values.")
         }
+        if let folder = launchWorkingWindowsPath { _ = try LibraryWorkingDirectory.canonical(folder) }
         // WineProcessBridge takes at most 64 arguments in 4 KB.
         guard launchArguments.utf8.count < 4096 else { throw LibraryError.message("The complete launch command is too long.") }
         // Match WineLaunchArguments.h: only an even run of backslashes lets a
@@ -363,7 +418,7 @@ struct LibraryEntry: Codable, Identifiable {
         do {
             let pairs = try MadeiraConfig.applyGame(config)
             if !pairs.isEmpty {
-                LogStore.shared.log("[game-cfg] " + pairs.sorted { $0.key < $1.key }.map { "\($0.key)=\($0.value)" }.joined(separator: " "))
+                LogStore.shared.log("[game-cfg] applied \(pairs.count) setting(s); values omitted")
             }
         } catch {
             LogStore.shared.log("[game-cfg] this game's config could not be written: \(error.localizedDescription)")
@@ -394,8 +449,8 @@ struct LibraryEntry: Codable, Identifiable {
             // folder) instead of the bridge's fixed one, and Steam's working folder when it names one.
             setenv("MADEIRA_STEAM_APPID", String(steamAppID), 1)
             setenv("MADEIRA_STEAM_APPPATH", windowsPath, 1)
-            if let folder = steamWorkingWindowsPath { setenv("MADEIRA_WORKDIR", folder, 1) }
         }
+        if let folder = launchWorkingWindowsPath { setenv("MADEIRA_WORKDIR", folder, 1) }
         // Every session's virtual monitor takes this entry's Resolution
         // (MADEIRA_SCREEN_W/H, source "knob"); for the Desktop entry it is the
         // same size as its /desktop= argument.
@@ -461,8 +516,7 @@ final class LibraryModel: ObservableObject {
         var status: UInt32 = 0
         guard wine_crash_exit_status(&status) != 0 else { return nil }
         LogStore.shared.log("[exit-report] status=0x\(String(status, radix: 16))")
-        let kind = status == 0xC0000005 ? " (memory access violation)" : status == 0xC0000017 ? " (out of memory)" : ""
-        return "The game stopped with Windows error 0x\(String(status, radix: 16, uppercase: true))\(kind). Export the diagnostic log to report it."
+        return LibraryLaunchFailure.message(status)
     }
     private var readOnly = false
     private var metadataInFlight = Set<UUID>()
@@ -631,6 +685,40 @@ final class LibraryModel: ObservableObject {
         }
         return url
     }
+    /// Resolve after profile validation and again at launch. Symlinks cannot
+    /// make a working-folder override leave this prefix's C: drive.
+    static func validateWorkingDirectory(_ path: String?) throws {
+        guard let path else { return }
+        let normalized = try LibraryWorkingDirectory.canonical(path)
+        let root = drive.resolvingSymlinksInPath().standardizedFileURL
+        let components = normalized.utf8.dropFirst(3).split(separator: 92).map { String(decoding: $0, as: UTF8.self) }
+        let manager = FileManager.default
+        var url = root
+        for part in components {
+            let exact = url.appendingPathComponent(String(part), isDirectory: true)
+            // lstat-style attributes preserve exact dangling-symlink precedence.
+            if (try? manager.attributesOfItem(atPath: exact.path)) != nil {
+                url = exact
+            } else {
+                let matches = try manager.contentsOfDirectory(atPath: url.path).filter {
+                    $0.caseInsensitiveCompare(String(part)) == .orderedSame
+                }
+                guard matches.count == 1 else {
+                    throw LibraryError.message("The working folder is missing or its letter case is ambiguous.")
+                }
+                url = url.appendingPathComponent(matches[0], isDirectory: true)
+            }
+            url = url.resolvingSymlinksInPath().standardizedFileURL
+            guard url.path == root.path || url.path.hasPrefix(root.path + "/") else {
+                throw LibraryError.message("The working folder must stay inside this Madeira prefix's C: drive.")
+            }
+        }
+        var directory: ObjCBool = false
+        guard manager.fileExists(atPath: url.path, isDirectory: &directory), directory.boolValue else {
+            throw LibraryError.message("The working folder must exist inside this Madeira prefix's C: drive.")
+        }
+    }
+
     static func inspect(_ url: URL) throws -> LibraryEntry {
         guard url.resolvingSymlinksInPath().path.hasPrefix(drive.path + "/") else {
             throw LibraryError.message("The executable must be inside drive_c.")
@@ -2494,6 +2582,21 @@ struct LibraryDetail: View {
                             .font(.caption.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
                     } header: { Text("Launch arguments") } footer: {
                         Text("Passed to the program on every start; the line above is the command that runs. The flags add or remove themselves; the renderer flags exclude each other, as do -windowed and -fullscreen.")
+                    }
+                }
+                if entry.desktop != true && entry.steamAppID == nil {
+                    Section {
+                        TextField("C:\\Projects\\Example", text: Binding(
+                            get: { entry.workingDirectory ?? "" },
+                            set: { entry.workingDirectory = $0.isEmpty ? nil : $0 }))
+                            .font(.body.monospaced()).autocorrectionDisabled()
+                            .textInputAutocapitalization(.never)
+                            .onSubmit { if let value = entry.workingDirectory,
+                                          let normalized = try? LibraryWorkingDirectory.canonical(value) {
+                                entry.workingDirectory = normalized
+                            } }
+                    } header: { Text("Working folder") } footer: {
+                        Text("Optional existing folder inside C:\\. Leave empty to use the program's folder. Relative project, script and data paths start here. Steam entries use Steam's working folder.")
                     }
                 }
                 Section {
