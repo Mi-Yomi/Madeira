@@ -70,6 +70,77 @@ def repair_fixture(root):
     return document, command
 
 
+def native_object_fixture(root, document):
+    payloads = {
+        module.FEX_NATIVE_OBJECT_PATHS["source"]: b"int same_source;\n",
+        module.FEX_NATIVE_OBJECT_PATHS["compile_database"]: b"[]\n",
+        module.FEX_NATIVE_OBJECT_PATHS["production_object"]: macho(),
+        **{name: ("reviewed helper " + name + "\n").encode() for name in module.FEX_NATIVE_INPUTS},
+    }
+    for name, payload in payloads.items():
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(payload)
+    document.setdefault("input_sha256", {}).update({name: module.sha256(root / name) for name in module.FEX_NATIVE_INPUTS})
+    document.setdefault("tool_versions", {})["iphoneos_sdk_path"] = "/fixture/iPhoneOS.sdk"
+    receipt = {
+        "schema_version": 1, "status": "passed", "evidence_kind": "fresh-same-source-thinlto-reproduction",
+        "sdk_path": "/fixture/iPhoneOS.sdk", "helper_sha256": document["input_sha256"]["build/fex-ios/check-native-object.py"],
+        **{kind: {"path": name, "sha256": module.sha256(root / name)} for kind, name in module.FEX_NATIVE_OBJECT_PATHS.items()},
+        "native_configuration": {"enable_lto": False, "architecture": "arm64", "deployment_target": "17.0", "ipo_flags": []},
+        "compiler": {"path": "/fixture/Apple/clang++", "version": "fixture", "sha256": "c" * 64},
+        "reproduction": {"format": "LLVM bitcode", "magic_hex": "dec0170b", "sha256": "b" * 64,
+                         "added_flag": "-flto=thin", "target_triple": "arm64-apple-ios17.0.0",
+                         "override_module_is_error": True, "reader_exit_code": 0, "strict_validator_rejected": True},
+    }
+    receipt["production_object"]["format"] = "Mach-O arm64 iOS"
+    path = root / "fex-native-object.json"
+    path.write_text(json.dumps(receipt))
+    return receipt, path
+
+
+class NativeObjectEvidenceTests(unittest.TestCase):
+    def test_every_evidence_field_and_current_input_required(self):
+        for mutation in (None, "missing", "status", "lto", "triple", "override", "reader", "accepts-bitcode", "magic", "helper", "source", "database", "object", "compiler", "sdk", "helper-receipt"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                document = {}
+                receipt, path = native_object_fixture(root, document)
+                if mutation == "status": receipt["status"] = "pending"
+                elif mutation == "lto": receipt["native_configuration"]["enable_lto"] = True
+                elif mutation == "triple": receipt["reproduction"]["target_triple"] = "arm64-apple-ios17.0.0-simulator"
+                elif mutation == "override": receipt["reproduction"]["override_module_is_error"] = False
+                elif mutation == "reader": receipt["reproduction"]["reader_exit_code"] = 1
+                elif mutation == "accepts-bitcode": receipt["reproduction"]["strict_validator_rejected"] = False
+                elif mutation == "magic": receipt["reproduction"]["magic_hex"] = "00000000"
+                elif mutation == "helper": (root / module.FEX_NATIVE_INPUTS[0]).write_text("changed helper")
+                elif mutation in ("source", "database", "object"):
+                    kind = {"database": "compile_database", "object": "production_object"}.get(mutation, mutation)
+                    (root / module.FEX_NATIVE_OBJECT_PATHS[kind]).write_text("changed input")
+                elif mutation == "compiler": receipt["compiler"].pop("sha256")
+                elif mutation == "sdk": receipt["sdk_path"] = "/fixture/MacOSX.sdk"
+                elif mutation == "helper-receipt": receipt["helper_sha256"] = "e" * 64
+                path.write_text(json.dumps(receipt))
+                if mutation == "missing": path.unlink()
+                with mock.patch.object(module, "ROOT", root):
+                    if mutation is None:
+                        self.assertEqual(module.verified_fex_native_object(document, path)["status"], "passed")
+                    else:
+                        with self.assertRaises(ValueError): module.verified_fex_native_object(document, path)
+
+    def test_matching_hash_cannot_allow_host_or_bitcode_production_object(self):
+        for payload in (macho(platform=1), macho(platform=7), b"BC\xc0\xde" + b"\0" * 100):
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                document = {}
+                receipt, path = native_object_fixture(root, document)
+                (root / module.FEX_NATIVE_OBJECT_PATHS["production_object"]).write_bytes(payload)
+                receipt["production_object"]["sha256"] = hashlib.sha256(payload).hexdigest()
+                path.write_text(json.dumps(receipt))
+                with mock.patch.object(module, "ROOT", root), self.assertRaises(ValueError):
+                    module.verified_fex_native_object(document, path)
+
+
 class RepairProvenanceTests(unittest.TestCase):
     def test_verified_and_tampered_repair_evidence(self):
         for mutation in (None, "source", "patch", "metadata", "revision", "extra-change", "record-missing", "spec"):
@@ -178,9 +249,14 @@ class ArchiveTests(unittest.TestCase):
                 self.validate(archive(member("ios.o/", macho()), member("bad.o/", macho(platform=platform))))
 
     def test_wrong_cpu_arm64e_and_bitcode_rejected(self):
-        for payload in (macho(cpu=0x01000007), macho(subtype=2), b"BC\xc0\xde" * 20):
+        for payload in (macho(cpu=0x01000007), macho(subtype=2), b"BC\xc0\xde" * 20, b"\xde\xc0\x17\x0b" * 20):
             with self.assertRaises(ValueError):
                 self.validate(archive(member("bad.o/", payload)))
+
+    def test_rejected_bitcode_reports_format_without_accepting_it(self):
+        for magic, name in ((b"BC\xc0\xde", "LLVM bitcode"), (b"\xde\xc0\x17\x0b", "LLVM bitcode wrapper")):
+            with self.subTest(format=name), self.assertRaisesRegex(ValueError, "magic=" + magic.hex() + ", " + name):
+                self.validate(archive(member("bitcode.o/", magic + b"\0" * 60)))
 
     def test_missing_platform_rejected(self):
         with self.assertRaises(ValueError):
@@ -226,6 +302,7 @@ class BundleTests(unittest.TestCase):
             root = Path(directory)
             manifest = root / "input.json"
             document, command = repair_fixture(root)
+            native_object_fixture(root, document)
             manifest.write_text(json.dumps(document))
             for name in module.EXPECTED_ARCHIVES:
                 path = root / name
@@ -259,6 +336,7 @@ class BundleTests(unittest.TestCase):
                 self.assertEqual(set(result["archives"]), set(module.EXPECTED_ARCHIVES))
                 self.assertEqual(result["source_repairs"]["component"], "FEX")
                 self.assertEqual(len(result["source_repairs"]["repairs"]), 2)
+                self.assertEqual(result["fex_native_object"]["status"], "passed")
                 self.assertEqual(len(list((root / "complete/libraries").rglob("*.a"))), 20)
                 self.assertTrue((root / "complete/notices/LICENSE").exists())
                 self.assertFalse(list((root / "complete").rglob("*.o")))

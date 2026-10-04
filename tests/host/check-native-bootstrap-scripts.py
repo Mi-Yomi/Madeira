@@ -228,6 +228,8 @@ else:
         configure, build = map(json.loads, (self.root / 'cmake.jsonl').read_text().splitlines())
         self.assertIn('-DCMAKE_SYSTEM_PROCESSOR=arm64', configure)
         self.assertIn('-DTUNE_CPU=none', configure)
+        self.assertIn('-DENABLE_LTO=OFF', configure)
+        self.assertIn('-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', configure)
         for dependency in ('fmt', 'unordered_dense', 'range-v3'):
             self.assertIn('-DCMAKE_DISABLE_FIND_PACKAGE_' + dependency + '=TRUE', configure)
         self.assertEqual(build[build.index('--target') + 1:],

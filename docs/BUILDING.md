@@ -59,7 +59,10 @@ compiler (FFmpeg explicitly disables it).
   Neither repair changes the target configuration or atomic emulation. The
   external repository and submodule pin remain unchanged. All patches,
   original/result source hashes and the applied record are validated and included
-  in native provenance (see `build/fex-ios/README.md`)
+  in native provenance (see `build/fex-ios/README.md`). Native FEX disables
+  its default ThinLTO so archives contain actual Mach-O objects; a bounded
+  same-source Apple IR reproduction records format/target evidence without
+  accepting bitcode in deliverable archives
 - Wineserver builds its base
   from current sources, overlays the maintained iOS objects, and validates
   the archive members and required symbol renames before replacing an output

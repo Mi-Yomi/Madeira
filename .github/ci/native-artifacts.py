@@ -52,7 +52,9 @@ def sha256(path: Path) -> str:
 
 def macho_ios_object(data: bytes, label: str) -> None:
     if len(data) < 32 or data[:4] != b"\xcf\xfa\xed\xfe":
-        raise ValueError(f"{label}: not a little-endian 64-bit Mach-O object")
+        magic = data[:4].hex()
+        kind = {b"BC\xc0\xde": "LLVM bitcode", b"\xde\xc0\x17\x0b": "LLVM bitcode wrapper"}.get(data[:4], "unknown format")
+        raise ValueError(f"{label}: not a little-endian 64-bit Mach-O object (magic={magic}, {kind})")
     _, cpu, subtype, filetype, count, size, _, _ = struct.unpack_from("<8I", data)
     if cpu != 0x0100000C or subtype & 0xFFFFFF != 0 or filetype != 1:
         raise ValueError(f"{label}: expected arm64 (not arm64e) MH_OBJECT")
@@ -169,6 +171,12 @@ def source_modules(root: Path = ROOT) -> list[dict]:
 
 FEX_REPAIR_SPEC = "build/fex-ios/source-repairs.json"
 FEX_REPAIR_RECORD = "FEX/build-ios/madeira-source-repairs.json"
+FEX_NATIVE_INPUTS = ("build/fex-ios/build.sh", "build/fex-ios/check-native-object.py", ".github/ci/native-artifacts.py")
+FEX_NATIVE_OBJECT_PATHS = {
+    "source": "FEX/FEXCore/Source/Common/JitSymbols.cpp",
+    "compile_database": "FEX/build-ios/compile_commands.json",
+    "production_object": "FEX/build-ios/FEXCore/Source/CMakeFiles/FEXCore_object.dir/Common/JitSymbols.cpp.o",
+}
 
 
 def repair_file(base: Path, relative: str) -> Path:
@@ -221,6 +229,49 @@ def verified_fex_repairs(document: dict) -> dict:
     return spec
 
 
+
+def verified_fex_native_object(document: dict, path: Path) -> dict:
+    if not path.is_file() or path.is_symlink() or path.stat().st_size > 64 * 1024:
+        raise ValueError("Missing or oversized FEX native-object evidence")
+    receipt = json.loads(path.read_text())
+    if (receipt.get("schema_version") != 1 or receipt.get("status") != "passed"
+            or receipt.get("evidence_kind") != "fresh-same-source-thinlto-reproduction"):
+        raise ValueError("Invalid FEX native-object evidence")
+    configuration = receipt.get("native_configuration", {})
+    if configuration != {"enable_lto": False, "architecture": "arm64", "deployment_target": "17.0", "ipo_flags": []}:
+        raise ValueError("FEX native configuration does not establish non-LTO device objects")
+    for name in FEX_NATIVE_INPUTS:
+        if sha256(repair_file(ROOT, name)) != document.get("input_sha256", {}).get(name):
+            raise ValueError(f"FEX native build helper changed since provenance recording: {name}")
+    if receipt.get("helper_sha256") != document.get("input_sha256", {}).get("build/fex-ios/check-native-object.py"):
+        raise ValueError("FEX native-object evidence does not match its reviewed helper")
+    if receipt.get("sdk_path") != document.get("tool_versions", {}).get("iphoneos_sdk_path"):
+        raise ValueError("FEX native-object SDK differs from recorded Apple SDK")
+    for kind, name in FEX_NATIVE_OBJECT_PATHS.items():
+        item = receipt.get(kind, {})
+        if item.get("path") != name or item.get("sha256") != sha256(repair_file(ROOT, name)):
+            raise ValueError(f"FEX native-object evidence changed: {kind}")
+    if receipt["production_object"].get("format") != "Mach-O arm64 iOS":
+        raise ValueError("FEX production-object evidence is not a native iOS object")
+    object_path = repair_file(ROOT, FEX_NATIVE_OBJECT_PATHS["production_object"])
+    if object_path.stat().st_size > MAX_BUNDLE_BYTES:
+        raise ValueError("FEX production object exceeds staging bound")
+    macho_ios_object(object_path.read_bytes(), "FEX native-object evidence")
+    reproduction = receipt.get("reproduction", {})
+    if (reproduction.get("format") != "LLVM bitcode"
+            or reproduction.get("magic_hex") not in ("4243c0de", "dec0170b")
+            or not re.fullmatch(r"[0-9a-f]{64}", reproduction.get("sha256", ""))
+            or reproduction.get("added_flag") != "-flto=thin"
+            or reproduction.get("target_triple") != "arm64-apple-ios17.0.0"
+            or reproduction.get("override_module_is_error") is not True
+            or reproduction.get("reader_exit_code") != 0
+            or reproduction.get("strict_validator_rejected") is not True):
+        raise ValueError("FEX reproduction does not establish rejected iOS ThinLTO bitcode")
+    if not re.fullmatch(r"[0-9a-f]{64}", receipt.get("compiler", {}).get("sha256", "")):
+        raise ValueError("FEX reproduction lacks compiler identity")
+    return receipt
+
+
 def metal_receipt(path: Path) -> dict:
     if not path.is_file() or path.is_symlink() or path.stat().st_size > 1024 * 1024:
         raise ValueError("Missing or oversized Metal setup receipt")
@@ -270,6 +321,7 @@ def record(path: Path, ready: bool) -> None:
                        for p in (ROOT / directory).glob("*.tar.*")]
     _, repair_inputs = fex_repair_spec()
     tracked_inputs += repair_inputs
+    tracked_inputs += FEX_NATIVE_INPUTS
     usage = shutil.disk_usage(ROOT)
     document = {
         "schema": 1, "stage": "native-dependencies-only", "recorded_utc": datetime.now(timezone.utc).isoformat(),
@@ -311,6 +363,7 @@ def collect(provenance: Path, output: Path) -> None:
     if not document["dependencies_ready"] or document["source_commit"] != command("git", "rev-parse", "HEAD"):
         raise ValueError("Provenance does not match the prepared source")
     source_repairs = verified_fex_repairs(document)
+    fex_native_object = verified_fex_native_object(document, provenance.parent / "fex-native-object.json")
     verified = {}
     for name in EXPECTED_ARCHIVES:
         verified[name] = validate_archive(ROOT / name)
@@ -344,6 +397,7 @@ def collect(provenance: Path, output: Path) -> None:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, destination)
     document.update({"source_repairs": source_repairs,
+                     "fex_native_object": fex_native_object,
                      "crypto_symbol_table": crypto_symbols(ROOT / "build/crypto-unix/gnutls_symtab_ios.c"),
                      "verified_utc": datetime.now(timezone.utc).isoformat(), "archives": verified,
                      "notice_sha256": {name: sha256(ROOT / name) for name in sorted(notices)},

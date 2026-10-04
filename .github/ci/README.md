@@ -21,6 +21,13 @@ on macOS before dependency downloads/builds, within a two-minute gate and the
 existing overall time limit. This catches host differences such as macOS
 `/var` temporary-directory aliases that Linux-only checks cannot establish.
 
+FEX explicitly disables its default ThinLTO for native deliverables. A bounded
+same-source `JitSymbols.cpp` reproduction records the actual Apple IR target
+with target-override warnings fatal; its temporary object/IR are deleted. The
+production object and every archive member still require native ARM64 iOS
+Mach-O, and final provenance checks the receipt against current inputs. The
+probe uses at most two minutes inside the existing build limit.
+
 No separate Metal Shader Converter installer, LLVM source build, DXMT build,
 Windows DLL farm, app link, IPA, signing or device test is attempted.
 
@@ -52,6 +59,7 @@ python3 tests/host/check-native-bootstrap-artifacts.py
 python3 tests/host/check-native-bootstrap-workflow.py
 python3 tests/host/check-native-bootstrap-scripts.py
 python3 tests/host/check-fex-source-repairs.py
+python3 tests/host/check-fex-native-object.py
 python3 tests/host/check-metal-toolchain-setup.py
 for script in .github/ci/*.sh build/fex-ios/build.sh build/freetype-ios/build.sh build/gnutls-ios/build.sh build/ffmpeg/build.sh build/ntdll-unix/build.sh build/wineserver/*.sh; do
   bash -n "$script"

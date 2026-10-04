@@ -71,3 +71,24 @@ if metal.is_file() and not metal.is_symlink() and metal.stat().st_size <= 1024 *
         for name, value in receipt.get("verified_executables", {}).items()}
     print("\n=== Metal setup result (allowlisted receipt fields) ===")
     print(json.dumps(summary, sort_keys=True))
+
+# Same-source compiler reproduction, not recovered bytes from an earlier runner.
+fex_object = DEST / "fex-native-object.json"
+if fex_object.is_file() and not fex_object.is_symlink() and fex_object.stat().st_size <= 64 * 1024:
+    import hashlib, json
+    receipt = json.loads(fex_object.read_text())
+    summary = {key: receipt.get(key) for key in (
+        "schema_version", "status", "evidence_kind", "sdk_path", "native_flags", "helper_sha256")}
+    fields = {
+        "source": ("path", "sha256"), "compiler": ("path", "version", "sha256"),
+        "compile_database": ("path", "sha256"), "production_object": ("path", "sha256", "format"),
+        "native_configuration": ("enable_lto", "architecture", "deployment_target", "ipo_flags"),
+        "reproduction": ("format", "magic_hex", "sha256", "added_flag", "target_triple",
+                         "override_module_is_error", "reader_exit_code", "strict_validator_rejected"),
+    }
+    for name, allowed in fields.items():
+        values = receipt.get(name, {})
+        summary[name] = {key: values.get(key) for key in allowed}
+    summary["receipt_sha256"] = hashlib.sha256(fex_object.read_bytes()).hexdigest()
+    print("\n=== FEX native object and fresh ThinLTO evidence ===")
+    print(json.dumps(summary, sort_keys=True))

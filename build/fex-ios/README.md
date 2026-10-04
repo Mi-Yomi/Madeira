@@ -63,3 +63,30 @@ APIs. These are host checks, not an iOS build or proof that 1C/Blender runs.
 Native CI must still build and validate all seven archives. The repairs are
 maintained only in Madeira; do not submit AI-generated patches to FEX-Emu
 upstream (see `CONTRIBUTING.md`).
+
+## Native objects, not ThinLTO bitcode
+
+The [pinned FEX CMake project](https://github.com/willfaust/FEX/blob/1adb337a2f2270434ba731346438c072337a5d5f/CMakeLists.txt#L227) defaults `ENABLE_LTO` to `TRUE` and assigns it to
+`CMAKE_INTERPROCEDURAL_OPTIMIZATION`. [CMake's AppleClang IPO recipe](https://github.com/Kitware/CMake/blob/v4.4.3/Modules/Compiler/Clang.cmake#L58-L98) uses
+`-flto=thin`; such objects can remain LLVM bitcode inside a static archive.
+The first completed native compilation run (`f2fd856`, job `111454525730`)
+failed the final strict object-format gate at `libFEXCore.a(JitSymbols.cpp.o)`.
+That runner's archive was not retained, so its precise magic/triple was not
+inspected. The source configuration explains the likely format mismatch.
+
+The native recipe now explicitly passes `ENABLE_LTO=OFF` on every configure
+and exports compile commands. It keeps the ARM64 iOS target and Release
+optimization. All 20 deliverable archives must still pass the unchanged
+Mach-O/iOS acceptance rules; raw or wrapped LLVM bitcode remains rejected.
+
+After building, CI runs `check-native-object.py` with a two-minute overall
+budget. It verifies the actual non-LTO `JitSymbols.cpp.o`, then recompiles that
+same pinned source and explicit device-target compile flags with ThinLTO enabled
+in a sanitized environment. Dependency outputs are removed, primary output is
+redirected to a disposable object, and default compiler config files are disabled. Apple clang reads the resulting IR with an explicit iOS
+target and `-Werror=override-module`, so a host/simulator target cannot be
+silently rewritten into an apparent success. [LLVM's IR reader](https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/clang/lib/CodeGen/CodeGenAction.cpp#L1141-L1146) otherwise warns and replaces a mismatched module target. Only format, hash, target and
+compiler evidence is logged; the probe object and textual IR are discarded.
+This is a fresh same-source reproduction, not recovery of the old archive.
+The small receipt and its current source/object/helper hashes are checked by
+the final provenance gate. No guest code is executed by this diagnostic.

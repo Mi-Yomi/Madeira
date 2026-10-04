@@ -51,6 +51,7 @@ jobs:
           python3 tests/host/check-native-bootstrap-workflow.py
           python3 tests/host/check-native-bootstrap-scripts.py
           python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-native-object.py
           python3 tests/host/check-metal-toolchain-setup.py
           for script in .github/ci/*.sh build/fex-ios/build.sh build/freetype-ios/build.sh build/gnutls-ios/build.sh build/ffmpeg/build.sh build/ntdll-unix/build.sh build/wineserver/*.sh; do
             bash -n "$script"
@@ -93,6 +94,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
         run: |
           python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-native-object.py
           python3 tests/host/check-native-bootstrap-workflow.py
           python3 tests/host/check-native-bootstrap-artifacts.py
       - name: Build native dependencies, at most two compile jobs

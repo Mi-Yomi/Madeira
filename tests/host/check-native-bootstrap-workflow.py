@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Fixtures for strict header prep, bounded logs and workflow guardrails."""
 import os
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -87,6 +88,30 @@ class LogTests(unittest.TestCase):
             self.assertTrue(path.read_bytes().endswith(b"important final failure\n"))
 
 
+    def test_fex_receipt_summary_omits_unexpected_nested_payloads(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            collector = root / ".github/ci/collect-native-logs.py"
+            collector.parent.mkdir(parents=True)
+            shutil.copy2(ROOT / ".github/ci/collect-native-logs.py", collector)
+            logs = root / "logs"
+            logs.mkdir()
+            (logs / "fex-native-object.json").write_text(json.dumps({
+                "status": "passed", "evidence_kind": "fresh-same-source-thinlto-reproduction",
+                "source": {"path": "FEX/FEXCore/Source/Common/JitSymbols.cpp", "sha256": "a" * 64,
+                           "unexpected_payload": "RAW_SOURCE_SHOULD_NOT_BE_PRINTED"},
+                "reproduction": {"format": "LLVM bitcode", "target_triple": "arm64-apple-ios17.0.0",
+                                 "unexpected_ir": "RAW_IR_SHOULD_NOT_BE_PRINTED"},
+            }))
+            result = subprocess.run(["python3", str(collector)], capture_output=True, text=True,
+                                    env=dict(os.environ, NATIVE_LOG_DIR=str(logs)))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn("arm64-apple-ios17.0.0", result.stdout)
+            self.assertIn("receipt_sha256", result.stdout)
+            self.assertNotIn("RAW_SOURCE_SHOULD_NOT_BE_PRINTED", result.stdout)
+            self.assertNotIn("RAW_IR_SHOULD_NOT_BE_PRINTED", result.stdout)
+
+
 class WorkflowTests(unittest.TestCase):
     def test_metal_setup_uses_explicit_authorized_opt_in(self):
         text = (ROOT / ".github/ci/native-bootstrap.sh").read_text()
@@ -114,6 +139,15 @@ class WorkflowTests(unittest.TestCase):
             ])
             self.assertTrue((runtime / "madeira-native-logs/scope.txt").is_file())
 
+    def test_fex_object_proof_precedes_wine_builds(self):
+        text = (ROOT / ".github/ci/native-bootstrap.sh").read_text()
+        build = text.index("bash build/fex-ios/build.sh")
+        probe = text.index('python3 build/fex-ios/check-native-object.py --receipt "$NATIVE_LOG_DIR/fex-native-object.json"')
+        wine = text.index("bash .github/ci/prepare-wine-headers.sh")
+        self.assertLess(build, probe)
+        self.assertLess(probe, wine)
+        self.assertNotIn("|| true", text[probe:wine])
+
     def test_macos_helper_gate_precedes_dependency_builds(self):
         text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
         native = text.split("  native:\n", 1)[1]
@@ -126,7 +160,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("timeout-minutes: 2", step)
         self.assertNotIn("continue-on-error", step)
         self.assertNotIn("if:", step)
-        for script in ("check-fex-source-repairs.py", "check-native-bootstrap-workflow.py",
+        for script in ("check-fex-source-repairs.py", "check-fex-native-object.py", "check-native-bootstrap-workflow.py",
                        "check-native-bootstrap-artifacts.py"):
             self.assertIn("python3 tests/host/" + script, step)
         self.assertIn("timeout-minutes: 45", native)
