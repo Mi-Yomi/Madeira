@@ -1,0 +1,92 @@
+name: LLVM and DXMT iOS bootstrap
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - .github/workflows/graphics-bootstrap.yml
+      - build/llvm-ios/**
+      - build/dxmt-ios/**
+      - build/madeira-d3d12/deps.sh
+      - madeira-d3d12/src/**
+      - madeira-d3d12/tests/native/**
+      - dxmt
+      - tests/host/check-graphics-bootstrap.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: graphics-bootstrap-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  portable-validation:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check graphics failure handling and archive gates
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 tests/host/check-graphics-bootstrap.py
+          python3 tests/host/check-native-bootstrap-artifacts.py
+          bash -n build/llvm-ios/build.sh
+          bash -n build/dxmt-ios/generate-shaders.sh
+          bash -n build/dxmt-ios/build.sh
+  graphics:
+    needs: portable-validation
+    if: github.event.repository.private == false
+    # Standard public-repository ARM64 runner. No paid larger runner or storage.
+    runs-on: xcode-27
+    timeout-minutes: 45
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: '2'
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+      HOMEBREW_NO_ANALYTICS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Checkout public pinned DXMT sources
+        timeout-minutes: 4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check helpers and initialize only DXMT submodules
+        timeout-minutes: 3
+        run: |
+          python3 tests/host/check-graphics-bootstrap.py
+          git -c credential.helper= submodule update --init --recursive dxmt
+          test "$(git -C dxmt rev-parse HEAD)" = 020a848080b861266e04fc0e5f7f6d921614037c
+          test "$(uname -m)" = arm64
+          xcodebuild -version
+          case "$(xcrun --sdk iphoneos --show-sdk-version)" in 27.*) ;; *) exit 1;; esac
+          df -h .
+      - name: Verify approved official Metal Toolchain
+        timeout-minutes: 8
+        run: |
+          python3 .github/ci/ensure-metal-toolchain.py --allow-install --log-dir "$RUNNER_TEMP/madeira-graphics-metal"
+      - name: Fetch exact LLVM 15 source
+        timeout-minutes: 4
+        run: bash build/llvm-ios/build.sh fetch
+      - name: Build native host LLVM 15 tools
+        timeout-minutes: 12
+        run: bash build/llvm-ios/build.sh host
+      - name: Compile all Metal inputs and require LLVM 15 AIR decoding
+        timeout-minutes: 2
+        run: bash build/dxmt-ios/generate-shaders.sh
+      - name: Build and verify 34 iOS ARM64 LLVM archives
+        timeout-minutes: 25
+        run: bash build/llvm-ios/build.sh ios
+      - name: Build fresh DXMT and merge validated archives
+        timeout-minutes: 10
+        run: python3 build/dxmt-ios/clean_build.py
+      - name: Print verified graphics receipt
+        run: |
+          cat build/dxmt-ios/graphics-build.json
+          echo 'Graphics compile/archive gate passed. Full app linking and device rendering remain unverified.'
+      # No cache or artifact uploads while free storage allowance is unverified.

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/llvm/llvm-project.git",
+  "version": "llvmorg-15.0.7",
+  "revision": "8dfdcc7b7bf66834a761bd8de445840ef68e4d1a",
+  "sparse_directories": ["llvm", "cmake", "third-party"],
+  "dxmt_revision": "020a848080b861266e04fc0e5f7f6d921614037c",
+  "deployment_target": "17.0",
+  "archives": [
+    "LLVMPasses", "LLVMTarget", "LLVMObjCARCOpts", "LLVMCoroutines", "LLVMipo",
+    "LLVMInstrumentation", "LLVMVectorize", "LLVMLinker", "LLVMIRReader", "LLVMAsmParser",
+    "LLVMFrontendOpenMP", "LLVMScalarOpts", "LLVMInstCombine", "LLVMAggressiveInstCombine",
+    "LLVMTransformUtils", "LLVMBitWriter", "LLVMAnalysis", "LLVMProfileData", "LLVMSymbolize",
+    "LLVMDebugInfoPDB", "LLVMDebugInfoMSF", "LLVMDebugInfoDWARF", "LLVMObject", "LLVMTextAPI",
+    "LLVMMCParser", "LLVMMC", "LLVMDebugInfoCodeView", "LLVMBitReader", "LLVMCore", "LLVMRemarks",
+    "LLVMBitstreamReader", "LLVMBinaryFormat", "LLVMSupport", "LLVMDemangle"
+  ]
+}
