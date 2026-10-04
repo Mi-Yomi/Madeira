@@ -52,7 +52,9 @@ jobs:
           python3 tests/host/check-crypto-link-tables.py
   unsigned-app:
     needs: portable-validation
-    if: github.event.repository.private == false
+    # Full app linking/packaging is paused. Keep portable regression checks;
+    # re-enable this expensive job only for a separate explicit build request.
+    if: false
     # Standard free public-repository ARM64 runner; all stages share one fresh
     # workspace because cache/artifact storage has not been authorized.
     runs-on: xcode-27
