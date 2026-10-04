@@ -90,3 +90,16 @@ compiler evidence is logged; the probe object and textual IR are discarded.
 This is a fresh same-source reproduction, not recovery of the old archive.
 The small receipt and its current source/object/helper hashes are checked by
 the final provenance gate. No guest code is executed by this diagnostic.
+
+The compile-command parser accepts only CMake's build-root layout (Ninja) or
+its exact `FEXCore/Source` target directory (Unix Makefiles). Resolved source
+and production-object paths must match in either layout; unrelated directories
+and escaping paths remain rejected. `tests/host/check-fex-cmake-layout.py`
+configures both real generators and checks their command databases without
+building or executing the synthetic target. Missing CMake/Ninja fails the test.
+It runs in the early Linux/macOS gates before dependency rebuilding.
+
+Immediately after FEX builds, all seven archives receive the same strict
+member-by-member format/platform checks used by final collection, before the
+extra compiler diagnostic. This early result does not substitute for the final
+20-archive and provenance gate.

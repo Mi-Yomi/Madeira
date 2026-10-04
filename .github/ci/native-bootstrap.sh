@@ -85,6 +85,7 @@ stage 'FFmpeg LGPL media libraries'
 bash build/ffmpeg/build.sh
 stage 'FEX native libraries'
 bash build/fex-ios/build.sh
+python3 .github/ci/native-artifacts.py fex-archives
 stage 'Verify FEX native object and bounded ThinLTO reproduction'
 python3 build/fex-ios/check-native-object.py --receipt "$NATIVE_LOG_DIR/fex-native-object.json"
 stage 'Wine native and ARM64EC generated headers'

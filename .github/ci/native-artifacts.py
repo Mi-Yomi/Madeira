@@ -141,6 +141,15 @@ def validate_archive(path: Path) -> dict:
             "object_members": count, "architecture": "arm64", "platform": "iOS"}
 
 
+
+def validate_fex_archives() -> dict:
+    verified = {}
+    for name in EXPECTED_ARCHIVES[:7]:
+        verified[name] = validate_archive(ROOT / name)
+        print(f"Verified FEX iOS arm64 archive: {name} ({verified[name]['object_members']} objects)")
+    return verified
+
+
 def command(*args: str, cwd: Path = ROOT) -> str:
     return subprocess.check_output(args, cwd=cwd, text=True, stderr=subprocess.STDOUT).strip()
 
@@ -431,6 +440,7 @@ def main() -> None:
     recording.add_argument("path", type=Path)
     recording.add_argument("--ready", action="store_true")
     sub.add_parser("crypto-symbols")
+    sub.add_parser("fex-archives")
     staging = sub.add_parser("collect")
     staging.add_argument("provenance", type=Path)
     staging.add_argument("output", type=Path)
@@ -438,6 +448,8 @@ def main() -> None:
     try:
         if args.action == "record":
             record(args.path, args.ready)
+        elif args.action == "fex-archives":
+            print(json.dumps(validate_fex_archives(), sort_keys=True))
         elif args.action == "collect":
             collect(args.provenance, args.output)
         else:

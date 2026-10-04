@@ -147,8 +147,15 @@ def compile_entry(root, compiler, sdk):
         raise ValueError("Expected exactly one JitSymbols compile command")
     entry, = matches
     directory = Path(entry["directory"]).resolve()
-    if directory != build:
-        raise ValueError("Unexpected FEX compilation working directory")
+    # Makefiles records the target's binary directory; Ninja records the root.
+    # Accept only these two exact layouts, never arbitrary build subdirectories.
+    if directory not in (build, build / "FEXCore/Source"):
+        relative = os.path.relpath(directory, build)
+        context = json.dumps(relative[:160], ensure_ascii=True)
+        if len(context) > 180:
+            context = context[:177] + "..."
+        raise ValueError("Unexpected FEX compilation working directory: "
+                         f"expected build-relative '.' or 'FEXCore/Source'; actual={context}")
     if ("arguments" in entry) == ("command" in entry):
         raise ValueError("Ambiguous compile command representation")
     args = entry.get("arguments") if "arguments" in entry else shlex.split(entry["command"])

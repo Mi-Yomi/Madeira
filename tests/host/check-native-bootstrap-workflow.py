@@ -142,11 +142,13 @@ class WorkflowTests(unittest.TestCase):
     def test_fex_object_proof_precedes_wine_builds(self):
         text = (ROOT / ".github/ci/native-bootstrap.sh").read_text()
         build = text.index("bash build/fex-ios/build.sh")
+        gate = text.index("python3 .github/ci/native-artifacts.py fex-archives")
         probe = text.index('python3 build/fex-ios/check-native-object.py --receipt "$NATIVE_LOG_DIR/fex-native-object.json"')
         wine = text.index("bash .github/ci/prepare-wine-headers.sh")
-        self.assertLess(build, probe)
+        self.assertLess(build, gate)
+        self.assertLess(gate, probe)
         self.assertLess(probe, wine)
-        self.assertNotIn("|| true", text[probe:wine])
+        self.assertNotIn("|| true", text[gate:wine])
 
     def test_macos_helper_gate_precedes_dependency_builds(self):
         text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
@@ -160,7 +162,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("timeout-minutes: 2", step)
         self.assertNotIn("continue-on-error", step)
         self.assertNotIn("if:", step)
-        for script in ("check-fex-source-repairs.py", "check-fex-native-object.py", "check-native-bootstrap-workflow.py",
+        for script in ("check-fex-source-repairs.py", "check-fex-native-object.py", "check-fex-cmake-layout.py", "check-native-bootstrap-workflow.py",
                        "check-native-bootstrap-artifacts.py"):
             self.assertIn("python3 tests/host/" + script, step)
         self.assertIn("timeout-minutes: 45", native)

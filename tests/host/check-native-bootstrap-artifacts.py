@@ -288,6 +288,27 @@ class ArchiveTests(unittest.TestCase):
                 module.validate_archive(path)
 
 
+class EarlyFEXArchiveTests(unittest.TestCase):
+    def test_all_seven_archives_require_native_ios_objects(self):
+        names = module.EXPECTED_ARCHIVES[:7]
+        self.assertEqual(len(names), 7)
+        self.assertTrue(all(name.startswith("FEX/build-ios/") for name in names))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in names:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(archive(member("native.o/", macho())))
+            with mock.patch.object(module, "ROOT", root):
+                self.assertEqual(set(module.validate_fex_archives()), set(names))
+                last = root / names[-1]
+                last.unlink()
+                with self.assertRaises(ValueError): module.validate_fex_archives()
+                for payload in (macho(platform=1), macho(platform=7), b"BC\xc0\xde" + b"\0" * 60):
+                    last.write_bytes(archive(member("bad.o/", payload)))
+                    with self.assertRaises(ValueError): module.validate_fex_archives()
+
+
 class BundleTests(unittest.TestCase):
     def test_empty_crypto_symbol_table_fails(self):
         with tempfile.TemporaryDirectory() as directory:

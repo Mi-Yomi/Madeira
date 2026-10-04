@@ -16,7 +16,7 @@ libraries and Rust pairing. Header generation and compilation failures are
 fatal. The pinned FEX reporter guards and CASPAL diagnostic platform split are checked
 by revision/source hash before configure; successful provenance verifies the unchanged submodule
 revision, exact patch inputs, applied record and resulting source bytes. The generated crypto symbol table must contain its bootstrap essentials.
-The same repair, header-orchestration and archive-verifier fixtures run again
+The repair, real CMake generator-layout, header-orchestration and archive-verifier fixtures run again
 on macOS before dependency downloads/builds, within a two-minute gate and the
 existing overall time limit. This catches host differences such as macOS
 `/var` temporary-directory aliases that Linux-only checks cannot establish.
@@ -26,7 +26,9 @@ same-source `JitSymbols.cpp` reproduction records the actual Apple IR target
 with target-override warnings fatal; its temporary object/IR are deleted. The
 production object and every archive member still require native ARM64 iOS
 Mach-O, and final provenance checks the receipt against current inputs. The
-probe uses at most two minutes inside the existing build limit.
+probe uses at most two minutes inside the existing build limit. All seven FEX
+archives are strictly checked immediately after compilation, before the probe;
+final collection still checks the complete 20-archive set and provenance.
 
 No separate Metal Shader Converter installer, LLVM source build, DXMT build,
 Windows DLL farm, app link, IPA, signing or device test is attempted.
@@ -60,6 +62,7 @@ python3 tests/host/check-native-bootstrap-workflow.py
 python3 tests/host/check-native-bootstrap-scripts.py
 python3 tests/host/check-fex-source-repairs.py
 python3 tests/host/check-fex-native-object.py
+python3 tests/host/check-fex-cmake-layout.py # requires installed CMake, Ninja and host C++ compiler
 python3 tests/host/check-metal-toolchain-setup.py
 for script in .github/ci/*.sh build/fex-ios/build.sh build/freetype-ios/build.sh build/gnutls-ios/build.sh build/ffmpeg/build.sh build/ntdll-unix/build.sh build/wineserver/*.sh; do
   bash -n "$script"

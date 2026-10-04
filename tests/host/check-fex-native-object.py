@@ -173,6 +173,62 @@ class NativeObjectTests(unittest.TestCase):
         self.save_database()
         self.assertEqual(self.inspect()["status"], "passed")
 
+    def test_makefiles_target_directory_and_relative_paths(self):
+        directory = self.build / "FEXCore/Source"
+        self.entry["directory"] = str(directory)
+        self.entry["file"] = os.path.relpath(self.source, directory)
+        self.args[self.args.index("-o") + 1] = "CMakeFiles/FEXCore_object.dir/Common/JitSymbols.cpp.o"
+        self.args[self.args.index("-c") + 1] = os.path.relpath(self.source, directory)
+        include = "-I" + str(self.source.parent)
+        self.args[self.args.index(include)] = "-I" + os.path.relpath(self.source.parent, directory)
+        self.save_database()
+        command, actual, _, _ = self.check_command()
+        self.assertEqual(actual, directory)
+        self.assertEqual(command[command.index("-c") + 1], os.path.relpath(self.source, directory))
+        self.assertEqual(self.inspect()["status"], "passed")
+
+    def test_ninja_root_directory_with_prefixed_relative_output(self):
+        self.args[self.args.index("-o") + 1] = "FEXCore/Source/CMakeFiles/FEXCore_object.dir/Common/JitSymbols.cpp.o"
+        self.save_database()
+        self.assertEqual(self.check_command()[1], self.build)
+
+    def test_other_working_directories_rejected_with_bounded_relative_context(self):
+        for directory in (self.build / "FEXCore", self.build / "other", self.root / "outside",
+                          self.build / ("x" * 200 + "\ncontrol"), self.build / ("😀" * 40)):
+            with self.subTest(directory=directory):
+                self.entry["directory"] = str(directory)
+                self.save_database()
+                with self.assertRaisesRegex(ValueError, "expected build-relative") as error:
+                    self.check_command()
+                self.assertIn("actual=", str(error.exception))
+                self.assertNotIn(str(self.root), str(error.exception))
+                self.assertNotIn("\n", str(error.exception))
+                self.assertLess(len(str(error.exception)), 300)
+
+    def test_makefiles_target_directory_symlink_escape_is_rejected(self):
+        original = self.build / "FEXCore"
+        original.rename(self.build / "saved-target-directory")
+        outside = self.root / "outside-target"
+        (outside / "Source").mkdir(parents=True)
+        original.symlink_to(outside, target_is_directory=True)
+        self.entry["directory"] = str(original / "Source")
+        self.save_database()
+        with self.assertRaisesRegex(ValueError, "expected build-relative"):
+            self.check_command()
+
+    def test_makefiles_layout_keeps_output_and_include_containment(self):
+        directory = self.build / "FEXCore/Source"
+        self.entry["directory"] = str(directory)
+        self.args[self.args.index("-o") + 1] = "../../../../outside.o"
+        self.save_database()
+        with self.assertRaisesRegex(ValueError, "source or production object output"):
+            self.check_command()
+        self.args[self.args.index("-o") + 1] = "CMakeFiles/FEXCore_object.dir/Common/JitSymbols.cpp.o"
+        self.entry["arguments"] = [*self.args, "-I../../../../outside"]
+        self.save_database()
+        with self.assertRaisesRegex(ValueError, "include search path"):
+            self.check_command()
+
     def test_wrapped_bitcode(self):
         self.bitcode = struct.pack("<5I", 0x0B17C0DE, 0, 20, 8, 0) + b"BC\xc0\xde1234"
         self.assertEqual(self.inspect()["reproduction"]["magic_hex"], "dec0170b")
