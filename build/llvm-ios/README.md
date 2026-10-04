@@ -10,6 +10,7 @@ Run from a fresh checkout on an ARM64 Xcode 27 host:
 ```
 git submodule update --init --recursive dxmt
 bash build/llvm-ios/build.sh fetch
+bash build/dxmt-ios/generate-shaders.sh preflight
 bash build/llvm-ios/build.sh host
 bash build/dxmt-ios/generate-shaders.sh
 bash build/llvm-ios/build.sh ios
@@ -24,6 +25,12 @@ Each of the three raw AIR modules must decode with that LLVM 15 reader before
 the longer iOS build starts; a newer Apple bitcode format must fail this gate,
 not be silently accepted. Command-library shaders keep the existing Metal 3.1
 and AIR macOS 14 target flags; this is build compatibility, not device proof.
+The pinned tessellation shader uses a private atomic builtin whose arity changed
+in Xcode 27. A hash-checked generated source copy replaces only that call with
+the public `atomic_fetch_add_explicit` API, retaining its signed threadgroup
+counter and relaxed ordering. Both original and adjusted source hashes are in
+the shader receipt. The submodule remains unchanged. The API is specified in
+Apple's [Metal Shading Language specification](https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf).
 
 The iOS stage builds the explicit 34-archive closure of BitWriter and Passes,
 with LTO disabled and LLVM assembler disabled. Every object is required to be

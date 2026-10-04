@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Portable failure fixtures for the bounded LLVM/AIR/DXMT graphics gate."""
 import importlib.util
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -203,7 +204,9 @@ class GraphicsTests(unittest.TestCase):
             tool = root / "toolchains/llvm-host-build/bin/llvm-dis"
             tool.parent.mkdir(parents=True)
             tool.write_text("fixture llvm-dis")
-            with mock.patch.object(common, "ROOT", root), mock.patch.object(common, "check_dxmt"):
+            with mock.patch.object(common, "ROOT", root), mock.patch.object(common, "check_dxmt"), \
+                 mock.patch.object(generate_shaders, "TESS_ORIGINAL_SHA256", hashlib.sha256(b"fixture source").hexdigest()), \
+                 mock.patch.object(generate_shaders, "TESS_PATCHED_SHA256", hashlib.sha256(b"fixture output").hexdigest()):
                 sources = [*(generate_shaders.source_path(name) for name in (*generate_shaders.AIR_NAMES, "dxmt_command")), root / "dxmt/version.h.in"]
                 for source in sources:
                     source.parent.mkdir(parents=True, exist_ok=True)
@@ -213,18 +216,36 @@ class GraphicsTests(unittest.TestCase):
                 receipt = {"schema_version": 1, "dxmt_revision": spec["dxmt_revision"], "llvm_revision": spec["revision"],
                            "metal_flags": list(generate_shaders.METAL_FLAGS), "llvm_dis_sha256": common.sha256(tool),
                            "llvm_dis_checked": list(generate_shaders.AIR_NAMES),
+                           "shader_adjustment": generate_shaders.shader_adjustments(),
                            "sources": {str(path.relative_to(root)): common.sha256(path) for path in sources},
                            "outputs": {name: common.sha256(headers / name) for name in generate_shaders.header_names()}}
                 common.write_json(headers / "provenance.json", receipt)
                 generate_shaders.validate()
-                for kind in ("missing", "extra", "changed", "unread"):
+                for kind in ("missing", "extra", "changed", "unread", "repair"):
                     data = json.loads(json.dumps(receipt))
                     if kind == "missing": del data["outputs"]["air_msad.h"]
                     elif kind == "extra": data["outputs"]["unexpected.h"] = "0" * 64
                     elif kind == "changed": data["outputs"]["air_msad.h"] = "0" * 64
-                    else: data["llvm_dis_checked"] = list(generate_shaders.AIR_NAMES[:-1])
+                    elif kind == "unread": data["llvm_dis_checked"] = list(generate_shaders.AIR_NAMES[:-1])
+                    else: data["shader_adjustment"]["compiled_source_sha256"] = "0" * 64
                     common.write_json(headers / "provenance.json", data)
                     with self.assertRaises(ValueError): generate_shaders.validate()
+
+    def test_tessellation_adjustment_is_exact_and_keeps_checkout_clean(self):
+        data = b"int fixture() { " + generate_shaders.TESS_OLD + b" }\n"
+        adjusted = data.replace(generate_shaders.TESS_OLD, generate_shaders.TESS_NEW)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.metal"
+            source.write_bytes(data)
+            with mock.patch.object(generate_shaders, "source_path", return_value=source), \
+                 mock.patch.object(generate_shaders, "TESS_ORIGINAL_SHA256", hashlib.sha256(data).hexdigest()), \
+                 mock.patch.object(generate_shaders, "TESS_PATCHED_SHA256", hashlib.sha256(adjusted).hexdigest()):
+                result = generate_shaders.prepare_source("air_tessellation", root)
+                self.assertEqual(result.read_bytes(), adjusted)
+                self.assertEqual(source.read_bytes(), data)
+                source.write_bytes(data + b"unexpected edit")
+                with self.assertRaises(ValueError): generate_shaders.prepare_source("air_tessellation", root)
 
     def test_workflow_is_bounded_and_air_precedes_ios(self):
         text = (ROOT / ".github/workflows/graphics-bootstrap.yml").read_text()
@@ -236,8 +257,9 @@ class GraphicsTests(unittest.TestCase):
         self.assertIn("github.event.repository.private == false", text)
         for forbidden in ("actions/cache", "actions/upload-artifact", "-large", "secrets.", "continue-on-error", "-license accept", "-runFirstLaunch"):
             self.assertNotIn(forbidden, text)
-        self.assertLess(text.index("run: bash build/llvm-ios/build.sh host"), text.index("run: bash build/dxmt-ios/generate-shaders.sh"))
-        self.assertLess(text.index("run: bash build/dxmt-ios/generate-shaders.sh"), text.index("run: bash build/llvm-ios/build.sh ios"))
+        self.assertLess(text.index("run: bash build/dxmt-ios/generate-shaders.sh preflight"), text.index("run: bash build/llvm-ios/build.sh host"))
+        self.assertLess(text.index("run: bash build/llvm-ios/build.sh host"), text.index("run: bash build/dxmt-ios/generate-shaders.sh\n"))
+        self.assertLess(text.index("run: bash build/dxmt-ios/generate-shaders.sh\n"), text.index("run: bash build/llvm-ios/build.sh ios"))
         self.assertLess(text.index("run: bash build/llvm-ios/build.sh ios"), text.index("run: python3 build/dxmt-ios/clean_build.py"))
 
 

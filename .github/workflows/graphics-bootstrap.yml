@@ -73,6 +73,9 @@ jobs:
       - name: Fetch exact LLVM 15 source
         timeout-minutes: 4
         run: bash build/llvm-ios/build.sh fetch
+      - name: Check all Metal source APIs before the LLVM build
+        timeout-minutes: 2
+        run: bash build/dxmt-ios/generate-shaders.sh preflight
       - name: Build native host LLVM 15 tools
         timeout-minutes: 12
         run: bash build/llvm-ios/build.sh host
