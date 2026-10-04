@@ -61,8 +61,9 @@ compiler (FFmpeg explicitly disables it).
   original/result source hashes and the applied record are validated and included
   in native provenance (see `build/fex-ios/README.md`). Native FEX disables
   its default ThinLTO so archives contain actual Mach-O objects; a bounded
-  same-source Apple IR reproduction records format/target evidence without
-  accepting bitcode in deliverable archives
+  optional same-source Apple IR reproduction records format/target evidence
+  separately from the required native archive/build-provenance gate. It never
+  makes bitcode acceptable in deliverable archives
 - Wineserver builds its base
   from current sources, overlays the maintained iOS objects, and validates
   the archive members and required symbol renames before replacing an output

@@ -57,7 +57,16 @@ add_subdirectory(FEXCore/Source)
         (self.source.parent.parent / "CMakeLists.txt").write_text('''add_library(FEXCore_object OBJECT Common/JitSymbols.cpp)
 target_compile_definitions(FEXCore_object PRIVATE ARCHITECTURE_arm64=1 JIT_ARM64)
 target_include_directories(FEXCore_object PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
-target_compile_options(FEXCore_object PRIVATE -arch arm64 -isysroot "${FIXTURE_IPHONE_SDK}" -miphoneos-version-min=17.0)
+if(APPLE)
+  # Let CMake emit exactly one architecture, replacing its implicit host default.
+  set_property(TARGET FEXCore_object PROPERTY OSX_ARCHITECTURES arm64)
+  # Directory-local, after host compiler detection: replace even a required host
+  # SDK fallback without changing compiler checks or editing generated commands.
+  set(CMAKE_OSX_SYSROOT "${FIXTURE_IPHONE_SDK}")
+else()
+  target_compile_options(FEXCore_object PRIVATE -arch arm64 -isysroot "${FIXTURE_IPHONE_SDK}")
+endif()
+target_compile_options(FEXCore_object PRIVATE -miphoneos-version-min=17.0)
 ''')
 
     def check_generator(self, generator, make_program, expected_directory):
@@ -85,11 +94,19 @@ target_compile_options(FEXCore_object PRIVATE -arch arm64 -isysroot "${FIXTURE_I
         output = (actual_directory / command[command.index("-o") + 1]).resolve()
         self.assertEqual(output, self.root / module.OBJECT)
         self.assertFalse(output.exists(), "The fixture must never compile its device-flagged target")
-        replay, directory, database_hash, flags = module.compile_entry(self.root, self.compiler, self.sdk)
+        try:
+            replay, directory, database_hash, flags = module.compile_entry(self.root, self.compiler, self.sdk)
+        except ValueError as error:
+            # Target mismatches carry the helper's bounded, allowlisted context.
+            # Never print the generated command, definitions or environment.
+            self.fail(f"{generator} generated compile entry rejected: {error}")
         self.assertEqual(directory, expected)
         self.assertEqual(database_hash, module.digest((self.root / module.DATABASE).read_bytes()))
         self.assertIn("-arch", flags)
         self.assertIn("arm64", flags)
+        self.assertEqual(flags.count("-arch"), 1)
+        self.assertEqual(flags.count("-isysroot"), 1)
+        self.assertEqual(flags[flags.index("-isysroot") + 1], str(self.sdk))
         self.assertIn("-miphoneos-version-min=17.0", flags)
         self.assertNotIn("-o", replay)
         self.assertFalse(output.exists())

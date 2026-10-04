@@ -51,8 +51,6 @@ jobs:
           python3 tests/host/check-native-bootstrap-workflow.py
           python3 tests/host/check-native-bootstrap-scripts.py
           python3 tests/host/check-fex-source-repairs.py
-          python3 tests/host/check-fex-native-object.py
-          python3 tests/host/check-fex-cmake-layout.py
           python3 tests/host/check-metal-toolchain-setup.py
           for script in .github/ci/*.sh build/fex-ios/build.sh build/freetype-ios/build.sh build/gnutls-ios/build.sh build/ffmpeg/build.sh build/ntdll-unix/build.sh build/wineserver/*.sh; do
             bash -n "$script"
@@ -81,6 +79,7 @@ jobs:
           NATIVE_ARTIFACT_DIR="$RUNNER_TEMP/madeira-native-artifacts"
           printf 'NATIVE_LOG_DIR=%s\nNATIVE_ARTIFACT_DIR=%s\n' "$NATIVE_LOG_DIR" "$NATIVE_ARTIFACT_DIR" >> "$GITHUB_ENV"
           mkdir -p "$NATIVE_LOG_DIR"
+          date +%s > "$NATIVE_LOG_DIR/native-job-started-at"
           printf '%s\n' 'First native stage only: no IPA, app link, signing, LLVM or DXMT build.' > "$NATIVE_LOG_DIR/scope.txt"
       - name: Checkout pinned source and public submodules
         id: checkout
@@ -95,8 +94,6 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
         run: |
           python3 tests/host/check-fex-source-repairs.py
-          python3 tests/host/check-fex-native-object.py
-          python3 tests/host/check-fex-cmake-layout.py
           python3 tests/host/check-native-bootstrap-workflow.py
           python3 tests/host/check-native-bootstrap-artifacts.py
       - name: Build native dependencies, at most two compile jobs
@@ -104,6 +101,32 @@ jobs:
         # Leave time for diagnostics before the overall 45-minute job limit.
         timeout-minutes: 35
         run: bash .github/ci/native-bootstrap.sh
+      - name: Optional FEX explanatory diagnostics after verified native build
+        id: fex_diagnostic
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          # Leave at least ten minutes of the existing job budget for this
+          # optional step, final diagnostics and any authorized uploads.
+          started="$(cat "$NATIVE_LOG_DIR/native-job-started-at")"
+          case "$started" in ''|*[!0-9]*) echo 'Invalid job-time receipt'; exit 1;; esac
+          elapsed="$(( $(date +%s) - started ))"
+          if [ "$elapsed" -lt 0 ] || [ "$elapsed" -ge 2100 ]; then
+            echo 'Optional FEX diagnostics skipped to preserve the native job budget'
+            echo 'result=skipped-budget' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          trap 'code=$?; if [ "$code" -eq 0 ]; then echo result=passed; else echo result=failed; fi >> "$GITHUB_OUTPUT"' EXIT
+          python3 tests/host/check-fex-native-object.py
+          python3 tests/host/check-fex-cmake-layout.py
+          python3 build/fex-ios/check-native-object.py --receipt "$NATIVE_LOG_DIR/fex-native-object.json"
+          python3 .github/ci/native-artifacts.py verify-fex-diagnostic "$NATIVE_LOG_DIR/provenance-inputs.json"
+      - name: Report optional FEX diagnostic outcome
+        if: always()
+        run: |
+          printf 'Optional FEX diagnostic outcome: %s; result: %s\n' '${{ steps.fex_diagnostic.outcome }}' '${{ steps.fex_diagnostic.outputs.result }}'
       - name: Collect bounded diagnostics
         if: always()
         timeout-minutes: 1

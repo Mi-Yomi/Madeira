@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import tempfile
 import textwrap
+import time
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -139,15 +140,14 @@ class WorkflowTests(unittest.TestCase):
             ])
             self.assertTrue((runtime / "madeira-native-logs/scope.txt").is_file())
 
-    def test_fex_object_proof_precedes_wine_builds(self):
+    def test_required_fex_archive_gate_precedes_wine_builds(self):
         text = (ROOT / ".github/ci/native-bootstrap.sh").read_text()
         build = text.index("bash build/fex-ios/build.sh")
         gate = text.index("python3 .github/ci/native-artifacts.py fex-archives")
-        probe = text.index('python3 build/fex-ios/check-native-object.py --receipt "$NATIVE_LOG_DIR/fex-native-object.json"')
         wine = text.index("bash .github/ci/prepare-wine-headers.sh")
         self.assertLess(build, gate)
-        self.assertLess(gate, probe)
-        self.assertLess(probe, wine)
+        self.assertLess(gate, wine)
+        self.assertNotIn("check-native-object.py", text)
         self.assertNotIn("|| true", text[gate:wine])
 
     def test_macos_helper_gate_precedes_dependency_builds(self):
@@ -162,11 +162,75 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("timeout-minutes: 2", step)
         self.assertNotIn("continue-on-error", step)
         self.assertNotIn("if:", step)
-        for script in ("check-fex-source-repairs.py", "check-fex-native-object.py", "check-fex-cmake-layout.py", "check-native-bootstrap-workflow.py",
+        for script in ("check-fex-source-repairs.py", "check-native-bootstrap-workflow.py",
                        "check-native-bootstrap-artifacts.py"):
             self.assertIn("python3 tests/host/" + script, step)
         self.assertIn("timeout-minutes: 45", native)
         self.assertIn("timeout-minutes: 35", native)
+
+    def test_optional_probe_cannot_block_core_build_and_preserves_budget(self):
+        text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
+        native = text.split("  native:\n", 1)[1]
+        build = native.index("- name: Build native dependencies")
+        optional = native.index("- name: Optional FEX explanatory diagnostics")
+        collector = native.index("- name: Collect bounded diagnostics")
+        self.assertLess(build, optional)
+        self.assertLess(optional, collector)
+        step = native[optional:native.index("- name: Report optional FEX", optional)]
+        self.assertIn("continue-on-error: true", step)
+        self.assertIn("timeout-minutes: 2", step)
+        self.assertLess(step.index("-ge 2100"), step.index("python3 tests/host/check-fex-native-object.py"))
+        self.assertIn("result=skipped-budget", step)
+        self.assertIn("result=passed", step)
+        self.assertIn("result=failed", step)
+        self.assertIn("steps.fex_diagnostic.outcome", native)
+        self.assertIn("verify-fex-diagnostic", step)
+        portable = text.split("  portable-validation:", 1)[1].split("  native:", 1)[0]
+        self.assertNotIn("check-fex-cmake-layout.py", portable)
+        self.assertNotIn("check-fex-native-object.py", portable)
+        mandatory = native[native.index("- name: Check repair and header helpers"):build]
+        self.assertNotIn("check-fex-cmake-layout.py", mandatory)
+        self.assertNotIn("check-fex-native-object.py", mandatory)
+        # Exercise just the elapsed-budget branch; it must skip before any tools.
+        body = textwrap.dedent(step.split("run: |", 1)[1]).split("          python3", 1)[0]
+        body = body.split("python3 tests/host/check-fex-native-object.py", 1)[0]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "native-job-started-at").write_text("1\n")
+            outputs = root / "output"
+            result = subprocess.run(["bash", "-eu", "-c", body], capture_output=True, text=True,
+                                    env=dict(os.environ, NATIVE_LOG_DIR=str(root), GITHUB_OUTPUT=str(outputs)))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(outputs.read_text().strip(), "result=skipped-budget")
+
+    def test_optional_outcomes_preserve_completed_core_artifacts(self):
+        text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
+        step = text.split("- name: Optional FEX explanatory diagnostics", 1)[1].split("- name: Report optional FEX", 1)[0]
+        body = textwrap.dedent(step.split("run: |", 1)[1])
+        for mode, expected_code, status in (("pass", 0, "passed"), ("fail", 7, "failed"), ("future", 0, "skipped-budget")):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                completed = root / "verified-core-provenance.json"
+                completed.write_text("completed native archive verification fixture\n")
+                before = completed.read_bytes()
+                started = int(time.time()) + (3600 if mode == "future" else 0)
+                (root / "native-job-started-at").write_text(str(started) + "\n")
+                outputs = root / "outputs"
+                trace = root / "trace"
+                binaries = root / "bin"
+                binaries.mkdir()
+                fake = binaries / "python3"
+                fake.write_text('#!/bin/sh\necho invoked >> "$TRACE"\nif [ "$FAIL_OPTIONAL" = 1 ]; then exit 7; fi\n')
+                fake.chmod(0o755)
+                result = subprocess.run(["bash", "-eu", "-c", body], capture_output=True, text=True,
+                    env=dict(os.environ, PATH=str(binaries) + os.pathsep + os.environ["PATH"],
+                             NATIVE_LOG_DIR=str(root), GITHUB_OUTPUT=str(outputs), TRACE=str(trace),
+                             FAIL_OPTIONAL="1" if mode == "fail" else "0"))
+                self.assertEqual(result.returncode, expected_code, result.stdout + result.stderr)
+                self.assertEqual(outputs.read_text().strip(), "result=" + status)
+                self.assertEqual(completed.read_bytes(), before)
+                if mode == "future": self.assertFalse(trace.exists())
+                else: self.assertTrue(trace.exists())
 
     def test_no_automatic_artifact_upload_or_broadened_permissions(self):
         text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()

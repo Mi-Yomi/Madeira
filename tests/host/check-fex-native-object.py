@@ -269,6 +269,61 @@ class NativeObjectTests(unittest.TestCase):
                 self.save_database()
                 with self.assertRaises(ValueError): self.check_command()
 
+    def test_duplicate_native_target_flags_stay_rejected_with_context(self):
+        for extra, field in ((["-arch", "arm64"], "arch"), (["-isysroot", str(self.sdk)], "sdk"),
+                             (["-miphoneos-version-min=17.0"], "minimum"),
+                             (["--target=" + module.EXPECTED_TRIPLE] * 2, "target")):
+            with self.subTest(field=field):
+                self.entry["arguments"] = [*self.args, *extra]
+                self.save_database()
+                with self.assertRaisesRegex(ValueError, "native_target=") as error:
+                    self.check_command()
+                context = json.loads(str(error.exception).split("native_target=", 1)[1])
+                self.assertEqual(context[field]["count"], 2)
+                self.assertNotIn(str(self.root), str(error.exception))
+                self.assertNotIn("ARCHITECTURE_arm64", str(error.exception))
+
+    def test_wrong_sdk_context_shows_name_and_selection_without_path(self):
+        for name in ("MacOSX27.0.sdk", "iPhoneSimulator27.0.sdk", "iPhoneOS27.0.sdk", "private-sdk-name"):
+            self.entry["arguments"] = [*self.args, "-isysroot", "/private/context-must-not-leak/" + name]
+            self.save_database()
+            with self.assertRaisesRegex(ValueError, "native_target=") as error:
+                self.check_command()
+            context = json.loads(str(error.exception).split("native_target=", 1)[1])
+            actual = context["sdk"]["values"]
+            self.assertEqual(actual[0], {"name": self.sdk.name, "selected": True})
+            self.assertEqual(actual[1], {"name": name if name.endswith(".sdk") else "<other-sdk-path>", "selected": False})
+            self.assertNotIn("context-must-not-leak", str(error.exception))
+            self.assertNotIn("private-sdk-name", str(error.exception))
+
+    def test_missing_architecture_and_minimum_have_bounded_context(self):
+        for removed, expected in ((["-arch", "arm64"], "Missing arm64"),
+                                  (["-miphoneos-version-min=17.0"], "Expected iOS 17.0")):
+            self.entry["arguments"] = [arg for arg in self.args if arg not in removed]
+            self.save_database()
+            with self.assertRaisesRegex(ValueError, expected) as error:
+                self.check_command()
+            self.assertIn("native_target=", str(error.exception))
+            self.assertLess(len(str(error.exception)), 1024)
+
+    def test_native_target_context_is_bounded_and_target_only(self):
+        values = ["x" * 64, "y" * 64, "omitted-context-value"] * 1000
+        paths = [self.sdk, Path("/sensitive/full/path/MacOSX27.0.sdk")] * 1000
+        context_text = module.native_target_context(values, paths, values, values, self.sdk)
+        context = json.loads(context_text)
+        self.assertEqual(context["arch"]["count"], 3000)
+        self.assertEqual(context["sdk"]["count"], 2000)
+        self.assertEqual(len(context["target"]["values"]), 2)
+        self.assertNotIn("omitted-context-value", context_text)
+        self.assertNotIn("sensitive", context_text)
+        self.assertNotIn(str(self.root), context_text)
+        self.assertLess(len(context_text), 1024)
+        malformed = module.native_target_context(["line\ncontrol", "😀" * 200], [], ["x" * 1000], ["quote\"payload"], self.sdk)
+        self.assertNotIn("\n", malformed)
+        self.assertNotIn("payload", malformed)
+        self.assertTrue(malformed.isascii())
+        self.assertLess(len(malformed), 1024)
+
     def test_wrong_source_output_and_external_include_rejected(self):
         for flag, replacement in (("-o", "/tmp/other.o"), ("-c", "/tmp/other.cpp"), ("-isysroot", "/other/iPhoneOS.sdk")):
             with self.subTest(flag=flag):

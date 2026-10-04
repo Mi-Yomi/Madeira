@@ -239,6 +239,30 @@ def verified_fex_repairs(document: dict) -> dict:
 
 
 
+
+def verified_fex_native_build(document: dict) -> dict:
+    # Required deliverable evidence is independent of the optional IR replay.
+    for name in ("build/fex-ios/build.sh", ".github/ci/native-artifacts.py"):
+        if sha256(repair_file(ROOT, name)) != document.get("input_sha256", {}).get(name):
+            raise ValueError(f"FEX native build input changed since provenance recording: {name}")
+    cache_path = repair_file(ROOT, "FEX/build-ios/CMakeCache.txt")
+    if cache_path.stat().st_size > 8 * 1024 * 1024:
+        raise ValueError("FEX CMake cache exceeds evidence limit")
+    cache = cache_path.read_text()
+    required = {"ENABLE_LTO": "OFF", "CMAKE_SYSTEM_NAME": "iOS",
+                "CMAKE_OSX_ARCHITECTURES": "arm64", "CMAKE_OSX_DEPLOYMENT_TARGET": "17.0",
+                "CMAKE_BUILD_TYPE": "Release", "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"}
+    for name, expected in required.items():
+        if re.findall(rf"^{name}:[^=\n]+=(.*)$", cache, re.M) != [expected]:
+            raise ValueError(f"FEX native CMake configuration must set {name}={expected}")
+    sysroots = re.findall(r"^CMAKE_OSX_SYSROOT:[^=\n]+=(.*)$", cache, re.M)
+    if len(sysroots) != 1 or sysroots[0] not in ("iphoneos", document.get("tool_versions", {}).get("iphoneos_sdk_path")):
+        raise ValueError("FEX CMake SDK differs from the recorded iPhoneOS SDK")
+    return {"configuration": dict(required, CMAKE_OSX_SYSROOT=sysroots[0]),
+            "cmake_cache_sha256": sha256(cache_path),
+            "compile_database_sha256": sha256(repair_file(ROOT, "FEX/build-ios/compile_commands.json"))}
+
+
 def verified_fex_native_object(document: dict, path: Path) -> dict:
     if not path.is_file() or path.is_symlink() or path.stat().st_size > 64 * 1024:
         raise ValueError("Missing or oversized FEX native-object evidence")
@@ -372,7 +396,7 @@ def collect(provenance: Path, output: Path) -> None:
     if not document["dependencies_ready"] or document["source_commit"] != command("git", "rev-parse", "HEAD"):
         raise ValueError("Provenance does not match the prepared source")
     source_repairs = verified_fex_repairs(document)
-    fex_native_object = verified_fex_native_object(document, provenance.parent / "fex-native-object.json")
+    fex_native_build = verified_fex_native_build(document)
     verified = {}
     for name in EXPECTED_ARCHIVES:
         verified[name] = validate_archive(ROOT / name)
@@ -406,7 +430,8 @@ def collect(provenance: Path, output: Path) -> None:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, destination)
     document.update({"source_repairs": source_repairs,
-                     "fex_native_object": fex_native_object,
+                     "fex_native_build": fex_native_build,
+                     "optional_diagnostics": {"fex_thinlto_reproduction": {"required": False, "status": "not_run_at_collection"}},
                      "crypto_symbol_table": crypto_symbols(ROOT / "build/crypto-unix/gnutls_symtab_ios.c"),
                      "verified_utc": datetime.now(timezone.utc).isoformat(), "archives": verified,
                      "notice_sha256": {name: sha256(ROOT / name) for name in sorted(notices)},
@@ -441,6 +466,8 @@ def main() -> None:
     recording.add_argument("--ready", action="store_true")
     sub.add_parser("crypto-symbols")
     sub.add_parser("fex-archives")
+    diagnostic = sub.add_parser("verify-fex-diagnostic")
+    diagnostic.add_argument("provenance", type=Path)
     staging = sub.add_parser("collect")
     staging.add_argument("provenance", type=Path)
     staging.add_argument("output", type=Path)
@@ -448,6 +475,9 @@ def main() -> None:
     try:
         if args.action == "record":
             record(args.path, args.ready)
+        elif args.action == "verify-fex-diagnostic":
+            document = json.loads(args.provenance.read_text())
+            print(json.dumps(verified_fex_native_object(document, args.provenance.parent / "fex-native-object.json"), sort_keys=True))
         elif args.action == "fex-archives":
             print(json.dumps(validate_fex_archives(), sort_keys=True))
         elif args.action == "collect":

@@ -125,6 +125,26 @@ def run(args, *, cwd=None, deadline, timeout=30, scratch=None):
     return result
 
 
+def native_target_context(arch, sysroot, minimum, target, sdk):
+    """Bounded target-only evidence; never include commands, definitions or paths."""
+    def atom(value):
+        return value if re.fullmatch(r"[A-Za-z0-9_.+-]{1,64}", value) else "<invalid-or-long>"
+
+    def values(items):
+        return {"count": len(items), "values": [atom(item) for item in items[:2]]}
+
+    def sdk_name(path):
+        name = path.name
+        return name if len(name) <= 48 and re.fullmatch(r"(?:iPhoneOS|iPhoneSimulator|MacOSX)[0-9.]*\.sdk", name) else "<other-sdk-path>"
+
+    return json.dumps({
+        "arch": values(arch), "target": values(target), "minimum": values(minimum),
+        "sdk": {"count": len(sysroot), "values": [
+            {"name": sdk_name(path), "selected": path == sdk} for path in sysroot[:2]]},
+        "expected_sdk": sdk_name(sdk),
+    }, separators=(",", ":"), ensure_ascii=True)
+
+
 def compile_entry(root, compiler, sdk):
     build = (root / "FEX/build-ios").resolve()
     cache = bounded_file(build / "CMakeCache.txt", build).decode()
@@ -230,12 +250,13 @@ def compile_entry(root, compiler, sdk):
         i += 1
     if source != [(root / SOURCE).resolve()] or output != [(root / OBJECT).resolve()]:
         raise ValueError("Unexpected source or production object output")
+    context = native_target_context(arch, sysroot, minimum, target, sdk)
     if sysroot != [sdk] or arch not in ([], ["arm64"]) or target not in ([], ["arm64-apple-ios17.0"], [EXPECTED_TRIPLE]):
-        raise ValueError("Expected selected iPhoneOS SDK and arm64 iOS target")
+        raise ValueError("Expected selected iPhoneOS SDK and arm64 iOS target; native_target=" + context)
     if not arch and not target:
-        raise ValueError("Missing arm64 iOS architecture")
+        raise ValueError("Missing arm64 iOS architecture; native_target=" + context)
     if minimum not in ([], ["17.0"], ["17.0.0"]) or (not minimum and not target):
-        raise ValueError("Expected iOS 17.0 deployment target")
+        raise ValueError("Expected iOS 17.0 deployment target; native_target=" + context)
     definition_values = {}
     for value in defines:
         name, separator, setting = value.partition("=")

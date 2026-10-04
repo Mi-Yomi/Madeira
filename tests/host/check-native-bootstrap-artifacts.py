@@ -83,6 +83,12 @@ def native_object_fixture(root, document):
         path.write_bytes(payload)
     document.setdefault("input_sha256", {}).update({name: module.sha256(root / name) for name in module.FEX_NATIVE_INPUTS})
     document.setdefault("tool_versions", {})["iphoneos_sdk_path"] = "/fixture/iPhoneOS.sdk"
+    (root / "FEX/build-ios/CMakeCache.txt").write_text("\n".join(
+        f"{name}:STRING={value}" for name, value in {
+            "ENABLE_LTO": "OFF", "CMAKE_SYSTEM_NAME": "iOS", "CMAKE_OSX_ARCHITECTURES": "arm64",
+            "CMAKE_OSX_DEPLOYMENT_TARGET": "17.0", "CMAKE_BUILD_TYPE": "Release",
+            "CMAKE_EXPORT_COMPILE_COMMANDS": "ON", "CMAKE_OSX_SYSROOT": "iphoneos",
+        }.items()) + "\n")
     receipt = {
         "schema_version": 1, "status": "passed", "evidence_kind": "fresh-same-source-thinlto-reproduction",
         "sdk_path": "/fixture/iPhoneOS.sdk", "helper_sha256": document["input_sha256"]["build/fex-ios/check-native-object.py"],
@@ -97,6 +103,33 @@ def native_object_fixture(root, document):
     path = root / "fex-native-object.json"
     path.write_text(json.dumps(receipt))
     return receipt, path
+
+
+class NativeBuildEvidenceTests(unittest.TestCase):
+    def test_required_build_provenance_is_independent_of_optional_receipt(self):
+        for mutation in (None, "bad-optional", "missing-cache", "lto", "host", "architecture", "sdk", "recipe", "database"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                document = {}
+                _, optional = native_object_fixture(root, document)
+                optional.unlink()
+                cache = root / "FEX/build-ios/CMakeCache.txt"
+                if mutation == "bad-optional": optional.write_text("malformed optional receipt")
+                elif mutation == "missing-cache": cache.unlink()
+                elif mutation in ("lto", "host", "architecture", "sdk"):
+                    old, new = {"lto": ("ENABLE_LTO:STRING=OFF", "ENABLE_LTO:STRING=ON"),
+                                "host": ("CMAKE_SYSTEM_NAME:STRING=iOS", "CMAKE_SYSTEM_NAME:STRING=Darwin"),
+                                "architecture": ("CMAKE_OSX_ARCHITECTURES:STRING=arm64", "CMAKE_OSX_ARCHITECTURES:STRING=x86_64"),
+                                "sdk": ("CMAKE_OSX_SYSROOT:STRING=iphoneos", "CMAKE_OSX_SYSROOT:STRING=macosx")}[mutation]
+                    cache.write_text(cache.read_text().replace(old, new))
+                elif mutation == "recipe": (root / "build/fex-ios/build.sh").write_text("changed recipe")
+                elif mutation == "database": (root / "FEX/build-ios/compile_commands.json").unlink()
+                with mock.patch.object(module, "ROOT", root):
+                    if mutation in (None, "bad-optional"):
+                        evidence = module.verified_fex_native_build(document)
+                        self.assertEqual(evidence["configuration"]["ENABLE_LTO"], "OFF")
+                    else:
+                        with self.assertRaises(ValueError): module.verified_fex_native_build(document)
 
 
 class NativeObjectEvidenceTests(unittest.TestCase):
@@ -352,12 +385,14 @@ class BundleTests(unittest.TestCase):
                     module.collect(manifest, root / "host")
                 self.assertFalse((root / "host").exists())
                 last.write_bytes(archive(member("ios.o/", macho())))
+                (root / "fex-native-object.json").unlink(missing_ok=True)
                 module.collect(manifest, root / "complete")
                 result = json.loads((root / "complete/provenance.json").read_text())
                 self.assertEqual(set(result["archives"]), set(module.EXPECTED_ARCHIVES))
                 self.assertEqual(result["source_repairs"]["component"], "FEX")
                 self.assertEqual(len(result["source_repairs"]["repairs"]), 2)
-                self.assertEqual(result["fex_native_object"]["status"], "passed")
+                self.assertEqual(result["fex_native_build"]["configuration"]["ENABLE_LTO"], "OFF")
+                self.assertEqual(result["optional_diagnostics"]["fex_thinlto_reproduction"], {"required": False, "status": "not_run_at_collection"})
                 self.assertEqual(len(list((root / "complete/libraries").rglob("*.a"))), 20)
                 self.assertTrue((root / "complete/notices/LICENSE").exists())
                 self.assertFalse(list((root / "complete").rglob("*.o")))

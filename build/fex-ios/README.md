@@ -79,8 +79,8 @@ and exports compile commands. It keeps the ARM64 iOS target and Release
 optimization. All 20 deliverable archives must still pass the unchanged
 Mach-O/iOS acceptance rules; raw or wrapped LLVM bitcode remains rejected.
 
-After building, CI runs `check-native-object.py` with a two-minute overall
-budget. It verifies the actual non-LTO `JitSymbols.cpp.o`, then recompiles that
+After the required 20-archive build and verification succeeds, a separate
+optional CI step runs `check-native-object.py` with a two-minute overall budget. It verifies the actual non-LTO `JitSymbols.cpp.o`, then recompiles that
 same pinned source and explicit device-target compile flags with ThinLTO enabled
 in a sanitized environment. Dependency outputs are removed, primary output is
 redirected to a disposable object, and default compiler config files are disabled. Apple clang reads the resulting IR with an explicit iOS
@@ -89,7 +89,11 @@ silently rewritten into an apparent success. [LLVM's IR reader](https://github.c
 compiler evidence is logged; the probe object and textual IR are discarded.
 This is a fresh same-source reproduction, not recovery of the old archive.
 The small receipt and its current source/object/helper hashes are checked by
-the final provenance gate. No guest code is executed by this diagnostic.
+a separate optional verifier. Core artifact provenance instead requires the
+actual LTO-off CMake configuration, source repairs and recipe hashes. A failed
+or skipped explanatory replay is reported separately and never counted as
+verified, but does not invalidate correctly verified native archives. No guest
+code is executed by this diagnostic.
 
 The compile-command parser accepts only CMake's build-root layout (Ninja) or
 its exact `FEXCore/Source` target directory (Unix Makefiles). Resolved source
@@ -97,7 +101,10 @@ and production-object paths must match in either layout; unrelated directories
 and escaping paths remain rejected. `tests/host/check-fex-cmake-layout.py`
 configures both real generators and checks their command databases without
 building or executing the synthetic target. Missing CMake/Ninja fails the test.
-It runs in the early Linux/macOS gates before dependency rebuilding.
+It runs in the independent Linux desktop-helper workflow and in the separate
+optional macOS step after the core build. Neither generator-fixture run is a
+prerequisite for the required native archive job; its own source-test outcome
+remains visible.
 
 Immediately after FEX builds, all seven archives receive the same strict
 member-by-member format/platform checks used by final collection, before the
