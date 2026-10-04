@@ -30,6 +30,11 @@ jobs:
           python3 tests/host/check-gl-absent.py
           python3 tests/host/check-unixlib-binder.py
           python3 tests/host/check-window-visibility.py
+      - name: Check native-bootstrap failure handling and artifact validation
+        run: |
+          python3 tests/host/check-native-bootstrap-scripts.py
+          python3 tests/host/check-native-bootstrap-artifacts.py
+          python3 tests/host/check-native-bootstrap-workflow.py
       - name: Check Blender probe syntax
         run: python3 -m py_compile tests/desktop/blender_cpu_smoke.py
       - name: Check Unicode input queue with sanitizers

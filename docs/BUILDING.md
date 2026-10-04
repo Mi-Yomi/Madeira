@@ -14,6 +14,58 @@ the submodule commits (FEX, its nested rpmalloc fork, wine branch
 recursive clone fails at the first submodule until every fork is pushed. This document is the
 remediation; steps marked UNVERIFIED have not yet been re-run from scratch.
 
+## Current source availability and bounded bootstrap (2026-10-04)
+
+The paragraph above records the historical 2026-09-16 attempt, not the current
+availability of the forks. The pinned FEX, Wine, DXMT and Madeira Dock commits,
+including the nested FEX/rpmalloc/DXMT gitlinks, are now publicly available.
+A recursive checkout still does not supply the ignored generated libraries,
+headers and cross-toolchains required for the app link.
+
+`.github/workflows/native-bootstrap.yml` prepares only the first native stage.
+It starts with portable failure-injection tests, then uses the standard
+[`xcode-27` public runner](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories).
+The [runner inventory](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md)
+currently lists Xcode 27 and the iOS 27 SDK; the job verifies the actual tools
+instead of accepting an absent component or license prompt.
+
+- Native job timeout: 45 minutes, including a 35-minute build step; at most
+  two compile jobs. No signing account, new secret or larger paid runner
+- Exact submodule pins, tool versions and source hashes are recorded. The
+  official llvm-mingw archive is checksum-verified before use. FreeType uses
+  commit `42608f77f20749dd6ddc9e0536788eaad70ea4b5`
+- Separate native and ARM64EC Wine trees generate real headers. Failed header
+  generation or compilation is fatal; stale archives cannot satisfy the stage
+- FEX builds all seven app-linked static archives. Wineserver builds its base
+  from current sources, overlays the maintained iOS objects, and validates
+  the archive members and required symbol renames before replacing an output
+- Every non-index member of all 20 required dependency archives is checked as
+  an arm64 iOS Mach-O object. Host, simulator, unknown-bitcode, missing and
+  partial results are rejected. Rust LTO output is verified, not assumed
+- Bounded diagnostics are printed in the normal GitHub job log. The first
+  push-triggered run does **not** upload artifacts: artifact storage has a
+  separate [billing allowance](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
+  The default-false manual upload option must be used only after confirming
+  free capacity or explicitly authorizing storage use. Optional dependency
+  output is capped at 400 MiB, diagnostics at 16 MiB, with 3-day retention
+
+The workflow stops before LLVM, DXMT, the Xcode app link and IPA packaging.
+A green native stage is therefore not an IPA or an on-device result. The next
+stages must build the pinned LLVM libraries, generate DXMT's three AIR headers,
+create `libdxmt_combined.a` from a clean build, stage notices and link the app in
+**Debug**. The separate Apple converter installer is unnecessary when using
+the already tracked, checksum-verified converter library and notices.
+
+Microsoft runtime DLLs are not required merely to produce an app bundle: the
+ignored `app/Madeira/x86_64-vcruntime/` resource directory can be empty. Exact
+Windows applications may need their own runtime installation later, under its
+applicable terms. An unsigned/ad-hoc build likewise needs no Apple account,
+while installation/signing and JIT on an iPhone remain separate steps.
+
+This section describes the new build recipe and its gates. It does not mark
+any formerly unverified native or clean-app build as passed before its CI
+result is recorded.
+
 ## Inputs that are not in the repository
 
 | Input | Why absent | How to obtain | Verified from clean |

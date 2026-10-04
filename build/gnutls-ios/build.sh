@@ -42,7 +42,8 @@ export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
 export PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig"
 
 HOST=aarch64-apple-darwin
-JOBS=$(sysctl -n hw.ncpu)
+JOBS="${JOBS:-$(sysctl -n hw.ncpu)}"
+case "$JOBS" in ''|*[!0-9]*|0) echo "JOBS must be a positive integer" >&2; exit 2 ;; esac
 
 mkdir -p "$OBJ_DIR" "$PREFIX"
 

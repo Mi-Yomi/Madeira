@@ -1,0 +1,121 @@
+name: Native iOS bootstrap
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload_artifacts:
+        description: 'Upload bounded artifacts only after verifying free storage or explicitly approving storage charges'
+        type: boolean
+        required: false
+        default: false
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - .github/workflows/native-bootstrap.yml
+      - .github/ci/**
+      - .gitmodules
+      - FEX
+      - wine
+      - build/fex-ios/**
+      - build/freetype-ios/**
+      - build/gnutls-ios/**
+      - build/crypto-unix/**
+      - build/ffmpeg/**
+      - build/ntdll-unix/**
+      - build/win32u-unix/**
+      - build/wineserver/**
+      - build/rppairing-ios/**
+      - tests/host/check-native-bootstrap*.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-bootstrap-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  portable-validation:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify archive gates, header failures and build orchestration
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 tests/host/check-native-bootstrap-artifacts.py
+          python3 tests/host/check-native-bootstrap-workflow.py
+          python3 tests/host/check-native-bootstrap-scripts.py
+          for script in .github/ci/*.sh build/fex-ios/build.sh build/freetype-ios/build.sh build/gnutls-ios/build.sh build/ffmpeg/build.sh build/ntdll-unix/build.sh build/wineserver/*.sh; do
+            bash -n "$script"
+          done
+  native:
+    needs: portable-validation
+    # Standard, free public-repository ARM64 runner. Never use -large/-xlarge.
+    # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+    if: github.event.repository.private == false
+    runs-on: xcode-27
+    timeout-minutes: 45
+    env:
+      JOBS: '2'
+      BUILD_JOBS: '2'
+      CMAKE_BUILD_PARALLEL_LEVEL: '2'
+      CARGO_BUILD_JOBS: '2'
+      MAKEFLAGS: -j2
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+      HOMEBREW_NO_INSTALL_CLEANUP: '1'
+      HOMEBREW_NO_ANALYTICS: '1'
+      NATIVE_LOG_DIR: ${{ runner.temp }}/madeira-native-logs
+      NATIVE_ARTIFACT_DIR: ${{ runner.temp }}/madeira-native-artifacts
+    steps:
+      - name: Initialize diagnostics
+        run: |
+          mkdir -p "$NATIVE_LOG_DIR"
+          printf '%s\n' 'First native stage only: no IPA, app link, signing, LLVM or DXMT build.' > "$NATIVE_LOG_DIR/scope.txt"
+      - name: Checkout pinned source and public submodules
+        id: checkout
+        timeout-minutes: 5
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: Build native dependencies, at most two compile jobs
+        id: bootstrap
+        # Leave time for diagnostics before the overall 45-minute job limit.
+        timeout-minutes: 35
+        run: bash .github/ci/native-bootstrap.sh
+      - name: Collect bounded diagnostics
+        if: always()
+        timeout-minutes: 1
+        run: |
+          if [ -f .github/ci/collect-native-logs.py ]; then
+            python3 .github/ci/collect-native-logs.py
+          else
+            printf '%s\n' 'Checkout did not supply diagnostic collector; see the checkout step log.' > "$NATIVE_LOG_DIR/checkout-failure.txt"
+          fi
+          df -h "$RUNNER_TEMP" > "$NATIVE_LOG_DIR/disk-final.txt"
+      # Artifact storage is pooled/billable; the automatic push attempt uploads
+      # nothing. Native job logs are always available without artifact storage.
+      - name: Upload diagnostics
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.upload_artifacts
+        timeout-minutes: 2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-bootstrap-logs-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ env.NATIVE_LOG_DIR }}/
+          if-no-files-found: error
+          retention-days: 3
+      - name: Upload verified iOS ARM64 libraries and provenance
+        if: success() && steps.bootstrap.outcome == 'success' && github.event_name == 'workflow_dispatch' && inputs.upload_artifacts
+        timeout-minutes: 2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-ios-arm64-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ env.NATIVE_ARTIFACT_DIR }}/
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0

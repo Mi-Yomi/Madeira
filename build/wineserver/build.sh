@@ -1,26 +1,41 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 BUILD_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$BUILD_DIR/../.." && pwd)"
 WINE_SRC="$REPO_ROOT/wine"
-SDK=$(xcrun --sdk iphoneos --show-sdk-path)
 APP_LIB="$REPO_ROOT/app/Madeira/libwineserver.a"
 SHIMS_DIR="$REPO_ROOT/build/ntdll-unix/shims"
-
-# Object files and library go in build dir
 OBJ_DIR="$BUILD_DIR/obj"
-mkdir -p "$OBJ_DIR"
+WORK_LIB="$OBJ_DIR/libwineserver.next.a"
+AR="${AR:-ar}"
+NM="${NM:-nm}"
+# Apple ar may list its symbol-table member; it is regenerated on repack.
+archive_members() {
+    "$AR" t "$1" | sed -e '/^__\.SYMDEF$/d' -e '/^__\.SYMDEF SORTED$/d' \
+        -e '/^__\.SYMDEF_64$/d' -e '/^__\.SYMDEF_64 SORTED$/d'
+}
+MODE="${1:-all}"
+case "$MODE" in
+    all|request|main|mach|unicode) ;;
+    *) echo "Usage: $0 [all|request|main|mach|unicode]" >&2; exit 1;;
+esac
 
-# Copy the base library if we don't have one yet
-if [ ! -f "$OBJ_DIR/libwineserver.a" ]; then
-    if [ -f "$APP_LIB" ]; then
-        cp "$APP_LIB" "$OBJ_DIR/libwineserver.a"
+# Resolve tools before expensive compilation; never rely on a versioned local
+# Homebrew installation. CI can provide llvm-mingw's llvm-objcopy through PATH.
+if [ -z "${OBJCOPY:-}" ]; then
+    if command -v llvm-objcopy >/dev/null 2>&1; then
+        OBJCOPY=$(command -v llvm-objcopy)
     else
-        echo "ERROR: No base libwineserver.a found"
-        exit 1
+        OBJCOPY=/opt/homebrew/opt/llvm/bin/llvm-objcopy
     fi
 fi
+[ -x "$OBJCOPY" ] || { echo "llvm-objcopy not found; set OBJCOPY or PATH" >&2; exit 1; }
+[ -f "$WINE_SRC/build-macos/include/config.h" ] || {
+    echo "Missing Wine generated config.h; prepare wine/build-macos first" >&2; exit 1;
+}
+SDK=$(xcrun --sdk iphoneos --show-sdk-path)
+mkdir -p "$OBJ_DIR"
 
 CC_FLAGS=(
     -arch arm64 -isysroot "$SDK" -miphoneos-version-min=17.0 -O2
@@ -49,7 +64,9 @@ compile_one() {
     local src=$1
     local name=$2
     echo -n "  $name... "
+    rm -f "$OBJ_DIR/$name.o"
     if xcrun -sdk iphoneos clang "${CC_FLAGS[@]}" -c "$src" -o "$OBJ_DIR/$name.o" 2>"$OBJ_DIR/err-$name.txt"; then
+        [ -s "$OBJ_DIR/$name.o" ] || { echo "Missing object: $name.o" >&2; return 1; }
         echo "OK"
     else
         echo "FAILED (see $OBJ_DIR/err-$name.txt)"
@@ -66,13 +83,9 @@ PATCHED_FILES=(
     "mach_ios:mach_ios.c:mach.o"
     "unicode_ios:unicode_ios.c:unicode.o"
     "fd_ios:fd_ios.c:fd.o"
-    # ml574: object.c must appear in BOTH lists — SOURCES compiles it,
-    # REPLACEMENTS inserts it into the prebuilt base archive. An entry in
-    # only the first compiles, prints OK, and is silently discarded.
+    # This is the single source of truth for compilation and archive insertion.
     "object:$WINE_SRC/server/object.c:object.o"
-    # ml805: event/handle carry the [evt-hist] instrumentation. Both MUST be
-    # listed here -- they are otherwise linked from a prebuilt object and the
-    # source edits would be dead code, the same trap as the unix/*.c forks.
+    # ml805: event/handle carry the [evt-hist] instrumentation.
     "event:$WINE_SRC/server/event.c:event.o"
     # Fastsync's semaphore half (madeira_semaphore_cell_index and friends in
     # server/semaphore.c) is referenced by inproc_sync.c and thread.c, so it is
@@ -107,97 +120,65 @@ PATCHED_FILES=(
     # copy adds the [srv-conn]/[tcp-state]/[tcp-enum] probes.
     "sock:$WINE_SRC/server/sock.c:sock.o"
     # ml2101: the opt-in HID controller (MADEIRA_PAD_MODE = hid) and Wine's
-    # hidparse.sys parser it builds its preparsed data with. New objects, not
-    # replacements: both lists, as for every entry here.
+    # hidparse.sys parser it builds its preparsed data with. New objects.
     "hidpad_ios:hidpad_ios.c:hidpad_ios.o"
     "hidparse_ios:$REPO_ROOT/build/hidpad/hidparse_ios.c:hidparse_ios.o"
 )
+
+# A full build always rebuilds the current Wine sources. Never seed it from
+# an old app archive. Partial rebuilds require an earlier complete local build.
+if [ "$MODE" = all ]; then
+    EXCLUDED=()
+    for entry in "${PATCHED_FILES[@]}"; do
+        EXCLUDED+=("${entry##*:}")
+    done
+    bash "$BUILD_DIR/build-base.sh" "${EXCLUDED[@]}"
+    cp "$BUILD_DIR/libwineserver_base.a" "$WORK_LIB"
+else
+    [ -s "$OBJ_DIR/libwineserver.a" ] || {
+        echo "No complete local wineserver archive; run $0 all first" >&2; exit 1;
+    }
+    cp "$OBJ_DIR/libwineserver.a" "$WORK_LIB"
+fi
 
 echo "=== Building kill wrapper (without kill macro) ==="
 echo -n "  wineserver_ios_kill... "
 # Compile WITHOUT -include wineserver_ios_kill.h to avoid recursive macro
 KILL_FLAGS=(-arch arm64 -isysroot "$SDK" -miphoneos-version-min=17.0 -O2
     -I"$BUILD_DIR" -DWINE_IOS=1 -Wno-implicit-function-declaration)
+rm -f "$OBJ_DIR/wineserver_ios_kill.o"
 if xcrun -sdk iphoneos clang "${KILL_FLAGS[@]}" -c "$BUILD_DIR/wineserver_ios_kill.c" -o "$OBJ_DIR/wineserver_ios_kill.o" 2>"$OBJ_DIR/err-kill.txt"; then
+    [ -s "$OBJ_DIR/wineserver_ios_kill.o" ] || { echo "Missing kill wrapper object" >&2; exit 1; }
     echo "OK"
 else
     echo "FAILED"; cat "$OBJ_DIR/err-kill.txt"; exit 1
 fi
 
-case "${1:-all}" in
-    all)
-        echo "=== Building all patched wineserver files ==="
-        for entry in "${PATCHED_FILES[@]}"; do
-            IFS=: read -r name src old_obj <<< "$entry"
-            # Support absolute paths (e.g. upstream files via $WINE_SRC)
-            if [[ "$src" == /* ]]; then
-                compile_one "$src" "$name"
-            else
-                compile_one "$BUILD_DIR/$src" "$name"
-            fi
-        done
-        ;;
-    request|main|mach|unicode)
-        for entry in "${PATCHED_FILES[@]}"; do
-            IFS=: read -r name src old_obj <<< "$entry"
-            if [[ "$name" == "${1}_ios" || "$name" == "${1}" ]]; then
-                compile_one "$BUILD_DIR/$src" "$name"
-            fi
-        done
-        ;;
-    *)
-        echo "Usage: $0 [all|request|main|mach|unicode]"
-        exit 1
-        ;;
-esac
+echo "=== Building patched wineserver files ($MODE) ==="
+REPLACEMENTS=("wineserver_ios_kill.o:wineserver_ios_kill.o")
+for entry in "${PATCHED_FILES[@]}"; do
+    IFS=: read -r name src old_obj <<< "$entry"
+    if [ "$MODE" != all ] && [ "$name" != "${MODE}_ios" ] && [ "$name" != "$MODE" ]; then
+        continue
+    fi
+    if [[ "$src" != /* ]]; then src="$BUILD_DIR/$src"; fi
+    compile_one "$src" "$name"
+    REPLACEMENTS+=("$name.o:$old_obj")
+done
 
-echo ""
+# Apply only objects compiled successfully in this invocation. A missing member
+# is allowed for a new overlay, but any archiver failure is fatal.
 echo "=== Updating libwineserver.a ==="
-
-# Map of patched .o files to the original .o names they replace
-# Pairs of "new_obj_filename:old_obj_filename_in_archive". Plain array
-# iteration to avoid bash assoc-array word-splitting issues seen in zsh-launched
-# build environments.
-REPLACEMENTS=(
-    "wine_log_ios.o:wine_log_ios.o"
-    "request_ios.o:request.o"
-    "main_ios.o:main.o"
-    "mach_ios.o:mach.o"
-    "unicode_ios.o:unicode.o"
-    "fd_ios.o:fd.o"
-    "process_ios.o:process.o"
-    "wineserver_ios_kill.o:wineserver_ios_kill.o"
-    "window.o:window.o"
-    "user.o:user.o"
-    "class.o:class.o"
-    "region.o:region.o"
-    "queue.o:queue.o"
-    "mapping.o:mapping.o"
-    "winstation.o:winstation.o"
-    "thread.o:thread.o"
-    "sock.o:sock.o"
-    "object.o:object.o"
-    "async.o:async.o"
-    # ml805: BOTH lists matter. PATCHED_FILES only compiles; REPLACEMENTS is what
-    # actually swaps the object into the archive. Adding to one and not the other
-    # compiles cleanly, ships the OLD object, and fails at link with an undefined
-    # symbol -- which is exactly what happened first try.
-    "event.o:event.o"
-    "semaphore.o:semaphore.o"
-    "handle.o:handle.o"
-    "inproc_sync.o:inproc_sync.o"   # ml1058
-    "hidpad_ios.o:hidpad_ios.o"     # ml2101
-    "hidparse_ios.o:hidparse_ios.o" # ml2101
-)
-
 for entry in "${REPLACEMENTS[@]}"; do
     new_obj="${entry%%:*}"
     old_obj="${entry##*:}"
-    if [ -f "$OBJ_DIR/$new_obj" ]; then
-        ar d "$OBJ_DIR/libwineserver.a" "$old_obj" 2>/dev/null || true
-        ar d "$OBJ_DIR/libwineserver.a" "$new_obj" 2>/dev/null || true
-        ar r "$OBJ_DIR/libwineserver.a" "$OBJ_DIR/$new_obj"
+    [ -s "$OBJ_DIR/$new_obj" ] || { echo "Missing replacement: $new_obj" >&2; exit 1; }
+    archive_members "$WORK_LIB" > "$OBJ_DIR/members.txt"
+    if grep -Fxq "$old_obj" "$OBJ_DIR/members.txt"; then "$AR" d "$WORK_LIB" "$old_obj"; fi
+    if [ "$old_obj" != "$new_obj" ] && grep -Fxq "$new_obj" "$OBJ_DIR/members.txt"; then
+        "$AR" d "$WORK_LIB" "$new_obj"
     fi
+    "$AR" r "$WORK_LIB" "$OBJ_DIR/$new_obj"
 done
 
 echo ""
@@ -206,8 +187,6 @@ echo "=== Renaming colliding symbols in every .o (objcopy sweep) ==="
 # we know collide with win32u-unix, repackage. Affects definitions AND
 # references uniformly, so cross-file calls inside wineserver still
 # resolve. Externals (win32u, etc.) only see the ws_-prefixed names.
-OBJCOPY=$(command -v llvm-objcopy || echo /opt/homebrew/opt/llvm/bin/llvm-objcopy)
-[ -x "$OBJCOPY" ] || OBJCOPY=/opt/homebrew/Cellar/llvm/22.1.0/bin/llvm-objcopy
 COLLISIONS=(
     alloc_user_handle free_user_handle get_virtual_screen_rect
     destroy_thread_windows get_window_thread is_desktop_class
@@ -238,17 +217,49 @@ RENAME_ARGS=()
 for s in "${COLLISIONS[@]}"; do
     RENAME_ARGS+=(--redefine-sym "_${s}=_ws_${s}")
 done
+"$NM" -g "$WORK_LIB" > "$OBJ_DIR/symbols-before.txt"
+awk '{ print $NF }' "$OBJ_DIR/symbols-before.txt" | LC_ALL=C sort -u > "$OBJ_DIR/names-before.txt"
 TMP_RENAME_DIR="$OBJ_DIR/rename"
 rm -rf "$TMP_RENAME_DIR" && mkdir -p "$TMP_RENAME_DIR"
-(cd "$TMP_RENAME_DIR" && ar x "$OBJ_DIR/libwineserver.a")
+# A duplicate member name would be lost by ar x. Reject it before extraction.
+archive_members "$WORK_LIB" | LC_ALL=C sort > "$OBJ_DIR/expected-members.txt"
+if [ -n "$(uniq -d "$OBJ_DIR/expected-members.txt")" ]; then
+    echo "Duplicate wineserver archive members" >&2; exit 1
+fi
+(cd "$TMP_RENAME_DIR" && "$AR" x "$WORK_LIB")
+RENAMED=()
 for f in "$TMP_RENAME_DIR"/*.o; do
+    [ -s "$f" ] || { echo "Missing extracted wineserver object: $f" >&2; exit 1; }
     "$OBJCOPY" "${RENAME_ARGS[@]}" "$f"
+    RENAMED+=("$f")
 done
-rm "$OBJ_DIR/libwineserver.a"
-ar rcs "$OBJ_DIR/libwineserver.a" "$TMP_RENAME_DIR"/*.o
+# Repack into a new archive, leaving the last successful library untouched.
+rm -f "$WORK_LIB"
+"$AR" rcs "$WORK_LIB" "${RENAMED[@]}"
+archive_members "$WORK_LIB" | LC_ALL=C sort > "$OBJ_DIR/actual-members.txt"
+diff -u "$OBJ_DIR/expected-members.txt" "$OBJ_DIR/actual-members.txt"
+"$NM" -g "$WORK_LIB" > "$OBJ_DIR/symbols-after.txt"
+awk '{ print $NF }' "$OBJ_DIR/symbols-after.txt" | LC_ALL=C sort -u > "$OBJ_DIR/names-after.txt"
+for s in "${COLLISIONS[@]}"; do
+    if grep -Fxq "_$s" "$OBJ_DIR/names-after.txt"; then
+        echo "Unrenamed wineserver symbol: _$s" >&2; exit 1
+    fi
+    if grep -Fxq "_$s" "$OBJ_DIR/names-before.txt" && ! grep -Fxq "_ws_$s" "$OBJ_DIR/names-after.txt"; then
+        echo "Missing renamed wineserver symbol: _ws_$s" >&2; exit 1
+    fi
+done
+# Every current overlay must survive the archive surgery, even for a partial build.
+for entry in "${PATCHED_FILES[@]}"; do
+    grep -Fxq "${entry%%:*}.o" "$OBJ_DIR/actual-members.txt" || {
+        echo "Missing patched archive member: ${entry%%:*}.o" >&2; exit 1;
+    }
+done
+grep -Fxq wineserver_ios_kill.o "$OBJ_DIR/actual-members.txt"
+mv "$WORK_LIB" "$OBJ_DIR/libwineserver.a"
 rm -rf "$TMP_RENAME_DIR"
 echo "  symbol rename + repack OK"
 
 echo "Copying to app..."
-cp "$OBJ_DIR/libwineserver.a" "$APP_LIB"
+cp "$OBJ_DIR/libwineserver.a" "$APP_LIB.tmp"
+mv "$APP_LIB.tmp" "$APP_LIB"
 echo "Done! libwineserver.a: $(wc -c < "$APP_LIB" | tr -d ' ') bytes"

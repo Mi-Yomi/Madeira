@@ -65,7 +65,8 @@ for a in "$@"; do
 done
 
 SDK=$(xcrun --sdk iphoneos --show-sdk-path)
-JOBS=$(sysctl -n hw.ncpu)
+JOBS="${JOBS:-$(sysctl -n hw.ncpu)}"
+case "$JOBS" in ''|*[!0-9]*|0) echo "JOBS must be a positive integer" >&2; exit 2 ;; esac
 
 # ------------------------------------------------------------------ verify
 mkdir -p "$OBJ_DIR"

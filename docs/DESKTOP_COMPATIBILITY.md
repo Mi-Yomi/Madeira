@@ -246,6 +246,6 @@ chain and its still-unverified clean-machine steps.
 The next-build audit also found 16 required static archives absent from the
 clean checkout, empty native submodule directories and missing cross-toolchains.
 An unsigned `xcodebuild` job cannot fix those prerequisites by turning signing
-off. The user's target is iPhone 16 Pro Max on iOS 27; the existing Madeira app
-opens, but its exact installed build and these changes' device behavior have
-not been verified.
+off. Device acceptance targets iPhone 16 Pro Max on iOS 27; these changes'
+on-device behavior has not been verified. The bounded clean-bootstrap recipe
+and current source availability are recorded in [BUILDING.md](BUILDING.md).

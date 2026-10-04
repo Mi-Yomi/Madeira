@@ -205,6 +205,15 @@ if [ -n "$FAILED_FILES" ]; then
 fi
 
 echo ""
+if [ "$FAILED" -gt 0 ]; then
+    for name in $FAILED_FILES; do
+        echo "=== $name diagnostics (first 40 lines) ===" >&2
+        head -40 "$OBJ_DIR/$name.err" >&2
+    done
+    echo "Not linking: $FAILED compilation failures (full diagnostics in $OBJ_DIR)" >&2
+    exit 1
+fi
+
 echo "=== Building libntdll_unix.a ==="
 ar rcs "$OBJ_DIR/libntdll_unix.a" \
     "$OBJ_DIR/audio_null_ios.o" "$OBJ_DIR/madsync.o" "$OBJ_DIR/nsi_unixlib_ios.o" \

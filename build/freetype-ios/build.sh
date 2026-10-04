@@ -14,6 +14,9 @@ SRC="$REPO_ROOT/research/freetype"
 
 [ -d "$SRC" ] || { echo "ERROR: clone freetype first (see header)"; exit 1; }
 
+JOBS="${JOBS:-8}"
+case "$JOBS" in ''|*[!0-9]*|0) echo "JOBS must be a positive integer" >&2; exit 2 ;; esac
+
 cmake -S "$SRC" -B "$BUILD_DIR/build" -G "Unix Makefiles" \
   -DCMAKE_SYSTEM_NAME=iOS \
   -DCMAKE_OSX_ARCHITECTURES=arm64 \
@@ -25,5 +28,5 @@ cmake -S "$SRC" -B "$BUILD_DIR/build" -G "Unix Makefiles" \
   -DFT_DISABLE_HARFBUZZ=ON -DFT_DISABLE_BROTLI=ON \
   -DCMAKE_C_FLAGS="-fno-stack-protector"
 
-cmake --build "$BUILD_DIR/build" -j8
+cmake --build "$BUILD_DIR/build" -j"$JOBS"
 echo "Done: $BUILD_DIR/build/libfreetype.a"
