@@ -35,17 +35,19 @@ def archive(*members):
 
 def repair_fixture(root):
     revision = "f" * 40
-    relative = "FEXCore/Source/Interface/Core/Core.cpp"
-    patch = "build/fex-ios/patches/reviewed.patch"
-    data = {
-        patch: b"reviewed patch\n",
-        "build/fex-ios/apply-source-repairs.py": b"# fixture apply script\n",
-        "FEX/" + relative: b"reviewed patched source\n",
-    }
+    sources = ("FEXCore/Source/Interface/Core/Core.cpp", "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp")
+    patches = ("build/fex-ios/patches/reviewed.patch", "build/fex-ios/patches/second.patch")
+    data = {"build/fex-ios/apply-source-repairs.py": b"# fixture apply script\n"}
+    repairs = []
+    for number, (relative, patch) in enumerate(zip(sources, patches)):
+        data[patch] = f"reviewed patch {number}\n".encode()
+        data["FEX/" + relative] = f"reviewed patched source {number}\n".encode()
+        repairs.append({"id": f"fixture-{number}", "patch": patch,
+                        "patch_sha256": hashlib.sha256(data[patch]).hexdigest(),
+                        "files": [{"path": relative, "original_sha256": "0" * 64,
+                                   "patched_sha256": hashlib.sha256(data["FEX/" + relative]).hexdigest()}]})
     spec = {"schema_version": 1, "component": "FEX", "source_repository": "https://github.com/willfaust/FEX.git",
-            "source_revision": revision, "repairs": [{"id": "fixture", "patch": patch,
-                "patch_sha256": hashlib.sha256(data[patch]).hexdigest(), "files": [{"path": relative,
-                    "original_sha256": "0" * 64, "patched_sha256": hashlib.sha256(data["FEX/" + relative]).hexdigest()}]}]}
+            "source_revision": revision, "repairs": repairs}
     encoded = (json.dumps(spec, indent=2) + "\n").encode()
     data[module.FEX_REPAIR_SPEC] = encoded
     data[module.FEX_REPAIR_RECORD] = encoded
@@ -56,13 +58,13 @@ def repair_fixture(root):
     document = {"dependencies_ready": True, "source_commit": "fixture",
                 "submodules": [{"path": "FEX", "commit": revision, "repository": spec["source_repository"]}],
                 "input_sha256": {name: hashlib.sha256(data[name]).hexdigest() for name in (
-                    module.FEX_REPAIR_SPEC, patch, "build/fex-ios/apply-source-repairs.py")}}
+                    module.FEX_REPAIR_SPEC, *patches, "build/fex-ios/apply-source-repairs.py")}}
     def command(*args, cwd=None):
         if cwd == root / "FEX":
             if args == ("git", "rev-parse", "HEAD"):
                 return revision
             if args == ("git", "diff", "--name-only", "--no-renames", "HEAD"):
-                return relative
+                return "\n".join(sources)
             raise AssertionError(args)
         return "fixture"
     return document, command
@@ -96,6 +98,33 @@ class RepairProvenanceTests(unittest.TestCase):
                 with mock.patch.object(module, "ROOT", root), mock.patch.object(module, "command", side_effect=command):
                     if mutation is None:
                         self.assertEqual(module.verified_fex_repairs(document)["component"], "FEX")
+                    else:
+                        with self.assertRaises(ValueError):
+                            module.verified_fex_repairs(document)
+
+    def test_every_repair_requires_complete_matching_evidence(self):
+        for mutation in (None, "source", "patch", "input", "old-record", "missing-change"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                document, command = repair_fixture(root)
+                spec = json.loads((root / module.FEX_REPAIR_SPEC).read_text())
+                second = spec["repairs"][1]
+                if mutation == "source":
+                    (root / "FEX" / second["files"][0]["path"]).write_text("unexpected second source")
+                elif mutation == "patch":
+                    (root / second["patch"]).write_text("unexpected second patch")
+                elif mutation == "input":
+                    del document["input_sha256"][second["patch"]]
+                elif mutation == "old-record":
+                    spec["repairs"].pop()
+                    (root / module.FEX_REPAIR_RECORD).write_text(json.dumps(spec))
+                elif mutation == "missing-change":
+                    original_command = command
+                    command = lambda *args, **kwargs: (original_command(*args, **kwargs).splitlines()[0]
+                        if "diff" in args else original_command(*args, **kwargs))
+                with mock.patch.object(module, "ROOT", root), mock.patch.object(module, "command", side_effect=command):
+                    if mutation is None:
+                        self.assertEqual(len(module.verified_fex_repairs(document)["repairs"]), 2)
                     else:
                         with self.assertRaises(ValueError):
                             module.verified_fex_repairs(document)
@@ -229,6 +258,7 @@ class BundleTests(unittest.TestCase):
                 result = json.loads((root / "complete/provenance.json").read_text())
                 self.assertEqual(set(result["archives"]), set(module.EXPECTED_ARCHIVES))
                 self.assertEqual(result["source_repairs"]["component"], "FEX")
+                self.assertEqual(len(result["source_repairs"]["repairs"]), 2)
                 self.assertEqual(len(list((root / "complete/libraries").rglob("*.a"))), 20)
                 self.assertTrue((root / "complete/notices/LICENSE").exists())
                 self.assertFalse(list((root / "complete").rglob("*.o")))

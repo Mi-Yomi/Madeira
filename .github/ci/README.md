@@ -13,8 +13,8 @@ The authorized Apple Metal component setup prepares the later shader stages;
 its exact install/verification outcome is recorded separately. It builds FreeType, the crypto stack, FFmpeg, seven FEX
 archives, separate native/ARM64EC Wine header trees, Wine's three native
 libraries and Rust pairing. Header generation and compilation failures are
-fatal. The pinned FEX diagnostic guard repair is checked by revision/source
-hash before configure; successful provenance verifies the unchanged submodule
+fatal. The pinned FEX reporter guards and CASPAL diagnostic platform split are checked
+by revision/source hash before configure; successful provenance verifies the unchanged submodule
 revision, exact patch inputs, applied record and resulting source bytes. The generated crypto symbol table must contain its bootstrap essentials.
 No separate Metal Shader Converter installer, LLVM source build, DXMT build,
 Windows DLL farm, app link, IPA, signing or device test is attempted.

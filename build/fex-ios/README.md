@@ -1,6 +1,6 @@
-# Pinned FEX native source repair
+# Pinned FEX native source repairs
 
-`build.sh` applies `patches/0001-guard-ios-diagnostic-reporters.patch` before
+`build.sh` applies the ordered patches in `source-repairs.json` before
 configuring the seven app-linked native static archives. It does not change
 FEX's submodule pin, commit, index, build targets, or compiler definitions.
 
@@ -20,19 +20,46 @@ no fake counters and does not define `FEX_IOS_HOST` globally, which would
 change unrelated ABI and execution paths. The following low/invalid guest-RIP
 rejection remains outside the guard in every build mode.
 
+## CASPAL diagnostic platform split
+
+The same pinned source calls Windows `VirtualQuery` unconditionally from
+`IosLogUnimplementedCASPAL` in `FEXCore/Source/Utils/ArchHelpers/Arm64.cpp`.
+Native CI at commit `e6b72e06b2f0069bfb130e9ae2171f8bef3309e1` built
+`FEXCore_Base`, then failed on the Windows-only types in this logger (GitHub
+job `111445089390`). This is not evidence of a missing `FEX_IOS_HOST` setting:
+the native `__APPLE__` dual-map path and PE iOS-host alias bridge are separate.
+The native recipe intentionally keeps its original compiler definitions.
+
+`0002-split-caspal-platform-diagnostics.patch` keeps the Windows query and
+message unchanged under `_WIN32`. Other hosts log the same instruction,
+address and misalignment facts without Windows memory-region fields. Both
+branches retain the early return and eight-report limit. `HandleCASPAL`,
+`RunCASPAL`, the aligned atomic operation and misaligned rejection are unchanged;
+this fixes native compilation, not unsupported misaligned atomic emulation.
+
+## Verification and provenance
+
 `source-repairs.json` is the checked-in source-of-truth: exact revision,
 original/patched source SHA-256, and patch SHA-256. `apply-source-repairs.py`
-accepts only that revision, its exact committed source, and either the exact
-original or exact repaired working file; other tracked source edits fail.
-It validates all bytes before applying and verifies the result afterward.
+accepts only that revision and its exact committed source. Each repair owns
+disjoint files that must be wholly original or wholly repaired; unknown edits
+and partly applied repairs fail. A previous known repair may already be applied
+when a new repair is added. All patches are first applied to committed bytes in
+a disposable directory, checking every output and touched path before changing
+the FEX checkout. It then replaces only changed files and verifies every result.
+If a write fails, it attempts to restore its own exact writes while preserving
+detected concurrent edits, and reports any incomplete rollback.
 Repeated runs are idempotent. It writes the same specification atomically to
 `FEX/build-ios/madeira-source-repairs.json` only after successful verification,
 for the native artifact provenance gate. A future FEX update must explicitly
-review and replace or remove this repair; it cannot silently fuzz onto new code.
+review and replace or remove these repairs; they cannot silently fuzz onto new code.
 
 Portable checks: `python3 tests/host/check-fex-source-repairs.py` exercises
-revision/hash/patch rejection and compiles the exact repaired reporter region
-in native, ARM64EC-host, and non-EC-host fixtures. These are host checks, not an
-iOS build or proof that 1C/Blender runs. Native CI must still build and validate
-all seven archives. The repair is maintained only in Madeira; do not submit
-AI-generated patches to FEX-Emu upstream (see `CONTRIBUTING.md`).
+revision/hash/patch rejection, multi-repair preflight and upgrade behavior. It
+compiles the exact reporter regions in native and PE-host fixtures and checks
+that Windows CASPAL preprocessing is unchanged. The native CASPAL fixture tests
+early returns, captured fields and the report cap without supplying Windows
+APIs. These are host checks, not an iOS build or proof that 1C/Blender runs.
+Native CI must still build and validate all seven archives. The repairs are
+maintained only in Madeira; do not submit AI-generated patches to FEX-Emu
+upstream (see `CONTRIBUTING.md`).

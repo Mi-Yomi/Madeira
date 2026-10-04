@@ -54,8 +54,11 @@ compiler (FFmpeg explicitly disables it).
 - FEX builds all seven app-linked static archives. Its pinned source has two
   iOS-host-only diagnostic reporters outside their declaration guard. A local,
   hash/revision-checked Madeira build repair puts the existing reporters under
-  `FEX_IOS_HOST`; it changes no external repository or submodule pin. The patch,
-  original/result source hashes and applied record are validated and included
+  `FEX_IOS_HOST`. A second repair preserves the Windows CASPAL memory query
+  under `_WIN32` and keeps a bounded native diagnostic without Windows APIs.
+  Neither repair changes the target configuration or atomic emulation. The
+  external repository and submodule pin remain unchanged. All patches,
+  original/result source hashes and the applied record are validated and included
   in native provenance (see `build/fex-ios/README.md`)
 - Wineserver builds its base
   from current sources, overlays the maintained iOS objects, and validates

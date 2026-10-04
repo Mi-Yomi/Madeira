@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable patch/revision failure injection and host C++ reporter semantics.
+"""Portable repair failure injection, reporter semantics and platform isolation.
 
 Fixture revisions/hashes are substituted in memory only; the production CLI
 has no bypass or source/spec override. No network or Apple SDK is needed.
@@ -29,7 +29,7 @@ class FEXSourceRepairTests(unittest.TestCase):
         self.source = self.root / "FEX"
         self.source.mkdir()
         self.spec = copy.deepcopy(module.SPEC)
-        self.repair, = self.spec["repairs"]
+        self.repair = self.spec["repairs"][0]
         self.entry, = self.repair["files"]
         self.target = self.source / self.entry["path"]
         self.target.parent.mkdir(parents=True)
@@ -38,6 +38,22 @@ class FEXSourceRepairTests(unittest.TestCase):
             b"  /* iOS-Madeira ml304 (task #51): REPORT", b"#ifdef FEX_IOS_HOST\n  /* iOS-Madeira ml304 (task #51): REPORT"
         ).replace(b"\n\n  /* iOS-Madeira: refuse", b"\n#endif\n\n  /* iOS-Madeira: refuse")
         self.target.write_bytes(self.original)
+        self.caspal_repair = self.spec["repairs"][1]
+        self.caspal_entry, = self.caspal_repair["files"]
+        self.caspal_target = self.source / self.caspal_entry["path"]
+        self.caspal_target.parent.mkdir(parents=True)
+        self.caspal_original = FIXTURE.with_name("fex-caspal-diagnostic.cpp").read_bytes()
+        self.caspal_patched = self.caspal_original.replace(
+            b"  MEMORY_BASIC_INFORMATION mbi {};", b"#ifdef _WIN32\n  MEMORY_BASIC_INFORMATION mbi {};"
+        ).replace(b"                    mbi.Protect, type, mbi.State);\n", b'''                    mbi.Protect, type, mbi.State);
+#else
+  LogMan::Msg::EFmt("[caspal128] MISALIGNED-UNSUPPORTED Size={} addrReg=x{} addr={:#x} misalign={} "
+                    "crosses16B={}",
+                    Size, AddressReg, GPRs[AddressReg], GPRs[AddressReg] & 15,
+                    (GPRs[AddressReg] & 15) ? "yes" : "no");
+#endif
+''')
+        self.caspal_target.write_bytes(self.caspal_original)
         (self.source / ".gitignore").write_text("/build-ios/\n")
         subprocess.run(["git", "init", "-q", str(self.source)], check=True)
         self.git("add", ".")
@@ -46,9 +62,12 @@ class FEXSourceRepairTests(unittest.TestCase):
         self.spec["source_revision"] = self.git("rev-parse", "HEAD").decode().strip()
         self.entry["original_sha256"] = module.sha256(self.original)
         self.entry["patched_sha256"] = module.sha256(self.patched)
-        patch = self.root / self.repair["patch"]
-        patch.parent.mkdir(parents=True)
-        shutil.copyfile(ROOT / self.repair["patch"], patch)
+        self.caspal_entry["original_sha256"] = module.sha256(self.caspal_original)
+        self.caspal_entry["patched_sha256"] = module.sha256(self.caspal_patched)
+        for repair in self.spec["repairs"]:
+            patch = self.root / repair["patch"]
+            patch.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / repair["patch"], patch)
         self.addCleanup(mock.patch.stopall)
         mock.patch.object(module, "ROOT", self.root).start()
         mock.patch.object(module, "SPEC", self.spec).start()
@@ -57,11 +76,14 @@ class FEXSourceRepairTests(unittest.TestCase):
         return subprocess.check_output(["git", "-C", str(self.source), *args], stderr=subprocess.PIPE)
 
     def reject(self, message):
-        before = self.target.read_bytes()
+        before = {path: path.read_bytes() for path in (self.target, self.caspal_target)}
+        record = self.source / module.RECORD
+        previous_record = record.read_bytes() if record.exists() else None
         with self.assertRaisesRegex(ValueError, message):
             module.apply(self.source)
-        self.assertEqual(self.target.read_bytes(), before)
-        self.assertFalse((self.source / module.RECORD).exists())
+        for path, data in before.items():
+            self.assertEqual(path.read_bytes(), data)
+        self.assertEqual(record.read_bytes() if record.exists() else None, previous_record)
 
     def test_patch_is_exactly_two_preprocessor_lines(self):
         patch = (ROOT / self.repair["patch"]).read_bytes()
@@ -82,7 +104,9 @@ class FEXSourceRepairTests(unittest.TestCase):
         self.assertEqual(self.target.read_bytes(), self.patched)
         self.assertEqual(self.git("rev-parse", "HEAD").decode().strip(), self.spec["source_revision"])
         self.assertEqual(self.git("diff", "--cached"), b"")
-        self.assertEqual(self.git("diff", "--name-only").decode().splitlines(), [self.entry["path"]])
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_patched)
+        self.assertEqual(self.git("diff", "--name-only").decode().splitlines(),
+                         sorted([self.entry["path"], self.caspal_entry["path"]]))
 
     def test_wrong_revision_rejected(self):
         self.spec["source_revision"] = "0" * 40
@@ -207,6 +231,334 @@ int main() {
                 result = subprocess.run(["c++", "-std=c++20", *defines, str(main), str(producer), "-o", str(executable)], text=True, capture_output=True)
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 subprocess.run([str(executable)], check=True)
+
+    def test_upgrade_from_already_applied_core_repair(self):
+        complete = self.spec["repairs"]
+        self.spec["repairs"] = complete[:1]
+        module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.spec["repairs"] = complete
+        module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_patched)
+        self.assertEqual(json.loads((self.source / module.RECORD).read_text()), self.spec)
+        self.assertEqual(self.git("diff", "--cached"), b"")
+
+    def test_later_patch_hash_rejected_before_any_source_write(self):
+        with (self.root / self.caspal_repair["patch"]).open("ab") as output:
+            output.write(b"\n")
+        self.reject("patch hash mismatch")
+
+    def test_later_working_edit_rejected_before_any_source_write(self):
+        self.caspal_target.write_bytes(self.caspal_original + b"// local edit\n")
+        self.reject("working source hash")
+
+    def test_later_partial_in_file_repair_rejected(self):
+        self.caspal_target.write_bytes(self.caspal_original.replace(
+            b"  MEMORY_BASIC_INFORMATION mbi {};", b"#ifdef _WIN32\n  MEMORY_BASIC_INFORMATION mbi {};"))
+        self.reject("working source hash")
+
+    def test_partial_multi_file_repair_rejected(self):
+        self.target.write_bytes(self.patched)
+        self.repair["files"].append(self.caspal_entry)
+        self.spec["repairs"] = [self.repair]
+        self.reject("Partial FEX source repair")
+
+    def test_later_expected_result_rejected_before_any_source_write(self):
+        self.caspal_entry["patched_sha256"] = "0" * 64
+        self.reject("repaired source hash mismatch")
+
+    def test_later_patch_tool_failure_preserves_both_inputs(self):
+        real_git = module.git
+        def fail_later(source, *args):
+            if args[:2] == ("apply", "--check") and Path(args[-1]).name == "1.patch":
+                raise subprocess.CalledProcessError(1, "git apply --check", stderr=b"second repair mismatch")
+            return real_git(source, *args)
+        with mock.patch.object(module, "git", side_effect=fail_later), self.assertRaises(subprocess.CalledProcessError):
+            module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.original)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.assertFalse((self.source / module.RECORD).exists())
+
+    def test_later_failure_preserves_previous_repair_and_record(self):
+        complete = self.spec["repairs"]
+        self.spec["repairs"] = complete[:1]
+        module.apply(self.source)
+        self.spec["repairs"] = complete
+        self.caspal_entry["patched_sha256"] = "0" * 64
+        self.reject("repaired source hash mismatch")
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+
+    def test_duplicate_repair_and_overlapping_file_rejected(self):
+        original_id = self.caspal_repair["id"]
+        self.caspal_repair["id"] = self.repair["id"]
+        self.reject("Duplicate or empty")
+        self.caspal_repair["id"] = original_id
+        self.caspal_repair["files"] = [self.entry]
+        self.reject("files must be disjoint")
+
+    def test_patch_touching_unlisted_file_rejected_before_checkout_write(self):
+        patch = self.root / self.caspal_repair["patch"]
+        with patch.open("ab") as output:
+            output.write(b"diff --git a/unlisted.cpp b/unlisted.cpp\nnew file mode 100644\n--- /dev/null\n+++ b/unlisted.cpp\n@@ -0,0 +1 @@\n+unexpected\n")
+        self.caspal_repair["patch_sha256"] = module.sha256(patch.read_bytes())
+        self.reject("patch changed unexpected paths")
+        self.assertFalse((self.source / "unlisted.cpp").exists())
+
+    def test_later_patch_cannot_modify_other_repairs_source(self):
+        patch = self.root / self.caspal_repair["patch"]
+        relative = self.entry["path"]
+        with patch.open("a") as output:
+            output.write(f"diff --git a/{relative} b/{relative}\n--- a/{relative}\n+++ b/{relative}\n"
+                         "@@ -1,3 +1,3 @@\n-// SPDX-License-Identifier: MIT\n+// unexpected edit\n"
+                         " // The line above retains the upstream notice from Core.cpp; it is not a\n"
+                         " // blanket grant for the fork additions or the new regression harness.\n")
+        self.caspal_repair["patch_sha256"] = module.sha256(patch.read_bytes())
+        self.reject("changed another repair's source")
+
+    def test_patch_symlink_and_path_escape_rejected(self):
+        patch = self.root / self.caspal_repair["patch"]
+        outside = self.root / "outside.patch"
+        outside.write_bytes(patch.read_bytes())
+        patch.unlink()
+        patch.symlink_to(outside)
+        self.reject("patch must be a regular file")
+        self.caspal_repair["patch"] = "../outside.patch"
+        self.reject("Invalid FEX repair patch path")
+
+    def test_concurrent_source_edit_is_not_overwritten(self):
+        real_git = module.git
+        concurrent = self.original + b"// concurrent source edit\n"
+        def edit_during_preflight(source, *args):
+            result = real_git(source, *args)
+            if args[:1] == ("apply",) and Path(args[-1]).name == "1.patch":
+                self.target.write_bytes(concurrent)
+            return result
+        with mock.patch.object(module, "git", side_effect=edit_during_preflight):
+            with self.assertRaisesRegex(ValueError, "changed during repair preflight"):
+                module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), concurrent)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.assertFalse((self.source / module.RECORD).exists())
+
+    def test_staged_edit_hidden_by_worktree_revert_rejected(self):
+        self.target.write_bytes(self.original + b"// staged source edit\n")
+        self.git("add", self.entry["path"])
+        self.target.write_bytes(self.original)
+        staged_before = self.git("diff", "--cached")
+        self.reject("staged FEX source modifications")
+        self.assertEqual(self.git("diff", "--cached"), staged_before)
+
+    def test_concurrent_unrelated_tracked_edit_rejected(self):
+        real_git = module.git
+        def edit_during_preflight(source, *args):
+            result = real_git(source, *args)
+            if args[:1] == ("apply",) and Path(args[-1]).name == "1.patch":
+                (self.source / ".gitignore").write_text("concurrent edit\n")
+            return result
+        with mock.patch.object(module, "git", side_effect=edit_during_preflight):
+            self.reject("tracked FEX source modifications")
+        self.assertEqual((self.source / ".gitignore").read_text(), "concurrent edit\n")
+
+    def test_repair_preserves_source_file_modes(self):
+        self.target.chmod(0o640)
+        self.caspal_target.chmod(0o600)
+        module.apply(self.source)
+        self.assertEqual(self.target.stat().st_mode & 0o777, 0o640)
+        self.assertEqual(self.caspal_target.stat().st_mode & 0o777, 0o600)
+
+    def test_caspal_original_reproduces_native_windows_type_failure(self):
+        result = subprocess.run(["c++", "-std=c++20", "-fsyntax-only", str(self.caspal_target)], text=True, capture_output=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("MEMORY_BASIC_INFORMATION", result.stderr)
+        self.assertIn("VirtualQuery", result.stderr)
+
+    def test_caspal_patch_only_adds_platform_diagnostic_branch(self):
+        patch = (ROOT / self.caspal_repair["patch"]).read_bytes()
+        self.assertEqual(module.sha256(patch), self.caspal_repair["patch_sha256"])
+        removed = [line for line in patch.decode().splitlines() if line.startswith("-") and not line.startswith("---")]
+        self.assertEqual(removed, [])
+        additions = "\n".join(line[1:] for line in patch.decode().splitlines() if line.startswith("+") and not line.startswith("+++"))
+        self.assertNotIn("FEX_IOS_HOST", additions)
+        self.assertNotIn("RunCASPAL", additions)
+        self.assertEqual(additions.count("#ifdef _WIN32"), 1)
+        self.assertEqual(additions.count("#else"), 1)
+        self.assertEqual(additions.count("#endif"), 1)
+        module.apply(self.source)
+        self.assertEqual(self.caspal_patched.split(b"static bool HandleCASPAL", 1)[1],
+                         self.caspal_original.split(b"static bool HandleCASPAL", 1)[1])
+
+    def test_caspal_windows_diagnostic_preprocessor_equivalence(self):
+        # This checks exact Windows branch preservation without fake Windows
+        # types, linking/running a PE fixture, or claiming a MinGW build passed.
+        original = self.root / "caspal-original.cpp"
+        original.write_bytes(self.caspal_original)
+        module.apply(self.source)
+        for flags in ([], ["-DFEX_IOS_HOST"], ["-DFEX_IOS_HOST", "-DARCHITECTURE_arm64ec"]):
+            with self.subTest(defines=flags):
+                command = ["c++", "-std=c++20", "-E", "-P", "-D_WIN32", *flags]
+                before = subprocess.check_output([*command, str(original)])
+                after = subprocess.check_output([*command, str(self.caspal_target)])
+                self.assertEqual(after, before)
+
+    def test_caspal_native_bounded_diagnostic_and_unchanged_registers(self):
+        module.apply(self.source)
+        result = subprocess.run(["c++", "-std=c++20", "-fsyntax-only", str(self.caspal_target)], text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        native = subprocess.check_output(["c++", "-std=c++20", "-E", "-P", str(self.caspal_target)])
+        for name in (b"MEMORY_BASIC_INFORMATION", b"VirtualQuery", b"MEM_MAPPED", b"LPCVOID"):
+            self.assertNotIn(name, native)
+        # Run only the exact diagnostic, not a surrogate emulation algorithm.
+        main = self.root / "caspal-native.cpp"
+        main.write_bytes(self.caspal_target.read_bytes().split(b"static bool HandleCASPAL", 1)[0] + b'''
+#include <array>
+#include <cassert>
+int main() {
+  using namespace LogMan::Msg;
+  std::array<uint64_t, 32> registers {};
+  registers[11] = 0x1001;
+  IosLogUnimplementedCASPAL(0, registers.data(), 11);
+  assert(diagnostic_count == 0);
+  registers[11] = 0x1010;
+  IosLogUnimplementedCASPAL(1, registers.data(), 11);
+  assert(diagnostic_count == 0);
+  for (unsigned offset = 1; offset <= 15; ++offset) {
+    registers[11] = 0x1000 + offset;
+    auto before = registers;
+    IosLogUnimplementedCASPAL(1, registers.data(), 11);
+    assert(registers == before);
+    assert(diagnostic_count == (offset <= 8 ? offset : 8));
+    if (offset <= 8) {
+      assert(last_size == 1 && last_register == 11);
+      assert(last_address == 0x1000 + offset && last_misalignment == offset);
+      assert(last_crosses == "yes");
+      assert(last_format.find("MISALIGNED-UNSUPPORTED") != std::string_view::npos);
+      assert(last_format.find("Size={}") != std::string_view::npos);
+      assert(last_format.find("addrReg=x{}") != std::string_view::npos);
+      assert(last_format.find("addr={:#x}") != std::string_view::npos);
+      assert(last_format.find("misalign={}") != std::string_view::npos);
+      assert(last_format.find("crosses16B={}") != std::string_view::npos);
+      assert(last_format.find("region") == std::string_view::npos);
+    }
+  }
+}
+''')
+        executable = self.root / "caspal-native"
+        subprocess.run(["c++", "-std=c++20", str(main), "-o", str(executable)], check=True)
+        subprocess.run([str(executable)], check=True)
+
+
+    def test_noncanonical_source_and_patch_paths_rejected(self):
+        original = self.caspal_entry["path"]
+        for relative in ("./" + original, original.replace("/", "//", 1), original.replace("/", "\\", 1)):
+            with self.subTest(path=relative):
+                self.caspal_entry["path"] = relative
+                self.reject("Invalid FEX repair source path")
+        self.caspal_entry["path"] = original
+        self.caspal_repair["patch"] = "./" + self.caspal_repair["patch"]
+        self.reject("Invalid FEX repair patch path")
+
+    def test_later_source_write_failure_rolls_back_first_repair(self):
+        real_write = module.atomic_write
+        def fail_second(target, data):
+            if target == self.caspal_target:
+                raise OSError("injected second source write failure")
+            real_write(target, data)
+        with mock.patch.object(module, "atomic_write", side_effect=fail_second):
+            with self.assertRaisesRegex(OSError, "second source write failure"):
+                module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.original)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.assertFalse((self.source / module.RECORD).exists())
+        module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_patched)
+
+    def test_provenance_write_failure_rolls_back_all_sources(self):
+        real_write = module.atomic_write
+        record = self.source / module.RECORD
+        def fail_record(target, data):
+            if target == record:
+                raise OSError("injected provenance write failure")
+            real_write(target, data)
+        with mock.patch.object(module, "atomic_write", side_effect=fail_record):
+            with self.assertRaisesRegex(OSError, "provenance write failure"):
+                module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.original)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.assertFalse(record.exists())
+
+    def test_post_provenance_failure_restores_prior_repair_and_record(self):
+        complete = self.spec["repairs"]
+        self.spec["repairs"] = complete[:1]
+        module.apply(self.source)
+        record = self.source / module.RECORD
+        old_record = record.read_bytes()
+        self.spec["repairs"] = complete
+        real_write = module.atomic_write
+        def fail_after_record(target, data):
+            real_write(target, data)
+            if target == record and data != old_record:
+                raise OSError("injected failure after provenance replace")
+        with mock.patch.object(module, "atomic_write", side_effect=fail_after_record):
+            with self.assertRaisesRegex(OSError, "after provenance replace"):
+                module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.assertEqual(record.read_bytes(), old_record)
+
+    def test_rollback_failure_is_explicit_and_records_no_success(self):
+        real_write = module.atomic_write
+        def fail_commit_and_rollback(target, data):
+            if target == self.caspal_target:
+                raise OSError("injected commit failure")
+            if target == self.target and data == self.original:
+                raise OSError("injected rollback failure")
+            real_write(target, data)
+        with mock.patch.object(module, "atomic_write", side_effect=fail_commit_and_rollback):
+            with self.assertRaisesRegex(ValueError, "rollback incomplete:.*rollback failure"):
+                module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.assertFalse((self.source / module.RECORD).exists())
+        module.apply(self.source)  # The exact completed prior repair remains resumable.
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_patched)
+
+    def test_rollback_preserves_a_concurrent_source_edit(self):
+        real_write = module.atomic_write
+        concurrent = self.patched + b"// concurrent edit after first write\n"
+        def concurrent_edit(target, data):
+            if target == self.caspal_target:
+                self.target.write_bytes(concurrent)
+                raise OSError("injected commit failure")
+            real_write(target, data)
+        with mock.patch.object(module, "atomic_write", side_effect=concurrent_edit):
+            with self.assertRaisesRegex(ValueError, "rollback incomplete:.*changed concurrently"):
+                module.apply(self.source)
+        self.assertEqual(self.target.read_bytes(), concurrent)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        self.assertFalse((self.source / module.RECORD).exists())
+
+    def test_provenance_symlink_and_invalid_parent_rejected_before_write(self):
+        record = self.source / module.RECORD
+        external = self.root / "outside-record"
+        external.write_text("do not replace\n")
+        record.parent.mkdir()
+        record.symlink_to(external)
+        self.reject("provenance must be a regular file")
+        self.assertEqual(external.read_text(), "do not replace\n")
+        record.unlink()
+        record.parent.rmdir()
+        outside_dir = self.root / "outside-directory"
+        outside_dir.mkdir()
+        record.parent.symlink_to(outside_dir, target_is_directory=True)
+        self.reject("provenance must be a regular file")
+        self.assertEqual(list(outside_dir.iterdir()), [])
+        record.parent.unlink()
+        record.parent.write_text("not a directory\n")
+        self.reject("provenance must be a regular file")
 
 
 if __name__ == "__main__":

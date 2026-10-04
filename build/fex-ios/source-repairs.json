@@ -15,6 +15,18 @@
           "patched_sha256": "799d283a9e3b807d945d0bd9acdffea4367a8a351f49ce38e7204448ae7cab25"
         }
       ]
+    },
+    {
+      "id": "caspal-platform-diagnostic-split-v1",
+      "patch": "build/fex-ios/patches/0002-split-caspal-platform-diagnostics.patch",
+      "patch_sha256": "45162e4576e2618ebc32fa704f22570d98740fdf6871026b50803ada293bd758",
+      "files": [
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+          "original_sha256": "eed3325f9f15976e6964b963085334ad359bffd8a751e1070cd1c4b5d3df78dc",
+          "patched_sha256": "f592c9c5625ab80c948a4850432d5633da84e9ed618bdc07c236deb02a06a209"
+        }
+      ]
     }
   ]
 }
