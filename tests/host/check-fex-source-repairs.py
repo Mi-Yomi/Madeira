@@ -25,7 +25,7 @@ class FEXSourceRepairTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="FEX source repair ")
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)
+        self.root = Path(self.tmp.name).resolve()
         self.source = self.root / "FEX"
         self.source.mkdir()
         self.spec = copy.deepcopy(module.SPEC)
@@ -84,6 +84,51 @@ class FEXSourceRepairTests(unittest.TestCase):
         for path, data in before.items():
             self.assertEqual(path.read_bytes(), data)
         self.assertEqual(record.read_bytes() if record.exists() else None, previous_record)
+
+    def test_symlink_aliased_temporary_staging_root(self):
+        # macOS commonly returns /var/... from TemporaryDirectory while resolve()
+        # produces /private/var/.... Reproduce that alias on every host platform.
+        storage = self.root / "temporary-storage"
+        storage.mkdir()
+        alias = self.root / "temporary-alias"
+        alias.symlink_to(storage, target_is_directory=True)
+        real_temporary_directory = tempfile.TemporaryDirectory
+        real_checked_path = module.checked_path
+        staged_roots = []
+        def aliased_temporary_directory(*args, **kwargs):
+            kwargs["dir"] = str(alias)
+            return real_temporary_directory(*args, **kwargs)
+        def observe_checked_path(root, relative, description):
+            if description == "Staged FEX repair source":
+                staged_roots.append(root)
+                self.assertNotEqual(root, root.resolve())
+                # This is the failing old predicate: resolved target, lexical root.
+                self.assertFalse((root / relative).resolve().is_relative_to(root))
+            return real_checked_path(root, relative, description)
+        with mock.patch.object(module.tempfile, "TemporaryDirectory", side_effect=aliased_temporary_directory), \
+                mock.patch.object(module, "checked_path", side_effect=observe_checked_path):
+            module.apply(self.source)
+            module.apply(self.source)
+        self.assertTrue(staged_roots)
+        self.assertEqual(self.target.read_bytes(), self.patched)
+        self.assertEqual(self.caspal_target.read_bytes(), self.caspal_patched)
+        self.assertEqual(json.loads((self.source / module.RECORD).read_text()), self.spec)
+        self.assertEqual(self.git("diff", "--cached"), b"")
+
+    def test_aliased_root_still_rejects_symlinked_file_and_parent_escape(self):
+        outside = self.root / "outside-source"
+        outside.mkdir()
+        (outside / "source.cpp").write_bytes(self.original)
+        alias = self.root / "source-alias"
+        alias.symlink_to(self.source, target_is_directory=True)
+        (self.source / "linked.cpp").symlink_to(outside / "source.cpp")
+        (self.source / "escape").symlink_to(outside, target_is_directory=True)
+        self.assertFalse((alias / "escape/source.cpp").is_symlink())
+        for relative in ("linked.cpp", "escape/source.cpp"):
+            with self.subTest(path=relative):
+                with self.assertRaisesRegex(ValueError, "regular file within its checkout"):
+                    module.checked_path(alias, relative, "FEX repair source")
+        self.assertEqual((outside / "source.cpp").read_bytes(), self.original)
 
     def test_patch_is_exactly_two_preprocessor_lines(self):
         patch = (ROOT / self.repair["patch"]).read_bytes()

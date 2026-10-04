@@ -35,6 +35,9 @@ def checked_path(root, relative, description):
     if (path.is_absolute() or not path.parts
             or "\\" in relative or path.as_posix() != relative or ".." in path.parts):
         raise ValueError(f"Invalid {description} path")
+    # Trusted bases can be OS aliases (macOS /var -> /private/var). Compare
+    # canonical paths while still rejecting symlinked targets and parent escapes.
+    root = root.resolve()
     target = root / path
     if target.is_symlink() or not target.is_file() or not target.resolve().is_relative_to(root):
         raise ValueError(f"{description} must be a regular file within its checkout")

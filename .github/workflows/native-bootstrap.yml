@@ -87,6 +87,14 @@ jobs:
         with:
           submodules: recursive
           persist-credentials: false
+      - name: Check repair and header helpers on macOS
+        timeout-minutes: 2
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-native-bootstrap-workflow.py
+          python3 tests/host/check-native-bootstrap-artifacts.py
       - name: Build native dependencies, at most two compile jobs
         id: bootstrap
         # Leave time for diagnostics before the overall 45-minute job limit.

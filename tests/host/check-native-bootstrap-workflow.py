@@ -114,6 +114,24 @@ class WorkflowTests(unittest.TestCase):
             ])
             self.assertTrue((runtime / "madeira-native-logs/scope.txt").is_file())
 
+    def test_macos_helper_gate_precedes_dependency_builds(self):
+        text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
+        native = text.split("  native:\n", 1)[1]
+        checkout = native.index("- name: Checkout pinned source")
+        gate = native.index("- name: Check repair and header helpers on macOS")
+        build = native.index("- name: Build native dependencies")
+        self.assertLess(checkout, gate)
+        self.assertLess(gate, build)
+        step = native[gate:build]
+        self.assertIn("timeout-minutes: 2", step)
+        self.assertNotIn("continue-on-error", step)
+        self.assertNotIn("if:", step)
+        for script in ("check-fex-source-repairs.py", "check-native-bootstrap-workflow.py",
+                       "check-native-bootstrap-artifacts.py"):
+            self.assertIn("python3 tests/host/" + script, step)
+        self.assertIn("timeout-minutes: 45", native)
+        self.assertIn("timeout-minutes: 35", native)
+
     def test_no_automatic_artifact_upload_or_broadened_permissions(self):
         text = (ROOT / ".github/workflows/native-bootstrap.yml").read_text()
         self.assertIn("runs-on: xcode-27", text)
