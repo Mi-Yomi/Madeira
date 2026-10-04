@@ -2,14 +2,14 @@
 
 `native-bootstrap.yml` adds a separate first-stage check for the
 `compatibility/desktop-apps` branch. The existing desktop compatibility checks
-are unchanged. It runs on GitHub's standard public-repository `xcode-27` ARM64
+continue alongside this workflow. It runs on GitHub's standard public-repository `xcode-27` ARM64
 runner after a five-minute portable Linux validation gate, with a 45-minute native job limit, a 35-minute build-step limit, and at most two
 compile jobs. See the [runner specification](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 and [installed Xcode/SDK image](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md).
 
-The stage verifies exact recursive submodule commits, the iOS 27 SDK and Metal
-tools, tracked tarballs/converter inputs, checksum-pinned llvm-mingw and
-commit-pinned FreeType. It builds FreeType, the crypto stack, FFmpeg, seven FEX
+The stage verifies exact recursive submodule commits, the iOS 27 SDK, tracked
+tarballs/converter inputs, checksum-pinned llvm-mingw and commit-pinned FreeType.
+Optional Metal tool availability is reported separately for later stages. It builds FreeType, the crypto stack, FFmpeg, seven FEX
 archives, separate native/ARM64EC Wine header trees, Wine's three native
 libraries and Rust pairing. Header generation and compilation failures are
 fatal. The generated crypto symbol table must contain its bootstrap essentials.
@@ -51,3 +51,12 @@ done
 The fixtures test iOS/host/mixed/malformed archives, complete-bundle gating,
 strict generated-header failure handling, capped log output and build-script
 orchestration. They do not substitute for native compilation.
+
+## Metal component boundary
+
+The native-only stage does not compile Metal shaders. It executes a Metal
+version probe and records `available` or `unavailable`; finding an xcrun stub
+alone is not success. Missing Metal is non-fatal only here, with an explicit
+warning that later DXMT/app work is blocked. No Apple component is downloaded
+and no license prompt is accepted. Future shader/app jobs must require a real
+working Metal toolchain before attempting those targets.

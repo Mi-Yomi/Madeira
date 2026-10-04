@@ -26,8 +26,13 @@ headers and cross-toolchains required for the app link.
 It starts with portable failure-injection tests, then uses the standard
 [`xcode-27` public runner](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories).
 The [runner inventory](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md)
-currently lists Xcode 27 and the iOS 27 SDK; the job verifies the actual tools
-instead of accepting an absent component or license prompt.
+currently lists Xcode 27 and the iOS 27 SDK; the job verifies the actual native
+compiler and SDK instead of accepting a missing prerequisite or license prompt.
+Metal tool execution is probed separately: the current runner has a discovery
+stub without the optional Metal Toolchain. This does not block the native-only
+C/C++/Rust stage (FFmpeg explicitly disables Metal), but remains a blocker for
+later DXMT shader generation and the app's three Metal source files. No Apple
+component is downloaded or license accepted by this workflow.
 
 - Native job timeout: 45 minutes, including a 35-minute build step; at most
   two compile jobs. No signing account, new secret or larger paid runner

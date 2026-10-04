@@ -25,9 +25,17 @@ SDK_VERSION="$(xcrun --sdk iphoneos --show-sdk-version)"
 case "$SDK_VERSION" in 27.*) ;; *) echo "Expected iOS 27 SDK, found $SDK_VERSION"; exit 1 ;; esac
 case "$(xcodebuild -version | sed -n '1p')" in 'Xcode 27'*) ;; *) echo 'Expected Xcode 27'; exit 1 ;; esac
 xcrun --sdk iphoneos --find clang
-xcrun --sdk iphoneos --find metal
-xcrun --sdk iphoneos metal --version
-xcrun --sdk iphoneos --find metallib
+# Optional Metal probe: this stage compiles no shaders (FFmpeg disables Metal).
+# A present xcrun path may be a stub, so test execution, not only discovery.
+# Missing Metal remains a required gate for later DXMT/app work; never install it here.
+if xcrun --sdk iphoneos metal --version && xcrun --sdk iphoneos --find metallib; then
+    printf '%s\n' available > "$NATIVE_LOG_DIR/metal-toolchain-status.txt"
+    echo 'Metal Toolchain is available; shader/app stages are still not run here.'
+else
+    printf '%s\n' unavailable > "$NATIVE_LOG_DIR/metal-toolchain-status.txt"
+    echo 'Metal Toolchain unavailable: native C/C++/Rust stage may proceed, but DXMT shaders/app build remain blocked.'
+fi
+# End optional Metal probe.
 df -h .
 # Clean builds only: no stale archives/headers/markers can create a false pass.
 for path in FEX/build-ios wine/build-macos wine/build-arm64ec build/freetype-ios/build build/gnutls-ios/obj build/ffmpeg/obj build/ntdll-unix/obj build/win32u-unix/obj build/wineserver/obj build/wineserver/libwineserver_base.a build/rppairing-ios/target toolchains/gnutls-ios toolchains/ffmpeg-ios; do
