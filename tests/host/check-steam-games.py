@@ -365,9 +365,13 @@ func record(_ appID: Int, _ name: String, _ folder: String, flags: Int) -> Strin
             "\"x\" { \"executable\" \"not-numbered.exe\" } \"8\" { \"arguments\" \"-no-program\" } " +
             "} } \"depots\" { \"77\" { \"manifests\" { \"public\" { \"gid\" \"1\" } } } } }"
         let directInfo = SteamAppInfo.parse(appID: 7000, from: Data(launchVDF.utf8))!
-        require(directInfo.launches.map(\.executable) == ["bin32\\game.exe", "server/srv.exe", "Direct.app", "Bin64\\\\Game.exe",
+        // Swift's four source backslashes make two in VDF; its escaped
+        // backslash pair decodes to one in the executable path.
+        require(directInfo.launches.map(\.executable) == ["bin32\\game.exe", "server/srv.exe", "Direct.app", #"Bin64\Game.exe"#,
                                                           "beta/game.exe", "..\\escape.exe", "tools/launcher.exe", "tools/launcher.exe"],
                 "config.launch is read in Steam's numeric order, without entries that name no program: \(directInfo.launches.map(\.executable))")
+        require(directInfo.launches[3].executable.utf8.filter { $0 == 92 }.count == 1,
+                "VDF escaped backslash is decoded once, without weakening launch ordering")
         require(directInfo.launches[1].type == "server" && directInfo.launches[4].betaKey == "public-beta" &&
                 directInfo.launches[2].oslist == "macos" && directInfo.launches[3].osarch == "64",
                 "each entry keeps its type, platform, architecture and beta branch")
