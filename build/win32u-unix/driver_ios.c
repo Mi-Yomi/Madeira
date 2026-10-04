@@ -218,16 +218,36 @@ void winios_drv_post_key(unsigned short vk, unsigned int flags)
          * old "first 40 lines" cap was exhausted by arrow keys early in the
          * session, so the WASD presses that prompted this fix left no trace at
          * all and the log looked like they were never sent. Log the first few,
-         * then one line per 256 with a running total that is always truthful. */
+         * then one line per 256 with a running total that is always truthful.
+         * Do not log VK/scan values: software input can contain private text. */
         static unsigned cnt, bad;
         if (st) bad++;
         cnt++;
         if (cnt <= 8 || (cnt & 0xff) == 0)
-            dprintf(2, "[winios] ml647 drv_post_key #%u vk=0x%x scan=0x%x flags=0x%x "
-                       "-> status=0x%x (failures=%u)\n",
-                    cnt, vk, scan, flags, (unsigned)st, bad);
+            dprintf(2, "[winios] drv_post_key #%u status=0x%x (failures=%u)\n",
+                    cnt, (unsigned)st, bad);
     }
 }
+
+/* Text packets bypass layout/scan-code mapping. Wine's queue maps wVk=0 plus
+ * KEYEVENTF_UNICODE to VK_PACKET and TranslateMessage posts the entire UTF-16
+ * wScan as WM_CHAR. In particular, do not mask it to the low scan-code byte:
+ * that corrupts Cyrillic and the surrogate pairs used by non-BMP characters.
+ * Physical keys still use winios_drv_post_key above (including shortcuts). */
+void winios_drv_post_unicode(unsigned short unit, unsigned int flags)
+{
+    INPUT input = {0};
+    NTSTATUS status;
+
+    input.type = INPUT_KEYBOARD;
+    input.ki.wVk = 0;
+    input.ki.wScan = unit;
+    input.ki.dwFlags = KEYEVENTF_UNICODE | (flags & KEYEVENTF_KEYUP);
+    status = send_hardware_message( NULL, 0, &input, 0 );
+    if (status)
+        dprintf( 2, "[winios] Unicode input failed status=0x%x\n", (unsigned)status );
+}
+/* end winios_drv_post_unicode */
 
 /* [winios-tree] window-tree dump: every top-level window with class,
  * title, style and rects. Driven from the app side (Winios.m

@@ -301,14 +301,32 @@ struct LibraryEntry: Codable, Identifiable {
               launchWindowsPath.utf8.count < 1024, (steamWorkingWindowsPath?.utf8.count ?? 0) < 512 else {
             throw LibraryError.message("The saved launch profile contains invalid display or argument values.")
         }
-        var quoted = false, inToken = false, tokens = 0
-        for character in launchArguments {
-            if character == "\"" { quoted.toggle() }
-            if !quoted && (character == " " || character == "\t") { inToken = false }
-            else if !inToken { tokens += 1; inToken = true }
-        }
         // WineProcessBridge takes at most 64 arguments in 4 KB.
         guard launchArguments.utf8.count < 4096 else { throw LibraryError.message("The complete launch command is too long.") }
+        // Match WineLaunchArguments.h: only an even run of backslashes lets a
+        // quote change quoting state; doubled quotes inside quotes are literal.
+        // The editor additionally requires balanced quotes to catch mistyped paths.
+        let bytes = Array(launchArguments.utf8)
+        var quoted = false, inToken = false, tokens = 0
+        var slashes = 0, index = 0
+        while index < bytes.count {
+            let byte = bytes[index]
+            if byte == 0x5c {
+                slashes += 1
+            } else {
+                if byte == 0x22 && slashes % 2 == 0 {
+                    if quoted && index + 1 < bytes.count && bytes[index + 1] == 0x22 {
+                        index += 1
+                    } else {
+                        quoted.toggle()
+                    }
+                }
+                slashes = 0
+            }
+            if !quoted && (byte == 0x20 || byte == 0x09) { inToken = false }
+            else if !inToken { tokens += 1; inToken = true }
+            index += 1
+        }
         guard !quoted, tokens <= 64 else { throw LibraryError.message("Use balanced double quotes and at most 64 launch arguments in total.") }
         // build/madeira_cfg.h reads at most 64 KB of a file.
         guard (config?.utf8.count ?? 0) < 60_000, config?.contains("\0") != true else {
@@ -3576,15 +3594,22 @@ enum LibraryKeyboard {
     }
 }
 final class LibraryKeyboardWindow: UIWindow {
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? { nil }
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        // The invisible keyboard window passes through touches, except when
+        // an input rejection alert needs its OK button to be reachable.
+        rootViewController?.presentedViewController is UIAlertController ? super.hitTest(point, with: event) : nil
+    }
 }
 final class LibraryKeyInput: UIView, UIKeyInput {
     var hasText: Bool { true }
     override var canBecomeFirstResponder: Bool { true }
     private var held = Set<Int32>()
-    var keyboardType: UIKeyboardType { get { .asciiCapable } set {} }
+    var keyboardType: UIKeyboardType { get { .default } set {} }
     var autocorrectionType: UITextAutocorrectionType { get { .no } set {} }
     var autocapitalizationType: UITextAutocapitalizationType { get { .none } set {} }
+    var smartQuotesType: UITextSmartQuotesType { get { .no } set {} }
+    var smartDashesType: UITextSmartDashesType { get { .no } set {} }
+    var spellCheckingType: UITextSpellCheckingType { get { .no } set {} }
     override var inputAccessoryView: UIView? {
         let scroll = UIScrollView(frame: CGRect(x: 0, y: 0, width: 650, height: 52)); scroll.backgroundColor = .secondarySystemBackground
         let row = UIStackView(); row.axis = .horizontal; row.spacing = 5
@@ -3609,11 +3634,7 @@ final class LibraryKeyInput: UIView, UIKeyInput {
     }
     private func press(_ vk: Int32) { winios_post_key(vk, 1); winios_post_key(vk, 0) }
     func insertText(_ text: String) {
-        for ch in text {
-            guard let (vk, shift) = MetalBackedView.vkForChar(ch) else { continue }
-            let temporary = shift && !held.contains(0x10)
-            if temporary { winios_post_key(0x10, 1) }; press(vk); if temporary { winios_post_key(0x10, 0) }
-        }
+        SoftwareTextInput.insert(text, from: self, shiftHeld: held.contains(0x10))
     }
     func deleteBackward() { press(0x08) }
     func releaseModifiers() { for key in held { winios_post_key(key, 0) }; held.removeAll() }

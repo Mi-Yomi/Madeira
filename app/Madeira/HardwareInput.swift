@@ -988,7 +988,10 @@ final class HardwareInput: ObservableObject {
             }
         }
         m.scroll.valueChangedHandler = { [weak self] _, x, y in
-            self?.scrolled(Double(x), Double(y))
+            // GCMouse's scroll pad reports vertical in x (negative is up)
+            // and horizontal in y (positive is right), unlike UIKit's x/y.
+            // Normalize here: scrolled and WheelAccumulator use Windows axes.
+            self?.scrolled(Double(y), -Double(x))
         }
         noteMousePresent()
         if fresh {

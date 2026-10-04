@@ -195,6 +195,19 @@ environment.
 | `MADEIRA_POINTER_AUTOLOCK` | on | `0`: lock only by hand (Ctrl+Alt+P or the lock button). |
 | `MADEIRA_NAV_KEYS_E0` | on | `0`: the driver's previous extended-key flags for the navigation keys. |
 
+## Software text and Russian input
+
+The two software-keyboard frontends allow normal iOS language selection and
+send non-ASCII text as UTF-16 `KEYEVENTF_UNICODE` packets. ASCII retains its
+virtual-key/shortcut behavior. Inserts are admitted atomically, with a global
+4096-record limit, bounded pumping, and a visible rejection message rather
+than silent truncation. Session startup discards old pending input.
+
+This does not implement Russian physical-keyboard layout switching, an IME,
+or iOS-to-Wine clipboard synchronization. Ctrl+V still uses the guest's
+existing clipboard behavior. Full queue semantics, tests, and the required
+1C/device acceptance checks are in [Software text input](SOFTWARE_TEXT_INPUT.md).
+
 ## Logs
 
 `[hwinput]` lines: the switches at start; keyboard and mouse connects and
@@ -213,6 +226,7 @@ new cursor image (`[winios] cursor set`), as in the desktop session.
 ```sh
 python3 tests/host/check-hardware-input.py      # needs swiftc, cc and the wine submodule (or WINE_SRC)
 python3 tests/host/check-nav-keys.py
+python3 tests/host/check-unicode-input.py       # needs cc; Swift encoder execution when swiftc exists
 ```
 
 `check-hardware-input.py` compiles the pure part of `HardwareInput.swift` (key

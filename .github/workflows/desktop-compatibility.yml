@@ -1,0 +1,42 @@
+name: Desktop compatibility checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portable-launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check native argument decoding and PE routing
+        run: |
+          python3 tests/host/check-launch-arguments.py
+          python3 tests/host/check-launch-routing.py
+      - name: Check Blender probe syntax
+        run: python3 -m py_compile tests/desktop/blender_cpu_smoke.py
+      - name: Check Unicode input queue with sanitizers
+        env:
+          CFLAGS: -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer
+        run: python3 tests/host/check-unicode-input.py
+
+  swift-input:
+    runs-on: macos-14
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check compiled mouse-wheel routing
+        run: python3 tests/host/check-mouse-wheel.py
+      - name: Check compiled launch-profile validation
+        run: python3 tests/host/check-launch-validation.py
+      - name: Check compiled Unicode encoding and queue
+        run: python3 tests/host/check-unicode-input.py

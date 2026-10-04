@@ -42,7 +42,7 @@ for call in ["madeira_link_syswow64(", "madeira_link_syswow64_wbem(", "madeira_s
     assert thread.count(call) == 1, call
 assert thread.index("ios_main_image_i386 = is_i386_target ? 1 : 0;") < thread.index("__wine_main(argc, argv);")
 assert "if (has_i386_set) madeira_publish_host_probe();" in thread
-exe = thread[thread.index("char exe_path[512];"):]
+exe = thread[thread.index("char exe_path[1024];"):]
 exe = exe[:exe.index("// Optional MADEIRA_ARGS")]
 i386_branch = exe[exe.index("} else if (is_i386_target) {"):]
 assert i386_branch.index('"C:\\\\windows\\\\syswow64\\\\%s"') < i386_branch.index("} else {"), exe

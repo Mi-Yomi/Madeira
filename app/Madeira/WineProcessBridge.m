@@ -28,6 +28,7 @@
 #include <sys/sysctl.h>
 
 #include "WineProcessBridge.h"
+#include "WineLaunchArguments.h"
 #include "WineServerBridge.h"
 #include "PrefixExtractor.h"
 #include "FEXBridge.h"  // fex_get_jit_write_offset()
@@ -773,7 +774,32 @@ static void madeira_publish_host_probe(void)
     dprintf(STDERR_FILENO, "[WineProc] FEX host feature probe: %s\n", buf);
 }
 
+/* Publish the launch directory only after changing to the complete native
+ * path. An unavailable or overlong folder must not become a fictitious PWD. */
+static int madeira_set_launch_directory(const char *prefix, const char *relative_dir,
+                                       const char *windows_dir)
+{
+    char unix_dir[PATH_MAX + 1024 + 16];
+    int length = snprintf(unix_dir, sizeof(unix_dir), "%s/drive_c/%s", prefix, relative_dir);
+    if (length < 0 || length >= (int)sizeof(unix_dir)) {
+        dprintf(STDERR_FILENO, "[WineProc] launch directory exceeds native path buffer; leaving cwd unchanged\n");
+        errno = ENAMETOOLONG;
+        return -1;
+    }
+    int rc = chdir(unix_dir);
+    int error = rc ? errno : 0;
+    if (!rc) {
+        setenv("PWD", unix_dir, 1);
+        setenv("MADEIRA_INITIAL_CWD", windows_dir, 1);
+    }
+    dprintf(STDERR_FILENO, "[WineProc] chdir(%s) = %d errno=%d%s\n",
+            unix_dir, rc, error, rc ? "; launch cwd not published" : "; launch cwd published");
+    errno = error;
+    return rc;
+}
+
 static void *wine_process_thread(void *arg) {
+    const int pending_client_fd = (int)(intptr_t)arg;
     @autoreleasepool {
         /* Perf: the guest main thread runs ON this pthread. Promote to
          * USER_INTERACTIVE so it schedules on P-cores with minimal kernel
@@ -1415,34 +1441,37 @@ static void *wine_process_thread(void *arg) {
         // (e.g. "C:\\Program Files\\Thumper\\THUMPER_win10.exe"), use it
         // as-is. Otherwise treat it as a bare exe name in system32 (legacy
         // path used by cube/fib/hello tests).
-        char exe_path[512];
+        char exe_path[1024]; /* matches the library's Windows-path limit */
+        int exe_path_length;
         if (strchr(madeira_exe, '\\') || (madeira_exe[0] && madeira_exe[1] == ':')) {
-            snprintf(exe_path, sizeof(exe_path), "%s", madeira_exe);
+            exe_path_length = snprintf(exe_path, sizeof(exe_path), "%s", madeira_exe);
         } else if (is_i386_target) {
             /* WoW64: a bare i386 name lives in the syswow64 farm */
-            snprintf(exe_path, sizeof(exe_path), "C:\\windows\\syswow64\\%s", madeira_exe);
+            exe_path_length = snprintf(exe_path, sizeof(exe_path), "C:\\windows\\syswow64\\%s", madeira_exe);
         } else {
-            snprintf(exe_path, sizeof(exe_path), "C:\\windows\\system32\\%s", madeira_exe);
+            exe_path_length = snprintf(exe_path, sizeof(exe_path), "C:\\windows\\system32\\%s", madeira_exe);
         }
 
-        // Optional MADEIRA_ARGS env var: space-separated args appended to argv.
-        // Tokenized in-place; max 16 extra tokens.
-        static char args_buf[1024];
-        char *extra_argv[16] = {0};
-        int extra_argc = 0;
+        // Optional MADEIRA_ARGS env var: Windows-style quoted arguments.
+        // At most 64 arguments in less than 4 KB, matching the library editor.
+        char args_buf[MADEIRA_LAUNCH_ARGS_BYTES];
+        char *extra_argv[MADEIRA_LAUNCH_ARGS_COUNT + 1];
         const char *madeira_args = getenv("MADEIRA_ARGS");
-        if (madeira_args && *madeira_args) {
-            strncpy(args_buf, madeira_args, sizeof(args_buf) - 1);
-            args_buf[sizeof(args_buf) - 1] = 0;
-            char *saveptr = NULL;
-            for (char *tok = strtok_r(args_buf, " ", &saveptr);
-                 tok && extra_argc < 16;
-                 tok = strtok_r(NULL, " ", &saveptr)) {
-                extra_argv[extra_argc++] = tok;
-            }
+        int extra_argc = madeira_parse_launch_arguments(madeira_args, args_buf, extra_argv);
+        if (extra_argc < 0 || exe_path_length < 0 || exe_path_length >= (int)sizeof(exe_path)) {
+            LOG("Launch path or arguments exceed supported bounds; refusing a truncated command");
+            dprintf(STDERR_FILENO, "[WineProc] launch rejected: maximum path 1023 bytes, arguments 64 tokens / 4095 UTF-8 bytes\n");
+            wine_ios_exit_code = (int)0xc000000d; /* STATUS_INVALID_PARAMETER */
+            wine_launched_process_did_exit(wine_ios_exit_code);
+            /* __wine_main has not consumed this end of the launch socket yet. */
+            close(pending_client_fd);
+            unsetenv("WINESERVERSOCKET");
+            wineserver_stop();
+            g_wine_running = 0;
+            return NULL;
         }
 
-        char *argv[24];
+        char *argv[MADEIRA_LAUNCH_ARGS_COUNT + 3]; /* wine, executable, args, NULL */
         int argc = 0;
         argv[argc++] = "wine";
         argv[argc++] = exe_path;
@@ -1465,6 +1494,7 @@ static void *wine_process_thread(void *arg) {
          * the working folder Steam's launch configuration names, in MADEIRA_WORKDIR
          * (a C:\ folder of the prefix, for this launch only; cleared here). That folder
          * is used instead of the exe's own. */
+        unsetenv("MADEIRA_INITIAL_CWD"); /* never inherit a previous session's override */
         const char *launch_workdir = getenv("MADEIRA_WORKDIR");   /* set by the library for one launch: Steam's working folder; not a setting */
         char workdir[512] = "";
         if (launch_workdir && (launch_workdir[0] == 'C' || launch_workdir[0] == 'c') && launch_workdir[1] == ':' &&
@@ -1473,38 +1503,28 @@ static void *wine_process_thread(void *arg) {
             snprintf(workdir, sizeof(workdir), "%s", launch_workdir);
         unsetenv("MADEIRA_WORKDIR");
         if (workdir[0]) {
-            char unix_dir[1024], windir[512], wine_cwd[520];
+            char windir[512], wine_cwd[520];
             snprintf(windir, sizeof(windir), "%s", workdir + 3);
             for (char *p = windir; *p; p++) if (*p == '\\') *p = '/';
-            snprintf(unix_dir, sizeof(unix_dir), "%s/drive_c/%s", g_prefix_path, windir);
-            int rc = chdir(unix_dir);
-            setenv("PWD", unix_dir, 1);
             snprintf(wine_cwd, sizeof(wine_cwd), "%s\\", workdir);
-            setenv("MADEIRA_INITIAL_CWD", wine_cwd, 1);
-            dprintf(STDERR_FILENO, "[WineProc] working folder from the launch: chdir(%s) = %d errno=%d, MADEIRA_INITIAL_CWD=%s\n",
-                    unix_dir, rc, rc ? errno : 0, wine_cwd);
-        } else if (strchr(madeira_exe, '\\') || (madeira_exe[0] && madeira_exe[1] == ':')) {
+            madeira_set_launch_directory(g_prefix_path, windir, wine_cwd);
+        } else if ((madeira_exe[0] == 'C' || madeira_exe[0] == 'c') &&
+                   madeira_exe[1] == ':' && madeira_exe[2] == '\\') {
             /* Convert "C:\Program Files\Thumper\X.exe" → unix path */
-            char unix_dir[1024];
-            const char *drive_c = "drive_c";
             const char *after_drive = madeira_exe + 3; /* skip "C:\" */
             char *last_sep = strrchr(madeira_exe, '\\');
             if (last_sep && last_sep > madeira_exe + 3) {
                 /* Get "Program Files\Thumper" from "C:\Program Files\Thumper\X.exe" */
                 size_t dir_len = (size_t)(last_sep - after_drive);
-                char windir[512];
+                char windir[1024]; /* bounded by the validated exe_path above */
                 memcpy(windir, after_drive, dir_len);
                 windir[dir_len] = 0;
                 /* Translate backslashes to forward slashes */
                 for (char *p = windir; *p; p++) if (*p == '\\') *p = '/';
-                snprintf(unix_dir, sizeof(unix_dir), "%s/%s/%s",
-                         g_prefix_path, drive_c, windir);
-                int rc = chdir(unix_dir);
-                setenv("PWD", unix_dir, 1);
                 /* Also set the iOS-specific override so env_ios.c's
                  * get_initial_directory bypasses unix_to_nt_file_name (which
                  * fails to resolve drive_c via dosdevices on iOS). */
-                char wine_cwd[768];
+                char wine_cwd[1026];
                 /* Strip trailing exe name from madeira_exe to get the dir part */
                 {
                     const char *exe = madeira_exe;
@@ -1513,11 +1533,9 @@ static void *wine_process_thread(void *arg) {
                         memcpy(wine_cwd, exe, dir_len);
                         wine_cwd[dir_len] = '\\';
                         wine_cwd[dir_len + 1] = 0;
-                        setenv("MADEIRA_INITIAL_CWD", wine_cwd, 1);
+                        madeira_set_launch_directory(g_prefix_path, windir, wine_cwd);
                     }
                 }
-                dprintf(STDERR_FILENO, "[WineProc] chdir(%s) = %d errno=%d, PWD + MADEIRA_INITIAL_CWD=%s\n",
-                        unix_dir, rc, rc ? errno : 0, wine_cwd);
             }
         }
 
@@ -1641,7 +1659,7 @@ int wine_process_start(const char *prefix_path) {
     pthread_attr_init(&attr);
     pthread_attr_set_qos_class_np(&attr, QOS_CLASS_USER_INTERACTIVE, 0);
 
-    int ret = pthread_create(&g_wine_thread, &attr, wine_process_thread, NULL);
+    int ret = pthread_create(&g_wine_thread, &attr, wine_process_thread, (void *)(intptr_t)pair[1]);
     pthread_attr_destroy(&attr);
     if (ret != 0) {
         LOG("Failed to create Wine process thread: %d", ret);

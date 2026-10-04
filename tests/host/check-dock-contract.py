@@ -221,7 +221,7 @@ func jwt(_ claims: String) -> String {
         require(env("MADEIRA_IMAGE_MAP_GUARD") == nil, "MADEIRA_DOCK_IMAGE_MAP_GUARD=0 leaves the image-map guard off")
         unsetenv("MADEIRA_DOCK_IMAGE_MAP_GUARD")
         require(MadeiraDock.launchArguments(width: 1280, height: 720) == "/desktop=madeira,1280x720 C:\\windows\\system32\\dockhost.exe", "explorer desktop runs the host")
-        require(!MadeiraDock.launchArguments(width: 1280, height: 720).contains("\""), "no quotes: MADEIRA_ARGS is split at spaces and passed on as is")
+        require(!MadeiraDock.launchArguments(width: 1280, height: 720).contains("\""), "fixed Dock paths need no quotes")
         require(!MadeiraDock.executable.contains(" "), "the host path has no spaces")
         require(MadeiraDock.launchArguments(width: 1280, height: 720, installers: "C:\\i.cmd") ==
                 "/desktop=madeira,1280x720 C:\\windows\\system32\\cmd.exe /c call C:\\i.cmd & C:\\windows\\system32\\dockhost.exe",

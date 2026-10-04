@@ -1022,10 +1022,9 @@ struct JoystickKeyView: View {
 }
 
 // SwiftUI wrapper around the placeholder view.
-// iOS software-keyboard → Wine key events. Each character is mapped to a
-// US-layout virtual-key (+ shift where needed) and posted as a down/up pair;
-// the message queue's ToUnicode then produces the right WM_CHAR. Paths need
-// the full symbol set (":" "\" "-" "." "_"), so the table is comprehensive.
+// iOS software-keyboard → Wine input. ASCII retains US-layout virtual keys
+// and shortcuts; all other characters use UTF-16 text packets. The native
+// queue admits each insertion atomically, including temporary shift pairs.
 extension MetalBackedView: UIKeyInput {
     var hasText: Bool { false }
 
@@ -1034,8 +1033,11 @@ extension MetalBackedView: UIKeyInput {
         if ch == "\n" || ch == "\r" { return (0x0D, false) }   // VK_RETURN
         if ch == "\t" { return (0x09, false) }                 // VK_TAB
         if ch == " " { return (0x20, false) }                  // VK_SPACE
-        if ch.isLetter, let up = ch.uppercased().first?.asciiValue, up >= 0x41, up <= 0x5A {
-            return (Int32(up), ch.isUppercase)                 // VK_A..VK_Z
+        if let a = ch.asciiValue, a >= 0x41, a <= 0x5A {
+            return (Int32(a), true)                            // VK_A..VK_Z
+        }
+        if let a = ch.asciiValue, a >= 0x61, a <= 0x7A {
+            return (Int32(a - 0x20), false)                     // VK_A..VK_Z
         }
         if let a = ch.asciiValue, a >= 0x30, a <= 0x39 {
             return (Int32(a), false)                           // VK_0..VK_9 (unshifted)
@@ -1063,13 +1065,7 @@ extension MetalBackedView: UIKeyInput {
         // A hardware keyboard's presses reach Wine raw (HardwareInput); UIKit
         // also delivers them here as text, which would type every key twice.
         if HardwareInput.shared.handlesTyping { return }
-        for ch in text {
-            guard let (vk, shift) = MetalBackedView.vkForChar(ch) else { continue }
-            if shift { winios_post_key(0x10, 1) }   // VK_SHIFT down
-            winios_post_key(vk, 1)
-            winios_post_key(vk, 0)
-            if shift { winios_post_key(0x10, 0) }    // VK_SHIFT up
-        }
+        SoftwareTextInput.insert(text, from: self)
     }
 
     func deleteBackward() {
@@ -1079,12 +1075,57 @@ extension MetalBackedView: UIKeyInput {
     }
 
     // Traits: keep iOS from rewriting path characters.
-    var keyboardType: UIKeyboardType { get { .asciiCapable } set {} }
+    var keyboardType: UIKeyboardType { get { .default } set {} }
     var autocorrectionType: UITextAutocorrectionType { get { .no } set {} }
     var autocapitalizationType: UITextAutocapitalizationType { get { .none } set {} }
     var smartQuotesType: UITextSmartQuotesType { get { .no } set {} }
     var smartDashesType: UITextSmartDashesType { get { .no } set {} }
     var spellCheckingType: UITextSpellCheckingType { get { .no } set {} }
+}
+
+@MainActor enum SoftwareTextInput {
+    // Bound work before allocating or walking a potentially huge grapheme.
+    // A UTF-16 record may be one half of a supplementary character; both
+    // halves stay in the same native batch, in their original order.
+    static func keys(for text: String, shiftHeld: Bool) -> [winios_text_key]? {
+        let limit = Int(WINIOS_TEXT_MAX_UNITS)
+        guard text.utf16.prefix(limit + 1).count <= limit else { return nil }
+        var keys: [winios_text_key] = []
+        for ch in text {
+            if let (vk, shift) = MetalBackedView.vkForChar(ch) {
+                keys.append(winios_text_key(value: UInt16(vk), flags: shift && !shiftHeld ? UInt16(WINIOS_TEXT_SHIFT) : 0))
+            } else {
+                for unit in String(ch).utf16 {
+                    keys.append(winios_text_key(value: unit, flags: UInt16(WINIOS_TEXT_UNICODE)))
+                }
+            }
+        }
+        return keys
+    }
+
+    static func insert(_ text: String, from view: UIView, shiftHeld: Bool = false) {
+        guard let keys = keys(for: text, shiftHeld: shiftHeld) else {
+            rejected("Text is too long. Enter smaller sections of at most \(WINIOS_TEXT_MAX_UNITS) UTF-16 units.", from: view)
+            return
+        }
+        let accepted = keys.withUnsafeBufferPointer { winios_post_text($0.baseAddress, UInt32($0.count)) }
+        if accepted == 0 {
+            rejected("The input queue is busy. Wait for the app to respond, then try entering the text again.", from: view)
+        }
+    }
+
+    private static func rejected(_ reason: String, from view: UIView) {
+        // Never log the entered text: a 1C field can contain private data.
+        LogStore.shared.log("[software-text] insertion rejected: \(reason)")
+        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+        UIAccessibility.post(notification: .announcement, argument: "Text was not entered. \(reason)")
+        guard var presenter = view.window?.rootViewController else { return }
+        while let presented = presenter.presentedViewController { presenter = presented }
+        guard !(presenter is UIAlertController) else { return }
+        let alert = UIAlertController(title: "Text was not entered", message: reason, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        presenter.present(alert, animated: true)
+    }
 }
 
 /// Pointer settings, persisted to the app container.

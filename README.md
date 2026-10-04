@@ -112,6 +112,7 @@ and some inputs that are not in the repository, such as the toolchains.
 | Controllers and touch controls | [`docs/CONTROLLERS.md`](docs/CONTROLLERS.md) |
 | Keyboard, mouse and trackpad | [`docs/KEYBOARD_MOUSE.md`](docs/KEYBOARD_MOUSE.md) |
 | Audio and video | [`docs/MEDIA.md`](docs/MEDIA.md) |
+| Desktop apps: 1C and Blender compatibility work | [`docs/DESKTOP_COMPATIBILITY.md`](docs/DESKTOP_COMPATIBILITY.md) |
 | Licensing in detail | [`docs/LICENSING.md`](docs/LICENSING.md) |
 
 ## Licensing

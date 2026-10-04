@@ -43,6 +43,21 @@ void winios_post_touch_up(int x, int y);
  * down=1 press, down=0 release. */
 void winios_post_key(int vk, int down);
 
+/* Software text is admitted as one batch: a failed call queues nothing.
+ * ASCII keeps its virtual-key/shortcut behaviour; other text uses UTF-16
+ * KEYEVENTF_UNICODE packets. SHIFT means a temporary shift around this key,
+ * not a modifier already held by the caller. At most 4096 records may be
+ * outstanding, including the batch being drained. Never blocks waiting for
+ * Wine; callers must report rejection and let the user retry smaller text. */
+#define WINIOS_TEXT_MAX_UNITS 4096
+#define WINIOS_TEXT_UNICODE  1
+#define WINIOS_TEXT_SHIFT    2
+typedef struct {
+    unsigned short value;   /* virtual key, or one UTF-16 code unit */
+    unsigned short flags;   /* 0, WINIOS_TEXT_SHIFT or WINIOS_TEXT_UNICODE */
+} winios_text_key;
+int winios_post_text(const winios_text_key *keys, unsigned int count);
+
 /* S2 desktop compositor placement. Called by the Swift presentation
  * placeholder (MetalBackedView) with its bounds in UIWindow coords —
  * the wine virtual desktop renders aspect-fit inside this frame, like

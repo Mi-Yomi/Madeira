@@ -164,8 +164,9 @@ require('setenv("SteamAppId",  direct_app, 1);' in identity and 'strspn(direct_a
         and '} else {' in identity and 'unsetenv("MADEIRA_STEAM_APPID");' in identity,
         "bridge: a direct start publishes its game's own identity once (digits only, a C: folder); every other launch keeps the previous identity")
 workdir = bridge[bridge.index('const char *launch_workdir = getenv("MADEIRA_WORKDIR");'):]
-workdir = workdir[:workdir.index('} else if (strchr(madeira_exe')]
-require('unsetenv("MADEIRA_WORKDIR");' in workdir and '!strstr(launch_workdir, "..")' in workdir and 'chdir(unix_dir)' in workdir,
+workdir = workdir[:workdir.index('} else if ((madeira_exe')]
+require('unsetenv("MADEIRA_WORKDIR");' in workdir and '!strstr(launch_workdir, "..")' in workdir and
+        'madeira_set_launch_directory(g_prefix_path, windir, wine_cwd);' in workdir,
         "bridge: Steam's working folder applies to one launch, only as a C: folder of the prefix")
 apply = library[library.index('    func applyEnvironment() {'):]
 apply = apply[:apply.index('\n    }\n')]

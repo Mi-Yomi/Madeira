@@ -657,38 +657,141 @@ void winios_pWindowPosChanged(HWND hwnd, HWND insert_after, HWND owner_hint, UIN
 
 extern void winios_drv_post_mouse(int x, int y, unsigned int flags, unsigned int mouse_data, void *hwnd);
 extern void winios_drv_post_key(unsigned short vk, unsigned int flags);
+extern void winios_drv_post_unicode(unsigned short unit, unsigned int flags);
 extern void winios_dump_window_tree(void);
 extern void ios_dump_all_thread_stacks(void);
 
 #define WINIOS_RING_SIZE 256
+#define WINIOS_INPUT_DRAIN_BUDGET 64
 #define WINIOS_EV_MOUSE 0
 #define WINIOS_EV_KEY   1
+#define WINIOS_EV_TEXT  2
 #define KEYEVENTF_KEYUP 0x0002
 typedef struct {
-    unsigned int type;       /* WINIOS_EV_MOUSE / WINIOS_EV_KEY */
-    int x, y;                /* mouse: coords; key: x = virtual-key code */
+    unsigned int type;       /* WINIOS_EV_MOUSE / WINIOS_EV_KEY / WINIOS_EV_TEXT */
+    int x, y;                /* mouse: coords; key: x = VK; text: x = next record */
     unsigned int flags;      /* mouse: MOUSEEVENTF_*; key: KEYEVENTF_* */
     unsigned int data;       /* mouse: mouseData (wheel delta) */
+    winios_text_key *text;    /* TEXT: owned batch, data = record count */
 } winios_input_event_t;
 
 static struct {
     winios_input_event_t buf[WINIOS_RING_SIZE];
     unsigned int head;       /* producer cursor (Swift side) */
     unsigned int tail;       /* consumer cursor (Wine drain) */
+    unsigned int text_units; /* includes batches currently being drained */
     pthread_mutex_t lock;
 } g_input_q = { .lock = PTHREAD_MUTEX_INITIALIZER };
+static pthread_mutex_t g_input_drain_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static void winios_q_push_ev(unsigned int type, int x, int y, unsigned int flags, unsigned int data) {
     pthread_mutex_lock(&g_input_q.lock);
     unsigned int next = (g_input_q.head + 1) % WINIOS_RING_SIZE;
     if (next != g_input_q.tail) {
-        g_input_q.buf[g_input_q.head] = (winios_input_event_t){type, x, y, flags, data};
+        g_input_q.buf[g_input_q.head] = (winios_input_event_t){type, x, y, flags, data, NULL};
         g_input_q.head = next;
     }
-    /* If buffer is full we drop the oldest event by simply not advancing —
+    /* If buffer is full we drop the new event by simply not advancing —
      * better than blocking the UI thread on a Wine event drain. */
     pthread_mutex_unlock(&g_input_q.lock);
 }
+
+int winios_post_text(const winios_text_key *keys, unsigned int count) {
+    if (!count) return 1;
+    if (!keys || count > WINIOS_TEXT_MAX_UNITS) return 0;
+    for (unsigned int i = 0; i < count; ++i) {
+        if (keys[i].flags != WINIOS_TEXT_UNICODE &&
+            (keys[i].flags != 0 && keys[i].flags != WINIOS_TEXT_SHIFT)) return 0;
+        if (keys[i].flags != WINIOS_TEXT_UNICODE &&
+            (!keys[i].value || keys[i].value > 0xff)) return 0;
+    }
+    pthread_mutex_lock(&g_input_q.lock);
+    unsigned int next = (g_input_q.head + 1) % WINIOS_RING_SIZE;
+    if (next == g_input_q.tail || count > WINIOS_TEXT_MAX_UNITS - g_input_q.text_units) {
+        pthread_mutex_unlock(&g_input_q.lock);
+        return 0;
+    }
+    winios_text_key *copy = malloc(count * sizeof(*copy));
+    if (!copy) {
+        pthread_mutex_unlock(&g_input_q.lock);
+        return 0;
+    }
+    memcpy(copy, keys, count * sizeof(*copy));
+    g_input_q.buf[g_input_q.head] = (winios_input_event_t){WINIOS_EV_TEXT, 0, 0, 0, count, copy};
+    g_input_q.text_units += count;
+    g_input_q.head = next;
+    pthread_mutex_unlock(&g_input_q.lock);
+    return 1;
+}
+
+/* A software insertion occupies one ring slot, so saturation cannot leave a
+ * shift or key pressed, split a surrogate pair, or silently truncate a paste.
+ * Multiple Wine threads may pump; serialize dispatch as well as dequeue so
+ * pairs/batches stay ordered. A reentrant pump skips rather than deadlocks.
+ * One pump sends at most 64 records (256 key events for shifted ASCII), so a
+ * large paste cannot monopolize a Wine event-loop iteration. A partial batch
+ * stays at the FIFO head; no other events split its surrogate pairs. */
+static int winios_drain_input(void) {
+    if (pthread_mutex_trylock(&g_input_drain_lock)) return 0;
+    int drained = 0;
+    for (unsigned int n = 0; n < WINIOS_INPUT_DRAIN_BUDGET; ++n) {
+        winios_input_event_t e;
+        pthread_mutex_lock(&g_input_q.lock);
+        if (g_input_q.tail == g_input_q.head) {
+            pthread_mutex_unlock(&g_input_q.lock);
+            break;
+        }
+        e = g_input_q.buf[g_input_q.tail];
+        int finished = e.type != WINIOS_EV_TEXT || (unsigned int)e.x + 1 == e.data;
+        if (finished) g_input_q.tail = (g_input_q.tail + 1) % WINIOS_RING_SIZE;
+        else ++g_input_q.buf[g_input_q.tail].x;
+        pthread_mutex_unlock(&g_input_q.lock);
+
+        if (e.type == WINIOS_EV_TEXT) {
+            winios_text_key key = e.text[e.x];
+            if (key.flags == WINIOS_TEXT_UNICODE) {
+                winios_drv_post_unicode(key.value, 0);
+                winios_drv_post_unicode(key.value, KEYEVENTF_KEYUP);
+            } else {
+                if (key.flags & WINIOS_TEXT_SHIFT) winios_drv_post_key(0x10, 0);
+                winios_drv_post_key(key.value, 0);
+                winios_drv_post_key(key.value, KEYEVENTF_KEYUP);
+                if (key.flags & WINIOS_TEXT_SHIFT) winios_drv_post_key(0x10, KEYEVENTF_KEYUP);
+            }
+            if (finished) {
+                free(e.text);
+                pthread_mutex_lock(&g_input_q.lock);
+                g_input_q.text_units -= e.data;
+                pthread_mutex_unlock(&g_input_q.lock);
+            }
+        } else if (e.type == WINIOS_EV_KEY) {
+            winios_drv_post_key((unsigned short)e.x, e.flags);
+        } else {
+            winios_drv_post_mouse(e.x, e.y, e.flags, e.data, NULL);
+        }
+        drained = 1;
+    }
+    pthread_mutex_unlock(&g_input_drain_lock);
+    return drained;
+}
+/* end winios_drain_input */
+
+/* Session startup must not inherit text or input from an old session. Wait
+ * for the current bounded drain to finish before freeing its batch storage.
+ * Called outside the Wine input dispatch, with the same lock order. */
+static void winios_reset_input(void) {
+    pthread_mutex_lock(&g_input_drain_lock);
+    pthread_mutex_lock(&g_input_q.lock);
+    while (g_input_q.tail != g_input_q.head) {
+        winios_input_event_t *e = &g_input_q.buf[g_input_q.tail];
+        if (e->type == WINIOS_EV_TEXT) free(e->text);
+        g_input_q.tail = (g_input_q.tail + 1) % WINIOS_RING_SIZE;
+    }
+    g_input_q.text_units = 0;
+    pthread_mutex_unlock(&g_input_q.lock);
+    pthread_mutex_unlock(&g_input_drain_lock);
+}
+/* end winios_reset_input */
 
 /* Public C entry points for Swift / UIKit gesture handlers.
  * Coordinates are in iOS view-local pixels; we scale to a fixed
@@ -715,7 +818,6 @@ void winios_post_touch_up(int x, int y) {
 /* Key press bridge. vk = Windows virtual-key code, down = 1 for press,
  * 0 for release. Queued like mouse events; drained in pProcessEvents. */
 void winios_post_key(int vk, int down) {
-    fprintf(stderr, "[winios] post_key vk=0x%x down=%d\n", vk, down); fflush(stderr);
     winios_q_push_ev(WINIOS_EV_KEY, vk, 0, down ? 0 : KEYEVENTF_KEYUP, 0);
 }
 
@@ -748,26 +850,7 @@ BOOL winios_pProcessEvents(DWORD mask) {
             winios_dump_window_tree();
         }
     }
-    BOOL drained = FALSE;
-    for (;;) {
-        winios_input_event_t e;
-        pthread_mutex_lock(&g_input_q.lock);
-        if (g_input_q.tail == g_input_q.head) {
-            pthread_mutex_unlock(&g_input_q.lock);
-            break;
-        }
-        e = g_input_q.buf[g_input_q.tail];
-        g_input_q.tail = (g_input_q.tail + 1) % WINIOS_RING_SIZE;
-        pthread_mutex_unlock(&g_input_q.lock);
-
-        fprintf(stderr, "[winios] drain type=%u x=%d y=%d flags=0x%x\n", e.type, e.x, e.y, e.flags); fflush(stderr);
-        if (e.type == WINIOS_EV_KEY)
-            winios_drv_post_key((unsigned short)e.x, e.flags);
-        else
-            winios_drv_post_mouse(e.x, e.y, e.flags, e.data, NULL);
-        drained = TRUE;
-    }
-    return drained;
+    return winios_drain_input();
 }
 
 /* ============================================================ *
@@ -1066,6 +1149,7 @@ void winios_note_game_metal_hwnd(void *hwnd) {
 /* Called at every Wine session start (WineProcessBridge): a game session
  * starts with no overlay windows and no known Metal windows. */
 void winios_session_reset(void) {
+    winios_reset_input();
     dispatch_async(dispatch_get_main_queue(), ^{
         [g_game_metal removeAllObjects];
         if (g_comp_game) winios_drop_compositor("new session");
