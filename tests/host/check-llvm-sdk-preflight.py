@@ -8,6 +8,7 @@ from pathlib import Path
 import struct
 import tarfile
 import tempfile
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'tests/desktop/llvm_sdk'
@@ -108,6 +109,113 @@ def export_fixture(name='ProbeApi', target=None):
         encoded = target.encode('ascii') + b'\0'
         data[0x400:0x400 + len(encoded)] = encoded
     return bytes(data)
+
+
+# Discovery fixtures are inert files. No Visual Studio or Windows code runs.
+with tempfile.TemporaryDirectory() as folder:
+    folder = Path(folder).resolve()
+    program, program32 = folder / 'Program Files', folder / 'Program Files (x86)'
+    work, windows = folder / 'work', folder / 'Windows'
+    work.mkdir()
+
+    def installation(path, version, identity):
+        script = path / 'Common7/Tools/VsDevCmd.bat'
+        script.parent.mkdir(parents=True)
+        script.write_text('fixture-never-execute')
+        return {'installationPath': str(path), 'installationVersion': version,
+                'instanceId': identity, 'isComplete': True, 'isLaunchable': True,
+                'isPrerelease': False, 'isRebootRequired': False}
+
+    older = installation(program / 'Microsoft Visual Studio/2022/Enterprise', '17.14.1.1', 'vs2022')
+    newest = installation(program / 'Microsoft Visual Studio/18/Enterprise', '18.10.1.1', 'vs2026')
+    smaller = installation(program32 / 'Microsoft Visual Studio/18/BuildTools', '18.9.1.1', 'buildtools')
+    for rows in [[newest], [older, smaller, newest], [newest, smaller, older]]:
+        vs, selected = p.select_visual_studio('\ufeff' + json.dumps(rows), program, program32)
+        assert vs == Path(newest['installationPath']) and selected['instance_id'] == 'vs2026'
+        assert selected['instance_count'] == len(rows)
+        checks += 1
+    tied = dict(smaller, installationVersion=newest['installationVersion'])
+    expected = min([newest, tied], key=lambda row: row['installationPath'].casefold())
+    for rows in [[newest, tied], [tied, newest]]:
+        assert p.select_visual_studio(json.dumps(rows), program, program32)[1]['instance_id'] == expected['instanceId']
+        checks += 1
+    for output in ['', '[]', '{}', '[null]', json.dumps([newest] * 17), ' ' * (64 * 1024 + 1),
+                   json.dumps([newest, newest]), json.dumps([newest, dict(older, instanceId='vs2026')])]:
+        reject(lambda output=output: p.select_visual_studio(output, program, program32), 'empty/malformed/excessive/duplicate VS discovery')
+    for key, value in [('installationVersion', '19.0.0.0'), ('installationVersion', '16.11.0.0'),
+                       ('installationVersion', '18.x.0.0'), ('installationVersion', 18),
+                       ('isComplete', False), ('isLaunchable', False), ('isPrerelease', True),
+                       ('isRebootRequired', True), ('isComplete', 1), ('instanceId', ''),
+                       ('installationPath', str(folder / 'outside')),
+                       ('installationPath', str(program)), ('installationPath', 'relative/path'),
+                       ('installationPath', str(program / 'missing')),
+                       ('installationPath', str(program / 'unsafe%PATH%')),
+                       ('installationPath', str(program / 'unsafe\npath'))]:
+        row = dict(newest, **{key: value})
+        reject(lambda row=row: p.select_visual_studio(json.dumps([row]), program, program32), 'invalid VS identity/state/path')
+    for key in newest:
+        row = {k: v for k, v in newest.items() if k != key}
+        reject(lambda row=row: p.select_visual_studio(json.dumps([row]), program, program32), 'incomplete VS metadata')
+
+    environ = {'SystemRoot': str(windows), 'ProgramFiles': str(program), 'ProgramFiles(x86)': str(program32),
+               'ProgramData': str(folder / 'ProgramData'), 'ALLUSERSPROFILE': str(folder / 'ProgramData'),
+               'PATH': 'untrusted', 'INCLUDE': 'untrusted', 'LIB': 'untrusted', 'LIBPATH': 'untrusted',
+               'CL': '/MD', '_CL_': '/MD', 'LINK': '/FORCE', '_LINK_': '/FORCE',
+               'VSINSTALLDIR': 'untrusted', 'VCToolsInstallDir': 'untrusted', 'VCPKG_ROOT': 'untrusted'}
+    base_env = p.tool_base_environment(environ, work)
+    assert base_env['PROGRAMDATA'] == environ['ProgramData']
+    assert base_env['ALLUSERSPROFILE'] == environ['ALLUSERSPROFILE']
+    assert base_env['PATH'] == str(windows / 'System32')
+    assert not set(['INCLUDE', 'LIB', 'LIBPATH', 'CL', '_CL_', 'LINK', '_LINK_', 'VSINSTALLDIR',
+                    'VCTOOLSINSTALLDIR', 'VCPKG_ROOT']) & base_env.keys()
+    checks += 1
+    reject(lambda: p.tool_base_environment({k: v for k, v in environ.items() if k != 'ProgramData'}, work),
+           'missing ProgramData fails before locator')
+
+    vs = Path(newest['installationPath'])
+    vc, sdk = vs / 'VC/Tools/MSVC/14.51.36231', program32 / 'Windows Kits/10'
+    sdk_version = '10.0.26100.0'
+    fixture_tools = [program32 / 'Microsoft Visual Studio/Installer/vswhere.exe', program / 'CMake/bin/cmake.exe']
+    fixture_tools += [vc / 'bin/Hostx64/x64' / (name + '.exe') for name in ['cl', 'link', 'nmake', 'dumpbin']]
+    fixture_tools += [sdk / 'bin' / sdk_version / 'x64' / (name + '.exe') for name in ['rc', 'mt']]
+    for path in fixture_tools:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('fixture-never-execute')
+    for path in [vc / 'include', vc / 'lib/x64', sdk / 'Include', sdk / 'Lib']:
+        path.mkdir(parents=True, exist_ok=True)
+
+    class DiscoveryRun:
+        def __init__(self, output):
+            self.work, self.output, self.stages = work, output, []
+
+        def command(self, stage, argv, env, timeout):
+            self.stages.append(stage)
+            assert env['PROGRAMDATA'] == environ['ProgramData']
+            if stage == 'vs-locate':
+                assert argv[1:] == ['-products', '*', '-version', '[17.0,19.0)', '-requires',
+                    'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '-format', 'json', '-utf8', '-nologo']
+                assert timeout == 30 and env['PATH'] == str(windows / 'System32')
+                return 0, self.output
+            if stage == 'vs-environment':
+                script = Path(argv[-1]).read_text()
+                assert str(vs / 'Common7/Tools/VsDevCmd.bat') in script
+                assert '-arch=x64 -host_arch=x64' in script
+                return 0, (f'INCLUDE={vc / "include"};{sdk / "Include"}\nLIB={vc / "lib/x64"};{sdk / "Lib"}\n'
+                           f'VC_TOOLS={vc}\nSDK_DIR={sdk}\nSDK_VERSION={sdk_version}\n')
+            assert stage == 'cmake-version'
+            return 0, 'cmake version 4.4.3\n'
+
+    with patch.dict(p.os.environ, environ, clear=True):
+        runner = DiscoveryRun(json.dumps([older, newest, smaller]))
+        tools, env, record = p.tool_environment(runner)
+        assert tools['cl'] == vc / 'bin/Hostx64/x64/cl.exe'
+        assert record['visual_studio_selection']['instance_id'] == 'vs2026'
+        assert runner.stages == ['vs-locate', 'vs-environment', 'cmake-version']
+        checks += 1
+        runner = DiscoveryRun('[]')
+        reject(lambda: p.tool_environment(runner), 'no-install must stop before developer script/download')
+        assert runner.stages == ['vs-locate']
+        checks += 1
 
 
 for name in ['../escape', '/sdk/file', 'sdk/a/../file', 'sdk/./file', 'sdk//file',
@@ -321,5 +429,5 @@ assert lock['sdk']['sha256'] == 'ed775bdaea7087c6c1aeac9498352cfcd8610d92dc4fe9e
 request = json.loads((SOURCE / 'preflight-request.json').read_text())
 assert request['mesa_build_authorized_by_this_request'] is False
 assert request['maximum_compile_jobs'] == 2 and request['maximum_link_jobs'] == 1
-print(f'PASS: {checks} portable positive/negative archive, COFF/CRT, closure, metadata and proof controls; workflow bounds')
+print(f'PASS: {checks} portable positive/negative VS discovery, archive, COFF/CRT, closure, metadata and proof controls; workflow bounds')
 print('NOT RUN: SDK download/archive inventory, Windows compilation/link/runtime, Mesa, Wine/FEX/ARM64EC/iOS/Blender')

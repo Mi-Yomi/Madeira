@@ -385,24 +385,72 @@ class Run:
         return path
 
 
+def tool_base_environment(environ, work):
+    # Setup Configuration discovers registered instances through ProgramData.
+    # Keep these Windows locations, but never inherit compiler/linker flags,
+    # search paths, VS selection overrides, or package-manager configuration.
+    env = {k.upper(): v for k, v in environ.items() if k.upper() in
+           {'SYSTEMROOT', 'WINDIR', 'COMSPEC', 'PROGRAMFILES', 'PROGRAMFILES(X86)', 'PROGRAMW6432',
+            'PROGRAMDATA', 'ALLUSERSPROFILE', 'PROCESSOR_ARCHITECTURE', 'NUMBER_OF_PROCESSORS',
+            'USERPROFILE', 'APPDATA', 'LOCALAPPDATA'}}
+    require(env.get('PROGRAMDATA'), 'ProgramData missing; cannot discover preinstalled Visual Studio')
+    env.update(TEMP=str(work / 'temp'), TMP=str(work / 'temp'),
+               PATH=str(Path(env['SYSTEMROOT']) / 'System32'), VSCMD_SKIP_SENDTELEMETRY='1',
+               PYTHONNOUSERSITE='1', PYTHONDONTWRITEBYTECODE='1')
+    return env
+
+
+def select_visual_studio(output, program, program32):
+    """Select one complete release deterministically; discovery is not ABI proof."""
+    require(len(output.encode('utf-8')) <= 64 * 1024, 'Visual Studio discovery output exceeds 64 KiB')
+    instances = json.loads(output.lstrip('\ufeff'))
+    require(isinstance(instances, list) and len(instances) <= 16, 'Invalid/excessive Visual Studio instances')
+    require(instances, 'No complete preinstalled Visual Studio with x64 C++ tools; no install fallback')
+    roots = [program.resolve(), program32.resolve()]
+    candidates, seen_paths, seen_ids = [], set(), set()
+    for item in instances:
+        require(isinstance(item, dict), 'Malformed Visual Studio instance')
+        version, name, identity = (item.get(k) for k in ['installationVersion', 'installationPath', 'instanceId'])
+        require(isinstance(version, str) and re.fullmatch(r'\d{1,5}(?:\.\d{1,5}){3}', version),
+                'Invalid Visual Studio version')
+        version_key = tuple(map(int, version.split('.')))
+        require((17, 0, 0, 0) <= version_key < (19, 0, 0, 0), 'Unreviewed Visual Studio major version')
+        require(item.get('isComplete') is True and item.get('isLaunchable') is True and
+                item.get('isPrerelease') is False and item.get('isRebootRequired') is False,
+                'Visual Studio is incomplete, prerelease, or requires reboot')
+        require(isinstance(identity, str) and re.fullmatch(r'[A-Za-z0-9_-]{1,64}', identity),
+                'Invalid Visual Studio instance identity')
+        require(isinstance(name, str) and 0 < len(name) <= 240 and name.isascii() and
+                not any(ord(c) < 32 or c in '%!^&|<>"' for c in name), 'Unsafe Visual Studio path')
+        require(Path(name).is_absolute(), 'Relative Visual Studio path')
+        vs = Path(name).resolve()
+        require(any(vs != root and vs.is_relative_to(root) for root in roots), 'Unexpected Visual Studio location')
+        key = str(vs).casefold()
+        require(key not in seen_paths and identity.casefold() not in seen_ids, 'Duplicate Visual Studio instance')
+        seen_paths.add(key)
+        seen_ids.add(identity.casefold())
+        require((vs / 'Common7/Tools/VsDevCmd.bat').is_file(), 'Missing preinstalled developer environment script')
+        candidates.append((version_key, key, vs, identity, version))
+    # Highest numeric version first; stable path order breaks same-version ties.
+    candidates.sort(key=lambda row: (tuple(-n for n in row[0]), row[1]))
+    _, _, vs, identity, version = candidates[0]
+    return vs, {'instance_count': len(candidates), 'instance_id': identity,
+                'installation_version': version, 'installation_path': str(vs),
+                'selection': 'highest-release-version-then-casefolded-path'}
+
+
 def tool_environment(run):
     win = Path(os.environ['SystemRoot'])
     program = Path(os.environ['ProgramFiles'])
     program32 = Path(os.environ['ProgramFiles(x86)'])
-    env = {k: v for k, v in os.environ.items() if k.upper() in
-           {'SYSTEMROOT', 'WINDIR', 'COMSPEC', 'PROGRAMFILES', 'PROGRAMFILES(X86)', 'PROGRAMW6432',
-            'PROCESSOR_ARCHITECTURE', 'NUMBER_OF_PROCESSORS', 'USERPROFILE', 'APPDATA', 'LOCALAPPDATA'}}
-    env.update(TEMP=str(run.work / 'temp'), TMP=str(run.work / 'temp'),
-               PATH=str(win / 'System32'), VSCMD_SKIP_SENDTELEMETRY='1',
-               PYTHONNOUSERSITE='1', PYTHONDONTWRITEBYTECODE='1')
+    env = tool_base_environment(os.environ, run.work)
     vswhere = program32 / 'Microsoft Visual Studio/Installer/vswhere.exe'
     require(vswhere.is_file(), 'Preinstalled Visual Studio locator missing; no install fallback')
-    _, result = run.command('vs-locate', [vswhere, '-latest', '-products', '*', '-requires',
-        'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '-property', 'installationPath'], env, 30)
-    lines = result.strip().splitlines()
-    require(len(lines) == 1, 'Expected one preinstalled Visual Studio installation')
-    vs = Path(lines[0]).resolve()
-    require(vs.is_relative_to(program) or vs.is_relative_to(program32), 'Unexpected Visual Studio location')
+    _, result = run.command('vs-locate', [vswhere, '-products', '*', '-version', '[17.0,19.0)', '-requires',
+        'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '-format', 'json', '-utf8', '-nologo'], env, 30)
+    print(f'VS_DISCOVERY bytes={len(result.encode("utf-8"))} sha256={hashlib.sha256(result.encode("utf-8")).hexdigest()}', flush=True)
+    vs, selection = select_visual_studio(result, program, program32)
+    print('VS_SELECTION ' + json.dumps(selection, sort_keys=True), flush=True)
     devcmd = vs / 'Common7/Tools/VsDevCmd.bat'
     require(devcmd.is_file() and not any(c in str(devcmd) for c in '%!^&|<>"\r\n'), 'Unsafe/missing developer environment script')
     script = run.work / 'tool-environment.cmd'
@@ -443,7 +491,8 @@ def tool_environment(run):
     _, version = run.command('cmake-version', [cmake, '--version'], env, 20)
     match = re.search(r'cmake version (\d+)\.(\d+)\.(\d+)', version)
     require(match and tuple(map(int, match.groups())) >= (3, 25, 0), 'CMake >=3.25 required for exact export evaluation')
-    return tools, env, {'visual_studio': str(vs), 'msvc': str(vc), 'windows_sdk': str(sdkdir),
+    return tools, env, {'visual_studio': str(vs), 'visual_studio_selection': selection,
+                       'msvc': str(vc), 'windows_sdk': str(sdkdir),
                        'windows_sdk_version': sdkversion, 'cmake_version': version.strip(),
                        'tools': {n: {'path': str(p), 'sha256': sha(p)} for n, p in tools.items()}}
 

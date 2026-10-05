@@ -27,6 +27,21 @@ Windows SDK and CMake >=3.25. Their actual paths, versions and executable hashes
 are recorded. There is no installer, package-manager fallback, private input,
 credential, uploaded artifact, cache, signing, IPA or paid/larger runner.
 
+Visual Studio discovery preserves the runner's `ProgramData` and
+`AllUsersProfile` in the otherwise filtered tool environment: the Setup
+Configuration server [needs `ProgramData`](https://github.com/microsoft/vswhere/issues/236#issuecomment-985741650).
+It uses the preinstalled `vswhere`, requires x86/x64 C++ tools, and reads at
+most 64 KiB / 16 instances of UTF-8 JSON for complete, launchable, non-prerelease
+VS 2022/2026 (major 17/18) installations with no pending reboot. Multiple
+qualifying installations are ordered by numeric version, newest first, with a
+case-insensitive path tie-breaker. Each path must stay below Program Files and
+contain its developer script. Empty, malformed, duplicate, unsupported or
+unsafe discovery stops before download; no filesystem search or installer
+fallback is used. `VS_SELECTION` records the chosen identity/version/path and
+candidate count before setup. This only selects a candidate: the subsequent
+verified tool paths, x64 `/MT` compile/link, dependency audits and MCJIT proof
+remain mandatory.
+
 A small source-owned CMake fixture checks the exact conditional link-expression
 evaluation mechanism with those preinstalled tools before any SDK download.
 Its placeholder libraries are never linked or executed and cannot satisfy the
@@ -160,7 +175,12 @@ code; neither becomes native ARM64EC/iPhone code through static symbol matching.
 Run `python tests/host/check-llvm-sdk-preflight.py`. It tests archive/resource
 failure inputs, COFF/bigobj CRT restrictions, complete dependency edges and
 preserved linker flags, real-byte PE normal/delay dependency controls, and exact
-two-seed proof rejection. It uses the repository's existing pure PE readers in
+two-seed proof rejection. Inert Visual Studio fixtures also check single and
+multiple installations, numeric/tied ordering, missing or malformed discovery,
+unsafe paths/states, and preservation of Windows discovery variables without
+inheriting compiler flags or search paths. A mocked command runner exercises
+the complete tool-environment assembly and proves empty discovery stops before
+the developer script. It uses the repository's existing pure PE readers in
 `build/wine-pe/symbol_audit.py` and `guest_inventory.py`. These synthetic
 controls do not demonstrate that the real SDK fits, links or runs on Windows.
 
