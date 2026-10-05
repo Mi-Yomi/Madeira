@@ -228,7 +228,7 @@ static BOOL run_test(unsigned index)
         if (index == 2) CHECK(state.early_connects == 1, "real ERROR_PIPE_CONNECTED observed");
         else CHECK(state.pending_connects == 1 && state.event_wins == 1,
                    "real pending connect completed on event");
-        for (i = 1; i <= (index == 7 ? EXCHANGE_ITERATIONS : 1); ++i)
+        for (i = 1; i <= (index == 7 ? EXCHANGE_ITERATIONS : 1u); ++i)
         {
             guid.Data1 = i;
             CHECK(custom_pipe_io(state.pipe, &guid, sizeof(guid), &count, TRUE), "write action GUID");
