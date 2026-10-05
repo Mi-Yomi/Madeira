@@ -1,0 +1,17 @@
+{
+  "purpose": "Frozen reviewed production source for standalone Windows API reference tests; not an installed MSI provider",
+  "upstream_repository": "https://github.com/willfaust/wine",
+  "upstream_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f",
+  "upstream_path": "dlls/msi/custom.c",
+  "baseline_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "reviewed_patch_sha256": "a3c010ea77cf18c3b37ad2bc249692758839d9f83fbe7b081b08312dc8e36bae",
+  "reviewed_source_sha256": "0feda873cdce7625044f153c10ad05fa3d49939bde94f4fe28fce75b0735669f",
+  "extracted_span_sha256": "4eab607ab3dd71f8df9e03b46b7f5cd7757f889c38f9f93a26072a002e1d0f7b",
+  "extracted_span_bytes": 4196,
+  "span_begin": "/* Finish server-pipe operations before releasing their caller-owned storage. */",
+  "span_end_exclusive": "static DWORD custom_start_server(",
+  "functions": ["custom_pipe_result", "custom_connect_server", "custom_pipe_io"],
+  "license": "LGPL-2.1-or-later",
+  "license_file": "../COPYING.LIB",
+  "optional_integration_source": "build/wine-pe/receipts/msi-startup-2026-10-05/build/source/custom.c"
+}

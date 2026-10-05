@@ -1,0 +1,5 @@
+/out/
+*.exe
+*.obj
+*.o
+production_helpers.inc

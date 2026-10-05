@@ -1,0 +1,9 @@
+.gitattributes -text
+fixture.c -text
+own_child.c -text
+fixture_common.h -text
+extract-helpers.ps1 -text
+run.ps1 -text
+source/custom.c -text
+source/provenance.json -text
+reference-request.json -text

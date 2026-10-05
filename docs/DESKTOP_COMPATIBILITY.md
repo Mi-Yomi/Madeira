@@ -4,6 +4,11 @@ Initial source audit: upstream `6b79d562690c2e64d6908c3ffdc7943e6ae438e5`,
 2026-10-04. **Neither Windows Blender nor 1C has been run inside Madeira by
 this work.** Host tests below are deliberately separated from device acceptance.
 
+See [verified checkpoints](DESKTOP_VERIFIED_STATUS.md) for the later app-link,
+installer-reference and graphics results. The initial inventory observations
+below are historical; current source-built provider integrations are documented
+separately.
+
 ## What Madeira supplies
 
 Madeira combines Wine's ARM64EC/ARM64 Windows implementation, FEX translation
@@ -198,10 +203,11 @@ Concrete source gaps found:
 - Software-keyboard paths originally silently ignored non-ASCII characters;
   the new packet route above is host-tested but awaits device checks.
   Physical keys still use Wine's US scan-code layout
-- The tracked `i386-windows` farm contains only `.gitkeep`. Both tracked
-  64-bit farms omit modules including MSI, MSXML, RichEdit and WMI. This is an
-  inventory observation, not proof that every listed module is required or
-  absent from a separately built release IPA
+- The tracked `i386-windows` farm contains only `.gitkeep`. At the initial
+  audit both 64-bit farms omitted modules including MSI and RichEdit; the later
+  reviewed desktop/MSI integrations add those providers. MSXML/WMI and other
+  full-farm gaps remain separate work. An inventory gap alone is not proof
+  that a particular application requires that module
 - The 1C administrator guide calls out WMI for software licensing and matching
   bitness for COM/add-ins. Verify requirements for the exact platform version:
   [1C 8.3.27 administrator guide](https://1c-dn.com/library/tutorials/1c_enterprise_administrator_guide_file_mode_8_3_27/)

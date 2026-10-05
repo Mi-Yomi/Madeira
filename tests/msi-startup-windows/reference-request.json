@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "request": "msi-startup-windows-api-reference-20261005-1",
+  "scope": "Source-owned child startup and serialized named-pipe I/O on real Windows APIs",
+  "architecture": "x64",
+  "expected_cases": 8,
+  "maximum_job_minutes": 10,
+  "sdk_download": false,
+  "third_party_execution": false,
+  "installations": false,
+  "artifact_upload": false,
+  "cache": false,
+  "signing_or_ipa": false,
+  "production_timeout_added": false,
+  "files_sha256": {
+    "fixture.c": "366db0fb2abf330de039897ba5354da748d63808090aae3629fe9022d20f6818",
+    "own_child.c": "6ffbc68508ce74cb53a8e901483c8888f3c8b4ea772577f28a8754f01a26aa75",
+    "fixture_common.h": "531d35d9bd0dd4ce37d24e34e5f021e6610f0756be83a100f8cb5ab0d802a2cf",
+    "extract-helpers.ps1": "ca0d5cafe00e452d7e9ff93c32cfab060d26eb3d54d8fbba487e2fa331e0c4ad",
+    "run.ps1": "2d6c1401ddd5dbd6651a69918fc1a44b986c50f3f7b2be03ede3addb0499541b",
+    "source/custom.c": "0feda873cdce7625044f153c10ad05fa3d49939bde94f4fe28fce75b0735669f"
+  }
+}

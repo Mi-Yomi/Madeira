@@ -1,0 +1,44 @@
+name: MSI startup Windows API reference
+
+on:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - tests/msi-startup-windows/reference-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: msi-startup-windows-reference-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-owned-windows-reference:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    # Standard public-repository x64 runner; no larger runner or paid resource.
+    runs-on: windows-2025
+    timeout-minutes: 10
+    steps:
+      - name: Check out the exact requested commit
+        timeout-minutes: 2
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          submodules: false
+          lfs: false
+          fetch-depth: 1
+      - name: Compile own programs with preinstalled MSVC and run real Win32 cases
+        timeout-minutes: 7
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $checkedOut = git rev-parse HEAD
+          if ($LASTEXITCODE -ne 0 -or $checkedOut.Trim() -ne $env:GITHUB_SHA) { throw 'Checkout is not the requested commit' }
+          $parameters = @{
+            SourcePath = './tests/msi-startup-windows/source/custom.c'
+            OutputDirectory = './windows-reference-output'
+          }
+          $integrated = './build/wine-pe/receipts/msi-startup-2026-10-05/build/source/custom.c'
+          if (Test-Path -LiteralPath $integrated) { $parameters.IntegratedSourcePath = $integrated }
+          ./tests/msi-startup-windows/run.ps1 @parameters
