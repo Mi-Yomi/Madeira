@@ -235,7 +235,10 @@ class SafetyTests(unittest.TestCase):
                     names.append("app/Madeira/i386-windows/new.dll")
                     put(app / "i386-windows/new.dll", b"MZ")
                 elif mutation == "vc-runtime": put(app / "x86_64-vcruntime/new.dll", b"MZ")
-                with mock.patch.object(gate, "ROOT", root), mock.patch.object(gate, "git", return_value="\0".join(names) + "\0"):
+                # The paired source-built overlay has its own end-to-end suite;
+                # these fixtures isolate the existing base-resource policy.
+                with mock.patch.object(gate, "ROOT", root), mock.patch.object(gate, "git", return_value="\0".join(names) + "\0"), \
+                        mock.patch.object(gate.verify_desktop_integration, "validate"):
                     if mutation is None:
                         actual, pe = gate.resource_inputs()
                         self.assertEqual(actual, resources)

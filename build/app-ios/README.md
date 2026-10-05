@@ -51,8 +51,15 @@ Neither mode performs signing, Xcode archive/export, provisioning requests,
 caching, uploads or installation. The converter may retain its pre-existing
 vendor signature; “unsigned” means this gate performs no signing of its contents.
 
-Guest PE binaries are **tracked inputs reused, not source-rebuilt**. Their exact
-hashes are in the receipt. The 32-bit Wine runtime and x86_64 VC runtime are
+Existing guest PE binaries are **tracked inputs reused**. Twelve reviewed
+source-built Wine desktop DLLs (six for each 64-bit farm) are now integrated as
+tracked additions. The gate verifies the sealed 55-file build evidence, paired
+DLL hashes and architecture, exact Wine notices and reviewed bundle notice
+merge. The captured rebuild inputs remain authoritative; later published tooling
+can include hardening absent from the actual build. No arbitrary untracked
+overlay route is accepted. See `docs/DESKTOP_OVERLAY_INTEGRATION.md`.
+Their exact hashes are in the receipt. Full-farm dependency gaps remain.
+The 32-bit Wine runtime and x86_64 VC runtime are
 missing. A passed default gate establishes only unsigned app linking and bundle
 validation. An explicitly requested package gate also establishes local package
 integrity. Neither establishes device launch, JIT, rendering, 1C or Blender
@@ -62,4 +69,5 @@ Portable regression checks (synthetic fixtures; no Xcode or external downloads):
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 tests/host/check-app-bootstrap.py
+PYTHONDONTWRITEBYTECODE=1 python3 tests/host/check-desktop-integration.py
 ```

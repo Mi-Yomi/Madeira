@@ -1,0 +1,88 @@
+{
+  "files": {
+    "aarch64-windows/avifil32.dll": {
+      "bytes": 786432,
+      "sha256": "a6f65d862ba7dec32e020a54b4f1b94ec97cfea17dfa6f7dcbe93c3e77740c12"
+    },
+    "aarch64-windows/msftedit.dll": {
+      "bytes": 589824,
+      "sha256": "cf0e4f369ec37fdc90fe8fd03f5cc6a4eb85a71b238c692c35d60d30c972a277"
+    },
+    "aarch64-windows/msvfw32.dll": {
+      "bytes": 524288,
+      "sha256": "778bb56f2c7b1ebec0a66d099efc1c70553fda1edc44a82ad2350edf8b4d4900"
+    },
+    "aarch64-windows/netprofm.dll": {
+      "bytes": 524288,
+      "sha256": "883a92d52076758b35b13f95a9502fee27f446f70ad0731169844a77b1864913"
+    },
+    "aarch64-windows/riched20.dll": {
+      "bytes": 1048576,
+      "sha256": "34385b8aef3a1cce24385a8398291273d1c0e7a1d92a21acc0ce269e20461cb6"
+    },
+    "aarch64-windows/sensapi.dll": {
+      "bytes": 458752,
+      "sha256": "9ca24175090de31b246c99645aeba838c304e66f8e76459d939dec63559a35c4"
+    },
+    "arm64ec-windows/avifil32.dll": {
+      "bytes": 917504,
+      "sha256": "b85a6da0a3e483ab00470b9492131e5838cd5540ac4632ceddc94947c3acec61"
+    },
+    "arm64ec-windows/msftedit.dll": {
+      "bytes": 720896,
+      "sha256": "b70a16b31c0159b78657337087ab41b802efec3f663666fcb7f996a3cbbe31aa"
+    },
+    "arm64ec-windows/msvfw32.dll": {
+      "bytes": 655360,
+      "sha256": "f82e512e7c1c7da31684c9ec52d199644b4bd1abb61cf8321b3acb4856c94af7"
+    },
+    "arm64ec-windows/netprofm.dll": {
+      "bytes": 655360,
+      "sha256": "6a91904e27a7a417ca52fea7d1b9133996c506518f1c76efccb888ab172b9e98"
+    },
+    "arm64ec-windows/riched20.dll": {
+      "bytes": 1179648,
+      "sha256": "c8d2fabd0ece3c1da085b898f07d493b948bcfc2fde938994b333b5fa6320007"
+    },
+    "arm64ec-windows/sensapi.dll": {
+      "bytes": 589824,
+      "sha256": "722d81ef8042e77890273630e2fe327d1a83d658f29821ed6813b04849c6a17c"
+    },
+    "legal/THIRD-PARTY-NOTICES.md": {
+      "bytes": 16024,
+      "sha256": "bb1c46b06d4a38b0e127f6cf3a6f2e0c7df1e432fe7af251ff5959494e879308"
+    },
+    "legal/Wine-LGPL-2.1.txt": {
+      "bytes": 26434,
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c"
+    },
+    "legal/Wine-LICENSE-MADEIRA.md": {
+      "bytes": 2936,
+      "sha256": "af5e68eec8cad65700c24461185dc09936a927688753a999fa1e6bf80d4cf747"
+    },
+    "legal/Wine-compiler-rt-LICENSE.txt": {
+      "bytes": 4288,
+      "sha256": "09e65c6534e75ec49cdc74fa894bfe4287bfbb1002be41fcad90110e9acd0984"
+    },
+    "legal/Wine-desktop-INTEGRATION.md": {
+      "bytes": 2995,
+      "sha256": "4ec20909642d0426e81ad133a0576aa0c38fffcb94ec235b6554f3876d700d58"
+    },
+    "legal/Wine-desktop-SOURCE-REBUILD.md": {
+      "bytes": 3066,
+      "sha256": "6679e274c444872fabe8280a49e70d9143270491f662f25f6446a398214db956"
+    }
+  },
+  "package_ready": false,
+  "published_recipe_commit": "f30087cddb51e1e0be0d62e134cb023192fee15d",
+  "receipt_directory": "build/wine-pe/receipts/desktop-2026-10-05",
+  "recipe_reference_scope": "Published tooling reference; captured sealed rebuild-inputs remain authoritative for the DLL build. Later hardening is not byte-identical to captured build inputs.",
+  "residual_dependency_counts": {
+    "aarch64": 14,
+    "arm64ec": 11
+  },
+  "runtime_tested": false,
+  "schema_version": 1,
+  "stage_seal_sha256": "a0f56fd773375a2c2cc2bd76d01db0fbf28973ca1d7bf36a7dd6dbd6c9a02023",
+  "wine_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f"
+}

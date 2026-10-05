@@ -1,11 +1,5 @@
 # Source-built desktop Wine overlay, 2026-10-04
 
-This document retains the initial standalone build's historical hashes and
-status. For the later sealed 55-file build and its experimental source-tree
-integration, see [DESKTOP_OVERLAY_INTEGRATION.md](DESKTOP_OVERLAY_INTEGRATION.md).
-That record identifies the exact integrated outputs; the initial hashes below
-are not the current app-resource inventory.
-
 ## Result
 
 Six modules compiled and stripped for each of aarch64 and ARM64EC; all 12 images passed their exact architecture/CHPE gate. Outputs remain an uninstalled overlay. No app DLL farm, prefix, Wine source, submodule pin, IPA or signing state was changed.

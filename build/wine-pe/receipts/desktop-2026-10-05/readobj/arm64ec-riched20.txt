@@ -1,0 +1,452 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/results/.desktop-stage-2dbvf31y/result/arm64ec-windows/riched20.dll
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64EC (0xA641)
+  SectionCount: 8
+  TimeDateStamp: 2026-10-04 21:14:49 (0x6AC2C1C9)
+  PointerToSymbolTable: 0xD0000
+  SymbolCount: 6514
+  StringTableSize: 180383
+  OptionalHeaderSize: 240
+  Characteristics [ (0x2022)
+    IMAGE_FILE_DLL (0x2000)
+    IMAGE_FILE_EXECUTABLE_IMAGE (0x2)
+    IMAGE_FILE_LARGE_ADDRESS_AWARE (0x20)
+  ]
+}
+ImageOptionalHeader {
+  Magic: 0x20B
+  MajorLinkerVersion: 14
+  MinorLinkerVersion: 0
+  SizeOfCode: 262144
+  SizeOfInitializedData: 458752
+  SizeOfUninitializedData: 0
+  AddressOfEntryPoint: 0x50000
+  BaseOfCode: 0x10000
+  ImageBase: 0x7AC00000
+  SectionAlignment: 65536
+  FileAlignment: 65536
+  MajorOperatingSystemVersion: 6
+  MinorOperatingSystemVersion: 0
+  MajorImageVersion: 0
+  MinorImageVersion: 0
+  MajorSubsystemVersion: 6
+  MinorSubsystemVersion: 0
+  SizeOfImage: 851968
+  SizeOfHeaders: 65536
+  CheckSum: 0x0
+  Subsystem: IMAGE_SUBSYSTEM_WINDOWS_CUI (0x3)
+  Characteristics [ (0x160)
+    IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE (0x40)
+    IMAGE_DLL_CHARACTERISTICS_HIGH_ENTROPY_VA (0x20)
+    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT (0x100)
+  ]
+  SizeOfStackReserve: 1048576
+  SizeOfStackCommit: 4096
+  SizeOfHeapReserve: 1048576
+  SizeOfHeapCommit: 4096
+  NumberOfRvaAndSize: 16
+  DataDirectory {
+    ExportTableRVA: 0x797C8
+    ExportTableSize: 0x13D
+    ImportTableRVA: 0x79908
+    ImportTableSize: 0xB4
+    ResourceTableRVA: 0xB0000
+    ResourceTableSize: 0xF680
+    ExceptionTableRVA: 0x0
+    ExceptionTableSize: 0x0
+    CertificateTableRVA: 0x0
+    CertificateTableSize: 0x0
+    BaseRelocationTableRVA: 0xC0000
+    BaseRelocationTableSize: 0xE30
+    DebugRVA: 0x79710
+    DebugSize: 0x1C
+    ArchitectureRVA: 0x0
+    ArchitectureSize: 0x0
+    GlobalPtrRVA: 0x0
+    GlobalPtrSize: 0x0
+    TLSTableRVA: 0x0
+    TLSTableSize: 0x0
+    LoadConfigTableRVA: 0x61000
+    LoadConfigTableSize: 0x140
+    BoundImportRVA: 0x0
+    BoundImportSize: 0x0
+    IATRVA: 0x60000
+    IATSize: 0x1000
+    DelayImportDescriptorRVA: 0x0
+    DelayImportDescriptorSize: 0x0
+    CLRRuntimeHeaderRVA: 0x0
+    CLRRuntimeHeaderSize: 0x0
+    ReservedRVA: 0x0
+    ReservedSize: 0x0
+  }
+}
+DOSHeader {
+  Magic: MZ
+  UsedBytesInTheLastPage: 120
+  FileSizeInPages: 1
+  NumberOfRelocationItems: 0
+  HeaderSizeInParagraphs: 4
+  MinimumExtraParagraphs: 0
+  MaximumExtraParagraphs: 0
+  InitialRelativeSS: 0
+  InitialSP: 0
+  Checksum: 0
+  InitialIP: 0
+  InitialRelativeCS: 0
+  AddressOfRelocationTable: 64
+  OverlayNumber: 0
+  OEMid: 0
+  OEMinfo: 0
+  AddressOfNewExeHeader: 120
+}
+Import {
+  Name: ole32.dll
+  ImportLookupTableRVA: 0x799C0
+  ImportAddressTableRVA: 0x60000
+  Symbol: OleCreateDefaultHandler (194)
+  Symbol: OleFlushClipboard (213)
+  Symbol: OleGetClipboard (215)
+  Symbol: OleInitialize (218)
+  Symbol: OleSetClipboard (237)
+  Symbol: OleUninitialize (241)
+  Symbol: ReleaseStgMedium (255)
+}
+Import {
+  Name: oleaut32.dll
+  ImportLookupTableRVA: 0x79A00
+  ImportAddressTableRVA: 0x60040
+  Symbol: LoadRegTypeLib (162)
+  Symbol: SysAllocString (2)
+  Symbol: SysAllocStringByteLen (150)
+  Symbol: SysAllocStringLen (4)
+  Symbol: SysFreeString (6)
+}
+Import {
+  Name: imm32.dll
+  ImportLookupTableRVA: 0x79A30
+  ImportAddressTableRVA: 0x60070
+  Symbol: ImmGetCompositionStringW (55)
+  Symbol: ImmGetContext (57)
+  Symbol: ImmReleaseContext (106)
+}
+Import {
+  Name: user32.dll
+  ImportLookupTableRVA: 0x79A50
+  ImportAddressTableRVA: 0x60090
+  Symbol: BeginPaint (1518)
+  Symbol: ClientToScreen (1578)
+  Symbol: CreateCaret (1594)
+  Symbol: DefWindowProcW (1657)
+  Symbol: DestroyCaret (1662)
+  Symbol: DestroyMenu (1665)
+  Symbol: EnableScrollBar (1710)
+  Symbol: EndPaint (1715)
+  Symbol: FillRect (1743)
+  Symbol: FrameRect (1750)
+  Symbol: GetClientRect (1776)
+  Symbol: GetCursorPos (1789)
+  Symbol: GetDC (1790)
+  Symbol: GetDlgItem (1797)
+  Symbol: GetDoubleClickTime (1801)
+  Symbol: GetKeyState (1823)
+  Symbol: GetMessageTime (1852)
+  Symbol: GetParent (1860)
+  Symbol: GetSysColor (1892)
+  Symbol: GetSysColorBrush (1893)
+  Symbol: GetSystemMetrics (1896)
+  Symbol: GetUpdateRect (1907)
+  Symbol: GetWindowLongPtrW (1922)
+  Symbol: GetWindowLongW (1923)
+  Symbol: HideCaret (1939)
+  Symbol: IntersectRect (1951)
+  Symbol: InvalidateRect (1952)
+  Symbol: IsWindowVisible (1984)
+  Symbol: KillTimer (1987)
+  Symbol: LoadCursorW (1995)
+  Symbol: MessageBeep (2033)
+  Symbol: MessageBoxA (2034)
+  Symbol: PostMessageW (2073)
+  Symbol: RegisterClassA (2090)
+  Symbol: RegisterClassW (2093)
+  Symbol: RegisterClipboardFormatA (2094)
+  Symbol: RegisterClipboardFormatW (2095)
+  Symbol: ReleaseCapture (2114)
+  Symbol: ReleaseDC (2115)
+  Symbol: ScreenToClient (2123)
+  Symbol: ScrollWindowEx (2127)
+  Symbol: SendMessageW (2138)
+  Symbol: SetActiveWindow (2142)
+  Symbol: SetCapture (2143)
+  Symbol: SetCaretPos (2145)
+  Symbol: SetCursor (2154)
+  Symbol: SetFocus (2165)
+  Symbol: SetScrollInfo (2195)
+  Symbol: SetScrollPos (2196)
+  Symbol: SetTimer (2209)
+  Symbol: SetWindowLongPtrW (2219)
+  Symbol: SetWindowLongW (2220)
+  Symbol: ShowCaret (2232)
+  Symbol: ShowScrollBar (2235)
+  Symbol: SystemParametersInfoW (2247)
+  Symbol: TrackPopupMenu (2257)
+  Symbol: UnregisterClassA (2271)
+  Symbol: UnregisterClassW (2272)
+  Symbol: UpdateWindow (2282)
+  Symbol: wsprintfW (2310)
+}
+Import {
+  Name: gdi32.dll
+  ImportLookupTableRVA: 0x79C38
+  ImportAddressTableRVA: 0x60278
+  Symbol: CreateCompatibleDC (1051)
+  Symbol: CreateDIBitmap (1057)
+  Symbol: CreateFontIndirectW (1067)
+  Symbol: CreatePen (1077)
+  Symbol: CreateRectRgn (1081)
+  Symbol: CreateRectRgnIndirect (1082)
+  Symbol: CreateSolidBrush (1086)
+  Symbol: DeleteDC (1138)
+  Symbol: DeleteObject (1141)
+  Symbol: ExtCreatePen (1166)
+  Symbol: ExtSelectClipRgn (1170)
+  Symbol: ExtTextOutW (1172)
+  Symbol: GetClipRgn (1277)
+  Symbol: GetDeviceCaps (1287)
+  Symbol: GetEnhMetaFileBits (1291)
+  Symbol: GetEnhMetaFileHeader (1294)
+  Symbol: GetObjectW (1331)
+  Symbol: GetStockObject (1345)
+  Symbol: GetTextExtentExPointW (1356)
+  Symbol: GetTextExtentPoint32W (1358)
+  Symbol: GetTextExtentPointW (1361)
+  Symbol: GetTextMetricsW (1365)
+  Symbol: IntersectClipRect (1373)
+  Symbol: LineTo (1377)
+  Symbol: MoveToEx (1383)
+  Symbol: PatBlt (1390)
+  Symbol: PlayEnhMetaFile (1393)
+  Symbol: RectVisible (1412)
+  Symbol: ScriptCPtoX (1431)
+  Symbol: ScriptFreeCache (1433)
+  Symbol: ScriptItemize (1444)
+  Symbol: ScriptLayout (1447)
+  Symbol: ScriptPlace (1448)
+  Symbol: ScriptShape (1451)
+  Symbol: ScriptTextOut (1464)
+  Symbol: ScriptXtoCP (1465)
+  Symbol: SelectClipRgn (1468)
+  Symbol: SelectObject (1470)
+  Symbol: SetBkColor (1476)
+  Symbol: SetBkMode (1477)
+  Symbol: SetEnhMetaFileBits (1488)
+  Symbol: SetTextAlign (1512)
+  Symbol: SetTextColor (1514)
+  Symbol: SetWinMetaFileBits (1519)
+  Symbol: StretchBlt (1526)
+  Symbol: TextOutW (1532)
+  Symbol: TranslateCharsetInfo (1533)
+}
+Import {
+  Name: ucrtbase.dll
+  ImportLookupTableRVA: 0x79DB8
+  ImportAddressTableRVA: 0x603F8
+  Symbol: __acrt_iob_func (58)
+  Symbol: __stdio_common_vsprintf (121)
+  Symbol: __stdio_common_vswprintf (125)
+  Symbol: _assert (154)
+  Symbol: _strdup (1815)
+  Symbol: bsearch (2066)
+  Symbol: calloc (2080)
+  Symbol: free (2215)
+  Symbol: fwrite (2222)
+  Symbol: getenv (2225)
+  Symbol: isalnum (2238)
+  Symbol: isalpha (2239)
+  Symbol: isupper (2249)
+  Symbol: iswalnum (2250)
+  Symbol: iswspace (2261)
+  Symbol: isxdigit (2264)
+  Symbol: malloc (2300)
+  Symbol: memcmp (2312)
+  Symbol: memcpy (2313)
+  Symbol: memmove (2315)
+  Symbol: memset (2317)
+  Symbol: realloc (2349)
+  Symbol: strcat (2385)
+  Symbol: strchr (2387)
+  Symbol: strcmp (2388)
+  Symbol: strcpy (2390)
+  Symbol: strcspn (2392)
+  Symbol: strlen (2396)
+  Symbol: strncmp (2399)
+  Symbol: tolower (2432)
+  Symbol: towupper (2436)
+  Symbol: wcscmp (2448)
+  Symbol: wcslen (2454)
+}
+Import {
+  Name: kernel32.dll
+  ImportLookupTableRVA: 0x79EC8
+  ImportAddressTableRVA: 0x60508
+  Symbol: DisableThreadLibraryCalls (207)
+  Symbol: GetACP (340)
+  Symbol: GetCPInfo (349)
+  Symbol: GetCPInfoExW (351)
+  Symbol: GetModuleHandleW (509)
+  Symbol: GetOEMCP (538)
+  Symbol: GetProcAddress (559)
+  Symbol: GetSystemDefaultLCID (600)
+  Symbol: GetTickCount (644)
+  Symbol: GetUserDefaultLangID (653)
+  Symbol: GetVersion (658)
+  Symbol: GlobalAlloc (677)
+  Symbol: GlobalFree (684)
+  Symbol: GlobalLock (688)
+  Symbol: GlobalReAlloc (691)
+  Symbol: GlobalSize (692)
+  Symbol: GlobalUnlock (695)
+  Symbol: HeapAlloc (701)
+  Symbol: HeapReAlloc (711)
+  Symbol: IsBadStringPtrA (749)
+  Symbol: IsBadStringPtrW (750)
+  Symbol: MulDiv (853)
+  Symbol: MultiByteToWideChar (854)
+  Symbol: WideCharToMultiByte (1284)
+  Symbol: __chkstk_arm64ec (1321)
+}
+Import {
+  Name: ntdll.dll
+  ImportLookupTableRVA: 0x79F98
+  ImportAddressTableRVA: 0x605D8
+  Symbol: _vsnprintf (1326)
+}
+Export {
+  Ordinal: 2
+  Name: IID_IRichEditOle
+  RVA: 0x71798
+}
+Export {
+  Ordinal: 3
+  Name: IID_IRichEditOleCallback
+  RVA: 0x717A8
+}
+Export {
+  Ordinal: 4
+  Name: CreateTextServices
+  RVA: 0x50010
+}
+Export {
+  Ordinal: 5
+  Name: IID_ITextServices
+  RVA: 0x657D0
+}
+Export {
+  Ordinal: 6
+  Name: IID_ITextHost
+  RVA: 0x657E0
+}
+Export {
+  Ordinal: 7
+  Name: IID_ITextHost2
+  RVA: 0x657F0
+}
+Export {
+  Ordinal: 8
+  Name: REExtendedRegisterClass
+  RVA: 0x50020
+}
+Export {
+  Ordinal: 9
+  Name: RichEdit10ANSIWndProc
+  RVA: 0x50030
+}
+Export {
+  Ordinal: 10
+  Name: RichEditANSIWndProc
+  RVA: 0x50040
+}
+LoadConfig [
+  Size: 0x140
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  MajorVersion: 0x0
+  MinorVersion: 0x0
+  GlobalFlagsClear: 0x0
+  GlobalFlagsSet: 0x0
+  CriticalSectionDefaultTimeout: 0x0
+  DeCommitFreeBlockThreshold: 0x0
+  DeCommitTotalFreeThreshold: 0x0
+  LockPrefixTable: 0x0
+  MaximumAllocationSize: 0x0
+  VirtualMemoryThreshold: 0x0
+  ProcessHeapFlags: 0x0
+  ProcessAffinityMask: 0x0
+  CSDVersion: 0x0
+  DependentLoadFlags: 0x0
+  EditList: 0x0
+  SecurityCookie: 0x0
+  SEHandlerTable: 0x0
+  SEHandlerCount: 0
+  GuardCFCheckFunction: 0x7AC89F88
+  GuardCFCheckDispatch: 0x7AC89F90
+  GuardCFFunctionTable: 0x0
+  GuardCFFunctionCount: 0
+  GuardFlags [ (0x0)
+  ]
+  GuardAddressTakenIatEntryTable: 0x0
+  GuardAddressTakenIatEntryCount: 0
+  GuardLongJumpTargetTable: 0x0
+  GuardLongJumpTargetCount: 0
+  DynamicValueRelocTable: 0x0
+  CHPEMetadataPointer: 0x7AC7969C
+  GuardRFFailureRoutine: 0x0
+  GuardRFFailureRoutineFunctionPointer: 0x0
+  DynamicValueRelocTableOffset: 0x0
+  DynamicValueRelocTableSection: 0
+  GuardRFVerifyStackPointerFunctionPointer: 0x0
+  HotPatchTableOffset: 0x0
+  EnclaveConfigurationPointer: 0x0
+  VolatileMetadataPointer: 0x0
+  GuardEHContinuationTable: 0x0
+  GuardEHContinuationCount: 0
+]
+CHPEMetadata [
+  Version: 0x2
+  CodeMap [
+    0x10000 - 0x4BE8C  ARM64EC
+    0x4C000 - 0x50050  X64
+  ]
+  CodeRangesToEntryPoints [
+    0x50000 - 0x50010 -> 0x50000
+    0x50010 - 0x50020 -> 0x50010
+    0x50020 - 0x50030 -> 0x50020
+    0x50030 - 0x50040 -> 0x50030
+    0x50040 - 0x50050 -> 0x50040
+  ]
+  RedirectionMetadata [
+    0x50000 -> 0x475A0
+    0x50010 -> 0x3FF50
+    0x50020 -> 0x3CA6C
+    0x50030 -> 0x3C8E8
+    0x50040 -> 0x3C8D0
+  ]
+  __os_arm64x_dispatch_call_no_redirect: 0x89F30
+  __os_arm64x_dispatch_ret: 0x89F40
+  __os_arm64x_dispatch_call: 0x846A8
+  __os_arm64x_dispatch_icall: 0x846A0
+  __os_arm64x_dispatch_icall_cfg: 0x89F28
+  AlternateEntryPoint: 0x0
+  AuxiliaryIAT: 0x7E000
+  GetX64InformationFunctionPointer: 0x89F48
+  SetX64InformationFunctionPointer: 0x89F50
+  ExtraRFETable: 0x90000
+  ExtraRFETableSize: 0x1EC0
+  __os_arm64x_dispatch_fptr: 0x89F38
+  AuxiliaryIATCopy: 0x7AB40
+  AuxiliaryDelayloadIAT: 0x0
+  AuxiliaryDelayloadIATCopy: 0x0
+  HybridImageInfoBitfield: 0x0
+]

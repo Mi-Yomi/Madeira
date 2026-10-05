@@ -23,9 +23,10 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path[:0] = [str(ROOT / "build/llvm-ios"), str(ROOT / "build/dxmt-ios")]
+sys.path[:0] = [str(ROOT / "build/llvm-ios"), str(ROOT / "build/dxmt-ios"), str(ROOT / "build/wine-pe")]
 import common
 import generate_shaders
+import verify_desktop_integration
 
 CONVERTER = "d3d12/libmetalirconverter.dylib"
 CONVERTER_SHA256 = "073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2"
@@ -37,10 +38,12 @@ RESOURCE_FILES = ("prefix-template.tar.gz", "cacert.pem", "madeira-jit.js", "Mad
 REQUIRED_NOTICES = (*GENERATED_LICENSES, "d3d12/NOTICE.txt", "d3d12/METAL-SHADER-CONVERTER-AGREEMENT.txt",
                     "d3d12/LICENSE-metal-shader-converter-headers.txt", "licenses/THIRD-PARTY-NOTICES.txt",
                     "licenses/LLVM-Apache-2.0-with-exception.txt", "legal/THIRD-PARTY-NOTICES.md",
-                    "legal/LICENSES-rppairing-crates.txt", "legal/LICENSE-StikJIT-MPL-2.0.txt")
+                    "legal/LICENSES-rppairing-crates.txt", "legal/LICENSE-StikJIT-MPL-2.0.txt",
+                    "legal/LICENSE-idevice-MIT.txt", *verify_desktop_integration.REQUIRED_NOTICES)
 GRAPHICS_RECEIPTS = ("toolchains/llvm-host-build/madeira-build.json", "toolchains/llvm-ios-build/madeira-build.json",
                      "build/dxmt-ios/shader-headers/provenance.json", "build/dxmt-ios/graphics-build.json")
-LIMITATIONS = ("Tracked guest PE binaries reused, not source-rebuilt; 32-bit runtime missing; x86_64 VC runtime absent. "
+LIMITATIONS = ("Existing tracked guest PE binaries reused; twelve reviewed source-built desktop DLLs integrated. "
+               "Full-farm dependency gaps remain; 32-bit runtime missing; x86_64 VC runtime absent. "
                "No installation, device, rendering, JIT, 1C or Blender validation.")
 SCOPE = "Unsigned Debug app link and bundle validation only; no IPA created. " + LIMITATIONS
 PACKAGE_SCOPE = "Unsigned Debug app link, bundle validation and explicitly requested local IPA packaging only. " + LIMITATIONS
@@ -85,7 +88,10 @@ def hashes_match(mapping, base=ROOT):
 
 
 def git(*args):
-    return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    env["GIT_NO_REPLACE_OBJECTS"] = "1"
+    return subprocess.check_output(["git", "--no-replace-objects", *args], cwd=ROOT,
+                                   env=env, text=True, timeout=15).strip()
 
 
 def fresh_outputs(products, intermediates, stage):
@@ -122,8 +128,10 @@ def tree_files(directory):
 def resource_inputs():
     """Only tracked resource bytes plus the two explicitly generated licences."""
     base = ROOT / "app/Madeira"
-    names = git("ls-files", "-z", "--", *["app/Madeira/" + n for n in (*RESOURCE_DIRS, *RESOURCE_FILES)]).split("\0")
-    expected = {name.removeprefix("app/Madeira/"): digest(ROOT / name) for name in names if name}
+    names = git("ls-files", "-z", "--", *["app/Madeira/" + n for n in (*RESOURCE_DIRS, *RESOURCE_FILES)],
+                verify_desktop_integration.RECORD, verify_desktop_integration.RECEIPT).split("\0")
+    expected = {name.removeprefix("app/Madeira/"): digest(ROOT / name) for name in names
+                if name.startswith("app/Madeira/")}
     for name in RESOURCE_FILES:
         if name not in expected or regular(base / name).stat().st_size == 0:
             raise ValueError(f"Missing tracked resource: {name}")
@@ -151,6 +159,7 @@ def resource_inputs():
                 raise ValueError(f"Tracked guest payload is not a PE image: {name}")
     if tree_files(base / "x86_64-vcruntime"):
         raise ValueError("This gate requires an empty x86_64-vcruntime placeholder")
+    verify_desktop_integration.validate(ROOT, expected, names)
     return expected, pe
 
 
@@ -378,9 +387,14 @@ def build(native_receipt, products, intermediates, stage, *, package=False):
     placeholder.mkdir(exist_ok=True)
     run(["bash", "build/stage-licenses.sh"])
     resources, pe = resource_inputs()
-    source_names = git("ls-files", "-z", "--", "app", "build/app-ios", "build/stage-licenses.sh").split("\0")
+    source_names = git("ls-files", "-z", "--", "app", "build/app-ios", "build/stage-licenses.sh",
+                       "build/wine-pe").split("\0")
     source_snapshot = {name: digest(ROOT / name) for name in source_names if name}
-    evidence.update({"app_source_sha256": source_snapshot, "resources_sha256": resources, "guest_pe": {"status": "tracked-reused-not-source-rebuilt", "sha256": pe}})
+    evidence.update({"app_source_sha256": source_snapshot, "resources_sha256": resources,
+                     "guest_pe": {"status": "tracked-existing-plus-reviewed-source-built-desktop", "sha256": pe,
+                                  "desktop_stage_seal_sha256": verify_desktop_integration.REVIEWED_SEAL,
+                                  "source_built_desktop_sha256": {name: value for name, value in pe.items()
+                                                                  if name in verify_desktop_integration.DLLS}}})
     command = build_command(products, intermediates)
     run(command)
     # Fail if any prerequisites were replaced while Xcode was running.

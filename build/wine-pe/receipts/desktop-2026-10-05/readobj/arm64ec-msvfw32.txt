@@ -1,0 +1,652 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/results/.desktop-stage-2dbvf31y/result/arm64ec-windows/msvfw32.dll
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64EC (0xA641)
+  SectionCount: 8
+  TimeDateStamp: 2026-10-04 21:14:49 (0x6AC2C1C9)
+  PointerToSymbolTable: 0x90000
+  SymbolCount: 655
+  StringTableSize: 21546
+  OptionalHeaderSize: 240
+  Characteristics [ (0x2022)
+    IMAGE_FILE_DLL (0x2000)
+    IMAGE_FILE_EXECUTABLE_IMAGE (0x2)
+    IMAGE_FILE_LARGE_ADDRESS_AWARE (0x20)
+  ]
+}
+ImageOptionalHeader {
+  Magic: 0x20B
+  MajorLinkerVersion: 14
+  MinorLinkerVersion: 0
+  SizeOfCode: 65536
+  SizeOfInitializedData: 393216
+  SizeOfUninitializedData: 0
+  AddressOfEntryPoint: 0x20000
+  BaseOfCode: 0x10000
+  ImageBase: 0x180000000
+  SectionAlignment: 65536
+  FileAlignment: 65536
+  MajorOperatingSystemVersion: 6
+  MinorOperatingSystemVersion: 0
+  MajorImageVersion: 0
+  MinorImageVersion: 0
+  MajorSubsystemVersion: 6
+  MinorSubsystemVersion: 0
+  SizeOfImage: 589824
+  SizeOfHeaders: 65536
+  CheckSum: 0x0
+  Subsystem: IMAGE_SUBSYSTEM_WINDOWS_CUI (0x3)
+  Characteristics [ (0x160)
+    IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE (0x40)
+    IMAGE_DLL_CHARACTERISTICS_HIGH_ENTROPY_VA (0x20)
+    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT (0x100)
+  ]
+  SizeOfStackReserve: 1048576
+  SizeOfStackCommit: 4096
+  SizeOfHeapReserve: 1048576
+  SizeOfHeapCommit: 4096
+  NumberOfRvaAndSize: 16
+  DataDirectory {
+    ExportTableRVA: 0x34018
+    ExportTableSize: 0x4D8
+    ImportTableRVA: 0x344F0
+    ImportTableSize: 0xB4
+    ResourceTableRVA: 0x70000
+    ResourceTableSize: 0x390
+    ExceptionTableRVA: 0x0
+    ExceptionTableSize: 0x0
+    CertificateTableRVA: 0x0
+    CertificateTableSize: 0x0
+    BaseRelocationTableRVA: 0x80000
+    BaseRelocationTableSize: 0x1E4
+    DebugRVA: 0x33D60
+    DebugSize: 0x1C
+    ArchitectureRVA: 0x0
+    ArchitectureSize: 0x0
+    GlobalPtrRVA: 0x0
+    GlobalPtrSize: 0x0
+    TLSTableRVA: 0x0
+    TLSTableSize: 0x0
+    LoadConfigTableRVA: 0x31020
+    LoadConfigTableSize: 0x140
+    BoundImportRVA: 0x0
+    BoundImportSize: 0x0
+    IATRVA: 0x30000
+    IATSize: 0x1000
+    DelayImportDescriptorRVA: 0x0
+    DelayImportDescriptorSize: 0x0
+    CLRRuntimeHeaderRVA: 0x0
+    CLRRuntimeHeaderSize: 0x0
+    ReservedRVA: 0x0
+    ReservedSize: 0x0
+  }
+}
+DOSHeader {
+  Magic: MZ
+  UsedBytesInTheLastPage: 120
+  FileSizeInPages: 1
+  NumberOfRelocationItems: 0
+  HeaderSizeInParagraphs: 4
+  MinimumExtraParagraphs: 0
+  MaximumExtraParagraphs: 0
+  InitialRelativeSS: 0
+  InitialSP: 0
+  Checksum: 0
+  InitialIP: 0
+  InitialRelativeCS: 0
+  AddressOfRelocationTable: 64
+  OverlayNumber: 0
+  OEMid: 0
+  OEMinfo: 0
+  AddressOfNewExeHeader: 120
+}
+Import {
+  Name: winmm.dll
+  ImportLookupTableRVA: 0x345A8
+  ImportAddressTableRVA: 0x30000
+  Symbol: CloseDriver (5)
+  Symbol: OpenDriver (16)
+  Symbol: SendDriverMessage (21)
+  Symbol: mciGetErrorStringA (48)
+  Symbol: mciGetErrorStringW (49)
+  Symbol: mciSendCommandA (52)
+  Symbol: mciSendCommandW (53)
+  Symbol: mciSendStringA (54)
+  Symbol: mciSendStringW (55)
+  Symbol: mmioStringToFOURCCA (139)
+}
+Import {
+  Name: comctl32.dll
+  ImportLookupTableRVA: 0x34600
+  ImportAddressTableRVA: 0x30058
+  Symbol: InitCommonControlsEx (83)
+}
+Import {
+  Name: user32.dll
+  ImportLookupTableRVA: 0x34610
+  ImportAddressTableRVA: 0x30068
+  Symbol: AdjustWindowRect (1505)
+  Symbol: BeginPaint (1518)
+  Symbol: CreateWindowExW (1613)
+  Symbol: DefMDIChildProcW (1654)
+  Symbol: DefWindowProcW (1657)
+  Symbol: DestroyWindow (1666)
+  Symbol: DialogBoxParamW (1671)
+  Symbol: EnableWindow (1711)
+  Symbol: EndDialog (1713)
+  Symbol: EndPaint (1715)
+  Symbol: GetClientRect (1776)
+  Symbol: GetDlgItem (1797)
+  Symbol: GetWindow (1913)
+  Symbol: GetWindowLongPtrW (1922)
+  Symbol: GetWindowLongW (1923)
+  Symbol: InvalidateRect (1952)
+  Symbol: IsWindowUnicode (1983)
+  Symbol: KillTimer (1987)
+  Symbol: LoadCursorW (1995)
+  Symbol: LoadStringW (2014)
+  Symbol: MessageBoxW (2041)
+  Symbol: RegisterClassW (2093)
+  Symbol: SendDlgItemMessageW (2129)
+  Symbol: SendMessageW (2138)
+  Symbol: SetCursor (2154)
+  Symbol: SetFocus (2165)
+  Symbol: SetTimer (2209)
+  Symbol: SetWindowLongPtrW (2219)
+  Symbol: SetWindowPos (2222)
+  Symbol: SetWindowTextA (2225)
+  Symbol: SetWindowTextW (2226)
+  Symbol: ShowWindow (2237)
+  Symbol: wsprintfA (2309)
+  Symbol: wsprintfW (2310)
+}
+Import {
+  Name: gdi32.dll
+  ImportLookupTableRVA: 0x34728
+  ImportAddressTableRVA: 0x30180
+  Symbol: CreateCompatibleDC (1051)
+  Symbol: CreateDIBSection (1056)
+  Symbol: CreateHalftonePalette (1069)
+  Symbol: DeleteDC (1138)
+  Symbol: DeleteObject (1141)
+  Symbol: RealizePalette (1410)
+  Symbol: SelectObject (1470)
+  Symbol: SelectPalette (1471)
+  Symbol: StretchBlt (1526)
+}
+Import {
+  Name: advapi32.dll
+  ImportLookupTableRVA: 0x34778
+  ImportAddressTableRVA: 0x301D0
+  Symbol: RegCloseKey (396)
+  Symbol: RegDeleteValueA (415)
+  Symbol: RegEnumValueA (424)
+  Symbol: RegOpenKeyExA (439)
+  Symbol: RegSetValueExA (467)
+}
+Import {
+  Name: ucrtbase.dll
+  ImportLookupTableRVA: 0x347A8
+  ImportAddressTableRVA: 0x30200
+  Symbol: __acrt_iob_func (58)
+  Symbol: __stdio_common_vsprintf (121)
+  Symbol: _strdup (1815)
+  Symbol: _strnicmp (1829)
+  Symbol: _wcsdup (1905)
+  Symbol: calloc (2080)
+  Symbol: free (2215)
+  Symbol: fwrite (2222)
+  Symbol: getenv (2225)
+  Symbol: isprint (2246)
+  Symbol: malloc (2300)
+  Symbol: memcpy (2313)
+  Symbol: memmove (2315)
+  Symbol: memset (2317)
+  Symbol: strchr (2387)
+  Symbol: strcmp (2388)
+  Symbol: strcpy (2390)
+  Symbol: strcspn (2392)
+  Symbol: strlen (2396)
+  Symbol: tolower (2432)
+  Symbol: wcschr (2447)
+  Symbol: wcslen (2454)
+}
+Import {
+  Name: kernel32.dll
+  ImportLookupTableRVA: 0x34860
+  ImportAddressTableRVA: 0x302B8
+  Symbol: DisableThreadLibraryCalls (207)
+  Symbol: FreeLibrary (333)
+  Symbol: GetModuleHandleW (509)
+  Symbol: GetPrivateProfileSectionA (551)
+  Symbol: GetPrivateProfileStringW (556)
+  Symbol: GetProcAddress (559)
+  Symbol: GetTickCount (644)
+  Symbol: GlobalAlloc (677)
+  Symbol: GlobalFree (684)
+  Symbol: GlobalLock (688)
+  Symbol: GlobalUnlock (695)
+  Symbol: HeapAlloc (701)
+  Symbol: HeapReAlloc (711)
+  Symbol: IsBadStringPtrA (749)
+  Symbol: IsBadStringPtrW (750)
+  Symbol: LoadLibraryA (812)
+  Symbol: MulDiv (853)
+  Symbol: MultiByteToWideChar (854)
+  Symbol: RaiseException (925)
+  Symbol: WideCharToMultiByte (1284)
+  Symbol: lstrcmpW (1339)
+}
+Import {
+  Name: ntdll.dll
+  ImportLookupTableRVA: 0x34910
+  ImportAddressTableRVA: 0x30368
+  Symbol: RtlCreateUnicodeStringFromAsciiz (480)
+  Symbol: RtlFreeUnicodeString (596)
+  Symbol: _vsnprintf (1326)
+}
+Export {
+  Ordinal: 2
+  Name: VideoForWindowsVersion
+  RVA: 0x20010
+}
+Export {
+  Ordinal: 3
+  Name: DrawDibBegin
+  RVA: 0x20020
+}
+Export {
+  Ordinal: 4
+  Name: DrawDibChangePalette
+  RVA: 0x20030
+}
+Export {
+  Ordinal: 5
+  Name: DrawDibClose
+  RVA: 0x20040
+}
+Export {
+  Ordinal: 6
+  Name: DrawDibDraw
+  RVA: 0x20050
+}
+Export {
+  Ordinal: 7
+  Name: DrawDibEnd
+  RVA: 0x20060
+}
+Export {
+  Ordinal: 8
+  Name: DrawDibGetBuffer
+  RVA: 0x20070
+}
+Export {
+  Ordinal: 9
+  Name: DrawDibGetPalette
+  RVA: 0x20080
+}
+Export {
+  Ordinal: 10
+  Name: DrawDibOpen
+  RVA: 0x20090
+}
+Export {
+  Ordinal: 11
+  Name: DrawDibProfileDisplay
+  RVA: 0x200A0
+}
+Export {
+  Ordinal: 12
+  Name: DrawDibRealize
+  RVA: 0x200B0
+}
+Export {
+  Ordinal: 13
+  Name: DrawDibSetPalette
+  RVA: 0x200C0
+}
+Export {
+  Ordinal: 14
+  Name: DrawDibStart
+  RVA: 0x200D0
+}
+Export {
+  Ordinal: 15
+  Name: DrawDibStop
+  RVA: 0x200E0
+}
+Export {
+  Ordinal: 16
+  Name: DrawDibTime
+  RVA: 0x200F0
+}
+Export {
+  Ordinal: 17
+  Name: GetOpenFileNamePreview
+  RVA: 0x20100
+}
+Export {
+  Ordinal: 18
+  Name: GetOpenFileNamePreviewA
+  RVA: 0x20110
+}
+Export {
+  Ordinal: 19
+  Name: GetOpenFileNamePreviewW
+  RVA: 0x20120
+}
+Export {
+  Ordinal: 20
+  Name: GetSaveFileNamePreviewA
+  RVA: 0x20130
+}
+Export {
+  Ordinal: 21
+  Name: GetSaveFileNamePreviewW
+  RVA: 0x20140
+}
+Export {
+  Ordinal: 22
+  Name: ICClose
+  RVA: 0x20150
+}
+Export {
+  Ordinal: 23
+  Name: ICCompress
+  RVA: 0x20160
+}
+Export {
+  Ordinal: 24
+  Name: ICCompressorChoose
+  RVA: 0x20170
+}
+Export {
+  Ordinal: 25
+  Name: ICCompressorFree
+  RVA: 0x20180
+}
+Export {
+  Ordinal: 26
+  Name: ICDecompress
+  RVA: 0x20190
+}
+Export {
+  Ordinal: 27
+  Name: ICDraw
+  RVA: 0x201A0
+}
+Export {
+  Ordinal: 28
+  Name: ICDrawBegin
+  RVA: 0x201B0
+}
+Export {
+  Ordinal: 29
+  Name: ICGetDisplayFormat
+  RVA: 0x201C0
+}
+Export {
+  Ordinal: 30
+  Name: ICGetInfo
+  RVA: 0x201D0
+}
+Export {
+  Ordinal: 31
+  Name: ICImageCompress
+  RVA: 0x201E0
+}
+Export {
+  Ordinal: 32
+  Name: ICImageDecompress
+  RVA: 0x201F0
+}
+Export {
+  Ordinal: 33
+  Name: ICInfo
+  RVA: 0x20200
+}
+Export {
+  Ordinal: 34
+  Name: ICInstall
+  RVA: 0x20210
+}
+Export {
+  Ordinal: 35
+  Name: ICLocate
+  RVA: 0x20220
+}
+Export {
+  Ordinal: 36
+  Name: ICMThunk
+  RVA: 0x20230
+}
+Export {
+  Ordinal: 37
+  Name: ICOpen
+  RVA: 0x20240
+}
+Export {
+  Ordinal: 38
+  Name: ICOpenFunction
+  RVA: 0x20250
+}
+Export {
+  Ordinal: 39
+  Name: ICRemove
+  RVA: 0x20260
+}
+Export {
+  Ordinal: 40
+  Name: ICSendMessage
+  RVA: 0x20270
+}
+Export {
+  Ordinal: 41
+  Name: ICSeqCompressFrame
+  RVA: 0x20280
+}
+Export {
+  Ordinal: 42
+  Name: ICSeqCompressFrameEnd
+  RVA: 0x20290
+}
+Export {
+  Ordinal: 43
+  Name: ICSeqCompressFrameStart
+  RVA: 0x202A0
+}
+Export {
+  Ordinal: 44
+  Name: MCIWndCreate
+  RVA: 0x202B0
+}
+Export {
+  Ordinal: 45
+  Name: MCIWndCreateA
+  RVA: 0x202C0
+}
+Export {
+  Ordinal: 46
+  Name: MCIWndCreateW
+  RVA: 0x202D0
+}
+Export {
+  Ordinal: 47
+  Name: MCIWndRegisterClass
+  RVA: 0x202E0
+}
+Export {
+  Ordinal: 48
+  Name: StretchDIB
+  RVA: 0x202F0
+}
+LoadConfig [
+  Size: 0x140
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  MajorVersion: 0x0
+  MinorVersion: 0x0
+  GlobalFlagsClear: 0x0
+  GlobalFlagsSet: 0x0
+  CriticalSectionDefaultTimeout: 0x0
+  DeCommitFreeBlockThreshold: 0x0
+  DeCommitTotalFreeThreshold: 0x0
+  LockPrefixTable: 0x0
+  MaximumAllocationSize: 0x0
+  VirtualMemoryThreshold: 0x0
+  ProcessHeapFlags: 0x0
+  ProcessAffinityMask: 0x0
+  CSDVersion: 0x0
+  DependentLoadFlags: 0x0
+  EditList: 0x0
+  SecurityCookie: 0x0
+  SEHandlerTable: 0x0
+  SEHandlerCount: 0
+  GuardCFCheckFunction: 0x180040238
+  GuardCFCheckDispatch: 0x180040240
+  GuardCFFunctionTable: 0x0
+  GuardCFFunctionCount: 0
+  GuardFlags [ (0x0)
+  ]
+  GuardAddressTakenIatEntryTable: 0x0
+  GuardAddressTakenIatEntryCount: 0
+  GuardLongJumpTargetTable: 0x0
+  GuardLongJumpTargetCount: 0
+  DynamicValueRelocTable: 0x0
+  CHPEMetadataPointer: 0x180033CEC
+  GuardRFFailureRoutine: 0x0
+  GuardRFFailureRoutineFunctionPointer: 0x0
+  DynamicValueRelocTableOffset: 0x0
+  DynamicValueRelocTableSection: 0
+  GuardRFVerifyStackPointerFunctionPointer: 0x0
+  HotPatchTableOffset: 0x0
+  EnclaveConfigurationPointer: 0x0
+  VolatileMetadataPointer: 0x0
+  GuardEHContinuationTable: 0x0
+  GuardEHContinuationCount: 0
+]
+CHPEMetadata [
+  Version: 0x2
+  CodeMap [
+    0x10000 - 0x1B308  ARM64EC
+    0x1C000 - 0x20300  X64
+  ]
+  CodeRangesToEntryPoints [
+    0x20000 - 0x20010 -> 0x20000
+    0x20010 - 0x20020 -> 0x20010
+    0x20020 - 0x20030 -> 0x20020
+    0x20030 - 0x20040 -> 0x20030
+    0x20040 - 0x20050 -> 0x20040
+    0x20050 - 0x20060 -> 0x20050
+    0x20060 - 0x20070 -> 0x20060
+    0x20070 - 0x20080 -> 0x20070
+    0x20080 - 0x20090 -> 0x20080
+    0x20090 - 0x200A0 -> 0x20090
+    0x200A0 - 0x200B0 -> 0x200A0
+    0x200B0 - 0x200C0 -> 0x200B0
+    0x200C0 - 0x200D0 -> 0x200C0
+    0x200D0 - 0x200E0 -> 0x200D0
+    0x200E0 - 0x200F0 -> 0x200E0
+    0x200F0 - 0x20100 -> 0x200F0
+    0x20100 - 0x20110 -> 0x20100
+    0x20110 - 0x20120 -> 0x20110
+    0x20120 - 0x20130 -> 0x20120
+    0x20130 - 0x20140 -> 0x20130
+    0x20140 - 0x20150 -> 0x20140
+    0x20150 - 0x20160 -> 0x20150
+    0x20160 - 0x20170 -> 0x20160
+    0x20170 - 0x20180 -> 0x20170
+    0x20180 - 0x20190 -> 0x20180
+    0x20190 - 0x201A0 -> 0x20190
+    0x201A0 - 0x201B0 -> 0x201A0
+    0x201B0 - 0x201C0 -> 0x201B0
+    0x201C0 - 0x201D0 -> 0x201C0
+    0x201D0 - 0x201E0 -> 0x201D0
+    0x201E0 - 0x201F0 -> 0x201E0
+    0x201F0 - 0x20200 -> 0x201F0
+    0x20200 - 0x20210 -> 0x20200
+    0x20210 - 0x20220 -> 0x20210
+    0x20220 - 0x20230 -> 0x20220
+    0x20230 - 0x20240 -> 0x20230
+    0x20240 - 0x20250 -> 0x20240
+    0x20250 - 0x20260 -> 0x20250
+    0x20260 - 0x20270 -> 0x20260
+    0x20270 - 0x20280 -> 0x20270
+    0x20280 - 0x20290 -> 0x20280
+    0x20290 - 0x202A0 -> 0x20290
+    0x202A0 - 0x202B0 -> 0x202A0
+    0x202B0 - 0x202C0 -> 0x202B0
+    0x202C0 - 0x202D0 -> 0x202C0
+    0x202D0 - 0x202E0 -> 0x202D0
+    0x202E0 - 0x202F0 -> 0x202E0
+    0x202F0 - 0x20300 -> 0x202F0
+  ]
+  RedirectionMetadata [
+    0x20000 -> 0x19C60
+    0x20010 -> 0x143DC
+    0x20020 -> 0x103A0
+    0x20030 -> 0x10E00
+    0x20040 -> 0x101A4
+    0x20050 -> 0x1089C
+    0x20060 -> 0x10284
+    0x20070 -> 0x10F14
+    0x20080 -> 0x10F6C
+    0x20090 -> 0x1002C
+    0x200A0 -> 0x1115C
+    0x200B0 -> 0x10FEC
+    0x200C0 -> 0x10E5C
+    0x200D0 -> 0x10D5C
+    0x200E0 -> 0x10DB0
+    0x200F0 -> 0x1110C
+    0x20100 -> 0x18C04
+    0x20110 -> 0x18C04
+    0x20120 -> 0x18D84
+    0x20130 -> 0x18DE4
+    0x20140 -> 0x18E44
+    0x20150 -> 0x16ABC
+    0x20160 -> 0x17030
+    0x20170 -> 0x17204
+    0x20180 -> 0x17A64
+    0x20190 -> 0x17138
+    0x201A0 -> 0x17C80
+    0x201B0 -> 0x17B14
+    0x201C0 -> 0x16BF4
+    0x201D0 -> 0x16260
+    0x201E0 -> 0x17D4C
+    0x201F0 -> 0x17DB8
+    0x20200 -> 0x143EC
+    0x20210 -> 0x14B04
+    0x20220 -> 0x163E4
+    0x20230 -> 0x10000
+    0x20240 -> 0x150A4
+    0x20250 -> 0x155EC
+    0x20260 -> 0x14E28
+    0x20270 -> 0x163B0
+    0x20280 -> 0x18310
+    0x20290 -> 0x1850C
+    0x202A0 -> 0x185EC
+    0x202B0 -> 0x13474
+    0x202C0 -> 0x13474
+    0x202D0 -> 0x13284
+    0x202E0 -> 0x111AC
+    0x202F0 -> 0x10014
+  ]
+  __os_arm64x_dispatch_call_no_redirect: 0x401E0
+  __os_arm64x_dispatch_ret: 0x401F0
+  __os_arm64x_dispatch_call: 0x40080
+  __os_arm64x_dispatch_icall: 0x40078
+  __os_arm64x_dispatch_icall_cfg: 0x401D8
+  AlternateEntryPoint: 0x0
+  AuxiliaryIAT: 0x36000
+  GetX64InformationFunctionPointer: 0x401F8
+  SetX64InformationFunctionPointer: 0x40200
+  ExtraRFETable: 0x50000
+  ExtraRFETableSize: 0x390
+  __os_arm64x_dispatch_fptr: 0x401E8
+  AuxiliaryIATCopy: 0x35020
+  AuxiliaryDelayloadIAT: 0x0
+  AuxiliaryDelayloadIATCopy: 0x0
+  HybridImageInfoBitfield: 0x0
+]
