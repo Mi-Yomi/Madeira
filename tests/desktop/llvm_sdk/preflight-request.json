@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "request": "official-llvm-sdk-msvc-abi-preflight-20261005-1",
+  "request": "official-llvm-sdk-msvc-abi-preflight-20261005-2",
   "llvm": "22.1.4",
   "scope": "Native Microsoft Windows x64 SDK ABI/dependency prerequisite only",
   "required": ["bounded-archive-inspection", "sdk-metadata", "selected-static-component-closure", "preserved-link-options", "mt-cpp-link", "real-two-seed-mcjit"],
