@@ -1,0 +1,4 @@
+LIBRARY msi.dll
+EXPORTS
+    MsiSetPropertyA@12 @144 NONAME
+    MsiSetPropertyW@12 @145 NONAME

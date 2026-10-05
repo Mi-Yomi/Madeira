@@ -1,0 +1,46 @@
+name: Windows MSI reference canary
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - .github/workflows/msi-windows-reference.yml
+      - tests/desktop/msi_wow64/*.c
+      - tests/desktop/msi_wow64/*.h
+      - tests/desktop/msi_wow64/*.def
+      - tests/desktop/msi_wow64/*.cmd
+      - tests/desktop/msi_wow64/*.py
+      - tests/host/check-msi-windows-reference.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: msi-windows-reference-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reference:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    # Standard free public-repository x64 runner, not a larger runner.
+    # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+    runs-on: windows-2025
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate reference proof and workflow bounds
+        timeout-minutes: 1
+        run: python tests/host/check-msi-windows-reference.py
+      - name: Compile and run only the source-owned cross-bitness MSI canary
+        timeout-minutes: 5
+        run: python tests/desktop/msi_wow64/windows_reference.py --work-root "$env:RUNNER_TEMP/madeira-msi-reference"
+      - name: Report scope
+        if: always()
+        run: |
+          Write-Output "Microsoft Windows reference only. No Wine/iOS/device runtime result."
+          Write-Output "No proprietary installer, product installation, IPA, signing, cache or artifact upload."

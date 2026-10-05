@@ -1,0 +1,3 @@
+LIBRARY madeira-msi-probe-i386
+EXPORTS
+    MadeiraProbe=_MadeiraProbe@4
