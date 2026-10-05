@@ -80,6 +80,13 @@ int main(void) {
     reset(); assert(!madeira_probe_parent()); assert(!madeira_probe_child(202)); assert(!madeira_probe_child(202));
     assert(opens == 1 && seen_pid == 202 && seen_rights == (PROCESS_QUERY_INFORMATION|SYNCHRONIZE));
     assert(!madeira_probe_child_exit()); assert(closes == 1 && !madeira_child && !logged_failures && logged_passes == 8);
+    /* A clean early exit after round two must fail the post-negative probe;
+     * later exit zero must not turn this into a live-server control result. */
+    reset(); assert(!madeira_probe_parent()); assert(!madeira_probe_child(202)); assert(!madeira_probe_child(202));
+    live_wait=WAIT_OBJECT_0; assert(madeira_probe_child(202)); assert(!madeira_probe_child_exit());
+    assert(logged_failures == 1);
+    reset(); assert(!madeira_probe_parent()); assert(!madeira_probe_child(202));
+    parent_base=(ULONG_PTR)1<<32; assert(madeira_probe_parent());
     reset(); missing_module=1; assert(madeira_probe_parent());
     reset(); missing_query=1; assert(madeira_probe_parent());
     reset(); parent_base=0x100000000; assert(madeira_probe_parent());

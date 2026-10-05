@@ -34,29 +34,36 @@ def verify_madeira_proof(log, returncode):
         rows.append((match[1], int(match[2])))
     expected_labels = ["START parent-pid", "PASS parent-guest-base-zero"]
     for _ in range(2):
-        expected_labels += ["ACTION positive-return", "PASS child-syswow64-image",
+        expected_labels += ["ACTION positive-return", "PASS parent-guest-base-zero",
+                            "PASS child-syswow64-image",
                             "PASS child-guest-base-high", "PASS child-guest-base-low",
                             "PASS child-pid", "PASS positive-round"]
-    expected_labels += ["PASS missing-export-rejected", "PASS session-close",
+    expected_labels += ["PASS missing-export-rejected", "PASS parent-guest-base-zero",
+                        "PASS child-syswow64-image", "PASS child-guest-base-high",
+                        "PASS child-guest-base-low", "PASS session-close",
                         "PASS child-exit", "PASS final"]
     if [label for label, _ in rows] != expected_labels:
         raise ValueError("Missing, repeated, unexpected or reordered diagnostic proof")
-    if rows[1][1] != 0:
-        raise ValueError("The native parent must have no guest window")
+
+    def values(label):
+        return [value for name, value in rows if name == label]
+
+    if any(values("PASS parent-guest-base-zero")):
+        raise ValueError("The native parent must have no guest window at every checkpoint")
+    if any(pid != children[0] for pid in values("PASS child-syswow64-image")):
+        raise ValueError("Every image proof must identify the retained child")
     bases = []
-    for start in (2, 8):
-        if rows[start + 1][1] != children[0]:
-            raise ValueError("The image proof must identify the retained child")
-        high, low = rows[start + 2][1], rows[start + 3][1]
+    for high, low in zip(values("PASS child-guest-base-high"), values("PASS child-guest-base-low")):
         base = (high << 32) | low
         if low or not 0x100000000 <= base <= 0xffffffffffffffff - 0xffffffff:
             raise ValueError("Unaligned, invalid or wrapping four-GiB guest window")
         bases.append(base)
-    if bases[0] != bases[1] or rows[-2][1] != children[0]:
+    if any(base != bases[0] for base in bases) or rows[-2][1] != children[0]:
         raise ValueError("Child window changed or exit proof identifies another process")
     return {**baseline, "guest_base": bases[0], "native_parent_guest_base": 0,
             "syswow64_msiexec_image_verified": True,
             "child_process_termination_proven": True,
+            "child_live_after_negative_control": True,
             "source": "supplied log only; bind to device/build receipt separately",
             "scope": "source-owned MSI cross-bitness diagnostic; no application support claim"}
 

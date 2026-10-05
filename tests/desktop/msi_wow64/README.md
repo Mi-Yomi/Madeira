@@ -46,3 +46,15 @@ A green Windows reference establishes native Windows behavior for this exact
 fixture. It does not establish Madeira/Wine execution, native WoW64/IPC
 correctness, successful 1C installation, device performance or a complete
 32-bit runtime. Those remain separate gates.
+
+## Madeira-only diagnostic
+
+`MADEIRA_I386_DIAGNOSTIC=1` selects the additional class-1010 guest-base,
+SysWOW64 child identity/reuse and retained-handle child-exit checks. The default
+Windows reference does not define this flag. The existing portable desktop CI
+runs `tests/host/check-msi-madeira-reference.py` against the production helper
+and saved-log parser without executing Windows guest code.
+
+See [device acceptance](DEVICE-ACCEPTANCE.md) for the exact current MSI provider
+identities, separate diagnostic-app prerequisites, required iPhone/JIT
+observations and the limits of a successful supplied-log parse.

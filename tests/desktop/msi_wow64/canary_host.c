@@ -115,6 +115,7 @@ static UINT run_session(const WCHAR *path)
         child = probe_parse_decimal(child_text);
         if (!result && (!child || child == GetCurrentProcessId())) result = ERROR_INSTALL_FAILURE;
 #if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1
+        if (!result) result = madeira_probe_parent();
         if (!result) result = madeira_probe_child(child);
 #endif
         if (!result) probe_log("PASS child-pid", child);
@@ -131,6 +132,13 @@ static UINT run_session(const WCHAR *path)
         for (i = 0; i < sizeof(proof_keys)/sizeof(proof_keys[0]); ++i)
             if (!property_is(session, proof_keys[i], L"")) result = ERROR_INSTALL_FAILURE;
     }
+#if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1
+    /* A dead server can also make the negative action fail with empty proof
+     * properties. Require the same live server/window after that action,
+     * before session close, so clean early exit cannot satisfy this control. */
+    if (!result) result = madeira_probe_parent();
+    if (!result) result = madeira_probe_child(madeira_child_pid);
+#endif
     /* Attribute close status to the close call, independent of any earlier
      * action failure. Windows may cache its MSI host afterward, so this checks
      * session close, not child-process teardown. */

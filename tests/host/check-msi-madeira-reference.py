@@ -19,18 +19,24 @@ import madeira_reference as GATE
 GOOD = """MADEIRA-MSI-WOW64: START parent-pid 101
 MADEIRA-MSI-WOW64: PASS parent-guest-base-zero 0
 MADEIRA-MSI-WOW64: ACTION positive-return 0
+MADEIRA-MSI-WOW64: PASS parent-guest-base-zero 0
 MADEIRA-MSI-WOW64: PASS child-syswow64-image 202
 MADEIRA-MSI-WOW64: PASS child-guest-base-high 10
 MADEIRA-MSI-WOW64: PASS child-guest-base-low 0
 MADEIRA-MSI-WOW64: PASS child-pid 202
 MADEIRA-MSI-WOW64: PASS positive-round 1
 MADEIRA-MSI-WOW64: ACTION positive-return 0
+MADEIRA-MSI-WOW64: PASS parent-guest-base-zero 0
 MADEIRA-MSI-WOW64: PASS child-syswow64-image 202
 MADEIRA-MSI-WOW64: PASS child-guest-base-high 10
 MADEIRA-MSI-WOW64: PASS child-guest-base-low 0
 MADEIRA-MSI-WOW64: PASS child-pid 202
 MADEIRA-MSI-WOW64: PASS positive-round 2
 MADEIRA-MSI-WOW64: PASS missing-export-rejected 1603
+MADEIRA-MSI-WOW64: PASS parent-guest-base-zero 0
+MADEIRA-MSI-WOW64: PASS child-syswow64-image 202
+MADEIRA-MSI-WOW64: PASS child-guest-base-high 10
+MADEIRA-MSI-WOW64: PASS child-guest-base-low 0
 MADEIRA-MSI-WOW64: PASS session-close 0
 MADEIRA-MSI-WOW64: PASS child-exit 202
 MADEIRA-MSI-WOW64: PASS final 0
@@ -41,6 +47,7 @@ class EvidenceTests(unittest.TestCase):
     def test_complete_log_with_optional_child_stderr(self):
         result = GATE.verify_madeira_proof(GOOD, 0)
         self.assertTrue(result["child_process_termination_proven"])
+        self.assertTrue(result["child_live_after_negative_control"])
         self.assertEqual(result["guest_base"], 0xa00000000)
         self.assertEqual(result, GATE.verify_madeira_proof(GOOD + "MADEIRA-MSI-WOW64: CA-PROOF 202\n", 0))
 
@@ -73,9 +80,18 @@ class EvidenceTests(unittest.TestCase):
             with self.subTest(code=code), self.assertRaises(ValueError):
                 GATE.verify_madeira_proof(GOOD, code)
 
+    def test_negative_control_requires_live_same_child_before_close(self):
+        before, after = GOOD.split("PASS missing-export-rejected 1603\n", 1)
+        for changed in (after.replace("parent-guest-base-zero 0", "parent-guest-base-zero 1"),
+                        after.replace("child-syswow64-image 202", "child-syswow64-image 303"),
+                        after.replace("child-guest-base-high 10", "child-guest-base-high 11"),
+                        after.replace("PASS child-syswow64-image 202", "FAIL child-not-live 202")):
+            with self.subTest(changed=changed), self.assertRaises(ValueError):
+                GATE.verify_madeira_proof(before + "PASS missing-export-rejected 1603\n" + changed, 0)
+
     def test_default_windows_reference_stays_opt_in(self):
         host = (CANARY / "canary_host.c").read_text()
-        self.assertEqual(host.count("#if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1"), 4)
+        self.assertEqual(host.count("#if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1"), 5)
         self.assertNotIn("MADEIRA_I386_DIAGNOSTIC", (CANARY / "build_msvc.cmd").read_text())
         self.assertNotIn("MADEIRA_I386_DIAGNOSTIC", (CANARY / "windows_reference.py").read_text())
 
