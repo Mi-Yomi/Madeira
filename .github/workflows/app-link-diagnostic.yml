@@ -1,0 +1,141 @@
+name: iOS app link diagnostic (no IPA)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [compatibility/desktop-apps]
+    # Intentionally not every app, test or documentation push. A request-file
+    # change opts this bounded diagnostic in after integration verification.
+    paths:
+      - .github/workflows/app-link-diagnostic.yml
+      - build/app-ios/link-diagnostic-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: app-link-diagnostic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  portable-validation:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Require reviewed twelve-DLL integration and link-only failure gates
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 build/app-ios/link_diagnostic.py request
+          python3 build/wine-pe/verify_desktop_integration.py
+          python3 tests/host/check-desktop-integration.py
+          python3 tests/host/check-app-link-diagnostic.py
+          python3 tests/host/check-app-link-workflow.py
+          python3 tests/host/check-app-bootstrap.py
+          python3 tests/host/check-app-workflow.py
+          python3 tests/host/check-graphics-bootstrap.py
+          python3 tests/host/check-native-bootstrap-artifacts.py
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-snapshot-link.py
+          python3 tests/host/check-crypto-link-tables.py
+  app-link-diagnostic:
+    name: iOS app link diagnostic (no IPA)
+    needs: portable-validation
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    runs-on: xcode-27
+    timeout-minutes: 45
+    env:
+      JOBS: '2'
+      BUILD_JOBS: '2'
+      CMAKE_BUILD_PARALLEL_LEVEL: '2'
+      CARGO_BUILD_JOBS: '2'
+      MAKEFLAGS: -j2
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+      HOMEBREW_NO_INSTALL_CLEANUP: '1'
+      HOMEBREW_NO_ANALYTICS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Initialize isolated temporary paths
+        run: |
+          printf 'NATIVE_LOG_DIR=%s\nNATIVE_ARTIFACT_DIR=%s\n' "$RUNNER_TEMP/madeira-link-native-logs" "$RUNNER_TEMP/madeira-link-native-artifacts" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/madeira-link-native-logs"
+      - name: Checkout exact public sources and recursive pins
+        timeout-minutes: 5
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: Verify integration and diagnostic gates before any dependency build
+        timeout-minutes: 3
+        run: |
+          python3 build/app-ios/link_diagnostic.py request
+          python3 build/wine-pe/verify_desktop_integration.py
+          python3 tests/host/check-desktop-integration.py
+          python3 tests/host/check-app-link-diagnostic.py
+          python3 tests/host/check-app-link-workflow.py
+          python3 tests/host/check-app-bootstrap.py
+          python3 tests/host/check-app-workflow.py
+          python3 tests/host/check-graphics-bootstrap.py
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-snapshot-link.py
+          python3 tests/host/check-crypto-link-tables.py
+      - name: Build and validate native dependencies first
+        timeout-minutes: 35
+        # Reuses the approved official Metal installer and its fail-closed gate.
+        # All subsequent stages stay in this fresh checkout, with no restore.
+        run: bash .github/ci/native-bootstrap.sh
+      - name: Fetch pinned LLVM and preflight every Metal source
+        timeout-minutes: 5
+        run: |
+          bash build/llvm-ios/build.sh fetch
+          bash build/dxmt-ios/generate-shaders.sh preflight
+      - name: Build LLVM host tools and require every AIR decode
+        timeout-minutes: 12
+        run: |
+          bash build/llvm-ios/build.sh host
+          bash build/dxmt-ios/generate-shaders.sh
+      - name: Build and validate iOS LLVM archives
+        timeout-minutes: 25
+        run: bash build/llvm-ios/build.sh ios
+      - name: Build and validate the complete DXMT archive
+        timeout-minutes: 10
+        run: python3 build/dxmt-ios/clean_build.py
+      - name: Compile and link Debug app with packaging disabled
+        id: link
+        timeout-minutes: 10
+        run: |
+          python3 build/app-ios/link_diagnostic.py build \
+            --native-receipt "$NATIVE_ARTIFACT_DIR/provenance.json" \
+            --products "$RUNNER_TEMP/madeira-link-products" \
+            --intermediates "$RUNNER_TEMP/madeira-link-intermediates" \
+            --diagnostics "$RUNNER_TEMP/madeira-link-diagnostics"
+      - name: Independently scan checkout and outputs for forbidden IPA staging
+        if: always()
+        timeout-minutes: 2
+        run: |
+          python3 build/app-ios/link_diagnostic.py scan \
+            --products "$RUNNER_TEMP/madeira-link-products" \
+            --intermediates "$RUNNER_TEMP/madeira-link-intermediates" \
+            --diagnostics "$RUNNER_TEMP/madeira-link-diagnostics"
+      - name: Independently verify final link-only diagnostic receipt
+        if: always() && steps.link.outcome == 'success'
+        timeout-minutes: 2
+        run: |
+          python3 build/app-ios/link_diagnostic.py verify \
+            --products "$RUNNER_TEMP/madeira-link-products" \
+            --intermediates "$RUNNER_TEMP/madeira-link-intermediates" \
+            --diagnostics "$RUNNER_TEMP/madeira-link-diagnostics"
+      - name: Collect bounded native diagnostics
+        if: always()
+        timeout-minutes: 1
+        run: |
+          if [ -f .github/ci/collect-native-logs.py ]; then
+            python3 .github/ci/collect-native-logs.py
+          fi
+          df -h "$RUNNER_TEMP"
+      # The entire job, not each stage added together, is capped at 45 minutes.
+      # No packaging, signing, export, install, cache or artifact upload exists.
