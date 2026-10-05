@@ -1,0 +1,16 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/custom.o
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64EC (0xA641)
+  SectionCount: 375
+  TimeDateStamp: 2026-10-05 08:30:50 (0x6AC3603A)
+  PointerToSymbolTable: 0x2E1BA
+  SymbolCount: 1162
+  StringTableSize: 11490
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}

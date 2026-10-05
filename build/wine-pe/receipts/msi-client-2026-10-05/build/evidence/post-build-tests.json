@@ -1,0 +1,65 @@
+[
+  {
+    "name": "client-normal",
+    "argv": [
+      "python3",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/review-inputs/client-fix/tests/run_portable.py",
+      "--source",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c",
+      "--output",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/evidence/client-normal"
+    ],
+    "expected_exit_code": 0,
+    "exit_code": 0,
+    "elapsed_seconds": 0.2
+  },
+  {
+    "name": "client-sanitized",
+    "argv": [
+      "python3",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/review-inputs/client-fix/tests/run_portable.py",
+      "--source",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c",
+      "--sanitize",
+      "--output",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/evidence/client-sanitized"
+    ],
+    "expected_exit_code": 0,
+    "exit_code": 0,
+    "elapsed_seconds": 0.398
+  },
+  {
+    "name": "client-baseline",
+    "argv": [
+      "python3",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/review-inputs/client-fix/tests/run_portable.py",
+      "--source",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/review-inputs/client-fix/baseline/custom.c",
+      "--output",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/evidence/client-baseline"
+    ],
+    "expected_exit_code": 1,
+    "exit_code": 1,
+    "elapsed_seconds": 0.178
+  },
+  {
+    "name": "symbol-regressions",
+    "argv": [
+      "python3",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/reference-inputs/tests/host/check-desktop-symbol-audit.py"
+    ],
+    "expected_exit_code": 0,
+    "exit_code": 0,
+    "elapsed_seconds": 0.316
+  },
+  {
+    "name": "exe-regressions",
+    "argv": [
+      "python3",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/check_exe_audit.py"
+    ],
+    "expected_exit_code": 0,
+    "exit_code": 0,
+    "elapsed_seconds": 0.128
+  }
+]

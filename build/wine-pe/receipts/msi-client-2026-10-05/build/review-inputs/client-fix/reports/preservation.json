@@ -1,0 +1,11 @@
+{
+  "sealed_workspace": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005",
+  "before_file_or_link_count": 16911,
+  "after_file_or_link_count": 16911,
+  "changed_paths": [],
+  "all_regular_files_and_links_preserved": true,
+  "baseline_matches_requested_compiled_source": true,
+  "sealed_custom_matches_baseline": true,
+  "only_custom_client_thread_changed": true,
+  "candidate_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50"
+}

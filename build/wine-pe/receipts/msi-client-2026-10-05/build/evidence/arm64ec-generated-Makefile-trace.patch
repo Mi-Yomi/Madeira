@@ -1,0 +1,5 @@
+--- generated/Makefile
++++ traced/Makefile
+@@ -208399,1 +208399,1 @@
+-	tools/winegcc/winegcc -o $@ --wine-objdir . \
++	tools/winegcc/winegcc -v -save-temps -o $@ --wine-objdir . \

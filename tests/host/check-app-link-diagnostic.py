@@ -38,12 +38,17 @@ class LinkTests(unittest.TestCase):
             resources, framework, converter = fixtures.fixture(seed)
             for name in link.gate.verify_desktop_integration.DLLS:
                 resources[name] = link.gate.digest(put(seed / name, b"MZ reviewed desktop fixture"))
-            if extension in ("msi", "loader"):
+            if extension in ("msi", "loader", "client"):
                 for name in link.gate.verify_msi_integration.BINARIES:
                     resources[name] = link.gate.digest(put(seed / name, b"MZ reviewed MSI fixture"))
-            if extension == "loader":
+            if extension in ("loader", "client"):
                 for name in link.gate.verify_loader_integration.BINARIES:
                     resources[name] = link.gate.digest(put(seed / name, b"MZ reviewed loader fixture"))
+            if extension == "client":
+                client = link.gate.verify_msi_client_integration
+                for name in client.BINARIES:
+                    resources[name] = link.gate.digest(put(seed / name,
+                        (ROOT / client.RECEIPT / client.COPIES[name]).read_bytes()))
             put(root / "app/Madeira/source.c")
             put(root / link.gate.FRAMEWORK_SOURCE, (seed / "Frameworks/StikJIT.framework/StikJIT").read_bytes())
             native = put(base / "native/provenance.json", b"native fixture")
@@ -167,6 +172,36 @@ class LinkTests(unittest.TestCase):
                 self.assertIs(link.gate.run, runner)
                 zipper.assert_not_called()
                 self.assertFalse((diagnostics / link.RECEIPT).exists())
+
+    def test_client_replacement_receipt_is_bound_to_final_app_bytes(self):
+        with self.fixture(extension="client") as args:
+            native, products, objects, diagnostics, *_ = args
+            result = link.build(native, products, objects, diagnostics)
+            self.assertEqual(link.verify(products, objects, diagnostics), result)
+            data = json.loads((diagnostics / "provenance.json").read_text())["guest_pe"]
+            client = link.gate.verify_msi_client_integration
+            self.assertEqual(data["status"], "tracked-existing-plus-reviewed-desktop-msi-loader-and-client-fix")
+            self.assertEqual(data["msi_client_stage_seal_sha256"], client.REVIEWED_SEAL)
+            self.assertEqual(data["msi_client_source_sha256"], client.SOURCE_SHA256)
+            self.assertEqual(data["source_built_msi_client_sha256"], {n: v["sha256"] for n, v in client.CANDIDATES.items()})
+            target = products / "Debug-iphoneos/Madeira.app/aarch64-windows/msi.dll"
+            raw = bytearray(target.read_bytes()); raw[-1] ^= 1; target.write_bytes(raw)
+            with self.assertRaises(ValueError): link.verify(products, objects, diagnostics)
+
+    def test_client_receipt_cannot_substitute_seal_source_before_or_after(self):
+        for field in ("msi_client_stage_seal_sha256", "msi_client_source_sha256",
+                      "msi_client_before_sha256", "source_built_msi_client_sha256"):
+            with self.subTest(field=field), self.fixture(extension="client") as args:
+                native, products, objects, diagnostics, *_ = args
+                link.build(native, products, objects, diagnostics)
+                path = diagnostics / "provenance.json"; data = json.loads(path.read_text())
+                if isinstance(data["guest_pe"][field], dict):
+                    data["guest_pe"][field].pop(next(iter(data["guest_pe"][field])))
+                else:
+                    data["guest_pe"][field] = "0" * 64
+                path.write_text(json.dumps(data))
+                with self.assertRaisesRegex(ValueError, "resource contract"):
+                    link.verify(products, objects, diagnostics)
 
     def test_failure_finally_scan_catches_package_stage_even_without_commands(self):
         with self.fixture() as (native, products, objects, diagnostics, *_):

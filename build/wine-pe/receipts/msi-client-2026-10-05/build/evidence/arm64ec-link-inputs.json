@@ -1,0 +1,346 @@
+{
+  "architecture": "arm64ec",
+  "build_input_superset_receipt": "arm64ec-build-files.json",
+  "custom_compile_command": {
+    "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/arm64ec-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target arm64ec-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -gdwarf-4 -g -O2",
+    "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec",
+    "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c",
+    "output": "dlls/msi/arm64ec-windows/custom.o"
+  },
+  "custom_object": {
+    "bytes": 221264,
+    "sha256": "f9b7e81d65bb43fd5d24d0bb8e9c95904fe279a549e510b8a38dc8d25867544b"
+  },
+  "explicit_link_inputs": {
+    "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang-22": {
+      "bytes": 111488,
+      "sha256": "eb408127882193c07fe3a32523009ad14d788dc867092840199d533de799f273"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/advapi32/arm64ec-windows/libadvapi32.a": {
+      "bytes": 133090,
+      "sha256": "b012968943df0c01f8cf9fe402e0c882546201e6dfaa21536a24fa194dba87f1"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/cabinet/arm64ec-windows/libcabinet.a": {
+      "bytes": 3462,
+      "sha256": "73764f9a4347f7ea51fb74bf8365d40d10ccaf4cbf0fffa35bbb747c6b6a620f"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/comctl32/arm64ec-windows/libcomctl32.a": {
+      "bytes": 33966,
+      "sha256": "25c6c20541c0e9ee7e75b2605a216d2ca5df19e13ba5131c3179ea4f013f2d93"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/crypt32/arm64ec-windows/libcrypt32.a": {
+      "bytes": 57606,
+      "sha256": "d11be75123f2da60a4956e4cf2130e2b5099bd0d59d17f09d04edaf88052caae"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/gdi32/arm64ec-windows/libgdi32.a": {
+      "bytes": 104032,
+      "sha256": "f987ada3edc45156a7affa544ce6030a396f25d5d67f39f4e1649e513dd59568"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/imagehlp/arm64ec-windows/libimagehlp.a": {
+      "bytes": 24004,
+      "sha256": "a6a93e48ce224fa4e9a4b36ac605e959b3f2624b0ff7c0f638943d29804bd61e"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/kernel32/arm64ec-windows/libkernel32.a": {
+      "bytes": 295542,
+      "sha256": "aedbf8f10a96b826bc6f39c0f49f02c84207a033a22197840c2a5e3c549da097"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/action.o": {
+      "bytes": 753715,
+      "sha256": "733aa7be4aee0c500aa5ddaf88373cdfdacc8a2cc0a15d5fc5365633f9ae58fe"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/alter.o": {
+      "bytes": 44122,
+      "sha256": "077fb90680f89d430c448c84c7eed12b367408a086bcf322b5bdff503a599650"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/appsearch.o": {
+      "bytes": 127255,
+      "sha256": "3375df987088f0ea9bbabc1aebee67d7330a710fdd022b30cc26e8dca1bb6868"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/assembly.o": {
+      "bytes": 113615,
+      "sha256": "1ec53f5b2f45dcf3e9ac98ab3fe670013fc10b2bd0199669081a44a4f23d7588"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/automation.o": {
+      "bytes": 218242,
+      "sha256": "fffbd9832bd28506ba011d8256f0703a9553ffd38d4ba30cc7302ba6de37ec55"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/classes.o": {
+      "bytes": 154573,
+      "sha256": "c43c1cc216de62fc32f8dcf32c1123f528e9e47660498570fe1ffe6127f79450"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/cond.tab.o": {
+      "bytes": 100974,
+      "sha256": "5745154bb9150ea31a2d8a4c685f7f868f1e0f1f10e0568316b0ce570f621f73"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/create.o": {
+      "bytes": 45135,
+      "sha256": "6f0336c58db64026225c8f3b5052df0424c7f8311eba2495f16ddb19b191ff30"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/custom.o": {
+      "bytes": 221264,
+      "sha256": "f9b7e81d65bb43fd5d24d0bb8e9c95904fe279a549e510b8a38dc8d25867544b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/database.o": {
+      "bytes": 181769,
+      "sha256": "ced8bd841ca120c5d0892a6102fee696f9a00ee17d3f0893555c54a46ff55abf"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/delete.o": {
+      "bytes": 37756,
+      "sha256": "52b8a1f3c89d7c261bb40744d382f99f974d4258fea6b02b7161e43d973f1846"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/dialog.o": {
+      "bytes": 432962,
+      "sha256": "5dc24b44132d053ca64144a551cd9b9fe29152d2058572d02d008af428741729"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/distinct.o": {
+      "bytes": 43703,
+      "sha256": "cff457d4014c6ab6d17c9c270d526acd1b078128ce018dc1f023cd45be93334a"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/drop.o": {
+      "bytes": 35532,
+      "sha256": "367213a3ebbbd9d507cbbe8504b67727a08024eae0d883b31f41238b2648e205"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/files.o": {
+      "bytes": 226602,
+      "sha256": "82ad9db1dfee9f6db28705cde81a01ada7126cd996db6216f993cdbd28be145f"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/font.o": {
+      "bytes": 68497,
+      "sha256": "33d48718a6bf649e35c2c1cf8c434474487671088959820862e5c0181345da10"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/format.o": {
+      "bytes": 98770,
+      "sha256": "7ea5ea8a213ef7b462dfaa60517941d08541d3155db595aa2e2eb1f480fc4104"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/handle.o": {
+      "bytes": 35723,
+      "sha256": "fc657461b338aef252f3c012eddd15b39177a39f73603b7afae66b89c2f21e1b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/insert.o": {
+      "bytes": 57796,
+      "sha256": "c6e7fe85b1234b6100a9cb8ed279c717d7525ab7d97322bcc43d5a265cfa0887"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/install.o": {
+      "bytes": 190120,
+      "sha256": "ecff3afce3da6fa0d26d22796183d4048453ef34ba922e872449db6ef969855a"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/media.o": {
+      "bytes": 126155,
+      "sha256": "e287375e4331f7644250adb4b208b8c34075794a7ea9f8a5e644b9144a4fbb2c"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/msi.o": {
+      "bytes": 549973,
+      "sha256": "e5a62b7a37c5f2b46a917a631281b65f419df77e7f0a38d3519562a3ba0dd591"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/msi_main.o": {
+      "bytes": 37449,
+      "sha256": "f36cf08121f08b977936a261e1ee3efac0cb877874178dbc159c7a1e228114f7"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/msiquery.o": {
+      "bytes": 160682,
+      "sha256": "f5b6f76a4cd382d22b010dab001c3450da4b4c1f38945a4ae668cfd2c24c4cce"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/msiserver_i.o": {
+      "bytes": 6554,
+      "sha256": "7753008e38a2052cccbbaebea478765ec2def6471021214cd63497c6c2e780b6"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/msiserver_r.res": {
+      "bytes": 2484,
+      "sha256": "3faccd85cba66c620c349e97697d6433ff9f7c1d86d0d08d08e2417c35d63734"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/msiserver_t.res": {
+      "bytes": 21336,
+      "sha256": "eb43732c54a7e6b8a83070858875cd99959e8eeed281c77275118cb81ba83f36"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/package.o": {
+      "bytes": 332247,
+      "sha256": "ba57f43929349e6ba7b8c689529616223e07b88e76e65f0a34523822392ec3f5"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/patch.o": {
+      "bytes": 137459,
+      "sha256": "dccc9d9007914ebfeded81999058854537d611c151809e92544ad5ebcd1e2db5"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/record.o": {
+      "bytes": 134894,
+      "sha256": "2dc960f61756534bb9e984356cf447f3e6b46d133ba96eb2d27a5cd159ba7a77"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/registry.o": {
+      "bytes": 276531,
+      "sha256": "2e9f5c1adad32e16a9b72e2908f5b7e9444c32870b897741784e6ef05e1e6cb7"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/script.o": {
+      "bytes": 76076,
+      "sha256": "ab039d204dad63b95326fccd65f308597fea9f9b2000b883dcae0635930bfdb3"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/select.o": {
+      "bytes": 67972,
+      "sha256": "ba31e9e6e96bbb35ecf021cc9de47d9e5071b299fddbaaaeee383a4d129535bb"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/source.o": {
+      "bytes": 126564,
+      "sha256": "8e873e3aa35c4d478eba13c6c905e2fa677c502f060083d5d1b262c1a0a74cf1"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/sql.tab.o": {
+      "bytes": 85076,
+      "sha256": "948d719df3265ef52e05772b832ef30df195b446c7781f357d373558f7738815"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/storages.o": {
+      "bytes": 78545,
+      "sha256": "02d094640518c8d5a99d745f694adbc10a8e415ad5cc67087e3a226fdca5ddd2"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/streams.o": {
+      "bytes": 94063,
+      "sha256": "74bda01acf634e3fde7eaf4024453d831478d757efda41960cafc635f808fa67"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/string.o": {
+      "bytes": 73227,
+      "sha256": "2b91414004f6ac3824bd62c8b918a8162958b74589804b9cdf9e7c3feb0df515"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/suminfo.o": {
+      "bytes": 159431,
+      "sha256": "0cc994750b909e55993bfbcc5acc9a443bc95f2e3702f0f0025f3aa967b7acf2"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/table.o": {
+      "bytes": 308555,
+      "sha256": "318719ffd4c176f0f3b264af325ed2f92cc09976c07ea6520b1764dcaae1df48"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/tokenize.o": {
+      "bytes": 20009,
+      "sha256": "88df2f70a5a826b27c2207f9e7afac8134f18dd52f93a22ea1806de1f9cedf94"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/update.o": {
+      "bytes": 45237,
+      "sha256": "2c752fda95fdc3ee86fd1a8f68ce5c25f82ef6c6abfdc47d013dca64c0e2b933"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/upgrade.o": {
+      "bytes": 58567,
+      "sha256": "30cd083014f2a686fe88d6f48666cebc3625accdc7a3e72f23ae898241ef6a68"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/where.o": {
+      "bytes": 117630,
+      "sha256": "78e3949e6c1aeaf5ff4d4bed266ea8fb40a57b4cb998c22237397d9938e674af"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/winemsi_c.o": {
+      "bytes": 66664,
+      "sha256": "1cd7efb4e35d7e9c2b9ef9c9cecc8d381764ef72119a6d55fa26d671c67bf356"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/arm64ec-windows/winemsi_s.o": {
+      "bytes": 24512,
+      "sha256": "b6aa36cd3b2a284113f3613fcd9b86667fb26636c7156202730fd2083691c7ad"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/msi.res": {
+      "bytes": 11320,
+      "sha256": "ed244ec8f820ef29b294a60f7ad55374c58e844564f9a42848156f8babe1e787"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/msi/version.res": {
+      "bytes": 928,
+      "sha256": "755879ee225321d995cae2eb9554862db9fb91a87c8853a1b46e9bc008027c3e"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/mspatcha/arm64ec-windows/libmspatcha.a": {
+      "bytes": 5676,
+      "sha256": "737ab7ccedcf0afef55a832f69dc7eb3ee8615ee0c90711d9f1502c5de3b55f3"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/ntdll/arm64ec-windows/libntdll.a": {
+      "bytes": 264874,
+      "sha256": "0dc6e486138db912123927ccfc6f5649c8e96824681bffc9d2941121bbb15ab5"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/odbccp32/arm64ec-windows/libodbccp32.a": {
+      "bytes": 13974,
+      "sha256": "e7f648f0e5ac175b2acd76a2f3261f8010ae88d57d87dfd9e65c6836ceca9304"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/ole32/arm64ec-windows/libole32.a": {
+      "bytes": 64288,
+      "sha256": "c34414fdb2927b7a18b1484eb99f3c5c2162903fc891c6274bfbad4d179681d9"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/oleaut32/arm64ec-windows/liboleaut32.a": {
+      "bytes": 82312,
+      "sha256": "5fdc8c557970033eb86c7313074d675ba41ab1236e865c0cd22a2caa0e01e733"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/rpcrt4/arm64ec-windows/librpcrt4.a": {
+      "bytes": 82952,
+      "sha256": "810e56782f42c7e544cb97b02eb20c2cd31ea47e4e5e5f768db2030f72f26903"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/shell32/arm64ec-windows/libshell32.a": {
+      "bytes": 85868,
+      "sha256": "02c3eb49f34ac7eca214960f7f1a750cb0032bced6db50cf26969f94982f3b48"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/shlwapi/arm64ec-windows/libshlwapi.a": {
+      "bytes": 159912,
+      "sha256": "acf4d9843b7ede0840cadda4aa36d30433eae115ecbc9713b0c9347161716441"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/sxs/arm64ec-windows/libsxs.a": {
+      "bytes": 2382,
+      "sha256": "8628f86a1e6c6586c315df849ec0707e122ca97360e0731ed2db4b125f5e0907"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/ucrtbase/arm64ec-windows/libucrtbase.a": {
+      "bytes": 553282,
+      "sha256": "9d8825bea78dd2fb9e2853641756688f7706f80073c5ade09ce923e0c5c783eb"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/urlmon/arm64ec-windows/liburlmon.a": {
+      "bytes": 17520,
+      "sha256": "f4b520809a056f12d9598a6d087cde23a2bdd5f5ce58e0c237c82903d2ebf3eb"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/user32/arm64ec-windows/libuser32.a": {
+      "bytes": 177050,
+      "sha256": "f01914447f7f2c41cc02903a237fdb5a804da8680fbebbbeb2d52fa7f19e4491"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/version/arm64ec-windows/libversion.a": {
+      "bytes": 5120,
+      "sha256": "f8eb296d45eee35f52e3ca1b081c0c8cd2bb547b896def9e5a8879328b1282a0"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/wininet/arm64ec-windows/libwininet.a": {
+      "bytes": 53982,
+      "sha256": "4ae65562253cf120306106065ebd5eb3430aaeea605584d66a94efe65a2f09f4"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/dlls/wintrust/arm64ec-windows/libwintrust.a": {
+      "bytes": 25072,
+      "sha256": "a272e9a15d3be0bd41f69ccce4a64844310182e6898052dd2b1e021196953e0c"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/libs/compiler-rt/arm64ec-windows/libcompiler-rt.a": {
+      "bytes": 140536,
+      "sha256": "87aa1268c9b6b3d4e6b436f561bd13c149b7b3819022f2c107b6738c2c9e9364"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/libs/uuid/arm64ec-windows/libuuid.a": {
+      "bytes": 531070,
+      "sha256": "03c87dd6f9b64bf77ebeda5dca7e3cef958e69bafd6f78423f5e530332b0c14a"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/libs/winecrt0/arm64ec-windows/libwinecrt0.a": {
+      "bytes": 163878,
+      "sha256": "c372fd02b914c15ca295dea6ecd39b1c9fe28b0854be1acbb3652651850c880c"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/tmp6ac3850e/msi-00000000.spec.o": {
+      "bytes": 67381,
+      "sha256": "1adfd611c54dfb8419de7585fb7ded1073824c9b1109acd53485711d1f9a7241"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/tools/winebuild/winebuild": {
+      "bytes": 220128,
+      "sha256": "c6b0b9b53cfa857c6f5da8c989c12270ac4d56b858368511b194b77f6472d7a2"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec/tools/winegcc/winegcc": {
+      "bytes": 71904,
+      "sha256": "6c07a0cf737bfa23fc0182246b457c5a681e5e5c378110ba54a49a89fe1664d6"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/msi.spec": {
+      "bytes": 14694,
+      "sha256": "5a6085ce66f541d3c52552164ade070129ea05a0f8a8b1ed2c660132366aceb0"
+    }
+  },
+  "host_external_headers_libraries_hermetic": false,
+  "link_commands": [
+    "tools/winegcc/winegcc -v -save-temps -o dlls/msi/arm64ec-windows/msi.dll --wine-objdir .    --cc-cmd=\"/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__\"    -b arm64ec-windows -Wl,--wine-builtin -shared    /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/msi.spec    dlls/msi/arm64ec-windows/action.o dlls/msi/arm64ec-windows/alter.o    dlls/msi/arm64ec-windows/appsearch.o dlls/msi/arm64ec-windows/assembly.o    dlls/msi/arm64ec-windows/automation.o dlls/msi/arm64ec-windows/classes.o    dlls/msi/arm64ec-windows/create.o dlls/msi/arm64ec-windows/custom.o    dlls/msi/arm64ec-windows/database.o dlls/msi/arm64ec-windows/delete.o    dlls/msi/arm64ec-windows/dialog.o dlls/msi/arm64ec-windows/distinct.o    dlls/msi/arm64ec-windows/drop.o dlls/msi/arm64ec-windows/files.o dlls/msi/arm64ec-windows/font.o    dlls/msi/arm64ec-windows/format.o dlls/msi/arm64ec-windows/handle.o    dlls/msi/arm64ec-windows/insert.o dlls/msi/arm64ec-windows/install.o    dlls/msi/arm64ec-windows/media.o dlls/msi/arm64ec-windows/msi.o    dlls/msi/arm64ec-windows/msi_main.o dlls/msi/arm64ec-windows/msiquery.o    dlls/msi/arm64ec-windows/package.o dlls/msi/arm64ec-windows/patch.o    dlls/msi/arm64ec-windows/record.o dlls/msi/arm64ec-windows/registry.o    dlls/msi/arm64ec-windows/script.o dlls/msi/arm64ec-windows/select.o    dlls/msi/arm64ec-windows/source.o dlls/msi/arm64ec-windows/storages.o    dlls/msi/arm64ec-windows/streams.o dlls/msi/arm64ec-windows/string.o    dlls/msi/arm64ec-windows/suminfo.o dlls/msi/arm64ec-windows/table.o    dlls/msi/arm64ec-windows/tokenize.o dlls/msi/arm64ec-windows/update.o    dlls/msi/arm64ec-windows/upgrade.o dlls/msi/arm64ec-windows/where.o    dlls/msi/arm64ec-windows/cond.tab.o dlls/msi/arm64ec-windows/msiserver_i.o    dlls/msi/arm64ec-windows/sql.tab.o dlls/msi/arm64ec-windows/winemsi_c.o    dlls/msi/arm64ec-windows/winemsi_s.o dlls/msi/msi.res dlls/msi/arm64ec-windows/msiserver_t.res    dlls/msi/arm64ec-windows/msiserver_r.res dlls/msi/version.res libs/uuid/arm64ec-windows/libuuid.a    dlls/urlmon/arm64ec-windows/liburlmon.a dlls/wininet/arm64ec-windows/libwininet.a    dlls/comctl32/arm64ec-windows/libcomctl32.a dlls/shell32/arm64ec-windows/libshell32.a    dlls/shlwapi/arm64ec-windows/libshlwapi.a dlls/cabinet/arm64ec-windows/libcabinet.a    dlls/oleaut32/arm64ec-windows/liboleaut32.a dlls/ole32/arm64ec-windows/libole32.a    dlls/version/arm64ec-windows/libversion.a dlls/user32/arm64ec-windows/libuser32.a    dlls/gdi32/arm64ec-windows/libgdi32.a dlls/advapi32/arm64ec-windows/libadvapi32.a    dlls/rpcrt4/arm64ec-windows/librpcrt4.a dlls/sxs/arm64ec-windows/libsxs.a    dlls/imagehlp/arm64ec-windows/libimagehlp.a dlls/mspatcha/arm64ec-windows/libmspatcha.a    dlls/odbccp32/arm64ec-windows/libodbccp32.a dlls/wintrust/arm64ec-windows/libwintrust.a    dlls/crypt32/arm64ec-windows/libcrypt32.a libs/winecrt0/arm64ec-windows/libwinecrt0.a    libs/compiler-rt/arm64ec-windows/libcompiler-rt.a dlls/ucrtbase/arm64ec-windows/libucrtbase.a    dlls/kernel32/arm64ec-windows/libkernel32.a dlls/ntdll/arm64ec-windows/libntdll.a    --no-default-config -Wl,-debug:dwarf",
+    "tools/winegcc/winegcc -v -save-temps -o dlls/msi/arm64ec-windows/msi.dll --wine-objdir .    --cc-cmd=\"/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__\"    -b arm64ec-windows -Wl,--wine-builtin -shared    /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/msi.spec    dlls/msi/arm64ec-windows/action.o dlls/msi/arm64ec-windows/alter.o    dlls/msi/arm64ec-windows/appsearch.o dlls/msi/arm64ec-windows/assembly.o    dlls/msi/arm64ec-windows/automation.o dlls/msi/arm64ec-windows/classes.o    dlls/msi/arm64ec-windows/create.o dlls/msi/arm64ec-windows/custom.o    dlls/msi/arm64ec-windows/database.o dlls/msi/arm64ec-windows/delete.o    dlls/msi/arm64ec-windows/dialog.o dlls/msi/arm64ec-windows/distinct.o    dlls/msi/arm64ec-windows/drop.o dlls/msi/arm64ec-windows/files.o dlls/msi/arm64ec-windows/font.o    dlls/msi/arm64ec-windows/format.o dlls/msi/arm64ec-windows/handle.o    dlls/msi/arm64ec-windows/insert.o dlls/msi/arm64ec-windows/install.o    dlls/msi/arm64ec-windows/media.o dlls/msi/arm64ec-windows/msi.o    dlls/msi/arm64ec-windows/msi_main.o dlls/msi/arm64ec-windows/msiquery.o    dlls/msi/arm64ec-windows/package.o dlls/msi/arm64ec-windows/patch.o    dlls/msi/arm64ec-windows/record.o dlls/msi/arm64ec-windows/registry.o    dlls/msi/arm64ec-windows/script.o dlls/msi/arm64ec-windows/select.o    dlls/msi/arm64ec-windows/source.o dlls/msi/arm64ec-windows/storages.o    dlls/msi/arm64ec-windows/streams.o dlls/msi/arm64ec-windows/string.o    dlls/msi/arm64ec-windows/suminfo.o dlls/msi/arm64ec-windows/table.o    dlls/msi/arm64ec-windows/tokenize.o dlls/msi/arm64ec-windows/update.o    dlls/msi/arm64ec-windows/upgrade.o dlls/msi/arm64ec-windows/where.o    dlls/msi/arm64ec-windows/cond.tab.o dlls/msi/arm64ec-windows/msiserver_i.o    dlls/msi/arm64ec-windows/sql.tab.o dlls/msi/arm64ec-windows/winemsi_c.o    dlls/msi/arm64ec-windows/winemsi_s.o dlls/msi/msi.res dlls/msi/arm64ec-windows/msiserver_t.res    dlls/msi/arm64ec-windows/msiserver_r.res dlls/msi/version.res libs/uuid/arm64ec-windows/libuuid.a    dlls/urlmon/arm64ec-windows/liburlmon.a dlls/wininet/arm64ec-windows/libwininet.a    dlls/comctl32/arm64ec-windows/libcomctl32.a dlls/shell32/arm64ec-windows/libshell32.a    dlls/shlwapi/arm64ec-windows/libshlwapi.a dlls/cabinet/arm64ec-windows/libcabinet.a    dlls/oleaut32/arm64ec-windows/liboleaut32.a dlls/ole32/arm64ec-windows/libole32.a    dlls/version/arm64ec-windows/libversion.a dlls/user32/arm64ec-windows/libuser32.a    dlls/gdi32/arm64ec-windows/libgdi32.a dlls/advapi32/arm64ec-windows/libadvapi32.a    dlls/rpcrt4/arm64ec-windows/librpcrt4.a dlls/sxs/arm64ec-windows/libsxs.a    dlls/imagehlp/arm64ec-windows/libimagehlp.a dlls/mspatcha/arm64ec-windows/libmspatcha.a    dlls/odbccp32/arm64ec-windows/libodbccp32.a dlls/wintrust/arm64ec-windows/libwintrust.a    dlls/crypt32/arm64ec-windows/libcrypt32.a libs/winecrt0/arm64ec-windows/libwinecrt0.a    libs/compiler-rt/arm64ec-windows/libcompiler-rt.a dlls/ucrtbase/arm64ec-windows/libucrtbase.a    dlls/kernel32/arm64ec-windows/libkernel32.a dlls/ntdll/arm64ec-windows/libntdll.a    --no-default-config -Wl,-debug:dwarf",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -target arm64ec-windows -Wno-unused-command-line-argument -fuse-ld=lld --no-default-config --no-default-config -Wl,-debug:dwarf -nodefaultlibs -nostdlib -Wl,-debug:dwarf -Wl,-implib:tmp6ac3850e/msi-00000001.lib -Wl,-filealign:0x10000,-align:0x10000,-driver -Wl,-merge:.CRT=.rdata -shared -Wl,-kill-at -Wl,-entry:DllMainCRTStartup -Xlinker -subsystem:console,6.0 -o dlls/msi/arm64ec-windows/msi.dll -L./dlls -L./libs tmp6ac3850e/msi-00000000.spec.o dlls/msi/arm64ec-windows/action.o dlls/msi/arm64ec-windows/alter.o dlls/msi/arm64ec-windows/appsearch.o dlls/msi/arm64ec-windows/assembly.o dlls/msi/arm64ec-windows/automation.o dlls/msi/arm64ec-windows/classes.o dlls/msi/arm64ec-windows/create.o dlls/msi/arm64ec-windows/custom.o dlls/msi/arm64ec-windows/database.o dlls/msi/arm64ec-windows/delete.o dlls/msi/arm64ec-windows/dialog.o dlls/msi/arm64ec-windows/distinct.o dlls/msi/arm64ec-windows/drop.o dlls/msi/arm64ec-windows/files.o dlls/msi/arm64ec-windows/font.o dlls/msi/arm64ec-windows/format.o dlls/msi/arm64ec-windows/handle.o dlls/msi/arm64ec-windows/insert.o dlls/msi/arm64ec-windows/install.o dlls/msi/arm64ec-windows/media.o dlls/msi/arm64ec-windows/msi.o dlls/msi/arm64ec-windows/msi_main.o dlls/msi/arm64ec-windows/msiquery.o dlls/msi/arm64ec-windows/package.o dlls/msi/arm64ec-windows/patch.o dlls/msi/arm64ec-windows/record.o dlls/msi/arm64ec-windows/registry.o dlls/msi/arm64ec-windows/script.o dlls/msi/arm64ec-windows/select.o dlls/msi/arm64ec-windows/source.o dlls/msi/arm64ec-windows/storages.o dlls/msi/arm64ec-windows/streams.o dlls/msi/arm64ec-windows/string.o dlls/msi/arm64ec-windows/suminfo.o dlls/msi/arm64ec-windows/table.o dlls/msi/arm64ec-windows/tokenize.o dlls/msi/arm64ec-windows/update.o dlls/msi/arm64ec-windows/upgrade.o dlls/msi/arm64ec-windows/where.o dlls/msi/arm64ec-windows/cond.tab.o dlls/msi/arm64ec-windows/msiserver_i.o dlls/msi/arm64ec-windows/sql.tab.o dlls/msi/arm64ec-windows/winemsi_c.o dlls/msi/arm64ec-windows/winemsi_s.o libs/uuid/arm64ec-windows/libuuid.a dlls/urlmon/arm64ec-windows/liburlmon.a dlls/wininet/arm64ec-windows/libwininet.a dlls/comctl32/arm64ec-windows/libcomctl32.a dlls/shell32/arm64ec-windows/libshell32.a dlls/shlwapi/arm64ec-windows/libshlwapi.a dlls/cabinet/arm64ec-windows/libcabinet.a dlls/oleaut32/arm64ec-windows/liboleaut32.a dlls/ole32/arm64ec-windows/libole32.a dlls/version/arm64ec-windows/libversion.a dlls/user32/arm64ec-windows/libuser32.a dlls/gdi32/arm64ec-windows/libgdi32.a dlls/advapi32/arm64ec-windows/libadvapi32.a dlls/rpcrt4/arm64ec-windows/librpcrt4.a dlls/sxs/arm64ec-windows/libsxs.a dlls/imagehlp/arm64ec-windows/libimagehlp.a dlls/mspatcha/arm64ec-windows/libmspatcha.a dlls/odbccp32/arm64ec-windows/libodbccp32.a dlls/wintrust/arm64ec-windows/libwintrust.a dlls/crypt32/arm64ec-windows/libcrypt32.a libs/winecrt0/arm64ec-windows/libwinecrt0.a libs/compiler-rt/arm64ec-windows/libcompiler-rt.a dlls/ucrtbase/arm64ec-windows/libucrtbase.a dlls/kernel32/arm64ec-windows/libkernel32.a dlls/ntdll/arm64ec-windows/libntdll.a",
+    "./tools/winebuild/winebuild -v --save-temps --target arm64ec-windows --builtin dlls/msi/arm64ec-windows/msi.dll"
+  ],
+  "link_temp_policy": "Winegcc -v -save-temps; TMPDIR inside fresh architecture build",
+  "object_machine_verified": true,
+  "source": {
+    "bytes": 50958,
+    "sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50"
+  },
+  "toolchain_implicit_inputs_receipt": "toolchain-receipt.json",
+  "unstripped_provider": {
+    "bytes": 4849664,
+    "sha256": "254134a4e658ff28568e9f5ca452b159b2ff3e8af518bebf26ff546a65ef3750"
+  }
+}

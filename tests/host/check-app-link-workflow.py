@@ -40,6 +40,10 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("    if: false\n", old.split("    steps:\n", 1)[0])
 
     def test_dependency_gates_are_unconditional_and_ordered_before_link(self):
+        early = ("          python3 build/app-ios/link_diagnostic.py request\n"
+                 "          python3 tests/host/check-i386-native-capture-wiring.py\n"
+                 "          python3 build/wine-pe/verify_desktop_integration.py\n")
+        self.assertEqual(TEXT.count(early), 2)
         steps = ["python3 build/app-ios/link_diagnostic.py request", "python3 build/wine-pe/verify_desktop_integration.py",
                  "python3 tests/host/check-desktop-integration.py", "python3 tests/host/check-app-link-diagnostic.py",
                  "python3 tests/host/check-app-link-workflow.py", "python3 tests/host/check-app-bootstrap.py",

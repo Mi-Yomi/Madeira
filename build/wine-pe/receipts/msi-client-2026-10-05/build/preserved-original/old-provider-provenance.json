@@ -1,0 +1,21 @@
+{
+  "wine_pin": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f",
+  "patch_sha256": "3efc2fb4733e67f8951284d5f0384a4df4a39f284a5f30fc395840bbbc1ea4a8",
+  "custom_before_sha256": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+  "custom_after_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+  "only_custom_c_patched": true,
+  "candidate_installed": false,
+  "runtime_tested": false,
+  "guest_execution": false,
+  "original_source_preserved": true,
+  "source_receipt": "source-inputs.json",
+  "toolchain_receipt": "toolchain-receipt.json",
+  "host_tools": "host-tools.json",
+  "commands": "commands.json",
+  "licenses": "../licenses",
+  "summary": "summary.json",
+  "source_rebuild": "../SOURCE-REBUILD.md",
+  "bitwise_reproducibility_established": false,
+  "free_disk_after_build_bytes": 16700035072,
+  "enforced_minimum_free_disk_bytes": 8589934592
+}

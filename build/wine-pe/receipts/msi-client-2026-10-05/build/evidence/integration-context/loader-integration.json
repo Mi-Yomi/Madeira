@@ -1,0 +1,52 @@
+{
+  "build_seal_sha256": "d3f405e38d8a4749e54ee6aab53fd034400424b8233555500dfde3cbdaca08ae",
+  "files": {
+    "aarch64-windows/activeds.dll": {
+      "bytes": 655360,
+      "sha256": "39c0505d43d773a6173a96b1ca7fca1777785223b944b18c24d17858f919ad63"
+    },
+    "aarch64-windows/avicap32.dll": {
+      "bytes": 458752,
+      "sha256": "870e5d818712f751029c47c038c201aa8a846ca7b5d3f5622633dd027d228b2c"
+    },
+    "arm64ec-windows/activeds.dll": {
+      "bytes": 851968,
+      "sha256": "407bd4949ae12bf22861d96695a4047af63ff1081364eaebaf623702eafcacad"
+    },
+    "arm64ec-windows/avicap32.dll": {
+      "bytes": 589824,
+      "sha256": "f9e500425444a9cb82cb76def929d5591308b68b7d8b4d61b85367616a966ffd"
+    },
+    "legal/Wine-LGPL-2.1.txt": {
+      "bytes": 26434,
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c"
+    },
+    "legal/Wine-LICENSE-MADEIRA.md": {
+      "bytes": 2936,
+      "sha256": "af5e68eec8cad65700c24461185dc09936a927688753a999fa1e6bf80d4cf747"
+    },
+    "legal/Wine-compiler-rt-LICENSE.txt": {
+      "bytes": 4288,
+      "sha256": "09e65c6534e75ec49cdc74fa894bfe4287bfbb1002be41fcad90110e9acd0984"
+    },
+    "legal/Wine-loader-INTEGRATION.md": {
+      "bytes": 3346,
+      "sha256": "2f419fe991356b1dbb7e1e2ae55521e544af442b30422b9de35dae953620023c"
+    },
+    "legal/Wine-loader-SOURCE-REBUILD.md": {
+      "bytes": 2877,
+      "sha256": "636569ebec3e8e0b1b3084b51ee45961b43f2c99c1b001668840520190002709"
+    }
+  },
+  "i386_activated": false,
+  "package_ready": false,
+  "receipt_directory": "build/wine-pe/receipts/loader-2026-10-05",
+  "residual_dependency_counts": {
+    "aarch64": 13,
+    "arm64ec": 10
+  },
+  "runtime_tested": false,
+  "schema_version": 1,
+  "stage_seal_sha256": "033316ebff397f5988935ecc653171c25f0341aecb856a79a2190abb6b694df5",
+  "wine_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f"
+}

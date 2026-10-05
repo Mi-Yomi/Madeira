@@ -1,0 +1,2688 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/resolver-overlays/arm64ec-windows/msi.dll
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64EC (0xA641)
+  SectionCount: 8
+  TimeDateStamp: 2026-10-05 08:30:54 (0x6AC3603E)
+  PointerToSymbolTable: 0x140000
+  SymbolCount: 8801
+  StringTableSize: 299210
+  OptionalHeaderSize: 240
+  Characteristics [ (0x2022)
+    IMAGE_FILE_DLL (0x2000)
+    IMAGE_FILE_EXECUTABLE_IMAGE (0x2)
+    IMAGE_FILE_LARGE_ADDRESS_AWARE (0x20)
+  ]
+}
+ImageOptionalHeader {
+  Magic: 0x20B
+  MajorLinkerVersion: 14
+  MinorLinkerVersion: 0
+  SizeOfCode: 589824
+  SizeOfInitializedData: 589824
+  SizeOfUninitializedData: 0
+  AddressOfEntryPoint: 0xA0000
+  BaseOfCode: 0x10000
+  ImageBase: 0x180000000
+  SectionAlignment: 65536
+  FileAlignment: 65536
+  MajorOperatingSystemVersion: 6
+  MinorOperatingSystemVersion: 0
+  MajorImageVersion: 0
+  MinorImageVersion: 0
+  MajorSubsystemVersion: 6
+  MinorSubsystemVersion: 0
+  SizeOfImage: 1310720
+  SizeOfHeaders: 65536
+  CheckSum: 0x0
+  Subsystem: IMAGE_SUBSYSTEM_WINDOWS_CUI (0x3)
+  Characteristics [ (0x160)
+    IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE (0x40)
+    IMAGE_DLL_CHARACTERISTICS_HIGH_ENTROPY_VA (0x20)
+    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT (0x100)
+  ]
+  SizeOfStackReserve: 1048576
+  SizeOfStackCommit: 4096
+  SizeOfHeapReserve: 1048576
+  SizeOfHeapCommit: 4096
+  NumberOfRvaAndSize: 16
+  DataDirectory {
+    ExportTableRVA: 0xDA288
+    ExportTableSize: 0x24C6
+    ImportTableRVA: 0xDC750
+    ImportTableSize: 0x1CC
+    ResourceTableRVA: 0x120000
+    ResourceTableSize: 0x8E1C
+    ExceptionTableRVA: 0x0
+    ExceptionTableSize: 0x0
+    CertificateTableRVA: 0x0
+    CertificateTableSize: 0x0
+    BaseRelocationTableRVA: 0x130000
+    BaseRelocationTableSize: 0xAE0
+    DebugRVA: 0xD9424
+    DebugSize: 0x1C
+    ArchitectureRVA: 0x0
+    ArchitectureSize: 0x0
+    GlobalPtrRVA: 0x0
+    GlobalPtrSize: 0x0
+    TLSTableRVA: 0x0
+    TLSTableSize: 0x0
+    LoadConfigTableRVA: 0xB1328
+    LoadConfigTableSize: 0x140
+    BoundImportRVA: 0x0
+    BoundImportSize: 0x0
+    IATRVA: 0xB0000
+    IATSize: 0x1000
+    DelayImportDescriptorRVA: 0x0
+    DelayImportDescriptorSize: 0x0
+    CLRRuntimeHeaderRVA: 0x0
+    CLRRuntimeHeaderSize: 0x0
+    ReservedRVA: 0x0
+    ReservedSize: 0x0
+  }
+}
+DOSHeader {
+  Magic: MZ
+  UsedBytesInTheLastPage: 120
+  FileSizeInPages: 1
+  NumberOfRelocationItems: 0
+  HeaderSizeInParagraphs: 4
+  MinimumExtraParagraphs: 0
+  MaximumExtraParagraphs: 0
+  InitialRelativeSS: 0
+  InitialSP: 0
+  Checksum: 0
+  InitialIP: 0
+  InitialRelativeCS: 0
+  AddressOfRelocationTable: 64
+  OverlayNumber: 0
+  OEMid: 0
+  OEMinfo: 0
+  AddressOfNewExeHeader: 120
+}
+Import {
+  Name: urlmon.dll
+  ImportLookupTableRVA: 0xDC920
+  ImportAddressTableRVA: 0xB0000
+  Symbol: URLDownloadToCacheFileW (79)
+}
+Import {
+  Name: wininet.dll
+  ImportLookupTableRVA: 0xDC930
+  ImportAddressTableRVA: 0xB0010
+  Symbol: GetUrlCacheEntryInfoW (185)
+}
+Import {
+  Name: comctl32.dll
+  ImportLookupTableRVA: 0xDC940
+  ImportAddressTableRVA: 0xB0020
+  Symbol: ImageList_Add (39)
+  Symbol: ImageList_Create (44)
+  Symbol: ImageList_Destroy (45)
+  Symbol: ImageList_ReplaceIcon (70)
+}
+Import {
+  Name: shell32.dll
+  ImportLookupTableRVA: 0xDC968
+  ImportAddressTableRVA: 0xB0048
+  Symbol: SHGetFolderPathW (322)
+  Symbol: ShellExecuteW (395)
+}
+Import {
+  Name: shlwapi.dll
+  ImportLookupTableRVA: 0xDC980
+  ImportAddressTableRVA: 0xB0060
+  Symbol: PathAddBackslashW (569)
+  Symbol: PathAppendW (573)
+  Symbol: PathFindFileNameW (594)
+  Symbol: PathIsRelativeW (622)
+  Symbol: PathRemoveBackslashW (654)
+  Symbol: PathRemoveFileSpecW (660)
+  Symbol: PathStripPathW (670)
+  Symbol: PathStripToRootW (672)
+  Symbol: SHCreateStreamOnFileW (687)
+  Symbol: StrFormatByteSizeW (783)
+  Symbol: UrlIsW (844)
+}
+Import {
+  Name: cabinet.dll
+  ImportLookupTableRVA: 0xDC9E0
+  ImportAddressTableRVA: 0xB00C0
+  Symbol: FDICopy (22)
+  Symbol: FDICreate (20)
+  Symbol: FDIDestroy (23)
+}
+Import {
+  Name: oleaut32.dll
+  ImportLookupTableRVA: 0xDCA00
+  ImportAddressTableRVA: 0xB00E0
+  Symbol: DispGetParam (28)
+  Symbol: LoadRegTypeLib (162)
+  Symbol: LoadTypeLib (161)
+  Symbol: LoadTypeLibEx (183)
+  Symbol: OleLoadPicture (418)
+  Symbol: RegisterTypeLib (163)
+  Symbol: SysAllocString (2)
+  Symbol: SysAllocStringByteLen (150)
+  Symbol: SysAllocStringLen (4)
+  Symbol: SysFreeString (6)
+  Symbol: SystemTimeToVariantTime (184)
+  Symbol: UnRegisterTypeLib (186)
+  Symbol: VariantChangeType (12)
+  Symbol: VariantClear (9)
+  Symbol: VariantCopy (10)
+  Symbol: VariantCopyInd (11)
+  Symbol: VariantInit (8)
+  Symbol: VariantTimeToSystemTime (185)
+}
+Import {
+  Name: ole32.dll
+  ImportLookupTableRVA: 0xDCA98
+  ImportAddressTableRVA: 0xB0178
+  Symbol: CLSIDFromProgID (6)
+  Symbol: CLSIDFromString (8)
+  Symbol: CoCreateGuid (14)
+  Symbol: CoCreateInstance (15)
+  Symbol: CoInitialize (53)
+  Symbol: CoInitializeEx (54)
+  Symbol: CoTaskMemFree (88)
+  Symbol: CoUninitialize (91)
+  Symbol: CreateILockBytesOnHGlobal (104)
+  Symbol: CreateStreamOnHGlobal (109)
+  Symbol: StgCreateDocfile (271)
+  Symbol: StgOpenStorage (282)
+  Symbol: StgOpenStorageOnILockBytes (284)
+  Symbol: StringFromGUID2 (287)
+}
+Import {
+  Name: version.dll
+  ImportLookupTableRVA: 0xDCB10
+  ImportAddressTableRVA: 0xB01F0
+  Symbol: GetFileVersionInfoSizeW (7)
+  Symbol: GetFileVersionInfoW (8)
+  Symbol: VerQueryValueW (16)
+}
+Import {
+  Name: user32.dll
+  ImportLookupTableRVA: 0xDCB30
+  ImportAddressTableRVA: 0xB0210
+  Symbol: AdjustWindowRect (1505)
+  Symbol: AppendMenuA (1512)
+  Symbol: CallWindowProcW (1533)
+  Symbol: CharLowerW (1548)
+  Symbol: CharUpperW (1568)
+  Symbol: CreatePopupMenu (1610)
+  Symbol: CreateWindowExW (1613)
+  Symbol: DefWindowProcW (1657)
+  Symbol: DestroyIcon (1664)
+  Symbol: DestroyMenu (1665)
+  Symbol: DestroyWindow (1666)
+  Symbol: DispatchMessageW (1674)
+  Symbol: EnableWindow (1711)
+  Symbol: EnumChildWindows (1717)
+  Symbol: GetClientRect (1776)
+  Symbol: GetDC (1790)
+  Symbol: GetFocus (1807)
+  Symbol: GetNextDlgTabItem (1858)
+  Symbol: GetParent (1860)
+  Symbol: GetPropW (1877)
+  Symbol: GetWindowLongPtrW (1922)
+  Symbol: GetWindowRect (1928)
+  Symbol: GetWindowTextW (1934)
+  Symbol: InvalidateRect (1952)
+  Symbol: IsDialogMessageW (1967)
+  Symbol: LoadBitmapW (1991)
+  Symbol: LoadCursorW (1995)
+  Symbol: LoadIconW (1997)
+  Symbol: LoadImageW (1999)
+  Symbol: LoadStringW (2014)
+  Symbol: MapWindowPoints (2029)
+  Symbol: MessageBoxExA (2035)
+  Symbol: MessageBoxExW (2036)
+  Symbol: MessageBoxW (2041)
+  Symbol: MsgWaitForMultipleObjects (2048)
+  Symbol: MsgWaitForMultipleObjectsEx (2049)
+  Symbol: PeekMessageW (2068)
+  Symbol: PostMessageW (2073)
+  Symbol: RegisterClassW (2093)
+  Symbol: ReleaseDC (2115)
+  Symbol: RemovePropW (2119)
+  Symbol: SendMessageW (2138)
+  Symbol: SetFocus (2165)
+  Symbol: SetPropW (2192)
+  Symbol: SetWindowLongPtrW (2219)
+  Symbol: SetWindowPos (2222)
+  Symbol: SetWindowTextW (2226)
+  Symbol: ShowWindow (2237)
+  Symbol: TrackPopupMenu (2257)
+  Symbol: TranslateMessage (2263)
+  Symbol: UnregisterClassW (2272)
+  Symbol: wsprintfA (2309)
+  Symbol: wsprintfW (2310)
+}
+Import {
+  Name: gdi32.dll
+  ImportLookupTableRVA: 0xDCCE0
+  ImportAddressTableRVA: 0xB03C0
+  Symbol: CreateCompatibleBitmap (1050)
+  Symbol: CreateCompatibleDC (1051)
+  Symbol: CreateFontIndirectW (1067)
+  Symbol: DeleteDC (1138)
+  Symbol: DeleteObject (1141)
+  Symbol: GetDeviceCaps (1287)
+  Symbol: GetObjectW (1331)
+  Symbol: GetStockObject (1345)
+  Symbol: GetTextMetricsW (1365)
+  Symbol: SelectObject (1470)
+  Symbol: SetBkMode (1477)
+  Symbol: SetTextColor (1514)
+  Symbol: StretchBlt (1526)
+}
+Import {
+  Name: advapi32.dll
+  ImportLookupTableRVA: 0xDCD50
+  ImportAddressTableRVA: 0xB0430
+  Symbol: ChangeServiceConfig2W (43)
+  Symbol: CloseServiceHandle (51)
+  Symbol: ControlService (54)
+  Symbol: ConvertSidToStringSidW (60)
+  Symbol: CreateProcessAsUserW (71)
+  Symbol: CreateServiceW (76)
+  Symbol: DeleteService (139)
+  Symbol: EnumDependentServicesW (154)
+  Symbol: GetServiceDisplayNameW (217)
+  Symbol: GetTokenInformation (226)
+  Symbol: GetUserNameW (237)
+  Symbol: LookupAccountNameW (266)
+  Symbol: MD5Final (331)
+  Symbol: MD5Init (332)
+  Symbol: MD5Update (333)
+  Symbol: OpenProcessToken (353)
+  Symbol: OpenSCManagerW (355)
+  Symbol: OpenServiceW (357)
+  Symbol: QueryServiceStatusEx (389)
+  Symbol: RegCloseKey (396)
+  Symbol: RegCreateKeyExW (403)
+  Symbol: RegCreateKeyW (406)
+  Symbol: RegDeleteKeyExW (409)
+  Symbol: RegDeleteKeyW (412)
+  Symbol: RegDeleteTreeW (414)
+  Symbol: RegDeleteValueW (416)
+  Symbol: RegEnumKeyExW (422)
+  Symbol: RegEnumKeyW (423)
+  Symbol: RegEnumValueW (425)
+  Symbol: RegGetValueW (429)
+  Symbol: RegOpenKeyExW (440)
+  Symbol: RegOpenKeyW (441)
+  Symbol: RegQueryInfoKeyW (445)
+  Symbol: RegQueryValueExW (451)
+  Symbol: RegSetValueExW (468)
+  Symbol: StartServiceW (514)
+}
+Import {
+  Name: rpcrt4.dll
+  ImportLookupTableRVA: 0xDCE78
+  ImportAddressTableRVA: 0xB0558
+  Symbol: I_RpcExceptionFilter (43)
+  Symbol: NdrClientCall2 (128)
+  Symbol: NdrServerCall2 (274)
+  Symbol: RpcBindingFree (342)
+  Symbol: RpcBindingFromStringBindingW (344)
+  Symbol: RpcServerRegisterIfEx (441)
+  Symbol: RpcServerUnregisterIf (443)
+  Symbol: RpcServerUseProtseqEpW (453)
+  Symbol: RpcStringBindingComposeW (486)
+  Symbol: RpcStringFreeW (490)
+}
+Import {
+  Name: sxs.dll
+  ImportLookupTableRVA: 0xDCED0
+  ImportAddressTableRVA: 0xB05B0
+  Symbol: CreateAssemblyCache (1)
+}
+Import {
+  Name: imagehlp.dll
+  ImportLookupTableRVA: 0xDCEE0
+  ImportAddressTableRVA: 0xB05C0
+  Symbol: BindImage (1)
+}
+Import {
+  Name: mspatcha.dll
+  ImportLookupTableRVA: 0xDCEF0
+  ImportAddressTableRVA: 0xB05D0
+  Symbol: ApplyPatchToFileW (7)
+}
+Import {
+  Name: odbccp32.dll
+  ImportLookupTableRVA: 0xDCF00
+  ImportAddressTableRVA: 0xB05E0
+  Symbol: SQLConfigDataSourceW (206)
+  Symbol: SQLInstallDriverExW (226)
+  Symbol: SQLInstallTranslatorExW (229)
+  Symbol: SQLRemoveDriverW (220)
+  Symbol: SQLRemoveTranslatorW (219)
+}
+Import {
+  Name: wintrust.dll
+  ImportLookupTableRVA: 0xDCF30
+  ImportAddressTableRVA: 0xB0610
+  Symbol: WTHelperGetProvCertFromChain (86)
+  Symbol: WTHelperGetProvSignerFromChain (88)
+  Symbol: WinVerifyTrustEx (115)
+}
+Import {
+  Name: crypt32.dll
+  ImportLookupTableRVA: 0xDCF50
+  ImportAddressTableRVA: 0xB0630
+  Symbol: CertDuplicateCertificateContext (32)
+}
+Import {
+  Name: ucrtbase.dll
+  ImportLookupTableRVA: 0xDCF60
+  ImportAddressTableRVA: 0xB0640
+  Symbol: __C_specific_handler (34)
+  Symbol: __acrt_iob_func (58)
+  Symbol: __stdio_common_vsprintf (121)
+  Symbol: __stdio_common_vswprintf (125)
+  Symbol: _assert (154)
+  Symbol: _strdup (1815)
+  Symbol: _wcsdup (1905)
+  Symbol: _wcsicmp (1909)
+  Symbol: _wcsnicmp (1919)
+  Symbol: _wcsupr (1943)
+  Symbol: _wtoi (2027)
+  Symbol: bsearch (2066)
+  Symbol: calloc (2080)
+  Symbol: free (2215)
+  Symbol: fwrite (2222)
+  Symbol: getenv (2225)
+  Symbol: iswdigit (2256)
+  Symbol: iswspace (2261)
+  Symbol: malloc (2300)
+  Symbol: memcmp (2312)
+  Symbol: memcpy (2313)
+  Symbol: memmove (2315)
+  Symbol: memset (2317)
+  Symbol: qsort (2343)
+  Symbol: realloc (2349)
+  Symbol: strcat (2385)
+  Symbol: strchr (2387)
+  Symbol: strcmp (2388)
+  Symbol: strcpy (2390)
+  Symbol: strcspn (2392)
+  Symbol: strlen (2396)
+  Symbol: strtol (2412)
+  Symbol: towupper (2436)
+  Symbol: wcscat (2445)
+  Symbol: wcschr (2447)
+  Symbol: wcscmp (2448)
+  Symbol: wcscpy (2450)
+  Symbol: wcslen (2454)
+  Symbol: wcsncmp (2457)
+  Symbol: wcsrchr (2462)
+  Symbol: wcsstr (2466)
+  Symbol: wcstol (2472)
+}
+Import {
+  Name: kernel32.dll
+  ImportLookupTableRVA: 0xDD0B8
+  ImportAddressTableRVA: 0xB0798
+  Symbol: CloseHandle (62)
+  Symbol: ConnectNamedPipe (81)
+  Symbol: CopyFileW (95)
+  Symbol: CreateDirectoryW (107)
+  Symbol: CreateFileMappingW (120)
+  Symbol: CreateFileW (121)
+  Symbol: CreateNamedPipeW (139)
+  Symbol: CreateProcessW (146)
+  Symbol: CreateThread (158)
+  Symbol: DebugBreak (179)
+  Symbol: DeleteCriticalSection (188)
+  Symbol: DeleteFileW (193)
+  Symbol: DisableThreadLibraryCalls (207)
+  Symbol: DosDateTimeToFileTime (211)
+  Symbol: DuplicateHandle (213)
+  Symbol: EnterCriticalSection (218)
+  Symbol: EnumResourceNamesW (238)
+  Symbol: ExpandEnvironmentStringsW (266)
+  Symbol: FileTimeToLocalFileTime (274)
+  Symbol: FileTimeToSystemTime (275)
+  Symbol: FindClose (284)
+  Symbol: FindFirstFileW (294)
+  Symbol: FindNextFileW (302)
+  Symbol: FindResourceExW (312)
+  Symbol: FindResourceW (313)
+  Symbol: FreeLibrary (333)
+  Symbol: GetComputerNameW (368)
+  Symbol: GetCurrentDirectoryW (414)
+  Symbol: GetDateFormatW (431)
+  Symbol: GetDiskFreeSpaceExW (439)
+  Symbol: GetDriveTypeW (446)
+  Symbol: GetEnvironmentVariableW (454)
+  Symbol: GetExitCodeProcess (456)
+  Symbol: GetExitCodeThread (457)
+  Symbol: GetFileAttributesW (465)
+  Symbol: GetFileSize (470)
+  Symbol: GetFullPathNameW (480)
+  Symbol: GetLocalTime (490)
+  Symbol: GetLogicalDriveStringsW (495)
+  Symbol: GetLogicalDrives (496)
+  Symbol: GetModuleFileNameW (505)
+  Symbol: GetModuleHandleW (509)
+  Symbol: GetNativeSystemInfo (519)
+  Symbol: GetPrivateProfileStringW (556)
+  Symbol: GetProcAddress (559)
+  Symbol: GetShortPathNameW (590)
+  Symbol: GetSystemDefaultLangID (601)
+  Symbol: GetSystemDirectoryW (606)
+  Symbol: GetSystemWow64DirectoryW (620)
+  Symbol: GetTempFileNameW (625)
+  Symbol: GetTempPathW (629)
+  Symbol: GetTickCount (644)
+  Symbol: GetTickCount64 (645)
+  Symbol: GetTimeFormatW (648)
+  Symbol: GetUserDefaultLangID (653)
+  Symbol: GetVersion (658)
+  Symbol: GetVolumeInformationW (663)
+  Symbol: GetWindowsDirectoryW (671)
+  Symbol: GlobalAlloc (677)
+  Symbol: GlobalFree (684)
+  Symbol: GlobalMemoryStatusEx (690)
+  Symbol: HeapAlloc (701)
+  Symbol: HeapFree (707)
+  Symbol: HeapReAlloc (711)
+  Symbol: IsBadStringPtrA (749)
+  Symbol: IsBadStringPtrW (750)
+  Symbol: IsValidCodePage (762)
+  Symbol: IsValidLocale (764)
+  Symbol: IsWow64Process (767)
+  Symbol: IsWow64Process2 (768)
+  Symbol: LeaveCriticalSection (809)
+  Symbol: LoadLibraryA (812)
+  Symbol: LoadLibraryExW (814)
+  Symbol: LoadLibraryW (815)
+  Symbol: LoadResource (818)
+  Symbol: LocalFileTimeToFileTime (821)
+  Symbol: LocalFree (823)
+  Symbol: LockResource (834)
+  Symbol: MapViewOfFile (837)
+  Symbol: MoveFileExW (847)
+  Symbol: MulDiv (853)
+  Symbol: MultiByteToWideChar (854)
+  Symbol: RaiseException (925)
+  Symbol: ReadFile (939)
+  Symbol: RemoveDirectoryW (1003)
+  Symbol: SearchPathW (1043)
+  Symbol: SetFileAttributesW (1109)
+  Symbol: SetFilePointer (1112)
+  Symbol: SetFileTime (1114)
+  Symbol: SizeofResource (1190)
+  Symbol: Sleep (1191)
+  Symbol: SystemTimeToFileTime (1200)
+  Symbol: TzSpecificLocalTimeToSystemTime (1222)
+  Symbol: UnmapViewOfFile (1228)
+  Symbol: WaitForSingleObject (1264)
+  Symbol: WideCharToMultiByte (1284)
+  Symbol: Wow64DisableWow64FsRedirection (1286)
+  Symbol: Wow64RevertWow64FsRedirection (1290)
+  Symbol: WriteFile (1303)
+  Symbol: WritePrivateProfileStringW (1309)
+  Symbol: __chkstk_arm64ec (1321)
+}
+Import {
+  Name: ntdll.dll
+  ImportLookupTableRVA: 0xDD3E8
+  ImportAddressTableRVA: 0xB0AC8
+  Symbol: NtCreateSection (163)
+  Symbol: NtQuerySection (270)
+  Symbol: RtlGetVersion (643)
+  Symbol: _vsnprintf (1326)
+}
+Export {
+  Ordinal: 5
+  Name: MsiAdvertiseProductA
+  RVA: 0xA0010
+}
+Export {
+  Ordinal: 6
+  Name: MsiAdvertiseProductW
+  RVA: 0xA0020
+}
+Export {
+  Ordinal: 7
+  Name: MsiCloseAllHandles
+  RVA: 0xA0030
+}
+Export {
+  Ordinal: 8
+  Name: MsiCloseHandle
+  RVA: 0xA0040
+}
+Export {
+  Ordinal: 9
+  Name: MsiCollectUserInfoA
+  RVA: 0xA0050
+}
+Export {
+  Ordinal: 10
+  Name: MsiCollectUserInfoW
+  RVA: 0xA0060
+}
+Export {
+  Ordinal: 11
+  Name: MsiConfigureFeatureA
+  RVA: 0xA0070
+}
+Export {
+  Ordinal: 12
+  Name: MsiConfigureFeatureFromDescriptorA
+  RVA: 0xA0080
+}
+Export {
+  Ordinal: 13
+  Name: MsiConfigureFeatureFromDescriptorW
+  RVA: 0xA0090
+}
+Export {
+  Ordinal: 14
+  Name: MsiConfigureFeatureW
+  RVA: 0xA00A0
+}
+Export {
+  Ordinal: 15
+  Name: MsiConfigureProductA
+  RVA: 0xA00B0
+}
+Export {
+  Ordinal: 16
+  Name: MsiConfigureProductW
+  RVA: 0xA00C0
+}
+Export {
+  Ordinal: 17
+  Name: MsiCreateRecord
+  RVA: 0xA00D0
+}
+Export {
+  Ordinal: 18
+  Name: MsiDatabaseApplyTransformA
+  RVA: 0xA00E0
+}
+Export {
+  Ordinal: 19
+  Name: MsiDatabaseApplyTransformW
+  RVA: 0xA00F0
+}
+Export {
+  Ordinal: 20
+  Name: MsiDatabaseCommit
+  RVA: 0xA0100
+}
+Export {
+  Ordinal: 21
+  Name: MsiDatabaseExportA
+  RVA: 0xA0110
+}
+Export {
+  Ordinal: 22
+  Name: MsiDatabaseExportW
+  RVA: 0xA0120
+}
+Export {
+  Ordinal: 23
+  Name: MsiDatabaseGenerateTransformA
+  RVA: 0xA0130
+}
+Export {
+  Ordinal: 24
+  Name: MsiDatabaseGenerateTransformW
+  RVA: 0xA0140
+}
+Export {
+  Ordinal: 25
+  Name: MsiDatabaseGetPrimaryKeysA
+  RVA: 0xA0150
+}
+Export {
+  Ordinal: 26
+  Name: MsiDatabaseGetPrimaryKeysW
+  RVA: 0xA0160
+}
+Export {
+  Ordinal: 27
+  Name: MsiDatabaseImportA
+  RVA: 0xA0170
+}
+Export {
+  Ordinal: 28
+  Name: MsiDatabaseImportW
+  RVA: 0xA0180
+}
+Export {
+  Ordinal: 29
+  Name: MsiDatabaseMergeA
+  RVA: 0xA0190
+}
+Export {
+  Ordinal: 30
+  Name: MsiDatabaseMergeW
+  RVA: 0xA01A0
+}
+Export {
+  Ordinal: 31
+  Name: MsiDatabaseOpenViewA
+  RVA: 0xA01B0
+}
+Export {
+  Ordinal: 32
+  Name: MsiDatabaseOpenViewW
+  RVA: 0xA01C0
+}
+Export {
+  Ordinal: 33
+  Name: MsiDoActionA
+  RVA: 0xA01D0
+}
+Export {
+  Ordinal: 34
+  Name: MsiDoActionW
+  RVA: 0xA01E0
+}
+Export {
+  Ordinal: 35
+  Name: MsiEnableUIPreview
+  RVA: 0xA01F0
+}
+Export {
+  Ordinal: 36
+  Name: MsiEnumClientsA
+  RVA: 0xA0200
+}
+Export {
+  Ordinal: 37
+  Name: MsiEnumClientsW
+  RVA: 0xA0210
+}
+Export {
+  Ordinal: 38
+  Name: MsiEnumComponentQualifiersA
+  RVA: 0xA0220
+}
+Export {
+  Ordinal: 39
+  Name: MsiEnumComponentQualifiersW
+  RVA: 0xA0230
+}
+Export {
+  Ordinal: 40
+  Name: MsiEnumComponentsA
+  RVA: 0xA0240
+}
+Export {
+  Ordinal: 41
+  Name: MsiEnumComponentsW
+  RVA: 0xA0250
+}
+Export {
+  Ordinal: 42
+  Name: MsiEnumFeaturesA
+  RVA: 0xA0260
+}
+Export {
+  Ordinal: 43
+  Name: MsiEnumFeaturesW
+  RVA: 0xA0270
+}
+Export {
+  Ordinal: 44
+  Name: MsiEnumProductsA
+  RVA: 0xA0280
+}
+Export {
+  Ordinal: 45
+  Name: MsiEnumProductsW
+  RVA: 0xA0290
+}
+Export {
+  Ordinal: 46
+  Name: MsiEvaluateConditionA
+  RVA: 0xA02A0
+}
+Export {
+  Ordinal: 47
+  Name: MsiEvaluateConditionW
+  RVA: 0xA02B0
+}
+Export {
+  Ordinal: 48
+  Name: MsiGetLastErrorRecord
+  RVA: 0xA02C0
+}
+Export {
+  Ordinal: 49
+  Name: MsiGetActiveDatabase
+  RVA: 0xA02D0
+}
+Export {
+  Ordinal: 50
+  Name: MsiGetComponentStateA
+  RVA: 0xA02E0
+}
+Export {
+  Ordinal: 51
+  Name: MsiGetComponentStateW
+  RVA: 0xA02F0
+}
+Export {
+  Ordinal: 52
+  Name: MsiGetDatabaseState
+  RVA: 0xA0300
+}
+Export {
+  Ordinal: 53
+  Name: MsiGetFeatureCostA
+  RVA: 0xA0310
+}
+Export {
+  Ordinal: 54
+  Name: MsiGetFeatureCostW
+  RVA: 0xA0320
+}
+Export {
+  Ordinal: 55
+  Name: MsiGetFeatureInfoA
+  RVA: 0xA0330
+}
+Export {
+  Ordinal: 56
+  Name: MsiGetFeatureInfoW
+  RVA: 0xA0340
+}
+Export {
+  Ordinal: 57
+  Name: MsiGetFeatureStateA
+  RVA: 0xA0350
+}
+Export {
+  Ordinal: 58
+  Name: MsiGetFeatureStateW
+  RVA: 0xA0360
+}
+Export {
+  Ordinal: 59
+  Name: MsiGetFeatureUsageA
+  RVA: 0xA0370
+}
+Export {
+  Ordinal: 60
+  Name: MsiGetFeatureUsageW
+  RVA: 0xA0380
+}
+Export {
+  Ordinal: 61
+  Name: MsiGetFeatureValidStatesA
+  RVA: 0xA0390
+}
+Export {
+  Ordinal: 62
+  Name: MsiGetFeatureValidStatesW
+  RVA: 0xA03A0
+}
+Export {
+  Ordinal: 63
+  Name: MsiGetLanguage
+  RVA: 0xA03B0
+}
+Export {
+  Ordinal: 64
+  Name: MsiGetMode
+  RVA: 0xA03C0
+}
+Export {
+  Ordinal: 65
+  Name: MsiGetProductCodeA
+  RVA: 0xA03D0
+}
+Export {
+  Ordinal: 66
+  Name: MsiGetProductCodeW
+  RVA: 0xA03E0
+}
+Export {
+  Ordinal: 67
+  Name: MsiGetProductInfoA
+  RVA: 0xA03F0
+}
+Export {
+  Ordinal: 68
+  Name: MsiGetProductInfoFromScriptA
+  RVA: 0xA0400
+}
+Export {
+  Ordinal: 69
+  Name: MsiGetProductInfoFromScriptW
+  RVA: 0xA0410
+}
+Export {
+  Ordinal: 70
+  Name: MsiGetProductInfoW
+  RVA: 0xA0420
+}
+Export {
+  Ordinal: 71
+  Name: MsiGetProductPropertyA
+  RVA: 0xA0430
+}
+Export {
+  Ordinal: 72
+  Name: MsiGetProductPropertyW
+  RVA: 0xA0440
+}
+Export {
+  Ordinal: 73
+  Name: MsiGetPropertyA
+  RVA: 0xA0450
+}
+Export {
+  Ordinal: 74
+  Name: MsiGetPropertyW
+  RVA: 0xA0460
+}
+Export {
+  Ordinal: 75
+  Name: MsiGetSourcePathA
+  RVA: 0xA0470
+}
+Export {
+  Ordinal: 76
+  Name: MsiGetSourcePathW
+  RVA: 0xA0480
+}
+Export {
+  Ordinal: 77
+  Name: MsiGetSummaryInformationA
+  RVA: 0xA0490
+}
+Export {
+  Ordinal: 78
+  Name: MsiGetSummaryInformationW
+  RVA: 0xA04A0
+}
+Export {
+  Ordinal: 79
+  Name: MsiGetTargetPathA
+  RVA: 0xA04B0
+}
+Export {
+  Ordinal: 80
+  Name: MsiGetTargetPathW
+  RVA: 0xA04C0
+}
+Export {
+  Ordinal: 81
+  Name: MsiGetUserInfoA
+  RVA: 0xA04D0
+}
+Export {
+  Ordinal: 82
+  Name: MsiGetUserInfoW
+  RVA: 0xA04E0
+}
+Export {
+  Ordinal: 83
+  Name: MsiInstallMissingComponentA
+  RVA: 0xA04F0
+}
+Export {
+  Ordinal: 84
+  Name: MsiInstallMissingComponentW
+  RVA: 0xA0500
+}
+Export {
+  Ordinal: 85
+  Name: MsiInstallMissingFileA
+  RVA: 0xA0510
+}
+Export {
+  Ordinal: 86
+  Name: MsiInstallMissingFileW
+  RVA: 0xA0520
+}
+Export {
+  Ordinal: 87
+  Name: MsiInstallProductA
+  RVA: 0xA0530
+}
+Export {
+  Ordinal: 88
+  Name: MsiInstallProductW
+  RVA: 0xA0540
+}
+Export {
+  Ordinal: 89
+  Name: MsiLocateComponentA
+  RVA: 0xA0550
+}
+Export {
+  Ordinal: 90
+  Name: MsiLocateComponentW
+  RVA: 0xA0560
+}
+Export {
+  Ordinal: 91
+  Name: MsiOpenDatabaseA
+  RVA: 0xA0570
+}
+Export {
+  Ordinal: 92
+  Name: MsiOpenDatabaseW
+  RVA: 0xA0580
+}
+Export {
+  Ordinal: 93
+  Name: MsiOpenPackageA
+  RVA: 0xA0590
+}
+Export {
+  Ordinal: 94
+  Name: MsiOpenPackageW
+  RVA: 0xA05A0
+}
+Export {
+  Ordinal: 95
+  Name: MsiOpenProductA
+  RVA: 0xA05B0
+}
+Export {
+  Ordinal: 96
+  Name: MsiOpenProductW
+  RVA: 0xA05C0
+}
+Export {
+  Ordinal: 97
+  Name: MsiPreviewBillboardA
+  RVA: 0xA05D0
+}
+Export {
+  Ordinal: 98
+  Name: MsiPreviewBillboardW
+  RVA: 0xA05E0
+}
+Export {
+  Ordinal: 99
+  Name: MsiPreviewDialogA
+  RVA: 0xA05F0
+}
+Export {
+  Ordinal: 100
+  Name: MsiPreviewDialogW
+  RVA: 0xA0600
+}
+Export {
+  Ordinal: 101
+  Name: MsiProcessAdvertiseScriptA
+  RVA: 0xA0610
+}
+Export {
+  Ordinal: 102
+  Name: MsiProcessAdvertiseScriptW
+  RVA: 0xA0620
+}
+Export {
+  Ordinal: 103
+  Name: MsiProcessMessage
+  RVA: 0xA0630
+}
+Export {
+  Ordinal: 104
+  Name: MsiProvideComponentA
+  RVA: 0xA0640
+}
+Export {
+  Ordinal: 105
+  Name: MsiProvideComponentFromDescriptorA
+  RVA: 0xA0650
+}
+Export {
+  Ordinal: 106
+  Name: MsiProvideComponentFromDescriptorW
+  RVA: 0xA0660
+}
+Export {
+  Ordinal: 107
+  Name: MsiProvideComponentW
+  RVA: 0xA0670
+}
+Export {
+  Ordinal: 108
+  Name: MsiProvideQualifiedComponentA
+  RVA: 0xA0680
+}
+Export {
+  Ordinal: 109
+  Name: MsiProvideQualifiedComponentW
+  RVA: 0xA0690
+}
+Export {
+  Ordinal: 110
+  Name: MsiQueryFeatureStateA
+  RVA: 0xA06A0
+}
+Export {
+  Ordinal: 111
+  Name: MsiQueryFeatureStateW
+  RVA: 0xA06B0
+}
+Export {
+  Ordinal: 112
+  Name: MsiQueryProductStateA
+  RVA: 0xA06C0
+}
+Export {
+  Ordinal: 113
+  Name: MsiQueryProductStateW
+  RVA: 0xA06D0
+}
+Export {
+  Ordinal: 114
+  Name: MsiRecordDataSize
+  RVA: 0xA06E0
+}
+Export {
+  Ordinal: 115
+  Name: MsiRecordGetFieldCount
+  RVA: 0xA06F0
+}
+Export {
+  Ordinal: 116
+  Name: MsiRecordGetInteger
+  RVA: 0xA0700
+}
+Export {
+  Ordinal: 117
+  Name: MsiRecordGetStringA
+  RVA: 0xA0710
+}
+Export {
+  Ordinal: 118
+  Name: MsiRecordGetStringW
+  RVA: 0xA0720
+}
+Export {
+  Ordinal: 119
+  Name: MsiRecordIsNull
+  RVA: 0xA0730
+}
+Export {
+  Ordinal: 120
+  Name: MsiRecordReadStream
+  RVA: 0xA0740
+}
+Export {
+  Ordinal: 121
+  Name: MsiRecordSetInteger
+  RVA: 0xA0750
+}
+Export {
+  Ordinal: 122
+  Name: MsiRecordSetStreamA
+  RVA: 0xA0760
+}
+Export {
+  Ordinal: 123
+  Name: MsiRecordSetStreamW
+  RVA: 0xA0770
+}
+Export {
+  Ordinal: 124
+  Name: MsiRecordSetStringA
+  RVA: 0xA0780
+}
+Export {
+  Ordinal: 125
+  Name: MsiRecordSetStringW
+  RVA: 0xA0790
+}
+Export {
+  Ordinal: 126
+  Name: MsiReinstallFeatureA
+  RVA: 0xA07A0
+}
+Export {
+  Ordinal: 127
+  Name: MsiReinstallFeatureFromDescriptorA
+  RVA: 0xA07B0
+}
+Export {
+  Ordinal: 128
+  Name: MsiReinstallFeatureFromDescriptorW
+  RVA: 0xA07C0
+}
+Export {
+  Ordinal: 129
+  Name: MsiReinstallFeatureW
+  RVA: 0xA07D0
+}
+Export {
+  Ordinal: 130
+  Name: MsiReinstallProductA
+  RVA: 0xA07E0
+}
+Export {
+  Ordinal: 131
+  Name: MsiReinstallProductW
+  RVA: 0xA07F0
+}
+Export {
+  Ordinal: 132
+  Name: MsiSequenceA
+  RVA: 0xA0800
+}
+Export {
+  Ordinal: 133
+  Name: MsiSequenceW
+  RVA: 0xA0810
+}
+Export {
+  Ordinal: 134
+  Name: MsiSetComponentStateA
+  RVA: 0xA0820
+}
+Export {
+  Ordinal: 135
+  Name: MsiSetComponentStateW
+  RVA: 0xA0830
+}
+Export {
+  Ordinal: 136
+  Name: MsiSetExternalUIA
+  RVA: 0xA0840
+}
+Export {
+  Ordinal: 137
+  Name: MsiSetExternalUIW
+  RVA: 0xA0850
+}
+Export {
+  Ordinal: 138
+  Name: MsiSetFeatureStateA
+  RVA: 0xA0860
+}
+Export {
+  Ordinal: 139
+  Name: MsiSetFeatureStateW
+  RVA: 0xA0870
+}
+Export {
+  Ordinal: 140
+  Name: MsiSetInstallLevel
+  RVA: 0xA0880
+}
+Export {
+  Ordinal: 141
+  Name: MsiSetInternalUI
+  RVA: 0xA0890
+}
+Export {
+  Ordinal: 142
+  Name: MsiVerifyDiskSpace
+  RVA: 0xA08A0
+}
+Export {
+  Ordinal: 143
+  Name: MsiSetMode
+  RVA: 0xA08B0
+}
+Export {
+  Ordinal: 144
+  Name: MsiSetPropertyA
+  RVA: 0xA08C0
+}
+Export {
+  Ordinal: 145
+  Name: MsiSetPropertyW
+  RVA: 0xA08D0
+}
+Export {
+  Ordinal: 146
+  Name: MsiSetTargetPathA
+  RVA: 0xA08E0
+}
+Export {
+  Ordinal: 147
+  Name: MsiSetTargetPathW
+  RVA: 0xA08F0
+}
+Export {
+  Ordinal: 148
+  Name: MsiSummaryInfoGetPropertyA
+  RVA: 0xA0900
+}
+Export {
+  Ordinal: 149
+  Name: MsiSummaryInfoGetPropertyCount
+  RVA: 0xA0910
+}
+Export {
+  Ordinal: 150
+  Name: MsiSummaryInfoGetPropertyW
+  RVA: 0xA0920
+}
+Export {
+  Ordinal: 151
+  Name: MsiSummaryInfoPersist
+  RVA: 0xA0930
+}
+Export {
+  Ordinal: 152
+  Name: MsiSummaryInfoSetPropertyA
+  RVA: 0xA0940
+}
+Export {
+  Ordinal: 153
+  Name: MsiSummaryInfoSetPropertyW
+  RVA: 0xA0950
+}
+Export {
+  Ordinal: 154
+  Name: MsiUseFeatureA
+  RVA: 0xA0960
+}
+Export {
+  Ordinal: 155
+  Name: MsiUseFeatureW
+  RVA: 0xA0970
+}
+Export {
+  Ordinal: 156
+  Name: MsiVerifyPackageA
+  RVA: 0xA0980
+}
+Export {
+  Ordinal: 157
+  Name: MsiVerifyPackageW
+  RVA: 0xA0990
+}
+Export {
+  Ordinal: 158
+  Name: MsiViewClose
+  RVA: 0xA09A0
+}
+Export {
+  Ordinal: 159
+  Name: MsiViewExecute
+  RVA: 0xA09B0
+}
+Export {
+  Ordinal: 160
+  Name: MsiViewFetch
+  RVA: 0xA09C0
+}
+Export {
+  Ordinal: 161
+  Name: MsiViewGetErrorA
+  RVA: 0xA09D0
+}
+Export {
+  Ordinal: 162
+  Name: MsiViewGetErrorW
+  RVA: 0xA09E0
+}
+Export {
+  Ordinal: 163
+  Name: MsiViewModify
+  RVA: 0xA09F0
+}
+Export {
+  Ordinal: 164
+  Name: MsiDatabaseIsTablePersistentA
+  RVA: 0xA0A00
+}
+Export {
+  Ordinal: 165
+  Name: MsiDatabaseIsTablePersistentW
+  RVA: 0xA0A10
+}
+Export {
+  Ordinal: 166
+  Name: MsiViewGetColumnInfo
+  RVA: 0xA0A20
+}
+Export {
+  Ordinal: 167
+  Name: MsiRecordClearData
+  RVA: 0xA0A30
+}
+Export {
+  Ordinal: 168
+  Name: MsiEnableLogA
+  RVA: 0xA0A40
+}
+Export {
+  Ordinal: 169
+  Name: MsiEnableLogW
+  RVA: 0xA0A50
+}
+Export {
+  Ordinal: 170
+  Name: MsiFormatRecordA
+  RVA: 0xA0A60
+}
+Export {
+  Ordinal: 171
+  Name: MsiFormatRecordW
+  RVA: 0xA0A70
+}
+Export {
+  Ordinal: 172
+  Name: MsiGetComponentPathA
+  RVA: 0xA0A80
+}
+Export {
+  Ordinal: 173
+  Name: MsiGetComponentPathW
+  RVA: 0xA0A90
+}
+Export {
+  Ordinal: 174
+  Name: MsiApplyPatchA
+  RVA: 0xA0AA0
+}
+Export {
+  Ordinal: 175
+  Name: MsiApplyPatchW
+  RVA: 0xA0AB0
+}
+Export {
+  Ordinal: 176
+  Name: MsiAdvertiseScriptA
+  RVA: 0xA0AC0
+}
+Export {
+  Ordinal: 177
+  Name: MsiAdvertiseScriptW
+  RVA: 0xA0AD0
+}
+Export {
+  Ordinal: 178
+  Name: MsiGetPatchInfoA
+  RVA: 0xA0AE0
+}
+Export {
+  Ordinal: 179
+  Name: MsiGetPatchInfoW
+  RVA: 0xA0AF0
+}
+Export {
+  Ordinal: 180
+  Name: MsiEnumPatchesA
+  RVA: 0xA0B00
+}
+Export {
+  Ordinal: 181
+  Name: MsiEnumPatchesW
+  RVA: 0xA0B10
+}
+Export {
+  Ordinal: 182
+  Name: DllGetVersion
+  RVA: 0xA0B20
+}
+Export {
+  Ordinal: 183
+  Name: MsiGetProductCodeFromPackageCodeA
+  RVA: 0xA0B30
+}
+Export {
+  Ordinal: 184
+  Name: MsiGetProductCodeFromPackageCodeW
+  RVA: 0xA0B40
+}
+Export {
+  Ordinal: 185
+  Name: MsiCreateTransformSummaryInfoA
+  RVA: 0xA0B50
+}
+Export {
+  Ordinal: 186
+  Name: MsiCreateTransformSummaryInfoW
+  RVA: 0xA0B60
+}
+Export {
+  Ordinal: 187
+  Name: MsiQueryFeatureStateFromDescriptorA
+  RVA: 0xA0B70
+}
+Export {
+  Ordinal: 188
+  Name: MsiQueryFeatureStateFromDescriptorW
+  RVA: 0xA0B80
+}
+Export {
+  Ordinal: 189
+  Name: MsiConfigureProductExA
+  RVA: 0xA0B90
+}
+Export {
+  Ordinal: 190
+  Name: MsiConfigureProductExW
+  RVA: 0xA0BA0
+}
+Export {
+  Ordinal: 191
+  Name: MsiInvalidateFeatureCache
+  RVA: 0xA0BB0
+}
+Export {
+  Ordinal: 192
+  Name: MsiUseFeatureExA
+  RVA: 0xA0BC0
+}
+Export {
+  Ordinal: 193
+  Name: MsiUseFeatureExW
+  RVA: 0xA0BD0
+}
+Export {
+  Ordinal: 194
+  Name: MsiGetFileVersionA
+  RVA: 0xA0BE0
+}
+Export {
+  Ordinal: 195
+  Name: MsiGetFileVersionW
+  RVA: 0xA0BF0
+}
+Export {
+  Ordinal: 196
+  Name: MsiLoadStringA
+  RVA: 0xA0C00
+}
+Export {
+  Ordinal: 197
+  Name: MsiLoadStringW
+  RVA: 0xA0C10
+}
+Export {
+  Ordinal: 198
+  Name: MsiMessageBoxA
+  RVA: 0xA0C20
+}
+Export {
+  Ordinal: 199
+  Name: MsiMessageBoxW
+  RVA: 0xA0C30
+}
+Export {
+  Ordinal: 200
+  Name: MsiDecomposeDescriptorA
+  RVA: 0xA0C40
+}
+Export {
+  Ordinal: 201
+  Name: MsiDecomposeDescriptorW
+  RVA: 0xA0C50
+}
+Export {
+  Ordinal: 202
+  Name: MsiProvideQualifiedComponentExA
+  RVA: 0xA0C60
+}
+Export {
+  Ordinal: 203
+  Name: MsiProvideQualifiedComponentExW
+  RVA: 0xA0C70
+}
+Export {
+  Ordinal: 204
+  Name: MsiEnumRelatedProductsA
+  RVA: 0xA0C80
+}
+Export {
+  Ordinal: 205
+  Name: MsiEnumRelatedProductsW
+  RVA: 0xA0C90
+}
+Export {
+  Ordinal: 206
+  Name: MsiSetFeatureAttributesA
+  RVA: 0xA0CA0
+}
+Export {
+  Ordinal: 207
+  Name: MsiSetFeatureAttributesW
+  RVA: 0xA0CB0
+}
+Export {
+  Ordinal: 208
+  Name: MsiSourceListClearAllA
+  RVA: 0xA0CC0
+}
+Export {
+  Ordinal: 209
+  Name: MsiSourceListClearAllW
+  RVA: 0xA0CD0
+}
+Export {
+  Ordinal: 210
+  Name: MsiSourceListAddSourceA
+  RVA: 0xA0CE0
+}
+Export {
+  Ordinal: 211
+  Name: MsiSourceListAddSourceW
+  RVA: 0xA0CF0
+}
+Export {
+  Ordinal: 212
+  Name: MsiSourceListForceResolutionA
+  RVA: 0xA0D00
+}
+Export {
+  Ordinal: 213
+  Name: MsiSourceListForceResolutionW
+  RVA: 0xA0D10
+}
+Export {
+  Ordinal: 214
+  Name: MsiIsProductElevatedA
+  RVA: 0xA0D20
+}
+Export {
+  Ordinal: 215
+  Name: MsiIsProductElevatedW
+  RVA: 0xA0D30
+}
+Export {
+  Ordinal: 216
+  Name: MsiGetShortcutTargetA
+  RVA: 0xA0D40
+}
+Export {
+  Ordinal: 217
+  Name: MsiGetShortcutTargetW
+  RVA: 0xA0D50
+}
+Export {
+  Ordinal: 218
+  Name: MsiGetFileHashA
+  RVA: 0xA0D60
+}
+Export {
+  Ordinal: 219
+  Name: MsiGetFileHashW
+  RVA: 0xA0D70
+}
+Export {
+  Ordinal: 220
+  Name: MsiEnumComponentCostsA
+  RVA: 0xA0D80
+}
+Export {
+  Ordinal: 221
+  Name: MsiEnumComponentCostsW
+  RVA: 0xA0D90
+}
+Export {
+  Ordinal: 222
+  Name: MsiCreateAndVerifyInstallerDirectory
+  RVA: 0xA0DA0
+}
+Export {
+  Ordinal: 223
+  Name: MsiGetFileSignatureInformationA
+  RVA: 0xA0DB0
+}
+Export {
+  Ordinal: 224
+  Name: MsiGetFileSignatureInformationW
+  RVA: 0xA0DC0
+}
+Export {
+  Ordinal: 225
+  Name: MsiProvideAssemblyA
+  RVA: 0xA0DD0
+}
+Export {
+  Ordinal: 226
+  Name: MsiProvideAssemblyW
+  RVA: 0xA0DE0
+}
+Export {
+  Ordinal: 227
+  Name: MsiAdvertiseProductExA
+  RVA: 0xA0DF0
+}
+Export {
+  Ordinal: 228
+  Name: MsiAdvertiseProductExW
+  RVA: 0xA0E00
+}
+Export {
+  Ordinal: 229
+  Name: MsiNotifySidChangeA
+  RVA: 0xA0E10
+}
+Export {
+  Ordinal: 230
+  Name: MsiNotifySidChangeW
+  RVA: 0xA0E20
+}
+Export {
+  Ordinal: 231
+  Name: MsiOpenPackageExA
+  RVA: 0xA0E30
+}
+Export {
+  Ordinal: 232
+  Name: MsiOpenPackageExW
+  RVA: 0xA0E40
+}
+Export {
+  Ordinal: 233
+  Name: MsiDeleteUserDataA
+  RVA: 0xA0E50
+}
+Export {
+  Ordinal: 234
+  Name: MsiDeleteUserDataW
+  RVA: 0xA0E60
+}
+Export {
+  Ordinal: 235
+  Name: Migrate10CachedPackagesA
+  RVA: 0xA0E70
+}
+Export {
+  Ordinal: 236
+  Name: Migrate10CachedPackagesW
+  RVA: 0xA0E80
+}
+Export {
+  Ordinal: 237
+  Name: MsiRemovePatchesA
+  RVA: 0xA0E90
+}
+Export {
+  Ordinal: 238
+  Name: MsiRemovePatchesW
+  RVA: 0xA0EA0
+}
+Export {
+  Ordinal: 239
+  Name: MsiApplyMultiplePatchesA
+  RVA: 0xA0EB0
+}
+Export {
+  Ordinal: 240
+  Name: MsiApplyMultiplePatchesW
+  RVA: 0xA0EC0
+}
+Export {
+  Ordinal: 241
+  Name: MsiExtractPatchXMLDataA
+  RVA: 0xA0ED0
+}
+Export {
+  Ordinal: 242
+  Name: MsiExtractPatchXMLDataW
+  RVA: 0xA0EE0
+}
+Export {
+  Ordinal: 243
+  Name: MsiGetPatchInfoExA
+  RVA: 0xA0EF0
+}
+Export {
+  Ordinal: 244
+  Name: MsiGetPatchInfoExW
+  RVA: 0xA0F00
+}
+Export {
+  Ordinal: 245
+  Name: MsiEnumProductsExA
+  RVA: 0xA0F10
+}
+Export {
+  Ordinal: 246
+  Name: MsiEnumProductsExW
+  RVA: 0xA0F20
+}
+Export {
+  Ordinal: 247
+  Name: MsiGetProductInfoExA
+  RVA: 0xA0F30
+}
+Export {
+  Ordinal: 248
+  Name: MsiGetProductInfoExW
+  RVA: 0xA0F40
+}
+Export {
+  Ordinal: 249
+  Name: MsiQueryComponentStateA
+  RVA: 0xA0F50
+}
+Export {
+  Ordinal: 250
+  Name: MsiQueryComponentStateW
+  RVA: 0xA0F60
+}
+Export {
+  Ordinal: 251
+  Name: MsiQueryFeatureStateExA
+  RVA: 0xA0F70
+}
+Export {
+  Ordinal: 252
+  Name: MsiQueryFeatureStateExW
+  RVA: 0xA0F80
+}
+Export {
+  Ordinal: 253
+  Name: MsiDeterminePatchSequenceA
+  RVA: 0xA0F90
+}
+Export {
+  Ordinal: 254
+  Name: MsiDeterminePatchSequenceW
+  RVA: 0xA0FA0
+}
+Export {
+  Ordinal: 255
+  Name: MsiSourceListAddSourceExA
+  RVA: 0xA0FB0
+}
+Export {
+  Ordinal: 256
+  Name: MsiSourceListAddSourceExW
+  RVA: 0xA0FC0
+}
+Export {
+  Ordinal: 257
+  Name: MsiSourceListClearSourceA
+  RVA: 0xA0FD0
+}
+Export {
+  Ordinal: 258
+  Name: MsiSourceListClearSourceW
+  RVA: 0xA0FE0
+}
+Export {
+  Ordinal: 259
+  Name: MsiSourceListClearAllExA
+  RVA: 0xA0FF0
+}
+Export {
+  Ordinal: 260
+  Name: MsiSourceListClearAllExW
+  RVA: 0xA1000
+}
+Export {
+  Ordinal: 261
+  Name: MsiSourceListForceResolutionExA
+  RVA: 0xA1010
+}
+Export {
+  Ordinal: 262
+  Name: MsiSourceListForceResolutionExW
+  RVA: 0xA1020
+}
+Export {
+  Ordinal: 263
+  Name: MsiSourceListEnumSourcesA
+  RVA: 0xA1030
+}
+Export {
+  Ordinal: 264
+  Name: MsiSourceListEnumSourcesW
+  RVA: 0xA1040
+}
+Export {
+  Ordinal: 265
+  Name: MsiSourceListGetInfoA
+  RVA: 0xA1050
+}
+Export {
+  Ordinal: 266
+  Name: MsiSourceListGetInfoW
+  RVA: 0xA1060
+}
+Export {
+  Ordinal: 267
+  Name: MsiSourceListSetInfoA
+  RVA: 0xA1070
+}
+Export {
+  Ordinal: 268
+  Name: MsiSourceListSetInfoW
+  RVA: 0xA1080
+}
+Export {
+  Ordinal: 269
+  Name: MsiEnumPatchesExA
+  RVA: 0xA1090
+}
+Export {
+  Ordinal: 270
+  Name: MsiEnumPatchesExW
+  RVA: 0xA10A0
+}
+Export {
+  Ordinal: 271
+  Name: MsiSourceListEnumMediaDisksA
+  RVA: 0xA10B0
+}
+Export {
+  Ordinal: 272
+  Name: MsiSourceListEnumMediaDisksW
+  RVA: 0xA10C0
+}
+Export {
+  Ordinal: 273
+  Name: MsiSourceListAddMediaDiskA
+  RVA: 0xA10D0
+}
+Export {
+  Ordinal: 274
+  Name: MsiSourceListAddMediaDiskW
+  RVA: 0xA10E0
+}
+Export {
+  Ordinal: 275
+  Name: MsiSourceListClearMediaDiskA
+  RVA: 0xA10F0
+}
+Export {
+  Ordinal: 276
+  Name: MsiSourceListClearMediaDiskW
+  RVA: 0xA1100
+}
+Export {
+  Ordinal: 277
+  Name: MsiDetermineApplicablePatchesA
+  RVA: 0xA1110
+}
+Export {
+  Ordinal: 278
+  Name: MsiDetermineApplicablePatchesW
+  RVA: 0xA1120
+}
+Export {
+  Ordinal: 279
+  Name: MsiMessageBoxExA
+  RVA: 0xA1130
+}
+Export {
+  Ordinal: 280
+  Name: MsiMessageBoxExW
+  RVA: 0xA1140
+}
+Export {
+  Ordinal: 281
+  Name: MsiSetExternalUIRecord
+  RVA: 0xA1150
+}
+Export {
+  Ordinal: 282
+  Name: MsiGetPatchFileListA
+  RVA: 0xA1160
+}
+Export {
+  Ordinal: 283
+  Name: MsiGetPatchFileListW
+  RVA: 0xA1170
+}
+Export {
+  Ordinal: 284
+  Name: MsiBeginTransactionA
+  RVA: 0xA1180
+}
+Export {
+  Ordinal: 285
+  Name: MsiBeginTransactionW
+  RVA: 0xA1190
+}
+Export {
+  Ordinal: 286
+  Name: MsiEndTransaction
+  RVA: 0xA11A0
+}
+Export {
+  Ordinal: 287
+  Name: MsiJoinTransaction
+  RVA: 0xA11B0
+}
+Export {
+  Ordinal: 288
+  Name: MsiSetOfflineContextW
+  RVA: 0xA11C0
+}
+Export {
+  Ordinal: 289
+  Name: MsiEnumComponentsExA
+  RVA: 0xA11D0
+}
+Export {
+  Ordinal: 290
+  Name: MsiEnumComponentsExW
+  RVA: 0xA11E0
+}
+Export {
+  Ordinal: 291
+  Name: MsiEnumClientsExA
+  RVA: 0xA11F0
+}
+Export {
+  Ordinal: 292
+  Name: MsiEnumClientsExW
+  RVA: 0xA1200
+}
+Export {
+  Ordinal: 293
+  Name: MsiGetComponentPathExA
+  RVA: 0xA1210
+}
+Export {
+  Ordinal: 294
+  Name: MsiGetComponentPathExW
+  RVA: 0xA1220
+}
+Export {
+  Ordinal: 295
+  Name: QueryInstanceCount
+  RVA: 0xA1230
+}
+Export {
+  Ordinal: 296
+  Name: DllCanUnloadNow
+  RVA: 0xA1240
+}
+Export {
+  Ordinal: 297
+  Name: DllGetClassObject
+  RVA: 0xA1250
+}
+Export {
+  Ordinal: 298
+  Name: DllRegisterServer
+  RVA: 0xA1260
+}
+Export {
+  Ordinal: 299
+  Name: DllUnregisterServer
+  RVA: 0xA1270
+}
+Export {
+  Ordinal: 300
+  Name: __wine_msi_call_dll_function
+  RVA: 0xA1280
+}
+LoadConfig [
+  Size: 0x140
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  MajorVersion: 0x0
+  MinorVersion: 0x0
+  GlobalFlagsClear: 0x0
+  GlobalFlagsSet: 0x0
+  CriticalSectionDefaultTimeout: 0x0
+  DeCommitFreeBlockThreshold: 0x0
+  DeCommitTotalFreeThreshold: 0x0
+  LockPrefixTable: 0x0
+  MaximumAllocationSize: 0x0
+  VirtualMemoryThreshold: 0x0
+  ProcessHeapFlags: 0x0
+  ProcessAffinityMask: 0x0
+  CSDVersion: 0x0
+  DependentLoadFlags: 0x0
+  EditList: 0x0
+  SecurityCookie: 0x0
+  SEHandlerTable: 0x0
+  SEHandlerCount: 0
+  GuardCFCheckFunction: 0x1800F0A88
+  GuardCFCheckDispatch: 0x1800F0A90
+  GuardCFFunctionTable: 0x0
+  GuardCFFunctionCount: 0
+  GuardFlags [ (0x0)
+  ]
+  GuardAddressTakenIatEntryTable: 0x0
+  GuardAddressTakenIatEntryCount: 0
+  GuardLongJumpTargetTable: 0x0
+  GuardLongJumpTargetCount: 0
+  DynamicValueRelocTable: 0x0
+  CHPEMetadataPointer: 0x1800D92DC
+  GuardRFFailureRoutine: 0x0
+  GuardRFFailureRoutineFunctionPointer: 0x0
+  DynamicValueRelocTableOffset: 0x0
+  DynamicValueRelocTableSection: 0
+  GuardRFVerifyStackPointerFunctionPointer: 0x0
+  HotPatchTableOffset: 0x0
+  EnclaveConfigurationPointer: 0x0
+  VolatileMetadataPointer: 0x0
+  GuardEHContinuationTable: 0x0
+  GuardEHContinuationCount: 0
+]
+CHPEMetadata [
+  Version: 0x2
+  CodeMap [
+    0x10000 - 0x98D98  ARM64EC
+    0x99000 - 0xA1290  X64
+  ]
+  CodeRangesToEntryPoints [
+    0xA0000 - 0xA0010 -> 0xA0000
+    0xA0010 - 0xA0020 -> 0xA0010
+    0xA0020 - 0xA0030 -> 0xA0020
+    0xA0030 - 0xA0040 -> 0xA0030
+    0xA0040 - 0xA0050 -> 0xA0040
+    0xA0050 - 0xA0060 -> 0xA0050
+    0xA0060 - 0xA0070 -> 0xA0060
+    0xA0070 - 0xA0080 -> 0xA0070
+    0xA0080 - 0xA0090 -> 0xA0080
+    0xA0090 - 0xA00A0 -> 0xA0090
+    0xA00A0 - 0xA00B0 -> 0xA00A0
+    0xA00B0 - 0xA00C0 -> 0xA00B0
+    0xA00C0 - 0xA00D0 -> 0xA00C0
+    0xA00D0 - 0xA00E0 -> 0xA00D0
+    0xA00E0 - 0xA00F0 -> 0xA00E0
+    0xA00F0 - 0xA0100 -> 0xA00F0
+    0xA0100 - 0xA0110 -> 0xA0100
+    0xA0110 - 0xA0120 -> 0xA0110
+    0xA0120 - 0xA0130 -> 0xA0120
+    0xA0130 - 0xA0140 -> 0xA0130
+    0xA0140 - 0xA0150 -> 0xA0140
+    0xA0150 - 0xA0160 -> 0xA0150
+    0xA0160 - 0xA0170 -> 0xA0160
+    0xA0170 - 0xA0180 -> 0xA0170
+    0xA0180 - 0xA0190 -> 0xA0180
+    0xA0190 - 0xA01A0 -> 0xA0190
+    0xA01A0 - 0xA01B0 -> 0xA01A0
+    0xA01B0 - 0xA01C0 -> 0xA01B0
+    0xA01C0 - 0xA01D0 -> 0xA01C0
+    0xA01D0 - 0xA01E0 -> 0xA01D0
+    0xA01E0 - 0xA01F0 -> 0xA01E0
+    0xA01F0 - 0xA0200 -> 0xA01F0
+    0xA0200 - 0xA0210 -> 0xA0200
+    0xA0210 - 0xA0220 -> 0xA0210
+    0xA0220 - 0xA0230 -> 0xA0220
+    0xA0230 - 0xA0240 -> 0xA0230
+    0xA0240 - 0xA0250 -> 0xA0240
+    0xA0250 - 0xA0260 -> 0xA0250
+    0xA0260 - 0xA0270 -> 0xA0260
+    0xA0270 - 0xA0280 -> 0xA0270
+    0xA0280 - 0xA0290 -> 0xA0280
+    0xA0290 - 0xA02A0 -> 0xA0290
+    0xA02A0 - 0xA02B0 -> 0xA02A0
+    0xA02B0 - 0xA02C0 -> 0xA02B0
+    0xA02C0 - 0xA02D0 -> 0xA02C0
+    0xA02D0 - 0xA02E0 -> 0xA02D0
+    0xA02E0 - 0xA02F0 -> 0xA02E0
+    0xA02F0 - 0xA0300 -> 0xA02F0
+    0xA0300 - 0xA0310 -> 0xA0300
+    0xA0310 - 0xA0320 -> 0xA0310
+    0xA0320 - 0xA0330 -> 0xA0320
+    0xA0330 - 0xA0340 -> 0xA0330
+    0xA0340 - 0xA0350 -> 0xA0340
+    0xA0350 - 0xA0360 -> 0xA0350
+    0xA0360 - 0xA0370 -> 0xA0360
+    0xA0370 - 0xA0380 -> 0xA0370
+    0xA0380 - 0xA0390 -> 0xA0380
+    0xA0390 - 0xA03A0 -> 0xA0390
+    0xA03A0 - 0xA03B0 -> 0xA03A0
+    0xA03B0 - 0xA03C0 -> 0xA03B0
+    0xA03C0 - 0xA03D0 -> 0xA03C0
+    0xA03D0 - 0xA03E0 -> 0xA03D0
+    0xA03E0 - 0xA03F0 -> 0xA03E0
+    0xA03F0 - 0xA0400 -> 0xA03F0
+    0xA0400 - 0xA0410 -> 0xA0400
+    0xA0410 - 0xA0420 -> 0xA0410
+    0xA0420 - 0xA0430 -> 0xA0420
+    0xA0430 - 0xA0440 -> 0xA0430
+    0xA0440 - 0xA0450 -> 0xA0440
+    0xA0450 - 0xA0460 -> 0xA0450
+    0xA0460 - 0xA0470 -> 0xA0460
+    0xA0470 - 0xA0480 -> 0xA0470
+    0xA0480 - 0xA0490 -> 0xA0480
+    0xA0490 - 0xA04A0 -> 0xA0490
+    0xA04A0 - 0xA04B0 -> 0xA04A0
+    0xA04B0 - 0xA04C0 -> 0xA04B0
+    0xA04C0 - 0xA04D0 -> 0xA04C0
+    0xA04D0 - 0xA04E0 -> 0xA04D0
+    0xA04E0 - 0xA04F0 -> 0xA04E0
+    0xA04F0 - 0xA0500 -> 0xA04F0
+    0xA0500 - 0xA0510 -> 0xA0500
+    0xA0510 - 0xA0520 -> 0xA0510
+    0xA0520 - 0xA0530 -> 0xA0520
+    0xA0530 - 0xA0540 -> 0xA0530
+    0xA0540 - 0xA0550 -> 0xA0540
+    0xA0550 - 0xA0560 -> 0xA0550
+    0xA0560 - 0xA0570 -> 0xA0560
+    0xA0570 - 0xA0580 -> 0xA0570
+    0xA0580 - 0xA0590 -> 0xA0580
+    0xA0590 - 0xA05A0 -> 0xA0590
+    0xA05A0 - 0xA05B0 -> 0xA05A0
+    0xA05B0 - 0xA05C0 -> 0xA05B0
+    0xA05C0 - 0xA05D0 -> 0xA05C0
+    0xA05D0 - 0xA05E0 -> 0xA05D0
+    0xA05E0 - 0xA05F0 -> 0xA05E0
+    0xA05F0 - 0xA0600 -> 0xA05F0
+    0xA0600 - 0xA0610 -> 0xA0600
+    0xA0610 - 0xA0620 -> 0xA0610
+    0xA0620 - 0xA0630 -> 0xA0620
+    0xA0630 - 0xA0640 -> 0xA0630
+    0xA0640 - 0xA0650 -> 0xA0640
+    0xA0650 - 0xA0660 -> 0xA0650
+    0xA0660 - 0xA0670 -> 0xA0660
+    0xA0670 - 0xA0680 -> 0xA0670
+    0xA0680 - 0xA0690 -> 0xA0680
+    0xA0690 - 0xA06A0 -> 0xA0690
+    0xA06A0 - 0xA06B0 -> 0xA06A0
+    0xA06B0 - 0xA06C0 -> 0xA06B0
+    0xA06C0 - 0xA06D0 -> 0xA06C0
+    0xA06D0 - 0xA06E0 -> 0xA06D0
+    0xA06E0 - 0xA06F0 -> 0xA06E0
+    0xA06F0 - 0xA0700 -> 0xA06F0
+    0xA0700 - 0xA0710 -> 0xA0700
+    0xA0710 - 0xA0720 -> 0xA0710
+    0xA0720 - 0xA0730 -> 0xA0720
+    0xA0730 - 0xA0740 -> 0xA0730
+    0xA0740 - 0xA0750 -> 0xA0740
+    0xA0750 - 0xA0760 -> 0xA0750
+    0xA0760 - 0xA0770 -> 0xA0760
+    0xA0770 - 0xA0780 -> 0xA0770
+    0xA0780 - 0xA0790 -> 0xA0780
+    0xA0790 - 0xA07A0 -> 0xA0790
+    0xA07A0 - 0xA07B0 -> 0xA07A0
+    0xA07B0 - 0xA07C0 -> 0xA07B0
+    0xA07C0 - 0xA07D0 -> 0xA07C0
+    0xA07D0 - 0xA07E0 -> 0xA07D0
+    0xA07E0 - 0xA07F0 -> 0xA07E0
+    0xA07F0 - 0xA0800 -> 0xA07F0
+    0xA0800 - 0xA0810 -> 0xA0800
+    0xA0810 - 0xA0820 -> 0xA0810
+    0xA0820 - 0xA0830 -> 0xA0820
+    0xA0830 - 0xA0840 -> 0xA0830
+    0xA0840 - 0xA0850 -> 0xA0840
+    0xA0850 - 0xA0860 -> 0xA0850
+    0xA0860 - 0xA0870 -> 0xA0860
+    0xA0870 - 0xA0880 -> 0xA0870
+    0xA0880 - 0xA0890 -> 0xA0880
+    0xA0890 - 0xA08A0 -> 0xA0890
+    0xA08A0 - 0xA08B0 -> 0xA08A0
+    0xA08B0 - 0xA08C0 -> 0xA08B0
+    0xA08C0 - 0xA08D0 -> 0xA08C0
+    0xA08D0 - 0xA08E0 -> 0xA08D0
+    0xA08E0 - 0xA08F0 -> 0xA08E0
+    0xA08F0 - 0xA0900 -> 0xA08F0
+    0xA0900 - 0xA0910 -> 0xA0900
+    0xA0910 - 0xA0920 -> 0xA0910
+    0xA0920 - 0xA0930 -> 0xA0920
+    0xA0930 - 0xA0940 -> 0xA0930
+    0xA0940 - 0xA0950 -> 0xA0940
+    0xA0950 - 0xA0960 -> 0xA0950
+    0xA0960 - 0xA0970 -> 0xA0960
+    0xA0970 - 0xA0980 -> 0xA0970
+    0xA0980 - 0xA0990 -> 0xA0980
+    0xA0990 - 0xA09A0 -> 0xA0990
+    0xA09A0 - 0xA09B0 -> 0xA09A0
+    0xA09B0 - 0xA09C0 -> 0xA09B0
+    0xA09C0 - 0xA09D0 -> 0xA09C0
+    0xA09D0 - 0xA09E0 -> 0xA09D0
+    0xA09E0 - 0xA09F0 -> 0xA09E0
+    0xA09F0 - 0xA0A00 -> 0xA09F0
+    0xA0A00 - 0xA0A10 -> 0xA0A00
+    0xA0A10 - 0xA0A20 -> 0xA0A10
+    0xA0A20 - 0xA0A30 -> 0xA0A20
+    0xA0A30 - 0xA0A40 -> 0xA0A30
+    0xA0A40 - 0xA0A50 -> 0xA0A40
+    0xA0A50 - 0xA0A60 -> 0xA0A50
+    0xA0A60 - 0xA0A70 -> 0xA0A60
+    0xA0A70 - 0xA0A80 -> 0xA0A70
+    0xA0A80 - 0xA0A90 -> 0xA0A80
+    0xA0A90 - 0xA0AA0 -> 0xA0A90
+    0xA0AA0 - 0xA0AB0 -> 0xA0AA0
+    0xA0AB0 - 0xA0AC0 -> 0xA0AB0
+    0xA0AC0 - 0xA0AD0 -> 0xA0AC0
+    0xA0AD0 - 0xA0AE0 -> 0xA0AD0
+    0xA0AE0 - 0xA0AF0 -> 0xA0AE0
+    0xA0AF0 - 0xA0B00 -> 0xA0AF0
+    0xA0B00 - 0xA0B10 -> 0xA0B00
+    0xA0B10 - 0xA0B20 -> 0xA0B10
+    0xA0B20 - 0xA0B30 -> 0xA0B20
+    0xA0B30 - 0xA0B40 -> 0xA0B30
+    0xA0B40 - 0xA0B50 -> 0xA0B40
+    0xA0B50 - 0xA0B60 -> 0xA0B50
+    0xA0B60 - 0xA0B70 -> 0xA0B60
+    0xA0B70 - 0xA0B80 -> 0xA0B70
+    0xA0B80 - 0xA0B90 -> 0xA0B80
+    0xA0B90 - 0xA0BA0 -> 0xA0B90
+    0xA0BA0 - 0xA0BB0 -> 0xA0BA0
+    0xA0BB0 - 0xA0BC0 -> 0xA0BB0
+    0xA0BC0 - 0xA0BD0 -> 0xA0BC0
+    0xA0BD0 - 0xA0BE0 -> 0xA0BD0
+    0xA0BE0 - 0xA0BF0 -> 0xA0BE0
+    0xA0BF0 - 0xA0C00 -> 0xA0BF0
+    0xA0C00 - 0xA0C10 -> 0xA0C00
+    0xA0C10 - 0xA0C20 -> 0xA0C10
+    0xA0C20 - 0xA0C30 -> 0xA0C20
+    0xA0C30 - 0xA0C40 -> 0xA0C30
+    0xA0C40 - 0xA0C50 -> 0xA0C40
+    0xA0C50 - 0xA0C60 -> 0xA0C50
+    0xA0C60 - 0xA0C70 -> 0xA0C60
+    0xA0C70 - 0xA0C80 -> 0xA0C70
+    0xA0C80 - 0xA0C90 -> 0xA0C80
+    0xA0C90 - 0xA0CA0 -> 0xA0C90
+    0xA0CA0 - 0xA0CB0 -> 0xA0CA0
+    0xA0CB0 - 0xA0CC0 -> 0xA0CB0
+    0xA0CC0 - 0xA0CD0 -> 0xA0CC0
+    0xA0CD0 - 0xA0CE0 -> 0xA0CD0
+    0xA0CE0 - 0xA0CF0 -> 0xA0CE0
+    0xA0CF0 - 0xA0D00 -> 0xA0CF0
+    0xA0D00 - 0xA0D10 -> 0xA0D00
+    0xA0D10 - 0xA0D20 -> 0xA0D10
+    0xA0D20 - 0xA0D30 -> 0xA0D20
+    0xA0D30 - 0xA0D40 -> 0xA0D30
+    0xA0D40 - 0xA0D50 -> 0xA0D40
+    0xA0D50 - 0xA0D60 -> 0xA0D50
+    0xA0D60 - 0xA0D70 -> 0xA0D60
+    0xA0D70 - 0xA0D80 -> 0xA0D70
+    0xA0D80 - 0xA0D90 -> 0xA0D80
+    0xA0D90 - 0xA0DA0 -> 0xA0D90
+    0xA0DA0 - 0xA0DB0 -> 0xA0DA0
+    0xA0DB0 - 0xA0DC0 -> 0xA0DB0
+    0xA0DC0 - 0xA0DD0 -> 0xA0DC0
+    0xA0DD0 - 0xA0DE0 -> 0xA0DD0
+    0xA0DE0 - 0xA0DF0 -> 0xA0DE0
+    0xA0DF0 - 0xA0E00 -> 0xA0DF0
+    0xA0E00 - 0xA0E10 -> 0xA0E00
+    0xA0E10 - 0xA0E20 -> 0xA0E10
+    0xA0E20 - 0xA0E30 -> 0xA0E20
+    0xA0E30 - 0xA0E40 -> 0xA0E30
+    0xA0E40 - 0xA0E50 -> 0xA0E40
+    0xA0E50 - 0xA0E60 -> 0xA0E50
+    0xA0E60 - 0xA0E70 -> 0xA0E60
+    0xA0E70 - 0xA0E80 -> 0xA0E70
+    0xA0E80 - 0xA0E90 -> 0xA0E80
+    0xA0E90 - 0xA0EA0 -> 0xA0E90
+    0xA0EA0 - 0xA0EB0 -> 0xA0EA0
+    0xA0EB0 - 0xA0EC0 -> 0xA0EB0
+    0xA0EC0 - 0xA0ED0 -> 0xA0EC0
+    0xA0ED0 - 0xA0EE0 -> 0xA0ED0
+    0xA0EE0 - 0xA0EF0 -> 0xA0EE0
+    0xA0EF0 - 0xA0F00 -> 0xA0EF0
+    0xA0F00 - 0xA0F10 -> 0xA0F00
+    0xA0F10 - 0xA0F20 -> 0xA0F10
+    0xA0F20 - 0xA0F30 -> 0xA0F20
+    0xA0F30 - 0xA0F40 -> 0xA0F30
+    0xA0F40 - 0xA0F50 -> 0xA0F40
+    0xA0F50 - 0xA0F60 -> 0xA0F50
+    0xA0F60 - 0xA0F70 -> 0xA0F60
+    0xA0F70 - 0xA0F80 -> 0xA0F70
+    0xA0F80 - 0xA0F90 -> 0xA0F80
+    0xA0F90 - 0xA0FA0 -> 0xA0F90
+    0xA0FA0 - 0xA0FB0 -> 0xA0FA0
+    0xA0FB0 - 0xA0FC0 -> 0xA0FB0
+    0xA0FC0 - 0xA0FD0 -> 0xA0FC0
+    0xA0FD0 - 0xA0FE0 -> 0xA0FD0
+    0xA0FE0 - 0xA0FF0 -> 0xA0FE0
+    0xA0FF0 - 0xA1000 -> 0xA0FF0
+    0xA1000 - 0xA1010 -> 0xA1000
+    0xA1010 - 0xA1020 -> 0xA1010
+    0xA1020 - 0xA1030 -> 0xA1020
+    0xA1030 - 0xA1040 -> 0xA1030
+    0xA1040 - 0xA1050 -> 0xA1040
+    0xA1050 - 0xA1060 -> 0xA1050
+    0xA1060 - 0xA1070 -> 0xA1060
+    0xA1070 - 0xA1080 -> 0xA1070
+    0xA1080 - 0xA1090 -> 0xA1080
+    0xA1090 - 0xA10A0 -> 0xA1090
+    0xA10A0 - 0xA10B0 -> 0xA10A0
+    0xA10B0 - 0xA10C0 -> 0xA10B0
+    0xA10C0 - 0xA10D0 -> 0xA10C0
+    0xA10D0 - 0xA10E0 -> 0xA10D0
+    0xA10E0 - 0xA10F0 -> 0xA10E0
+    0xA10F0 - 0xA1100 -> 0xA10F0
+    0xA1100 - 0xA1110 -> 0xA1100
+    0xA1110 - 0xA1120 -> 0xA1110
+    0xA1120 - 0xA1130 -> 0xA1120
+    0xA1130 - 0xA1140 -> 0xA1130
+    0xA1140 - 0xA1150 -> 0xA1140
+    0xA1150 - 0xA1160 -> 0xA1150
+    0xA1160 - 0xA1170 -> 0xA1160
+    0xA1170 - 0xA1180 -> 0xA1170
+    0xA1180 - 0xA1190 -> 0xA1180
+    0xA1190 - 0xA11A0 -> 0xA1190
+    0xA11A0 - 0xA11B0 -> 0xA11A0
+    0xA11B0 - 0xA11C0 -> 0xA11B0
+    0xA11C0 - 0xA11D0 -> 0xA11C0
+    0xA11D0 - 0xA11E0 -> 0xA11D0
+    0xA11E0 - 0xA11F0 -> 0xA11E0
+    0xA11F0 - 0xA1200 -> 0xA11F0
+    0xA1200 - 0xA1210 -> 0xA1200
+    0xA1210 - 0xA1220 -> 0xA1210
+    0xA1220 - 0xA1230 -> 0xA1220
+    0xA1230 - 0xA1240 -> 0xA1230
+    0xA1240 - 0xA1250 -> 0xA1240
+    0xA1250 - 0xA1260 -> 0xA1250
+    0xA1260 - 0xA1270 -> 0xA1260
+    0xA1270 - 0xA1280 -> 0xA1270
+    0xA1280 - 0xA1290 -> 0xA1280
+  ]
+  RedirectionMetadata [
+    0xA0000 -> 0x91A40
+    0xA0010 -> 0x52A10
+    0xA0020 -> 0x52AA4
+    0xA0030 -> 0x4B458
+    0xA0040 -> 0x4B1FC
+    0xA0050 -> 0x5C1D4
+    0xA0060 -> 0x5C0E8
+    0xA0070 -> 0x5C288
+    0xA0080 -> 0x10000
+    0xA0090 -> 0x10014
+    0xA00A0 -> 0x5C40C
+    0xA00B0 -> 0x553C0
+    0xA00C0 -> 0x554DC
+    0xA00D0 -> 0x69E84
+    0xA00E0 -> 0x60BD0
+    0xA00F0 -> 0x60B40
+    0xA0100 -> 0x60E4C
+    0xA0110 -> 0x357D4
+    0xA0120 -> 0x3541C
+    0xA0130 -> 0x60D3C
+    0xA0140 -> 0x60DC4
+    0xA0150 -> 0x612A4
+    0xA0160 -> 0x61144
+    0xA0170 -> 0x3529C
+    0xA0180 -> 0x34D3C
+    0xA0190 -> 0x359E4
+    0xA01A0 -> 0x35AF0
+    0xA01B0 -> 0x5E93C
+    0xA01C0 -> 0x5EC98
+    0xA01D0 -> 0x4C224
+    0xA01E0 -> 0x4C570
+    0xA01F0 -> 0x384CC
+    0xA0200 -> 0x71DB4
+    0xA0210 -> 0x71F04
+    0xA0220 -> 0x7221C
+    0xA0230 -> 0x7269C
+    0xA0240 -> 0x71460
+    0xA0250 -> 0x71550
+    0xA0260 -> 0x712F0
+    0xA0270 -> 0x70984
+    0xA0280 -> 0x70E44
+    0xA0290 -> 0x70F38
+    0xA02A0 -> 0x8EDC0
+    0xA02B0 -> 0x8ED0C
+    0xA02C0 -> 0x60920
+    0xA02D0 -> 0x65940
+    0xA02E0 -> 0x4F794
+    0xA02F0 -> 0x4F860
+    0xA0300 -> 0x35F8C
+    0xA0310 -> 0x4ED60
+    0xA0320 -> 0x4EE3C
+    0xA0330 -> 0x4F190
+    0xA0340 -> 0x4F3D0
+    0xA0350 -> 0x4EA7C
+    0xA0360 -> 0x4EB50
+    0xA0370 -> 0x5B1E4
+    0xA0380 -> 0x5B160
+    0xA0390 -> 0x4FDA8
+    0xA03A0 -> 0x4FD18
+    0xA03B0 -> 0x4FA84
+    0xA03C0 -> 0x4DF6C
+    0xA03D0 -> 0x554E8
+    0xA03E0 -> 0x55620
+    0xA03F0 -> 0x55840
+    0xA0400 -> 0x10028
+    0xA0410 -> 0x1003C
+    0xA0420 -> 0x55FD0
+    0xA0430 -> 0x5980C
+    0xA0440 -> 0x59A38
+    0xA0450 -> 0x66194
+    0xA0460 -> 0x66400
+    0xA0470 -> 0x4D5F8
+    0xA0480 -> 0x4D8C0
+    0xA0490 -> 0x7EC88
+    0xA04A0 -> 0x7E888
+    0xA04B0 -> 0x4CDD4
+    0xA04C0 -> 0x4D0F0
+    0xA04D0 -> 0x5BFB0
+    0xA04E0 -> 0x5BC7C
+    0xA04F0 -> 0x5D260
+    0xA0500 -> 0x5D438
+    0xA0510 -> 0x10050
+    0xA0520 -> 0x10064
+    0xA0530 -> 0x52E74
+    0xA0540 -> 0x52FEC
+    0xA0550 -> 0x58D9C
+    0xA0560 -> 0x58E68
+    0xA0570 -> 0x349B0
+    0xA0580 -> 0x348F4
+    0xA0590 -> 0x65880
+    0xA05A0 -> 0x657A4
+    0xA05B0 -> 0x524BC
+    0xA05C0 -> 0x52854
+    0xA05D0 -> 0x38CA0
+    0xA05E0 -> 0x38C28
+    0xA05F0 -> 0x3894C
+    0xA0600 -> 0x3864C
+    0xA0610 -> 0x10078
+    0xA0620 -> 0x1008C
+    0xA0630 -> 0x65A28
+    0xA0640 -> 0x5D4B0
+    0xA0650 -> 0x59434
+    0xA0660 -> 0x594A0
+    0xA0670 -> 0x5D7C8
+    0xA0680 -> 0x5BC60
+    0xA0690 -> 0x5BC44
+    0xA06A0 -> 0x5A910
+    0xA06B0 -> 0x5AA3C
+    0xA06C0 -> 0x58688
+    0xA06D0 -> 0x5873C
+    0xA06E0 -> 0x6AE7C
+    0xA06F0 -> 0x69F5C
+    0xA0700 -> 0x6A2D8
+    0xA0710 -> 0x6AAE8
+    0xA0720 -> 0x6ADC0
+    0xA0730 -> 0x6A7DC
+    0xA0740 -> 0x6BF4C
+    0xA0750 -> 0x6A6AC
+    0xA0760 -> 0x6BBD8
+    0xA0770 -> 0x6BCEC
+    0xA0780 -> 0x6AFBC
+    0xA0790 -> 0x6B6B4
+    0xA07A0 -> 0x5CAA0
+    0xA07B0 -> 0x100A0
+    0xA07C0 -> 0x100B4
+    0xA07D0 -> 0x532CC
+    0xA07E0 -> 0x53108
+    0xA07F0 -> 0x53258
+    0xA0800 -> 0x4C840
+    0xA0810 -> 0x4C954
+    0xA0820 -> 0x4F5AC
+    0xA0830 -> 0x4F670
+    0xA0840 -> 0x589E4
+    0xA0850 -> 0x58A78
+    0xA0860 -> 0x4E30C
+    0xA0870 -> 0x4E3D0
+    0xA0880 -> 0x4FC38
+    0xA0890 -> 0x5890C
+    0xA08A0 -> 0x100C8
+    0xA08B0 -> 0x4E1DC
+    0xA08C0 -> 0x65B78
+    0xA08D0 -> 0x65CA8
+    0xA08E0 -> 0x4DB0C
+    0xA08F0 -> 0x4DC30
+    0xA0900 -> 0x7F4AC
+    0xA0910 -> 0x7EF78
+    0xA0920 -> 0x7F66C
+    0xA0930 -> 0x806F8
+    0xA0940 -> 0x7FBE4
+    0xA0950 -> 0x7FA6C
+    0xA0960 -> 0x5B664
+    0xA0970 -> 0x5B654
+    0xA0980 -> 0x59C24
+    0xA0990 -> 0x59D70
+    0xA09A0 -> 0x5FCE0
+    0xA09B0 -> 0x5FE1C
+    0xA09C0 -> 0x5FB84
+    0xA09D0 -> 0x60788
+    0xA09E0 -> 0x605F8
+    0xA09F0 -> 0x603FC
+    0xA0A00 -> 0x613B4
+    0xA0A10 -> 0x614B4
+    0xA0A20 -> 0x601EC
+    0xA0A30 -> 0x6A428
+    0xA0A40 -> 0x578E0
+    0xA0A50 -> 0x579F0
+    0xA0A60 -> 0x4A66C
+    0xA0A70 -> 0x4A448
+    0xA0A80 -> 0x58E4C
+    0xA0A90 -> 0x58F0C
+    0xA0AA0 -> 0x535F4
+    0xA0AB0 -> 0x53808
+    0xA0AC0 -> 0x5D084
+    0xA0AD0 -> 0x5D010
+    0xA0AE0 -> 0x57520
+    0xA0AF0 -> 0x57774
+    0xA0B00 -> 0x73008
+    0xA0B10 -> 0x73210
+    0xA0B20 -> 0x5E384
+    0xA0B30 -> 0x100DC
+    0xA0B40 -> 0x100F0
+    0xA0B50 -> 0x8077C
+    0xA0B60 -> 0x808E8
+    0xA0B70 -> 0x10104
+    0xA0B80 -> 0x10118
+    0xA0B90 -> 0x55278
+    0xA0BA0 -> 0x54ED4
+    0xA0BB0 -> 0x1012C
+    0xA0BC0 -> 0x5B4B8
+    0xA0BD0 -> 0x5B3B8
+    0xA0BE0 -> 0x5AB54
+    0xA0BF0 -> 0x5AD88
+    0xA0C00 -> 0x58CB0
+    0xA0C10 -> 0x58B0C
+    0xA0C20 -> 0x58FDC
+    0xA0C30 -> 0x590A4
+    0xA0C40 -> 0x70A98
+    0xA0C50 -> 0x704EC
+    0xA0C60 -> 0x5B9EC
+    0xA0C70 -> 0x5B674
+    0xA0C80 -> 0x72860
+    0xA0C90 -> 0x72758
+    0xA0CA0 -> 0x4E838
+    0xA0CB0 -> 0x4E94C
+    0xA0CC0 -> 0x7953C
+    0xA0CD0 -> 0x795B4
+    0xA0CE0 -> 0x7898C
+    0xA0CF0 -> 0x78784
+    0xA0D00 -> 0x79874
+    0xA0D10 -> 0x798EC
+    0xA0D20 -> 0x5D160
+    0xA0D30 -> 0x5D0F8
+    0xA0D40 -> 0x5C6EC
+    0xA0D50 -> 0x5C84C
+    0xA0D60 -> 0x5CE7C
+    0xA0D70 -> 0x5CDC0
+    0xA0D80 -> 0x57B34
+    0xA0D90 -> 0x57D00
+    0xA0DA0 -> 0x5C5D8
+    0xA0DB0 -> 0x5950C
+    0xA0DC0 -> 0x59644
+    0xA0DD0 -> 0x592FC
+    0xA0DE0 -> 0x59398
+    0xA0DF0 -> 0x52D1C
+    0xA0E00 -> 0x52DC8
+    0xA0E10 -> 0x10140
+    0xA0E20 -> 0x10154
+    0xA0E30 -> 0x657B4
+    0xA0E40 -> 0x6565C
+    0xA0E50 -> 0x10168
+    0xA0E60 -> 0x1017C
+    0xA0E70 -> 0x10190
+    0xA0E80 -> 0x5DC44
+    0xA0E90 -> 0x5DC9C
+    0xA0EA0 -> 0x5DD30
+    0xA0EB0 -> 0x53C00
+    0xA0EC0 -> 0x53E00
+    0xA0ED0 -> 0x101A4
+    0xA0EE0 -> 0x101B8
+    0xA0EF0 -> 0x56C68
+    0xA0F00 -> 0x5707C
+    0xA0F10 -> 0x733EC
+    0xA0F20 -> 0x70FD0
+    0xA0F30 -> 0x56074
+    0xA0F40 -> 0x56410
+    0xA0F50 -> 0x580E4
+    0xA0F60 -> 0x582F4
+    0xA0F70 -> 0x5A3F4
+    0xA0F80 -> 0x5A5E0
+    0xA0F90 -> 0x54A04
+    0xA0FA0 -> 0x54C7C
+    0xA0FB0 -> 0x78B28
+    0xA0FC0 -> 0x782E8
+    0xA0FD0 -> 0x7973C
+    0xA0FE0 -> 0x797D8
+    0xA0FF0 -> 0x7962C
+    0xA1000 -> 0x796B4
+    0xA1010 -> 0x101CC
+    0xA1020 -> 0x101E0
+    0xA1030 -> 0x76F88
+    0xA1040 -> 0x772C0
+    0xA1050 -> 0x774E8
+    0xA1060 -> 0x777CC
+    0xA1070 -> 0x77C24
+    0xA1080 -> 0x77E2C
+    0xA1090 -> 0x729B0
+    0xA10A0 -> 0x72CF8
+    0xA10B0 -> 0x76378
+    0xA10C0 -> 0x768A0
+    0xA10D0 -> 0x79090
+    0xA10E0 -> 0x792A0
+    0xA10F0 -> 0x101F4
+    0xA1100 -> 0x10208
+    0xA1110 -> 0x53F9C
+    0xA1120 -> 0x542C4
+    0xA1130 -> 0x5916C
+    0xA1140 -> 0x59234
+    0xA1150 -> 0x5D1C8
+    0xA1160 -> 0x56B60
+    0xA1170 -> 0x56BE4
+    0xA1180 -> 0x5D9A0
+    0xA1190 -> 0x5DB04
+    0xA11A0 -> 0x5DBF4
+    0xA11B0 -> 0x5DB84
+    0xA11C0 -> 0x1021C
+    0xA11D0 -> 0x71BA8
+    0xA11E0 -> 0x715E4
+    0xA11F0 -> 0x720BC
+    0xA1200 -> 0x72168
+    0xA1210 -> 0x5A1A4
+    0xA1220 -> 0x59DF0
+    0xA1230 -> 0x10230
+    0xA1240 -> 0x5E400
+    0xA1250 -> 0x5E008
+    0xA1260 -> 0x91BB8
+    0xA1270 -> 0x91BC0
+    0xA1280 -> 0x30048
+  ]
+  __os_arm64x_dispatch_call_no_redirect: 0xF0A30
+  __os_arm64x_dispatch_ret: 0xF0A40
+  __os_arm64x_dispatch_call: 0xF0558
+  __os_arm64x_dispatch_icall: 0xF0550
+  __os_arm64x_dispatch_icall_cfg: 0xF0A28
+  AlternateEntryPoint: 0x0
+  AuxiliaryIAT: 0xE5000
+  GetX64InformationFunctionPointer: 0xF0A48
+  SetX64InformationFunctionPointer: 0xF0A50
+  ExtraRFETable: 0x100000
+  ExtraRFETableSize: 0x3610
+  __os_arm64x_dispatch_fptr: 0xF0A38
+  AuxiliaryIATCopy: 0xDEBF0
+  AuxiliaryDelayloadIAT: 0x0
+  AuxiliaryDelayloadIATCopy: 0x0
+  HybridImageInfoBitfield: 0x0
+]

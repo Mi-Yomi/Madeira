@@ -1,0 +1,8 @@
+{
+  "baseline_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+  "patched_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "patch_sha256": "6dc3802f26e98a0cc03462b989e2d3619b74f9374d325784009c1df5a8623ebe",
+  "apply_check_returncode": 0,
+  "apply_returncode": 0,
+  "exact_result": true
+}

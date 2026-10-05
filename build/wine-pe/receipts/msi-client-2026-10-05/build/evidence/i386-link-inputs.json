@@ -1,0 +1,346 @@
+{
+  "architecture": "i386",
+  "build_input_superset_receipt": "i386-build-files.json",
+  "custom_compile_command": {
+    "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/i386-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target i686-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -fms-hotpatch -fno-omit-frame-pointer -mlong-double-64 -gdwarf-4 -g -O2",
+    "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386",
+    "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c",
+    "output": "dlls/msi/i386-windows/custom.o"
+  },
+  "custom_object": {
+    "bytes": 158283,
+    "sha256": "4b3ab34ed2b01e0f60895dd30b436f5d8544933e45415b0317a391c0b4368ae8"
+  },
+  "explicit_link_inputs": {
+    "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang-22": {
+      "bytes": 111488,
+      "sha256": "eb408127882193c07fe3a32523009ad14d788dc867092840199d533de799f273"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/advapi32/i386-windows/libadvapi32.a": {
+      "bytes": 131480,
+      "sha256": "c3460a289eec300006af9be25059cf8cd28e7643be25ccb213200fb50c9f6425"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/cabinet/i386-windows/libcabinet.a": {
+      "bytes": 3210,
+      "sha256": "67dc23a0135c77baba256fe692c5b8988cde0bb9950bfb4b65a2bb9ec3a0670d"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/comctl32/i386-windows/libcomctl32.a": {
+      "bytes": 34624,
+      "sha256": "209d7c2e526325f0c01300382b376dc51b7dd7643a8985dc949c56b9317f37a7"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/crypt32/i386-windows/libcrypt32.a": {
+      "bytes": 55774,
+      "sha256": "67b892089276fa78dd518ec82ac0ec643fec48aadc343f1a17fd89984514df23"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/gdi32/i386-windows/libgdi32.a": {
+      "bytes": 103076,
+      "sha256": "d917bc98277d875f5ed9396ad56fec4bc3b17f5979da6e3f973582a80fb3df94"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/imagehlp/i386-windows/libimagehlp.a": {
+      "bytes": 24198,
+      "sha256": "e00aa55d5bc578e831a23752c66613e5892b0129195e1ff835f658e86e3fffca"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/kernel32/i386-windows/libkernel32.a": {
+      "bytes": 286756,
+      "sha256": "619ddab4bf6fd79b974a57f4e995831b8cf1356142f2a7b5a7661cf88572f860"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/action.o": {
+      "bytes": 535606,
+      "sha256": "9868bafb76230f1a8708ac3685c2693fbc105d9593024c30894349669b7e25da"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/alter.o": {
+      "bytes": 29333,
+      "sha256": "e628dc0870d6ef00b3e9cea11a6675539ba843fcd36491cbace9304b47d6f80b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/appsearch.o": {
+      "bytes": 88569,
+      "sha256": "33bd9a7c5495b9397ec11451bedfbb42690cc4ca1cf88703577e74aac145761b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/assembly.o": {
+      "bytes": 80963,
+      "sha256": "6ed7d2ffdce6df019635e19c17b85af5c0202b2a6aff27d8a7dfef7a2749893f"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/automation.o": {
+      "bytes": 140681,
+      "sha256": "e157c1c9078907fc237a16d5234057f24b75e16e468f6a55856f78de6f649ef6"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/classes.o": {
+      "bytes": 111479,
+      "sha256": "68e2eb4cc5dba7a45e237376780cf63b085520357590cdca5a8df8ca1e636e56"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/cond.tab.o": {
+      "bytes": 76038,
+      "sha256": "0f8ebc5c5cf985a23d29dc6b5c7ac359f3b02fa283403d626d8ad6f96c343146"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/create.o": {
+      "bytes": 30296,
+      "sha256": "d1997be529666f445476e61ef682fee6aa40dbf7a8ae0020eed0219af1ef899f"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/custom.o": {
+      "bytes": 158283,
+      "sha256": "4b3ab34ed2b01e0f60895dd30b436f5d8544933e45415b0317a391c0b4368ae8"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/database.o": {
+      "bytes": 120072,
+      "sha256": "2363d74e8a62e63c864a2dee669604d56dfcf9ee7b7cb86d78915549342b9313"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/delete.o": {
+      "bytes": 24906,
+      "sha256": "40bb2398b87ece64166d4be4a43a9aa9d737cb0d60c13904e6eb4523c96dacde"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/dialog.o": {
+      "bytes": 300303,
+      "sha256": "ac385c224cf59d862afe6e90fbf1eec06e9be77f4e52d8ad68e886d14a890c51"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/distinct.o": {
+      "bytes": 27710,
+      "sha256": "e5ed90bd3471cf9ba8db3113f065917db36def81c8a8c5882096d7b0fd054a94"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/drop.o": {
+      "bytes": 24507,
+      "sha256": "1d4a53556471c7ba62d95fe3232619147322b53fa1979771eda6ab78dda94498"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/files.o": {
+      "bytes": 146086,
+      "sha256": "76ca3c7cf237c48289bcaae99bd67dfb04e6f27d363c1deff9352b55b099b79f"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/font.o": {
+      "bytes": 46533,
+      "sha256": "04b6560a00639374b6a878b2561c9cbac3c50f77ae6813f39232496dd9a88c1c"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/format.o": {
+      "bytes": 69692,
+      "sha256": "d7eb2d3f5787594505dc86852ab8f19cbff194d68b60117cfd56ab98e6a933f9"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/handle.o": {
+      "bytes": 22031,
+      "sha256": "302bd2b466413c08a5201d9d2838e924b10c153fc400a859d7e01a68813615aa"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/insert.o": {
+      "bytes": 35799,
+      "sha256": "c4ae1cc4d459fcc9ec6fe0d0ccf2a101fcee93e614d853676ded1323a0b5310b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/install.o": {
+      "bytes": 118115,
+      "sha256": "bb1308e7a3b857d52cb99c35c1bc35cf4cea9123200314d2678b568d01a237d5"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/media.o": {
+      "bytes": 82638,
+      "sha256": "2f9c77cf2db622212cc23615ff5bc280cfeef4ef8da184c9da1e83cacffb63c4"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/msi.o": {
+      "bytes": 383711,
+      "sha256": "fe1c80525cf4bcd468436ecb252490962bb768ffc81443ec627da1ad0d8ba6f0"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/msi_main.o": {
+      "bytes": 21725,
+      "sha256": "6677d5079decd2758a7d922115b94852949259d8ebc774475a01cdde10d9b1d6"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/msiquery.o": {
+      "bytes": 93548,
+      "sha256": "ae586174a991f5f3aa73eb34704c17be51c97115b0706ee4adf0c1c6aa802922"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/msiserver_i.o": {
+      "bytes": 6470,
+      "sha256": "524019604a251920b09aad1eb506138f66ff9404f53aacf4a778995084cda590"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/msiserver_r.res": {
+      "bytes": 2484,
+      "sha256": "3faccd85cba66c620c349e97697d6433ff9f7c1d86d0d08d08e2417c35d63734"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/msiserver_t.res": {
+      "bytes": 21328,
+      "sha256": "1b138c21335536320f16e39fe35cc9dd1d3fddc15d99944497f4c01d9508a2df"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/package.o": {
+      "bytes": 233122,
+      "sha256": "5dc4fbe6ca2c0854d2ca79b4cb9e2008bb60927c4afd066d902a8d5786ebc564"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/patch.o": {
+      "bytes": 102845,
+      "sha256": "560630d19b828ba8f0e4d15d9cffc66a908426adfd13910fe7969b3d4b6121fb"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/record.o": {
+      "bytes": 82546,
+      "sha256": "9221f82dd1befa724ebaa9ba846f99f2b5974a875e62cbd7532779590794c3c0"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/registry.o": {
+      "bytes": 174642,
+      "sha256": "c76a5fb872f57fbb08f583d46cb1e02694bb06eab4789d541dad2cb7dcaf137e"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/script.o": {
+      "bytes": 56349,
+      "sha256": "9ae745e3ff1fc9b4bdab38f337e58f9e7c1b5e68897263ea4aa91f75a5d1af42"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/select.o": {
+      "bytes": 40809,
+      "sha256": "91a9a39aa0506afde5d6049578d5fac8f5a5d150ec6f20cf15cf7756398672b9"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/source.o": {
+      "bytes": 78065,
+      "sha256": "88b4d6f3adcc22087b4ce80d1ebf77d3a1af0269f6993ed0a05553d1e21a9e76"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/sql.tab.o": {
+      "bytes": 59744,
+      "sha256": "c0a2085190c67c5ed050eb103a6e7b78b4b47e89ac693518953149bee493b388"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/storages.o": {
+      "bytes": 50287,
+      "sha256": "2175f90d5fb28fe4e8465a1d7e007ac779fef2e59917388329c860756702ccb8"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/streams.o": {
+      "bytes": 61490,
+      "sha256": "c3d04e74f36ed14a6f2209f691ee8ba849f28c0f38e0e058facc59456e1d5066"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/string.o": {
+      "bytes": 50856,
+      "sha256": "0b77a9ac05107cf5f7aaec20fcf93f8ac3d799304482f5a250cea0900e12263b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/suminfo.o": {
+      "bytes": 111241,
+      "sha256": "1d90aea5e727fa6b93e9efef6c912fd5e6981a63bd389543fd90caade8ee354e"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/table.o": {
+      "bytes": 209496,
+      "sha256": "7350e0cc78166ff937be94bbc8e4a21bd6677f5b78e10af4b66ea0c037d955e6"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/tokenize.o": {
+      "bytes": 16979,
+      "sha256": "d765e7cdca69662b2d4eafa45c239deab7d28243049da911e675daab8da486c5"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/update.o": {
+      "bytes": 26446,
+      "sha256": "6e8ca86c1e977e2a1026d7aca164ca2c4a6667c9bb335243c9ea27d4fb27b790"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/upgrade.o": {
+      "bytes": 38657,
+      "sha256": "494100ed27b365b5d14dcc94dbabdbe9e522e91ab2920cf80fde1174a97033a7"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/where.o": {
+      "bytes": 73642,
+      "sha256": "ae98582a499ea80cdebec736d642241b535536e03e1187c62a8572973e978336"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/winemsi_c.o": {
+      "bytes": 45912,
+      "sha256": "5fe7595848a7b1bf116e3d798f6cc1acfab98fbea309cd2f3a2b193218af3aef"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/winemsi_s.o": {
+      "bytes": 21799,
+      "sha256": "aaf7de74842df9f92092fb321fabfd82ad44bda4f23e7d732cfcfea790d5fb13"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/msi.res": {
+      "bytes": 11320,
+      "sha256": "ed244ec8f820ef29b294a60f7ad55374c58e844564f9a42848156f8babe1e787"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/version.res": {
+      "bytes": 928,
+      "sha256": "755879ee225321d995cae2eb9554862db9fb91a87c8853a1b46e9bc008027c3e"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/mspatcha/i386-windows/libmspatcha.a": {
+      "bytes": 5422,
+      "sha256": "2df9ddfbeba1c49645c241f28c10df5d303247f18a250ab361942d8dcdcefc5a"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/ntdll/i386-windows/libntdll.a": {
+      "bytes": 257840,
+      "sha256": "9da155875f27a29a282ae21f06e2fde6f7a2fba280b291fc1afabce9f9ba5bb9"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/odbccp32/i386-windows/libodbccp32.a": {
+      "bytes": 13654,
+      "sha256": "80397bda4b616be16c6685cf30da3376024aa5189e8fbd51c8b703cb324d4d8d"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/ole32/i386-windows/libole32.a": {
+      "bytes": 62978,
+      "sha256": "e6f07fd93d8db168852acd7045e32b103c6f5cc1581707bd6f39d2ccf6fc1070"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/oleaut32/i386-windows/liboleaut32.a": {
+      "bytes": 82878,
+      "sha256": "bb14ba28ef945233fe623cb0d0b5a2101530a305ba0330f4667885e583979618"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/rpcrt4/i386-windows/librpcrt4.a": {
+      "bytes": 80160,
+      "sha256": "9f4f4166f100d4fe4a967557302e8ff3c2111612dd199490be252d568cbeca58"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/shell32/i386-windows/libshell32.a": {
+      "bytes": 87644,
+      "sha256": "02ea4507a68f0f32ef12b58c3120a150d0ab631afd0829a902a657fe0be25901"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/shlwapi/i386-windows/libshlwapi.a": {
+      "bytes": 166066,
+      "sha256": "f3fec0ebbc0250193122a85c1ba484c67ea962542ce92b5bb973697a54a98dd3"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/sxs/i386-windows/libsxs.a": {
+      "bytes": 2196,
+      "sha256": "1d5709888eb615e2396122618eadf26671c08a6b7ea8578e068eda2646c86b36"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/ucrtbase/i386-windows/libucrtbase.a": {
+      "bytes": 505974,
+      "sha256": "efff7ae01b5c1556573425fc5fc3365c04c6838376fec4465f5cddc13833c655"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/urlmon/i386-windows/liburlmon.a": {
+      "bytes": 17122,
+      "sha256": "2c6f071c8965758147e0c2e34318ca6c13cb2a60830ecdd2eed81bc358fa946d"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/user32/i386-windows/libuser32.a": {
+      "bytes": 173962,
+      "sha256": "3a70065833056652af8b25e1fee1cc898729347acd3b25f456715713a3334b39"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/version/i386-windows/libversion.a": {
+      "bytes": 4928,
+      "sha256": "04a67c1d26423740adec6e535f0aac05ee3eb64d350b7c94b32dc1ffe7f7e088"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/wininet/i386-windows/libwininet.a": {
+      "bytes": 52628,
+      "sha256": "dbc574f47d5b6f08e95d8b8899ebf80ef85a9c36cd07e5d386ea11b4b82ac451"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/wintrust/i386-windows/libwintrust.a": {
+      "bytes": 24118,
+      "sha256": "19ed4753bd15704daf86b29e09d4ebf2637c0a5305f0fffaf7749025e03a4d7b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/libs/compiler-rt/i386-windows/libcompiler-rt.a": {
+      "bytes": 89448,
+      "sha256": "83c081b32e12deebc75a3c7d2f3ae4fbcafa332dc4f657a2b6251cee54d01b40"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/libs/uuid/i386-windows/libuuid.a": {
+      "bytes": 610674,
+      "sha256": "dcf111f6ab5a441287a003b0599594fcbdb1b959ad6b396e5429f6c613eae78b"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/libs/winecrt0/i386-windows/libwinecrt0.a": {
+      "bytes": 110104,
+      "sha256": "91ce31bd5f4cd2a8ec6f033456cddc427138bb101fa264ae167ef6ce461995e0"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/tmp6ac39660/msi-00000000.spec.o": {
+      "bytes": 113811,
+      "sha256": "005a39d8be35028af5a30a0a7f2ca69af579f95855df0e5656d040b78723a788"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/tools/winebuild/winebuild": {
+      "bytes": 220128,
+      "sha256": "c6b0b9b53cfa857c6f5da8c989c12270ac4d56b858368511b194b77f6472d7a2"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/tools/winegcc/winegcc": {
+      "bytes": 71904,
+      "sha256": "6c07a0cf737bfa23fc0182246b457c5a681e5e5c378110ba54a49a89fe1664d6"
+    },
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/msi.spec": {
+      "bytes": 14694,
+      "sha256": "5a6085ce66f541d3c52552164ade070129ea05a0f8a8b1ed2c660132366aceb0"
+    }
+  },
+  "host_external_headers_libraries_hermetic": false,
+  "link_commands": [
+    "tools/winegcc/winegcc -v -save-temps -o dlls/msi/i386-windows/msi.dll --wine-objdir .    --cc-cmd=\"/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__\"    -b i686-windows -Wl,--wine-builtin -shared    /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/msi.spec    dlls/msi/i386-windows/action.o dlls/msi/i386-windows/alter.o dlls/msi/i386-windows/appsearch.o    dlls/msi/i386-windows/assembly.o dlls/msi/i386-windows/automation.o    dlls/msi/i386-windows/classes.o dlls/msi/i386-windows/create.o dlls/msi/i386-windows/custom.o    dlls/msi/i386-windows/database.o dlls/msi/i386-windows/delete.o dlls/msi/i386-windows/dialog.o    dlls/msi/i386-windows/distinct.o dlls/msi/i386-windows/drop.o dlls/msi/i386-windows/files.o    dlls/msi/i386-windows/font.o dlls/msi/i386-windows/format.o dlls/msi/i386-windows/handle.o    dlls/msi/i386-windows/insert.o dlls/msi/i386-windows/install.o dlls/msi/i386-windows/media.o    dlls/msi/i386-windows/msi.o dlls/msi/i386-windows/msi_main.o dlls/msi/i386-windows/msiquery.o    dlls/msi/i386-windows/package.o dlls/msi/i386-windows/patch.o dlls/msi/i386-windows/record.o    dlls/msi/i386-windows/registry.o dlls/msi/i386-windows/script.o dlls/msi/i386-windows/select.o    dlls/msi/i386-windows/source.o dlls/msi/i386-windows/storages.o dlls/msi/i386-windows/streams.o    dlls/msi/i386-windows/string.o dlls/msi/i386-windows/suminfo.o dlls/msi/i386-windows/table.o    dlls/msi/i386-windows/tokenize.o dlls/msi/i386-windows/update.o dlls/msi/i386-windows/upgrade.o    dlls/msi/i386-windows/where.o dlls/msi/i386-windows/cond.tab.o dlls/msi/i386-windows/msiserver_i.o    dlls/msi/i386-windows/sql.tab.o dlls/msi/i386-windows/winemsi_c.o    dlls/msi/i386-windows/winemsi_s.o dlls/msi/msi.res dlls/msi/i386-windows/msiserver_t.res    dlls/msi/i386-windows/msiserver_r.res dlls/msi/version.res libs/uuid/i386-windows/libuuid.a    dlls/urlmon/i386-windows/liburlmon.a dlls/wininet/i386-windows/libwininet.a    dlls/comctl32/i386-windows/libcomctl32.a dlls/shell32/i386-windows/libshell32.a    dlls/shlwapi/i386-windows/libshlwapi.a dlls/cabinet/i386-windows/libcabinet.a    dlls/oleaut32/i386-windows/liboleaut32.a dlls/ole32/i386-windows/libole32.a    dlls/version/i386-windows/libversion.a dlls/user32/i386-windows/libuser32.a    dlls/gdi32/i386-windows/libgdi32.a dlls/advapi32/i386-windows/libadvapi32.a    dlls/rpcrt4/i386-windows/librpcrt4.a dlls/sxs/i386-windows/libsxs.a    dlls/imagehlp/i386-windows/libimagehlp.a dlls/mspatcha/i386-windows/libmspatcha.a    dlls/odbccp32/i386-windows/libodbccp32.a dlls/wintrust/i386-windows/libwintrust.a    dlls/crypt32/i386-windows/libcrypt32.a libs/winecrt0/i386-windows/libwinecrt0.a    libs/compiler-rt/i386-windows/libcompiler-rt.a dlls/ucrtbase/i386-windows/libucrtbase.a    dlls/kernel32/i386-windows/libkernel32.a dlls/ntdll/i386-windows/libntdll.a --no-default-config -fms-hotpatch -Wl,-debug:dwarf",
+    "tools/winegcc/winegcc -v -save-temps -o dlls/msi/i386-windows/msi.dll --wine-objdir .    --cc-cmd=\"/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__\"    -b i686-windows -Wl,--wine-builtin -shared    /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/msi.spec    dlls/msi/i386-windows/action.o dlls/msi/i386-windows/alter.o dlls/msi/i386-windows/appsearch.o    dlls/msi/i386-windows/assembly.o dlls/msi/i386-windows/automation.o    dlls/msi/i386-windows/classes.o dlls/msi/i386-windows/create.o dlls/msi/i386-windows/custom.o    dlls/msi/i386-windows/database.o dlls/msi/i386-windows/delete.o dlls/msi/i386-windows/dialog.o    dlls/msi/i386-windows/distinct.o dlls/msi/i386-windows/drop.o dlls/msi/i386-windows/files.o    dlls/msi/i386-windows/font.o dlls/msi/i386-windows/format.o dlls/msi/i386-windows/handle.o    dlls/msi/i386-windows/insert.o dlls/msi/i386-windows/install.o dlls/msi/i386-windows/media.o    dlls/msi/i386-windows/msi.o dlls/msi/i386-windows/msi_main.o dlls/msi/i386-windows/msiquery.o    dlls/msi/i386-windows/package.o dlls/msi/i386-windows/patch.o dlls/msi/i386-windows/record.o    dlls/msi/i386-windows/registry.o dlls/msi/i386-windows/script.o dlls/msi/i386-windows/select.o    dlls/msi/i386-windows/source.o dlls/msi/i386-windows/storages.o dlls/msi/i386-windows/streams.o    dlls/msi/i386-windows/string.o dlls/msi/i386-windows/suminfo.o dlls/msi/i386-windows/table.o    dlls/msi/i386-windows/tokenize.o dlls/msi/i386-windows/update.o dlls/msi/i386-windows/upgrade.o    dlls/msi/i386-windows/where.o dlls/msi/i386-windows/cond.tab.o dlls/msi/i386-windows/msiserver_i.o    dlls/msi/i386-windows/sql.tab.o dlls/msi/i386-windows/winemsi_c.o    dlls/msi/i386-windows/winemsi_s.o dlls/msi/msi.res dlls/msi/i386-windows/msiserver_t.res    dlls/msi/i386-windows/msiserver_r.res dlls/msi/version.res libs/uuid/i386-windows/libuuid.a    dlls/urlmon/i386-windows/liburlmon.a dlls/wininet/i386-windows/libwininet.a    dlls/comctl32/i386-windows/libcomctl32.a dlls/shell32/i386-windows/libshell32.a    dlls/shlwapi/i386-windows/libshlwapi.a dlls/cabinet/i386-windows/libcabinet.a    dlls/oleaut32/i386-windows/liboleaut32.a dlls/ole32/i386-windows/libole32.a    dlls/version/i386-windows/libversion.a dlls/user32/i386-windows/libuser32.a    dlls/gdi32/i386-windows/libgdi32.a dlls/advapi32/i386-windows/libadvapi32.a    dlls/rpcrt4/i386-windows/librpcrt4.a dlls/sxs/i386-windows/libsxs.a    dlls/imagehlp/i386-windows/libimagehlp.a dlls/mspatcha/i386-windows/libmspatcha.a    dlls/odbccp32/i386-windows/libodbccp32.a dlls/wintrust/i386-windows/libwintrust.a    dlls/crypt32/i386-windows/libcrypt32.a libs/winecrt0/i386-windows/libwinecrt0.a    libs/compiler-rt/i386-windows/libcompiler-rt.a dlls/ucrtbase/i386-windows/libucrtbase.a    dlls/kernel32/i386-windows/libkernel32.a dlls/ntdll/i386-windows/libntdll.a --no-default-config -fms-hotpatch -Wl,-debug:dwarf",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -target i686-windows -Wno-unused-command-line-argument -fuse-ld=lld --no-default-config --no-default-config -fms-hotpatch -Wl,-debug:dwarf -nodefaultlibs -nostdlib -Wl,-debug:dwarf -Wl,-implib:tmp6ac39660/msi-00000001.lib -Wl,-filealign:0x1000,-align:0x1000,-driver -Wl,-merge:.CRT=.rdata -shared -Wl,-kill-at -Wl,-entry:DllMainCRTStartup@12 -Xlinker -subsystem:console,6.0 -o dlls/msi/i386-windows/msi.dll -L./dlls -L./libs tmp6ac39660/msi-00000000.spec.o dlls/msi/i386-windows/action.o dlls/msi/i386-windows/alter.o dlls/msi/i386-windows/appsearch.o dlls/msi/i386-windows/assembly.o dlls/msi/i386-windows/automation.o dlls/msi/i386-windows/classes.o dlls/msi/i386-windows/create.o dlls/msi/i386-windows/custom.o dlls/msi/i386-windows/database.o dlls/msi/i386-windows/delete.o dlls/msi/i386-windows/dialog.o dlls/msi/i386-windows/distinct.o dlls/msi/i386-windows/drop.o dlls/msi/i386-windows/files.o dlls/msi/i386-windows/font.o dlls/msi/i386-windows/format.o dlls/msi/i386-windows/handle.o dlls/msi/i386-windows/insert.o dlls/msi/i386-windows/install.o dlls/msi/i386-windows/media.o dlls/msi/i386-windows/msi.o dlls/msi/i386-windows/msi_main.o dlls/msi/i386-windows/msiquery.o dlls/msi/i386-windows/package.o dlls/msi/i386-windows/patch.o dlls/msi/i386-windows/record.o dlls/msi/i386-windows/registry.o dlls/msi/i386-windows/script.o dlls/msi/i386-windows/select.o dlls/msi/i386-windows/source.o dlls/msi/i386-windows/storages.o dlls/msi/i386-windows/streams.o dlls/msi/i386-windows/string.o dlls/msi/i386-windows/suminfo.o dlls/msi/i386-windows/table.o dlls/msi/i386-windows/tokenize.o dlls/msi/i386-windows/update.o dlls/msi/i386-windows/upgrade.o dlls/msi/i386-windows/where.o dlls/msi/i386-windows/cond.tab.o dlls/msi/i386-windows/msiserver_i.o dlls/msi/i386-windows/sql.tab.o dlls/msi/i386-windows/winemsi_c.o dlls/msi/i386-windows/winemsi_s.o libs/uuid/i386-windows/libuuid.a dlls/urlmon/i386-windows/liburlmon.a dlls/wininet/i386-windows/libwininet.a dlls/comctl32/i386-windows/libcomctl32.a dlls/shell32/i386-windows/libshell32.a dlls/shlwapi/i386-windows/libshlwapi.a dlls/cabinet/i386-windows/libcabinet.a dlls/oleaut32/i386-windows/liboleaut32.a dlls/ole32/i386-windows/libole32.a dlls/version/i386-windows/libversion.a dlls/user32/i386-windows/libuser32.a dlls/gdi32/i386-windows/libgdi32.a dlls/advapi32/i386-windows/libadvapi32.a dlls/rpcrt4/i386-windows/librpcrt4.a dlls/sxs/i386-windows/libsxs.a dlls/imagehlp/i386-windows/libimagehlp.a dlls/mspatcha/i386-windows/libmspatcha.a dlls/odbccp32/i386-windows/libodbccp32.a dlls/wintrust/i386-windows/libwintrust.a dlls/crypt32/i386-windows/libcrypt32.a libs/winecrt0/i386-windows/libwinecrt0.a libs/compiler-rt/i386-windows/libcompiler-rt.a dlls/ucrtbase/i386-windows/libucrtbase.a dlls/kernel32/i386-windows/libkernel32.a dlls/ntdll/i386-windows/libntdll.a",
+    "./tools/winebuild/winebuild -v --save-temps --target i686-windows --builtin dlls/msi/i386-windows/msi.dll"
+  ],
+  "link_temp_policy": "Winegcc -v -save-temps; TMPDIR inside fresh architecture build",
+  "object_machine_verified": true,
+  "source": {
+    "bytes": 50958,
+    "sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50"
+  },
+  "toolchain_implicit_inputs_receipt": "toolchain-receipt.json",
+  "unstripped_provider": {
+    "bytes": 3321856,
+    "sha256": "225498c850f0427686809851aafe841bd81a17e895d6809bc4883cee095c1873"
+  }
+}

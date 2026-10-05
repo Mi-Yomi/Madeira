@@ -1,0 +1,96 @@
+--- a/dlls/msi/custom.c
++++ b/dlls/msi/custom.c
+@@ -714,10 +714,17 @@
+     HANDLE process;
+     HANDLE thread;
+     HANDLE pipe;
+-    DWORD size;
++    DWORD size, wait;
+     DWORD rc;
+-
+-    CoInitializeEx(NULL, COINIT_MULTITHREADED); /* needed to marshal streams */
++    HRESULT hr;
++    BOOL success;
++
++    hr = CoInitializeEx(NULL, COINIT_MULTITHREADED); /* needed to marshal streams */
++    if (FAILED(hr))
++    {
++        ERR("failed to initialize COM for custom action client: %#lx\n", hr);
++        return ERROR_FUNCTION_FAILED;
++    }
+ 
+     if (info->arch == SCS_32BIT_BINARY)
+     {
+@@ -732,18 +739,21 @@
+ 
+     EnterCriticalSection(&custom_action_cs);
+ 
+-    if (!WriteFile(pipe, &info->guid, sizeof(info->guid), &size, NULL) ||
+-        size != sizeof(info->guid))
+-    {
+-        ERR("failed to write to custom action client pipe: %lu\n", GetLastError());
+-        LeaveCriticalSection(&custom_action_cs);
+-        return GetLastError();
+-    }
+-    if (!ReadFile(pipe, &thread64, sizeof(thread64), &size, NULL) || size != sizeof(thread64))
+-    {
+-        ERR("failed to read from custom action client pipe: %lu\n", GetLastError());
+-        LeaveCriticalSection(&custom_action_cs);
+-        return GetLastError();
++    success = WriteFile(pipe, &info->guid, sizeof(info->guid), &size, NULL);
++    if (!success || size != sizeof(info->guid))
++    {
++        rc = success ? ERROR_FUNCTION_FAILED : GetLastError();
++        if (!rc) rc = ERROR_FUNCTION_FAILED;
++        ERR("failed to write to custom action client pipe: %lu\n", rc);
++        goto done_locked;
++    }
++    success = ReadFile(pipe, &thread64, sizeof(thread64), &size, NULL);
++    if (!success || size != sizeof(thread64))
++    {
++        rc = success ? ERROR_FUNCTION_FAILED : GetLastError();
++        if (!rc) rc = ERROR_FUNCTION_FAILED;
++        ERR("failed to read from custom action client pipe: %lu\n", rc);
++        goto done_locked;
+     }
+ 
+     LeaveCriticalSection(&custom_action_cs);
+@@ -751,15 +761,35 @@
+     if (DuplicateHandle(process, (HANDLE)(DWORD_PTR)thread64, GetCurrentProcess(),
+         &thread, 0, FALSE, DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE))
+     {
+-        WaitForSingleObject(thread, INFINITE);
+-        GetExitCodeThread(thread, &rc);
++        wait = WaitForSingleObject(thread, INFINITE);
++        if (wait != WAIT_OBJECT_0)
++        {
++            rc = wait == WAIT_FAILED ? GetLastError() : ERROR_FUNCTION_FAILED;
++            if (!rc) rc = ERROR_FUNCTION_FAILED;
++            ERR("failed to wait for custom action thread: %lu\n", rc);
++        }
++        else if (!GetExitCodeThread(thread, &rc))
++        {
++            rc = GetLastError();
++            if (!rc) rc = ERROR_FUNCTION_FAILED;
++            ERR("failed to get custom action thread exit code: %lu\n", rc);
++        }
+         CloseHandle(thread);
+     }
+     else
++    {
+         rc = GetLastError();
+-
++        if (!rc) rc = ERROR_FUNCTION_FAILED;
++        ERR("failed to duplicate custom action thread handle: %lu\n", rc);
++    }
++
++done:
+     CoUninitialize();
+     return rc;
++
++done_locked:
++    LeaveCriticalSection(&custom_action_cs);
++    goto done;
+ }
+ 
+ /* based on kernel32.GetBinaryTypeW() */

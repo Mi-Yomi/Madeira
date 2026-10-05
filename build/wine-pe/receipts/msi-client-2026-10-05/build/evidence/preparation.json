@@ -1,0 +1,39 @@
+{
+  "copied_source_shares_no_inodes": true,
+  "copy_strategy": "independent shutil.copy2 bytes; no hardlinks or copied build intermediates",
+  "final_source": {
+    "sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+    "size": 50958
+  },
+  "free_after_bytes": 10706550784,
+  "free_before_bytes": 11128614912,
+  "old_workspace_logical_bytes": 998412377,
+  "old_workspace_matches_prior_snapshot": true,
+  "patch_commands": [
+    {
+      "argv": [
+        "/usr/bin/git",
+        "apply",
+        "--check",
+        "--whitespace=error-all",
+        "../patches/msi-client-failure.patch"
+      ],
+      "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/git",
+        "apply",
+        "--whitespace=error-all",
+        "../patches/msi-client-failure.patch"
+      ],
+      "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ""
+    }
+  ]
+}

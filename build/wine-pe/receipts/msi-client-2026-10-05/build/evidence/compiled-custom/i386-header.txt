@@ -1,0 +1,16 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386/dlls/msi/i386-windows/custom.o
+Format: COFF-i386
+Arch: i386
+AddressSize: 32bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_I386 (0x14C)
+  SectionCount: 178
+  TimeDateStamp: 2026-10-05 08:31:24 (0x6AC3605C)
+  PointerToSymbolTable: 0x2151C
+  SymbolCount: 623
+  StringTableSize: 10593
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}

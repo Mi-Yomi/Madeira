@@ -1,0 +1,11 @@
+{
+  "after": {
+    "bytes": 49152782,
+    "sha256": "2750231bc796ae61279b8582019f92a52937b447a7ec5a78623a5fbbb65bf36d"
+  },
+  "before": {
+    "bytes": 49152767,
+    "sha256": "381a38348a98c72b0a8916d05b91ea84b2134eda4c60566333b5435ba12cf2f4"
+  },
+  "purpose": "Retain and trace actual transient MSI linker inputs; production source/flags unchanged"
+}

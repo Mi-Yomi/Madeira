@@ -1,0 +1,22 @@
+{
+  "wine_pin": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f",
+  "baseline_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+  "candidate_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "incremental_patch_sha256": "6dc3802f26e98a0cc03462b989e2d3619b74f9374d325784009c1df5a8623ebe",
+  "production_functions_changed": [
+    "custom_client_thread"
+  ],
+  "baseline_scenarios": 102,
+  "baseline_failed": 46,
+  "candidate_passed": 102,
+  "sanitized_passed": 102,
+  "full_translation_units": [
+    "aarch64",
+    "arm64ec"
+  ],
+  "linked": false,
+  "runtime_tested": false,
+  "published": false,
+  "source_license": "LGPL-2.1-or-later",
+  "independent_review": "reports/independent-review.md"
+}

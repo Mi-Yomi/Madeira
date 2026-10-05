@@ -1,0 +1,16 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-fix-20261005/reports/cross-compile/custom-aarch64.o
+Format: COFF-ARM64
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64 (0xAA64)
+  SectionCount: 231
+  TimeDateStamp: 2026-10-05 08:06:19 (0x6AC35A7B)
+  PointerToSymbolTable: 0x2A7A6
+  SymbolCount: 719
+  StringTableSize: 9894
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}

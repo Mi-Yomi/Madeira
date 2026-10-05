@@ -45,7 +45,7 @@ class ShellTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix='native-wiring-')
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)
+        self.root = Path(self.tmp.name).resolve()
         self.bin = self.root / 'bin'
         self.bin.mkdir()
         self.env = dict(os.environ, PATH=str(self.bin) + os.pathsep + os.environ['PATH'],
@@ -226,7 +226,7 @@ class DispatchTests(unittest.TestCase):
     @contextlib.contextmanager
     def fixture(self, enabled=False):
         with tempfile.TemporaryDirectory(prefix='native-dispatch-') as tmp:
-            root = Path(tmp)
+            root = Path(tmp).resolve()
             request = put(root / 'request.json', json.dumps(dict(link.EXPECTED_REQUEST, native_archive_contract=enabled)))
             with mock.patch.object(link, 'ROOT', root), mock.patch.object(link, 'REQUEST', request), \
                     contextlib.redirect_stdout(io.StringIO()):
@@ -312,6 +312,37 @@ class DispatchTests(unittest.TestCase):
         with self.fixture(True) as (root, logs, artifacts), mock.patch.object(link.subprocess, 'run'), \
                 self.assertRaises((FileNotFoundError, ValueError)):
             link.native(logs, artifacts)
+
+
+class TemporaryRootTests(unittest.TestCase):
+    def test_symlinked_temp_parent_preserves_build_and_failure_semantics(self):
+        # macOS /var/folders aliases /private/var/folders. Exercise that shape
+        # on every host, including Linux, without relaxing production checks.
+        with tempfile.TemporaryDirectory(prefix='native-temp-alias-') as temporary:
+            base = Path(temporary).resolve()
+            real = base / 'canonical'
+            real.mkdir()
+            alias = base / 'alias'
+            alias.symlink_to(real, target_is_directory=True)
+            self.assertNotEqual(alias, alias.resolve())
+            environment = dict(os.environ, TMPDIR=str(alias), TMP=str(alias), TEMP=str(alias))
+            # Confirm the child really uses the alias; no silent /tmp fallback.
+            runner = ('import os, runpy, sys, tempfile\nfrom pathlib import Path\n'
+                      'actual = Path(tempfile.gettempdir())\n'
+                      'assert actual == Path(os.environ["TMPDIR"]) and actual != actual.resolve()\n'
+                      'sys.argv = sys.argv[1:]\nrunpy.run_path(sys.argv[0], run_name="__main__")\n')
+            # Class selection excludes this regression and prevents recursion.
+            result = subprocess.run([sys.executable, '-c', runner, str(Path(__file__).resolve()),
+                                     'ShellTests', 'DispatchTests'],
+                                    env=environment, capture_output=True, text=True, timeout=90)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            expected = sum(unittest.defaultTestLoader.loadTestsFromTestCase(cls).countTestCases()
+                           for cls in (ShellTests, DispatchTests))
+            self.assertIn(f'Ran {expected} tests', result.stderr)
+            self.assertIn('test_default_off_matches_reviewed_ordinary_commands', result.stderr)
+            self.assertIn('test_exactly_eight_captures_keep_command_and_compiler_identity', result.stderr)
+            self.assertIn('test_capture_failure_stops_archive_and_removes_stale_selected_object', result.stderr)
+            self.assertIn('test_native_or_archive_failure_cannot_continue_to_success', result.stderr)
 
 
 if __name__ == '__main__':

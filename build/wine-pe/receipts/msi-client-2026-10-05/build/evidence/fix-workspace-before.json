@@ -1,0 +1,174 @@
+{
+  "README.md": {
+    "sha256": "0112b1fca240845300e45dd8d674832359a076a9881e47c493ec213f1121ff84",
+    "size": 7036
+  },
+  "SHA256SUMS": {
+    "sha256": "0af759def9322a8a831b3fc9b74c38cc1a77b3510cadc76a83616ac023cc4542",
+    "size": 3920
+  },
+  "baseline/custom.c": {
+    "sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+    "size": 49982
+  },
+  "custom.c": {
+    "sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+    "size": 50958
+  },
+  "licenses/CLIENT-MODIFICATIONS.md": {
+    "sha256": "786cd5722955f1994b6aeaef68628164dde3a433831ea596c496e0698ba22a65",
+    "size": 1242
+  },
+  "licenses/Prior-MSI-MODIFICATIONS.md": {
+    "sha256": "da436d484e65e9687b65bf913d7c9b226e2a9c9055ec48ac6ea5fd43990d3a6e",
+    "size": 1126
+  },
+  "licenses/Wine-CONTRIBUTING.md": {
+    "sha256": "b0767a45931e3c651f618a8d0f1d71dcfcf33f43ca5d1c8072731a0a3f72170f",
+    "size": 355
+  },
+  "licenses/Wine-COPYING.LIB": {
+    "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c",
+    "size": 26434
+  },
+  "licenses/Wine-LICENSE-MADEIRA.md": {
+    "sha256": "af5e68eec8cad65700c24461185dc09936a927688753a999fa1e6bf80d4cf747",
+    "size": 2936
+  },
+  "msi-client-failure.patch": {
+    "sha256": "6dc3802f26e98a0cc03462b989e2d3619b74f9374d325784009c1df5a8623ebe",
+    "size": 3190
+  },
+  "reports/apply-check/dlls/msi/custom.c": {
+    "sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+    "size": 50958
+  },
+  "reports/baseline/client-tests": {
+    "sha256": "4c53bd6c2b7192a3c9036b765d0dc9c8121d22dec0204f236113d6a7a47aed9e",
+    "size": 35640
+  },
+  "reports/baseline/compile.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "reports/baseline/manifest.json": {
+    "sha256": "ee40ea5174cd89105e580b141391ee48e536f76f1ea0c7861a374aa5fe870f79",
+    "size": 1151
+  },
+  "reports/baseline/production.inc": {
+    "sha256": "d3505c224077b294ff6eef5b880c8731f7c02dcbb9aa783476fc602531a25604",
+    "size": 2723
+  },
+  "reports/baseline/test.log": {
+    "sha256": "449a57cdba37109c959d4c730eb457761bda4ffdc903c95a546833ee4b97e93e",
+    "size": 7913
+  },
+  "reports/cross-compile/aarch64-file-headers.log": {
+    "sha256": "dc76d4ba858615849f944bc6040651572c5b99323d76dfdadc2bc00c3583196f",
+    "size": 426
+  },
+  "reports/cross-compile/aarch64.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "reports/cross-compile/arm64ec-file-headers.log": {
+    "sha256": "4971643800484f674cbb451941322fd1cb83066ad20296791395bea41f51c1f4",
+    "size": 432
+  },
+  "reports/cross-compile/arm64ec.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "reports/cross-compile/custom-aarch64.o": {
+    "sha256": "f675de578848232bd726bc611a4ef547cc9c357ee5811009838d7a2b307967f0",
+    "size": 196826
+  },
+  "reports/cross-compile/custom-arm64ec.o": {
+    "sha256": "b6783f4b24bb48c8c03f2ec6b853d99e3cccec7917b6f29ab91dbec8aa82128e",
+    "size": 221266
+  },
+  "reports/cross-compile/manifest.json": {
+    "sha256": "07ef7aa10487a72922840b8ed4920365d2cb9ccf00aad45602e06990b315e2c3",
+    "size": 4731
+  },
+  "reports/independent-review.md": {
+    "sha256": "cc7a0c7558af3031c53415b36964b773dca58fa8d9571bdda20b521e3dcaf820",
+    "size": 1997
+  },
+  "reports/patch-application.json": {
+    "sha256": "900e7c3608a2a17c7fe824b26c84eae53ae318b11ba1146f5b283946ecc010a1",
+    "size": 346
+  },
+  "reports/patched/client-tests": {
+    "sha256": "398b05046ee5b0ee23613800ab4b9856cc4fc47e661e5fbff8a61b585f947fac",
+    "size": 36216
+  },
+  "reports/patched/compile.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "reports/patched/manifest.json": {
+    "sha256": "0ea623fb2aa818cd47d782e7b6fc16a450fe0f63f9fdafba773029afdab8c139",
+    "size": 1140
+  },
+  "reports/patched/production.inc": {
+    "sha256": "ab17703a32b05999c22abd015f0ba544afe8f0e5ac165865975e376b4feadc9c",
+    "size": 3699
+  },
+  "reports/patched/test.log": {
+    "sha256": "e2b90f16cfa4f0f4c4d20849bed1cf8f0fb5e7703ab6ac767a289ad019721b75",
+    "size": 3993
+  },
+  "reports/preservation.json": {
+    "sha256": "2db53e07aac31093c01bf525237c025e7f53d0fee7d29ce46f3617dc6eb06898",
+    "size": 482
+  },
+  "reports/sanitized/client-tests": {
+    "sha256": "71f15990d85f2b6da253773cff71b503260c8972ba64b8ed34da0e6a73c377d6",
+    "size": 89104
+  },
+  "reports/sanitized/compile.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0
+  },
+  "reports/sanitized/manifest.json": {
+    "sha256": "4374c0d41622adf3d5850656c1fe3b009cb70c806cbb872dcbced5134e0cc75f",
+    "size": 1335
+  },
+  "reports/sanitized/production.inc": {
+    "sha256": "ab17703a32b05999c22abd015f0ba544afe8f0e5ac165865975e376b4feadc9c",
+    "size": 3699
+  },
+  "reports/sanitized/test.log": {
+    "sha256": "e2b90f16cfa4f0f4c4d20849bed1cf8f0fb5e7703ab6ac767a289ad019721b75",
+    "size": 3993
+  },
+  "reports/sealed-workspace-before.json": {
+    "sha256": "65fa7f0a8939c77f7c8a0a48a09de340551a8e989a44272f732902de279e52a8",
+    "size": 2504876
+  },
+  "seal-verification.log": {
+    "sha256": "504f81728e0c38251c3b898778742c13579f31660919fc22f58ff6a1786bad31",
+    "size": 1378
+  },
+  "source-manifest.json": {
+    "sha256": "d5f28993f8f16165baca4c4d54b7cfd727562eb82a85d2db63ee3435d7cba339",
+    "size": 744
+  },
+  "tests/compile_production.py": {
+    "sha256": "4fecb43dafec451abd84db89134c8d52ce6dca11f936fee93514f20b3586a6f8",
+    "size": 3407
+  },
+  "tests/portable_harness.c": {
+    "sha256": "a214a833145fad11f0e7a2036a24f6f20d410f16afaab641ee8a26ce7b8f74c3",
+    "size": 14588
+  },
+  "tests/run_portable.py": {
+    "sha256": "a305ae4da1d41272f556bcaf1f5d2630a85be6e61c4314d22920cc1b4aa29811",
+    "size": 3353
+  },
+  "tests/verify.py": {
+    "sha256": "b6f45b4a33d28e13563600bf8a0a9d4702eae6984705701921dcf21d5646dacc",
+    "size": 2356
+  }
+}

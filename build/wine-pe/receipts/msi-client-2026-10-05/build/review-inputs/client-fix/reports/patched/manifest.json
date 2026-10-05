@@ -1,0 +1,32 @@
+{
+  "source": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-fix-20261005/custom.c",
+  "source_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "extracted_functions": [
+    "custom_get_thread_return",
+    "wait_thread_handle",
+    "custom_client_thread"
+  ],
+  "extracted_sha256": "ab17703a32b05999c22abd015f0ba544afe8f0e5ac165865975e376b4feadc9c",
+  "compile_command": [
+    "cc",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-unused-parameter",
+    "-Wno-error=maybe-uninitialized",
+    "-O2",
+    "-g",
+    "-ftrivial-auto-var-init=pattern",
+    "-I",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-fix-20261005/reports/patched",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-fix-20261005/tests/portable_harness.c",
+    "-o",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-fix-20261005/reports/patched/client-tests"
+  ],
+  "compiler_returncode": 0,
+  "test_returncode": 0,
+  "sanitize": false,
+  "sanitizer_options": null,
+  "limits": "Host API doubles; no guest code, Windows ABI execution, real pipe/thread/COM, concurrency, or MSI installation."
+}

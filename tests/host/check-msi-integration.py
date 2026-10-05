@@ -72,6 +72,10 @@ class MsiIntegrationTests(unittest.TestCase):
         for arch in desktop.planner.ARCHES:
             folder = arch + "-windows"
             shutil.copytree(ROOT / "app/Madeira" / folder, self.app / folder, dirs_exist_ok=True)
+            # This fixture tests the historical MSI stage even when the checkout
+            # has the separately reviewed client replacement installed.
+            shutil.copyfile(self.root / msi.RECEIPT / "candidate" / folder / "msi.dll",
+                            self.app / folder / "msi.dll")
             for name in desktop.loader.NAMES:
                 (self.app / folder / name).unlink(missing_ok=True)
         (self.app / "aarch64-windows/example.dll").unlink()
@@ -283,6 +287,8 @@ class MsiIntegrationTests(unittest.TestCase):
             for name in msi.NAMES | desktop.loader.NAMES:
                 (farm / name).unlink(missing_ok=True)
         shutil.copytree(ROOT / "app/Madeira/legal", target / "app/Madeira/legal")
+        for name in desktop.client.REQUIRED_NOTICES:
+            (target / "app/Madeira" / name).unlink(missing_ok=True)
         for name in (desktop.loader.INTEGRATION_NOTICE, "legal/Wine-loader-SOURCE-REBUILD.md"):
             (target / "app/Madeira" / name).unlink(missing_ok=True)
         for name in msi.REQUIRED_NOTICES:

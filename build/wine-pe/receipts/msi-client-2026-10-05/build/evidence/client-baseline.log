@@ -1,0 +1,191 @@
+success arch=32 PASS
+success-S_FALSE arch=32 PASS
+action-failure arch=32 PASS
+action-cancel arch=32 PASS
+action-arbitrary arch=32 PASS
+action-no-more-items arch=32 PASS
+action-suspend arch=32 PASS
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+  failed COM initialization must not start IPC
+COM-out-of-memory arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+  failed COM initialization must not start IPC
+COM-changed-mode arch=32 FAIL
+  result expected=109 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-broken-pipe-clobber-zero arch=32 FAIL
+  result expected=5 actual=123
+  COM initialization must be balanced only on success/S_FALSE
+write-denied-clobber-other arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-false-zero-error arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-zero-count-zero-error arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-short-stale-error arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-short-S_FALSE arch=32 FAIL
+  result expected=109 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-broken-pipe-clobber-zero arch=32 FAIL
+  result expected=5 actual=123
+  COM initialization must be balanced only on success/S_FALSE
+read-denied-clobber-other arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-false-zero-error arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-zero-count-zero-error arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-short-stale-error arch=32 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-short-S_FALSE arch=32 FAIL
+duplicate-error-clobber arch=32 PASS
+  result expected=1627 actual=0
+duplicate-zero-error arch=32 FAIL
+  result expected=6 actual=0
+  exit status queried only after a completed wait
+wait-failed-error-clobber arch=32 FAIL
+  result expected=1627 actual=0
+  exit status queried only after a completed wait
+wait-failed-zero-error arch=32 FAIL
+  result expected=1627 actual=0
+  exit status queried only after a completed wait
+wait-unexpected-timeout-stale-error arch=32 FAIL
+  result expected=1627 actual=0
+  exit status queried only after a completed wait
+wait-unexpected-abandoned arch=32 FAIL
+  result expected=6 actual=4278124286
+query-failed-error-clobber arch=32 FAIL
+  result expected=1627 actual=4278124286
+query-failed-zero-error arch=32 FAIL
+success-cleanup-clobber arch=32 PASS
+failure-cleanup-clobber arch=32 PASS
+  outer Continue/Async MSI result
+  synchronous policy retains balanced COM
+policy-write-failure-type=0 arch=32 FAIL
+policy-action-success-type=0 arch=32 PASS
+policy-action-cancel-type=0 arch=32 PASS
+policy-action-no-more-items-type=0 arch=32 PASS
+policy-action-suspend-type=0 arch=32 PASS
+  synchronous policy retains balanced COM
+policy-write-failure-type=64 arch=32 FAIL
+policy-action-success-type=64 arch=32 PASS
+policy-action-cancel-type=64 arch=32 PASS
+policy-action-no-more-items-type=64 arch=32 PASS
+policy-action-suspend-type=64 arch=32 PASS
+policy-write-failure-type=128 arch=32 PASS
+policy-action-success-type=128 arch=32 PASS
+policy-action-cancel-type=128 arch=32 PASS
+policy-action-no-more-items-type=128 arch=32 PASS
+policy-action-suspend-type=128 arch=32 PASS
+policy-write-failure-type=192 arch=32 PASS
+policy-action-success-type=192 arch=32 PASS
+policy-action-cancel-type=192 arch=32 PASS
+policy-action-no-more-items-type=192 arch=32 PASS
+policy-action-suspend-type=192 arch=32 PASS
+success arch=64 PASS
+success-S_FALSE arch=64 PASS
+action-failure arch=64 PASS
+action-cancel arch=64 PASS
+action-arbitrary arch=64 PASS
+action-no-more-items arch=64 PASS
+action-suspend arch=64 PASS
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+  failed COM initialization must not start IPC
+COM-out-of-memory arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+  failed COM initialization must not start IPC
+COM-changed-mode arch=64 FAIL
+  result expected=109 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-broken-pipe-clobber-zero arch=64 FAIL
+  result expected=5 actual=123
+  COM initialization must be balanced only on success/S_FALSE
+write-denied-clobber-other arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-false-zero-error arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-zero-count-zero-error arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-short-stale-error arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+write-short-S_FALSE arch=64 FAIL
+  result expected=109 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-broken-pipe-clobber-zero arch=64 FAIL
+  result expected=5 actual=123
+  COM initialization must be balanced only on success/S_FALSE
+read-denied-clobber-other arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-false-zero-error arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-zero-count-zero-error arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-short-stale-error arch=64 FAIL
+  result expected=1627 actual=0
+  COM initialization must be balanced only on success/S_FALSE
+read-short-S_FALSE arch=64 FAIL
+duplicate-error-clobber arch=64 PASS
+  result expected=1627 actual=0
+duplicate-zero-error arch=64 FAIL
+  result expected=6 actual=0
+  exit status queried only after a completed wait
+wait-failed-error-clobber arch=64 FAIL
+  result expected=1627 actual=0
+  exit status queried only after a completed wait
+wait-failed-zero-error arch=64 FAIL
+  result expected=1627 actual=0
+  exit status queried only after a completed wait
+wait-unexpected-timeout-stale-error arch=64 FAIL
+  result expected=1627 actual=0
+  exit status queried only after a completed wait
+wait-unexpected-abandoned arch=64 FAIL
+  result expected=6 actual=4278124286
+query-failed-error-clobber arch=64 FAIL
+  result expected=1627 actual=4278124286
+query-failed-zero-error arch=64 FAIL
+success-cleanup-clobber arch=64 PASS
+failure-cleanup-clobber arch=64 PASS
+  outer Continue/Async MSI result
+  synchronous policy retains balanced COM
+policy-write-failure-type=0 arch=64 FAIL
+policy-action-success-type=0 arch=64 PASS
+policy-action-cancel-type=0 arch=64 PASS
+policy-action-no-more-items-type=0 arch=64 PASS
+policy-action-suspend-type=0 arch=64 PASS
+  synchronous policy retains balanced COM
+policy-write-failure-type=64 arch=64 FAIL
+policy-action-success-type=64 arch=64 PASS
+policy-action-cancel-type=64 arch=64 PASS
+policy-action-no-more-items-type=64 arch=64 PASS
+policy-action-suspend-type=64 arch=64 PASS
+policy-write-failure-type=128 arch=64 PASS
+policy-action-success-type=128 arch=64 PASS
+policy-action-cancel-type=128 arch=64 PASS
+policy-action-no-more-items-type=128 arch=64 PASS
+policy-action-suspend-type=128 arch=64 PASS
+policy-write-failure-type=192 arch=64 PASS
+policy-action-success-type=192 arch=64 PASS
+policy-action-cancel-type=192 arch=64 PASS
+policy-action-no-more-items-type=192 arch=64 PASS
+policy-action-suspend-type=192 arch=64 PASS
+RESULT: 56/102 passed; 46 failed

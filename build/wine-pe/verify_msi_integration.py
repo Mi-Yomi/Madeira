@@ -94,6 +94,7 @@ def check_source(stage, sealed):
                     "MSI source evidence lacks the exact reviewed single-file Wine patch")
 
 def validate(root, resources, tracked):
+    import verify_msi_client_integration as client
     root, tracked = Path(root), set(tracked)
     planner.require(RECORD in tracked, "MSI integration record must be tracked")
     record = planner.document(root, RECORD)
@@ -116,15 +117,19 @@ def validate(root, resources, tracked):
     planner.require({RECEIPT + "/" + name for name in (*sealed, "SHA256SUMS")} <= tracked,
                     "MSI receipt contains untracked evidence")
     check_source(stage, sealed)
+    replacement = client.validate(root, resources, tracked) if client.present(root) else None
     for name, entry in files.items():
         planner.require(isinstance(entry, dict) and set(entry) == {"bytes", "sha256"} and
                         "app/Madeira/" + name in tracked, "MSI resource must be tracked with exact identity: " + name)
         path = planner.safe_path(root / "app/Madeira", name)
         actual = planner.identity(path)
-        planner.require(actual == entry and resources.get(name) == actual["sha256"],
+        expected = client.CANDIDATES[name] if replacement is not None and name in client.BINARIES else entry
+        planner.require(actual == expected and resources.get(name) == actual["sha256"],
                         "MSI resource substituted or missing: " + name)
         if name in COPIES:
-            planner.require(actual == sealed[COPIES[name]], "MSI resource differs from sealed build: " + name)
+            # Historical identities remain immutable even for the exact two
+            # replacements. Their new bytes have a separate reviewed seal.
+            planner.require(entry == sealed[COPIES[name]], "MSI resource differs from sealed build: " + name)
         if name in BINARIES:
             raw = inventory.read_pe_bytes(path)
             planner.require(hashlib.sha256(raw).hexdigest() == actual["sha256"],
@@ -133,7 +138,7 @@ def validate(root, resources, tracked):
                             "Wrong architecture in MSI integration: " + name)
     baselines, combined = checked_reports(stage)
     planner.require(planner.seal(stage, REVIEWED_SEAL) == sealed, "MSI evidence changed during verification")
-    return {"baselines": baselines, "combined": combined,
+    return {"baselines": baselines, "combined": combined, "client": replacement,
             "summary": {"stage_seal_sha256": REVIEWED_SEAL, "provider_count": len(BINARIES),
                         "evidence_files": len(sealed) + 1, "residual_dependency_counts": RESIDUAL_COUNTS,
                         "runtime_tested": False, "package_ready": False, "i386_activated": False}}

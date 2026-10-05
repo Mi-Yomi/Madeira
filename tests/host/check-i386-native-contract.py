@@ -67,7 +67,7 @@ class ContractTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="i386-native-contract-")
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)
+        self.root = Path(self.tmp.name).resolve()
         self.objects, self.paths = {}, {}
 
     def run_command(self, argv, success=True):

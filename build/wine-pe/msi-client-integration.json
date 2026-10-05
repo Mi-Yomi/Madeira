@@ -1,0 +1,69 @@
+{
+  "build_seal_sha256": "55f90bf94f2a67a1c9c25bf1dbb29311e2277e2d1d996d54a8753b538cae8833",
+  "files": {
+    "aarch64-windows/msi.dll": {
+      "bytes": 1572864,
+      "sha256": "c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a"
+    },
+    "arm64ec-windows/msi.dll": {
+      "bytes": 1769472,
+      "sha256": "3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae"
+    },
+    "legal/Wine-MSI-client-INTEGRATION.md": {
+      "bytes": 2914,
+      "sha256": "aefdaee4799a4c660c7f1064f76adcd67faaa96780c535ffe5553dfc15f2ece7"
+    },
+    "legal/Wine-MSI-client-MODIFICATIONS.md": {
+      "bytes": 1242,
+      "sha256": "786cd5722955f1994b6aeaef68628164dde3a433831ea596c496e0698ba22a65"
+    },
+    "legal/Wine-MSI-client-SOURCE-REBUILD.md": {
+      "bytes": 5130,
+      "sha256": "9b671a4aa493ddfecf46169bd707c1df7c18c187c5386967efce8999b1cd7331"
+    },
+    "legal/Wine-MSI-client.patch": {
+      "bytes": 3190,
+      "sha256": "6dc3802f26e98a0cc03462b989e2d3619b74f9374d325784009c1df5a8623ebe"
+    }
+  },
+  "historical_seals": {
+    "desktop": "a0f56fd773375a2c2cc2bd76d01db0fbf28973ca1d7bf36a7dd6dbd6c9a02023",
+    "loader": "033316ebff397f5988935ecc653171c25f0341aecb856a79a2190abb6b694df5",
+    "msi": "3d748dc6f9fa84d386c79acdaf9b4952755719daa79f8ac161f1c07d27fee0fe"
+  },
+  "i386_activated": false,
+  "incremental_patch_sha256": "6dc3802f26e98a0cc03462b989e2d3619b74f9374d325784009c1df5a8623ebe",
+  "package_ready": false,
+  "receipt_directory": "build/wine-pe/receipts/msi-client-2026-10-05",
+  "replacements": {
+    "aarch64-windows/msi.dll": {
+      "after": {
+        "bytes": 1572864,
+        "sha256": "c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a"
+      },
+      "before": {
+        "bytes": 1572864,
+        "sha256": "12bbe1e84a6ef12b6775f1e081e69e404736d9be5b118fa322d989d9f1b93221"
+      }
+    },
+    "arm64ec-windows/msi.dll": {
+      "after": {
+        "bytes": 1769472,
+        "sha256": "3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae"
+      },
+      "before": {
+        "bytes": 1769472,
+        "sha256": "30fca59166929f1300d7708d45d56b401e680d0318b0ce7d7ff754987177f30d"
+      }
+    }
+  },
+  "residual_dependency_counts": {
+    "aarch64": 13,
+    "arm64ec": 10
+  },
+  "runtime_tested": false,
+  "schema_version": 1,
+  "source_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "stage_seal_sha256": "98c5adfb9a4e8bee95eadfcf390898eb7cc49059a4c436de86d29c4bfe61cc23",
+  "wine_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f"
+}

@@ -5,3 +5,4 @@ app/Madeira/legal/THIRD-PARTY-NOTICES.md -text
 build/wine-pe/receipts/desktop-2026-10-05/** -text -whitespace
 build/wine-pe/receipts/msi-2026-10-05/** -text -whitespace
 build/wine-pe/receipts/loader-2026-10-05/** -text -whitespace
+build/wine-pe/receipts/msi-client-2026-10-05/** -text -whitespace

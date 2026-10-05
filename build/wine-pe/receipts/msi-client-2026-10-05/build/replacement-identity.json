@@ -1,0 +1,77 @@
+{
+  "bitwise_reproducibility_established": false,
+  "final_source_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "guest_execution": false,
+  "incremental_baseline_source_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+  "incremental_patch_sha256": "6dc3802f26e98a0cc03462b989e2d3619b74f9374d325784009c1df5a8623ebe",
+  "installed": false,
+  "outputs": [
+    {
+      "active": false,
+      "architecture": "aarch64",
+      "bytes": 1572864,
+      "contract_unchanged": true,
+      "custom_object_sha256": "b63e601846056da98da752457b4e8a5e380162130e528da8941a67d1a7b0bb43",
+      "path": "candidate/aarch64-windows/msi.dll",
+      "replaces": {
+        "bytes": 1572864,
+        "path": "preserved-original/aarch64-windows/msi.dll",
+        "sha256": "12bbe1e84a6ef12b6775f1e081e69e404736d9be5b118fa322d989d9f1b93221"
+      },
+      "runtime_tested": false,
+      "sha256": "c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a",
+      "source_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+      "static_audit": {
+        "checked_export_forwarders": 0,
+        "checked_import_symbols": 327,
+        "exports": 296
+      }
+    },
+    {
+      "active": false,
+      "architecture": "arm64ec",
+      "bytes": 1769472,
+      "contract_unchanged": true,
+      "custom_object_sha256": "f9b7e81d65bb43fd5d24d0bb8e9c95904fe279a549e510b8a38dc8d25867544b",
+      "path": "candidate/arm64ec-windows/msi.dll",
+      "replaces": {
+        "bytes": 1769472,
+        "path": "preserved-original/arm64ec-windows/msi.dll",
+        "sha256": "30fca59166929f1300d7708d45d56b401e680d0318b0ce7d7ff754987177f30d"
+      },
+      "runtime_tested": false,
+      "sha256": "3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae",
+      "source_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+      "static_audit": {
+        "checked_export_forwarders": 0,
+        "checked_import_symbols": 328,
+        "exports": 296
+      }
+    },
+    {
+      "active": false,
+      "architecture": "i386",
+      "bytes": 1208320,
+      "contract_unchanged": true,
+      "custom_object_sha256": "4b3ab34ed2b01e0f60895dd30b436f5d8544933e45415b0317a391c0b4368ae8",
+      "path": "candidate/i386-windows/msi.dll",
+      "replaces": {
+        "bytes": 1208320,
+        "path": "preserved-original/i386-windows/msi.dll",
+        "sha256": "fe345c3ce9b2414d014c2eb98a8b82c53221d7eafdf2a57c7b24c06f713a7746"
+      },
+      "runtime_tested": false,
+      "sha256": "1fe600254f476fb48e9b9694f7b4e9ef7b7bdc1980358cc5d0727186d9dc2b23",
+      "source_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+      "static_audit": {
+        "checked_export_forwarders": 0,
+        "checked_import_symbols": 328,
+        "exports": 296
+      }
+    }
+  ],
+  "published": false,
+  "runtime_tested": false,
+  "status": "inactive-static-audited",
+  "wine_pin": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f"
+}

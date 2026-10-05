@@ -341,6 +341,10 @@ class ReviewedSourceTests(unittest.TestCase):
             stage = ROOT / integration.loader.RECEIPT
             integration.planner.seal(stage, integration.loader.REVIEWED_SEAL)
             loader_extension = integration.loader.checked_reports(stage)
+        if integration.client.present(ROOT):
+            stage = ROOT / integration.client.RECEIPT
+            integration.client.check_source(stage, integration.client.seal(stage))
+            extension["client"] = {"combined": integration.client.checked_reports(stage)}
         counts = integration.validate_farms(ROOT, ROOT / integration.RECEIPT, extension, loader_extension)
         self.assertEqual(counts, integration.msi.RESIDUAL_COUNTS if extension else integration.msi.BASELINE_COUNTS)
 

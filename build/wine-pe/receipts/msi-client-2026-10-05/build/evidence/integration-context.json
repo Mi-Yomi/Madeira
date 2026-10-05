@@ -1,0 +1,30 @@
+{
+  "read_only_snapshots": [
+    {
+      "primary_path": "madeira-graphics-bootstrap/build/wine-pe/msi-integration.json",
+      "snapshot": "evidence/integration-context/msi-integration.json",
+      "sha256": "e297de67c914ad6c28556fe228841fdd855a9a0d54a27e1cf155603799236519",
+      "bytes": 4362
+    },
+    {
+      "primary_path": "madeira-graphics-bootstrap/build/wine-pe/loader-integration.json",
+      "snapshot": "evidence/integration-context/loader-integration.json",
+      "sha256": "06c790d28a565e82daffc3ea911d0d0bb630a73e6dea1deadef69d5086ccc4a9",
+      "bytes": 1874
+    },
+    {
+      "primary_path": "madeira-graphics-bootstrap/build/wine-pe/verify_msi_integration.py",
+      "snapshot": "evidence/integration-context/verify_msi_integration.py",
+      "sha256": "f4671e37521c6d2fd3a09d51aefc55d3269f7b3ae15361d817eb03134a1d97d3",
+      "bytes": 8718
+    },
+    {
+      "primary_path": "madeira-graphics-bootstrap/build/wine-pe/verify_loader_integration.py",
+      "snapshot": "evidence/integration-context/verify_loader_integration.py",
+      "sha256": "c3d6b9384afebc9bfe6eb5cce67c8d60c4339c59bb8ffde2d6e6fea5ecc88f2b",
+      "bytes": 9503
+    }
+  ],
+  "required_action": "New explicit replacement layer/current inventory; preserve historical MSI and loader receipts and seals",
+  "i386_active": false
+}

@@ -1,0 +1,14 @@
+{
+  "fix": {
+    "changed": [],
+    "file_or_link_count": 43,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-fix-20261005",
+    "preserved": true
+  },
+  "old": {
+    "changed": [],
+    "file_or_link_count": 16911,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005",
+    "preserved": true
+  }
+}

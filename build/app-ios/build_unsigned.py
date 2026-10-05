@@ -29,6 +29,7 @@ import generate_shaders
 import verify_desktop_integration
 import verify_msi_integration
 import verify_loader_integration
+import verify_msi_client_integration
 
 CONVERTER = "d3d12/libmetalirconverter.dylib"
 CONVERTER_SHA256 = "073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2"
@@ -134,7 +135,8 @@ def resource_inputs():
     names = git("ls-files", "-z", "--", *["app/Madeira/" + n for n in (*RESOURCE_DIRS, *RESOURCE_FILES)],
                 verify_desktop_integration.RECORD, verify_desktop_integration.RECEIPT,
                 verify_msi_integration.RECORD, verify_msi_integration.RECEIPT,
-                verify_loader_integration.RECORD, verify_loader_integration.RECEIPT).split("\0")
+                verify_loader_integration.RECORD, verify_loader_integration.RECEIPT,
+                verify_msi_client_integration.RECORD, verify_msi_client_integration.RECEIPT).split("\0")
     expected = {name.removeprefix("app/Madeira/"): digest(ROOT / name) for name in names
                 if name.startswith("app/Madeira/")}
     for name in RESOURCE_FILES:
@@ -176,7 +178,10 @@ def guest_pe_evidence(pe):
     """One exact receipt contract shared with the unsigned link diagnostic."""
     has_msi = verify_msi_integration.BINARIES <= pe.keys()
     has_loader = verify_loader_integration.BINARIES <= pe.keys()
-    return {"status": ("tracked-existing-plus-reviewed-desktop-msi-and-loader" if has_loader else
+    has_client = has_msi and has_loader and all(pe.get(name) == item["sha256"]
+        for name, item in verify_msi_client_integration.CANDIDATES.items())
+    return {"status": ("tracked-existing-plus-reviewed-desktop-msi-loader-and-client-fix" if has_client else
+                       "tracked-existing-plus-reviewed-desktop-msi-and-loader" if has_loader else
                        "tracked-existing-plus-reviewed-desktop-and-msi" if has_msi else
                        "tracked-existing-plus-reviewed-source-built-desktop"),
             "sha256": pe,
@@ -188,7 +193,13 @@ def guest_pe_evidence(pe):
                                          if name in verify_msi_integration.BINARIES},
             "loader_stage_seal_sha256": verify_loader_integration.REVIEWED_SEAL if has_loader else None,
             "source_built_loader_sha256": {name: value for name, value in pe.items()
-                                            if name in verify_loader_integration.BINARIES}}
+                                            if name in verify_loader_integration.BINARIES},
+            "msi_client_stage_seal_sha256": verify_msi_client_integration.REVIEWED_SEAL if has_client else None,
+            "msi_client_source_sha256": verify_msi_client_integration.SOURCE_SHA256 if has_client else None,
+            "msi_client_before_sha256": {name: item["sha256"] for name, item in
+                                         verify_msi_client_integration.BEFORE.items()} if has_client else {},
+            "source_built_msi_client_sha256": {name: pe[name] for name in
+                                               verify_msi_client_integration.BINARIES} if has_client else {}}
 
 
 def verify_archives(native, actual, expected):

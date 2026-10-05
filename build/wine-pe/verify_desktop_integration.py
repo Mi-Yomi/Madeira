@@ -16,6 +16,7 @@ import guest_inventory as inventory
 import plan_desktop_overlay as planner
 import verify_msi_integration as msi
 import verify_loader_integration as loader
+import verify_msi_client_integration as client
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORD = "build/wine-pe/desktop-integration.json"
@@ -60,6 +61,9 @@ def validate_farms(root, stage, msi_extension=None, loader_extension=None):
             planner.require(msi_extension is not None, "Loader extension requires sealed MSI integration")
             old = loader.bind_reports(loader_extension, original, old, arch)
             required = required | loader.NAMES
+        if msi_extension is not None and msi_extension.get("client") is not None:
+            planner.require(loader_extension is not None, "MSI client requires sealed loader integration")
+            old = client.bind_reports(msi_extension["client"], old, arch)
         expected = old["modules"]
         paths = {}
         for path in planner.children(farm, inventory.MAX_FARM_FILES):
@@ -150,7 +154,8 @@ def validate(root, resources, tracked):
             "historical_dependency_counts": msi.BASELINE_COUNTS,
             "current_dependency_counts": counts,
             "msi": extension["summary"] if extension else None,
-            "loader": loader_extension["summary"] if loader_extension else None}
+            "loader": loader_extension["summary"] if loader_extension else None,
+            "msi_client": extension["client"]["summary"] if extension and extension.get("client") else None}
 
 
 def main():
@@ -160,7 +165,8 @@ def main():
     root = args.root.resolve()
     tracked = git_output(root, "ls-files", "-z", "--").split("\0")
     required = (set(COPIES) | MERGED_NOTICES | (msi.FILES if msi.present(root) else set()) |
-                (loader.FILES if loader.present(root) else set()))
+                (loader.FILES if loader.present(root) else set()) |
+                (client.FILES if client.present(root) else set()))
     resources = {name.removeprefix("app/Madeira/"): planner.identity(root / name)["sha256"]
                  for name in tracked if name.startswith("app/Madeira/") and
                  name.removeprefix("app/Madeira/") in required}
