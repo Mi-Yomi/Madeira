@@ -16,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = ROOT / "build/i386-native-contract"
@@ -30,6 +31,22 @@ def tool(variable, fallback):
     if not value:
         raise RuntimeError(f"Required trusted local tool missing: {variable}/{fallback}")
     return value
+
+
+def fixture_linker_command(linker):
+    command = [linker]
+    if Path(linker).name == "lld":
+        command += ["-flavor", "darwin"]
+    elif Path(linker).name == "ld":
+        # Apple's linker requires libSystem even for this tiny fixture. Use
+        # the selected iPhoneOS SDK, never a fake library or unresolved symbols.
+        result = subprocess.run([tool("XCRUN", "xcrun"), "--sdk", "iphoneos", "--show-sdk-path"],
+                                capture_output=True, text=True, timeout=60, check=True)
+        sdk = Path(result.stdout.strip())
+        if not sdk.is_absolute() or not (sdk / "usr/lib/libSystem.tbd").is_file():
+            raise RuntimeError("xcrun did not return an iPhoneOS SDK containing usr/lib/libSystem.tbd")
+        command += ["-syslibroot", str(sdk), "-lSystem"]
+    return command
 
 
 def structures(text, names):
@@ -95,7 +112,7 @@ class ContractTests(unittest.TestCase):
             (contract.NTDLL, "virtual.o"): """
 extern int win32u_unix_lib_init(void);
 extern const void *nsi_unix_call_funcs[], *nsi_unix_call_wow64_funcs[];
-int ios_main_image_i386;
+int ios_main_image_i386 = 0;
 static volatile unsigned long ios_wow_windows[64];
 static volatile unsigned ios_wow_window_count;
 unsigned long ios_wow_base(void) { return 0x7100000000ul; }
@@ -122,7 +139,7 @@ extern void ios_wow_window_release(void *);
 void server_test(void *p) { ios_wow_window_release(p); }
 """,
             (contract.NTDLL, "syscall.o"): """
-unsigned long KeServiceDescriptorTable[16];
+unsigned long KeServiceDescriptorTable[16] = {0};
 int KeAddSystemServiceTable(unsigned long *a, unsigned long *b, unsigned c, unsigned char *d, unsigned e)
 { KeServiceDescriptorTable[e] = (unsigned long)a + (unsigned long)b + c + (unsigned long)d; return 1; }
 """,
@@ -160,6 +177,64 @@ int nsi_get_parameter_ex(void *p) { return p != 0; }
         self.assertEqual(len(parsed), 7)
         self.assertEqual(parsed["virtual.o"], self.paths[contract.NTDLL, "virtual.o"].read_bytes())
 
+    def test_fixture_linker_commands_use_sdk_only_for_apple_ld(self):
+        sdk = self.root / "iPhoneOS.sdk"
+        library = sdk / "usr/lib/libSystem.tbd"
+        library.parent.mkdir(parents=True)
+        library.write_text("command-construction fixture only; never linked\n")
+        with mock.patch(__name__ + ".tool", return_value="/usr/bin/xcrun") as find_tool, \
+                mock.patch.object(subprocess, "run") as run:
+            for linker, expected in (("/tools/lld", ["/tools/lld", "-flavor", "darwin"]),
+                                     ("/tools/ld64.lld", ["/tools/ld64.lld"])):
+                with self.subTest(linker=linker):
+                    self.assertEqual(fixture_linker_command(linker), expected)
+            find_tool.assert_not_called()
+            run.assert_not_called()
+            run.return_value = subprocess.CompletedProcess([], 0, str(sdk) + "\n", "")
+            self.assertEqual(fixture_linker_command("/Xcode/usr/bin/ld"),
+                             ["/Xcode/usr/bin/ld", "-syslibroot", str(sdk), "-lSystem"])
+            find_tool.assert_called_once_with("XCRUN", "xcrun")
+            run.assert_called_once_with(["/usr/bin/xcrun", "--sdk", "iphoneos", "--show-sdk-path"],
+                                        capture_output=True, text=True, timeout=60, check=True)
+            for invalid in ("", "relative/iPhoneOS.sdk", str(self.root / "absent.sdk")):
+                with self.subTest(sdk=invalid):
+                    run.return_value = subprocess.CompletedProcess([], 0, invalid + "\n", "")
+                    with self.assertRaisesRegex(RuntimeError, "iPhoneOS SDK containing"):
+                        fixture_linker_command("/Xcode/usr/bin/ld")
+            library.unlink()
+            run.return_value = subprocess.CompletedProcess([], 0, str(sdk) + "\n", "")
+            with self.assertRaisesRegex(RuntimeError, "iPhoneOS SDK containing"):
+                fixture_linker_command("/Xcode/usr/bin/ld")
+            run.side_effect = subprocess.CalledProcessError(1, "xcrun", stderr="SDK unavailable")
+            with self.assertRaises(subprocess.CalledProcessError):
+                fixture_linker_command("/Xcode/usr/bin/ld")
+
+    def test_common_definitions_are_rejected(self):
+        self.fixture()
+        for member, definition, tentative, name in (
+                ("virtual.o", "int ios_main_image_i386 = 0;", "int ios_main_image_i386;", "_ios_main_image_i386"),
+                ("syscall.o", "unsigned long KeServiceDescriptorTable[16] = {0};",
+                 "unsigned long KeServiceDescriptorTable[16];", "_KeServiceDescriptorTable")):
+            with self.subTest(symbol=name):
+                key = (contract.NTDLL, member)
+                source = (self.paths[key].parent / (member + ".c")).read_text()
+                # Explicit initializers stay section definitions with Apple's
+                # common default; deliberate tentative definitions must fail.
+                self.compile(key, source, ["-fcommon"])
+                contract.Contract(self.objects).validate()
+                strong = self.objects[key]
+                self.assertIn(definition, source)
+                self.compile(key, source.replace(definition, tentative), ["-fcommon"])
+                symbol, = [s for s in self.objects[key].symbols if s.name == name]
+                self.assertTrue(symbol.external)
+                self.assertEqual(symbol.kind & 0xe, 0)
+                self.assertEqual(symbol.section, 0)
+                self.assertGreater(symbol.address, 0)
+                self.assertFalse(symbol.defined)
+                with self.assertRaisesRegex(ValueError, "missing/duplicate external definition: " + name):
+                    contract.Contract(self.objects).validate()
+                self.objects[key] = strong
+
     def test_undefined_wrong_owner_and_duplicate_do_not_count(self):
         evidence = self.fixture()
         bad = dict(self.objects)
@@ -180,14 +255,14 @@ int nsi_get_parameter_ex(void *p) { return p != 0; }
         key = (contract.NTDLL, "virtual.o")
         obj = self.objects[key]
         source = (self.paths[key].parent / "virtual.o.c").read_text()
-        self.compile(key, source.replace("int ios_main_image_i386;", "__attribute__((weak)) int ios_main_image_i386;"))
+        self.compile(key, source.replace("int ios_main_image_i386 = 0;", "__attribute__((weak)) int ios_main_image_i386 = 0;"))
         with self.assertRaisesRegex(ValueError, "weak definition"):
             contract.Contract(self.objects).validate()
         self.objects[key] = MachO(obj.data.replace(b"_ios_wow_windows\0", b"_bad_wow_windows\0"), "fallback-without-registry")
         with self.assertRaisesRegex(ValueError, "section definition _ios_wow_windows"):
             contract.Contract(self.objects).validate()
         self.objects[key] = obj
-        self.compile((contract.NTDLL, "unrenamed.o"), "void *__wine_unix_call_wow64_funcs[1];")
+        self.compile((contract.NTDLL, "unrenamed.o"), "void *__wine_unix_call_wow64_funcs[1] = {0};")
         with self.assertRaisesRegex(ValueError, "unrenamed unixlib"):
             contract.Contract(self.objects).validate()
 
@@ -244,9 +319,7 @@ int main(void) { server_test((void *)1); return fex_test_execute() + load_test((
             self.run_command([self.ar, "rcs", target, *[p for k, p in self.paths.items() if k[0] == archive]])
             archives.append(target)
         image, link_map = self.root / "fixture-image", self.root / "fixture.map"
-        linker = [self.linker]
-        if Path(self.linker).name == "lld":
-            linker += ["-flavor", "darwin"]
+        linker = fixture_linker_command(self.linker)
         self.run_command([*linker, "-arch", "arm64", "-platform_version", "ios", "17.0", "17.0",
                           "-dead_strip", "-e", "_main", "-map", link_map, "-o", image, main, bridge, *archives])
         evidence = contract.Contract(self.objects)

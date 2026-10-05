@@ -4,7 +4,7 @@
 import importlib.util
 import io
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import struct
 import tarfile
 import tempfile
@@ -392,6 +392,42 @@ with tempfile.TemporaryDirectory() as folder:
     assert not result['complete'] and result['status'] == 'incomplete'
     assert result['checks'][0]['reason'] == 'forwarder/API-set depth limit'
     checks += 1
+
+for path in [PureWindowsPath(r'C:\Program Files\Microsoft Visual Studio\18\Enterprise\cl.exe'),
+             PureWindowsPath(r'C:\Program Files (x86)\Windows Kits\10\bin\rc.exe')]:
+    assert p.cmake_path(path) == str(path).replace('\\', '/')
+    checks += 1
+for path in [PureWindowsPath(r'relative\cl.exe'), PureWindowsPath(r'C:\unsafe;path\cl.exe'),
+             PureWindowsPath('C:\\unsafe\npath\\cl.exe'), PureWindowsPath(r'C:\${unsafe}\cl.exe'),
+             Path('/tmp/literal\\backslash')]:
+    reject(lambda path=path: p.cmake_path(path), 'unsafe/relative CMake tool path')
+with tempfile.TemporaryDirectory() as folder:
+    class ExportRun:
+        def __init__(self):
+            self.work = Path(folder).resolve()
+            self.calls = []
+
+        def command(self, name, argv, env, timeout):
+            self.calls.append((name, argv))
+            assert timeout == 180 and env == {'fixture': 'inert'}
+            for key, tool in [('CMAKE_CXX_COMPILER', 'cl'), ('CMAKE_MAKE_PROGRAM', 'nmake'),
+                              ('CMAKE_RC_COMPILER', 'rc'), ('CMAKE_MT', 'mt')]:
+                expected = '-D' + key + '=' + tools[tool].as_posix()
+                assert argv.count(expected) == 1 and '\\' not in expected
+            generated = (self.work / (name + '-source/CMakeLists.txt')).read_text()
+            assert 'C:/LLVM SDK/lib/cmake/llvm/LLVMExports.cmake' in generated
+            assert not any(marker in generated for marker in ['@SDK@', '@TARGETS@', '@PROBE@'])
+            return 0, ''
+
+    tools = {name: PureWindowsPath(r'C:\Program Files\Trusted Tools') / (name + '.exe')
+             for name in ['cmake', 'cl', 'nmake', 'rc', 'mt']}
+    runner = ExportRun()
+    for name in ['export-fixture', 'sdk-exports']:
+        build = p.configure_exports(runner, tools, {'fixture': 'inert'}, PureWindowsPath(r'C:\LLVM SDK'),
+                                    ['LLVMSupport'], name)
+        assert build == runner.work / (name + '-build')
+        checks += 1
+    assert len(runner.calls) == 2
 
 assert p.cmake_value('set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded)\n', 'CMAKE_MSVC_RUNTIME_LIBRARY') == 'MultiThreaded'
 checks += 1

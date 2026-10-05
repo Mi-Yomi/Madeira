@@ -528,6 +528,15 @@ def split_exported_properties(text):
     return values[:index], values[index + 1:]
 
 
+def cmake_path(path):
+    # CMake may write cache values into quoted generated source. Windows
+    # backslashes such as C:\\Program Files must not become CMake escapes.
+    value = path.as_posix()
+    require(path.is_absolute() and not any(c in value for c in '\\";\n\r$\0'),
+            'Unsafe or relative generated CMake path')
+    return value
+
+
 def configure_exports(runner, tools, env, sdk, targets, name):
     source, build = runner.work / (name + '-source'), runner.work / (name + '-build')
     source.mkdir()
@@ -535,14 +544,12 @@ def configure_exports(runner, tools, env, sdk, targets, name):
     target_file.write_text('\n'.join(targets) + '\n')
     cmake_text = (HERE / 'inspect_exports.cmake.in').read_text()
     for key, value in {'SDK': sdk, 'TARGETS': target_file, 'PROBE': HERE / 'abi_jit_probe.cpp'}.items():
-        value = value.as_posix()
-        require(not any(c in value for c in '";\n\r$'), 'Unsafe generated CMake path')
-        cmake_text = cmake_text.replace('@' + key + '@', value)
+        cmake_text = cmake_text.replace('@' + key + '@', cmake_path(value))
     (source / 'CMakeLists.txt').write_text(cmake_text)
     runner.command(name, [tools['cmake'], '-S', source, '-B', build,
         '-G', 'NMake Makefiles', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded',
-        '-DCMAKE_CXX_COMPILER=' + str(tools['cl']), '-DCMAKE_MAKE_PROGRAM=' + str(tools['nmake']),
-        '-DCMAKE_RC_COMPILER=' + str(tools['rc']), '-DCMAKE_MT=' + str(tools['mt']),
+        '-DCMAKE_CXX_COMPILER=' + cmake_path(tools['cl']), '-DCMAKE_MAKE_PROGRAM=' + cmake_path(tools['nmake']),
+        '-DCMAKE_RC_COMPILER=' + cmake_path(tools['rc']), '-DCMAKE_MT=' + cmake_path(tools['mt']),
         '-DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF', '-DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY=OFF',
         '-DCMAKE_FIND_USE_PACKAGE_ROOT_PATH=OFF'], env, 180)
     return build

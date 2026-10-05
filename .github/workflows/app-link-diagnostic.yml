@@ -91,6 +91,8 @@ jobs:
           python3 tests/host/check-crypto-link-tables.py
       - name: Exercise native contract fixtures with installed Apple tools
         timeout-minutes: 2
+        # Strong fixture definitions mirror production; Apple ld links the
+        # selected iPhoneOS SDK's real libSystem before map verification.
         run: |
           CLANG="$(xcrun --sdk iphoneos --find clang)" \
           LLVM_AR="$(xcrun --find ar)" \
