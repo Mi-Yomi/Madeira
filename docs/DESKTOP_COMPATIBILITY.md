@@ -208,8 +208,10 @@ Concrete source gaps found:
 - Clipboard integration and printing are not established. The i386 build
   excludes `wineps.drv`; there is no CUPS Unix backend
 - A launcher which exits after starting a child may end the session. The
-  existing `MADEIRA_WAIT_CHILDREN=1` workaround is opt-in because stale child
-  slots can leave a session waiting indefinitely
+  existing `MADEIRA_WAIT_CHILDREN=1` option remains opt-in; child tracking is
+  heuristic and a genuinely live background child can keep it waiting. The
+  worker-thread exit bookkeeping fix and host-test limits are described in
+  [Launcher child lifetime](DESKTOP_CHILD_LIFETIME.md)
 
 Acceptance sequence:
 

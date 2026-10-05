@@ -25,6 +25,7 @@
 #include "config.h"
 
 #ifdef WINE_IOS
+#include "child_lifetime_ios.h"
 #include <os/log.h>
 #include <pthread.h>
 #include <dlfcn.h>
@@ -322,6 +323,7 @@ static void ios_register_proc_socket(void *peb_id, int fd)
     ios_proc_sockets[idx].exiting = FALSE;
     __sync_synchronize();
     ios_proc_sockets[idx].peb = peb_id;
+    madeira_child_lifetime_bind( peb_id );
 }
 #endif
 static _Thread_local int initial_cwd = -1;
@@ -3585,52 +3587,71 @@ static int init_thread_pipe(void)
  */
 void process_exit_wrapper( int status )
 {
+    volatile int final_status = status;
 #ifdef WINE_IOS
     /* Close THIS pseudo-process's master socket — the EOF is how wineserver
      * learns the process died (signals its process object, wakes waiters).
      * Clear the registry slot so a stray second call can't double-close. */
-    int i = ios_proc_socket_index();
+    volatile int i = ios_proc_socket_index();
     if (i >= 0)
     {
         extern void ios_jit_reclaim_process( void *peb );
         extern void ios_retire_own_fixed_base_image( void *peb );
         void *dead_peb = ios_proc_sockets[i].peb;
-        wine_log_write("[Wine ntdll/server] process_exit_wrapper(%d): closing child fd_socket=%d",
-                       status, ios_proc_sockets[i].fd);
-        /* ml987: hand back the fixed-base main image BEFORE the socket closes.
-         * NtUnmapViewOfSection needs a live server connection, and this is the
-         * last moment we have one while still on the owning process's thread. */
-        ios_retire_own_fixed_base_image( dead_peb );
-        ios_fdt_note_close( ios_proc_sockets[i].fd, "exit-master", dead_peb );
-        close( ios_proc_sockets[i].fd );
-        ios_proc_sockets[i].peb = NULL;
-        /* ml571: drop this pseudo-process's fd cache and close what it held.
-         * Must happen on the SAME identity used to key it, and before the JIT
-         * reclaim below reuses anything. */
+        uint64_t child_lifetime = madeira_child_lifetime_begin_exit( dead_peb );
+        struct madeira_child_exit_scope scope;
+        madeira_child_exit_scope_prepare( &scope, child_lifetime );
+        /* Image retirement can enter a server call that abort_thread()s.
+         * Keep this owner's pin until normal cleanup or owner termination;
+         * an unrelated boot-thread fallback must never drop it. */
+        pthread_cleanup_push( madeira_child_exit_scope_cleanup, &scope );
+        if (!setjmp( scope.jump ))
         {
-            extern void ios_fd_cache_release( void *peb );
-            ios_fd_cache_release( dead_peb );
+            madeira_child_exit_scope_enter( &scope );
+            wine_log_write("[Wine ntdll/server] process_exit_wrapper(%d): closing child fd_socket=%d",
+                           status, ios_proc_sockets[i].fd);
+            /* ml987: hand back the fixed-base main image BEFORE the socket closes.
+             * NtUnmapViewOfSection needs a live server connection, and this is the
+             * last moment we have one while still on the owning process's thread. */
+            ios_retire_own_fixed_base_image( dead_peb );
+            ios_fdt_note_close( ios_proc_sockets[i].fd, "exit-master", dead_peb );
+            close( ios_proc_sockets[i].fd );
+            ios_proc_sockets[i].peb = NULL;
+            /* ml571: drop this pseudo-process's fd cache and close what it held.
+             * Must happen on the SAME identity used to key it, and before the JIT
+             * reclaim below reuses anything. */
+            {
+                extern void ios_fd_cache_release( void *peb );
+                ios_fd_cache_release( dead_peb );
+            }
+            /* Task #25: release this pseudo-process's JIT pool allocations
+             * (module copies, trampolines, FEX CodeBuffers). Children only —
+             * the session (else-branch) lives as long as the app. Reuse is
+             * grace-delayed inside the allocator for laggard exit threads. */
+            ios_jit_reclaim_process( dead_peb );
+            /* and its guest window, if it had one.  Here rather
+             * than only in ios_child_thread_entry because THIS is the chokepoint
+             * every pseudo-process exit reaches, on whichever thread called
+             * ExitProcess — a guest worker thread that ends the process does not
+             * return to the boot thread's setjmp at all.  Keyed by the dying PEB,
+             * not by the calling thread.  Nothing is unmapped here; see
+             * ios_wow_window_mark_released(). */
+            ios_wow_window_release( dead_peb );
+            /* ml988 phase 2: only now may the retired fixed base be handed on. Until
+             * this point the old generation's pool mappings and FEX translations are
+             * still live, so a new claimant taking the same VA would race them. */
+            {
+                extern void ios_exe_win_mark_ready( void *peb );
+                ios_exe_win_mark_ready( dead_peb );
+            }
         }
-        /* Task #25: release this pseudo-process's JIT pool allocations
-         * (module copies, trampolines, FEX CodeBuffers). Children only —
-         * the session (else-branch) lives as long as the app. Reuse is
-         * grace-delayed inside the allocator for laggard exit threads. */
-        ios_jit_reclaim_process( dead_peb );
-        /* and its guest window, if it had one.  Here rather
-         * than only in ios_child_thread_entry because THIS is the chokepoint
-         * every pseudo-process exit reaches, on whichever thread called
-         * ExitProcess — a guest worker thread that ends the process does not
-         * return to the boot thread's setjmp at all.  Keyed by the dying PEB,
-         * not by the calling thread.  Nothing is unmapped here; see
-         * ios_wow_window_mark_released(). */
-        ios_wow_window_release( dead_peb );
-        /* ml988 phase 2: only now may the retired fixed base be handed on. Until
-         * this point the old generation's pool mappings and FEX translations are
-         * still live, so a new claimant taking the same VA would race them. */
-        {
-            extern void ios_exe_win_mark_ready( void *peb );
-            ios_exe_win_mark_ready( dead_peb );
-        }
+        else final_status = scope.status;
+        /* Finish the owner's pin after cleanup, or after an intercepted exit
+         * permanently abandons it. The latter does not retry resource cleanup.
+         * Restore the previous scope before forwarding wine_ios_exit: never
+         * longjmp across a registered pthread handler. The saved generation
+         * remains safe even if the PEB is reused meanwhile. */
+        pthread_cleanup_pop( 1 );
     }
     else
     {
@@ -3646,8 +3667,8 @@ void process_exit_wrapper( int status )
 #else
     close( fd_socket );
 #endif
-    wine_log_write("[Wine ntdll/server] process_exit_wrapper(%d)", status );
-    exit( status );  /* on iOS, wine_ios_exit shim longjmps back to wine_process_thread */
+    wine_log_write("[Wine ntdll/server] process_exit_wrapper(%d)", final_status );
+    exit( final_status );  /* on iOS, wine_ios_exit shim longjmps back to wine_process_thread */
 }
 
 

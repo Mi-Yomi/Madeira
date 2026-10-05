@@ -64,6 +64,7 @@
 #include <pthread.h>
 #include <setjmp.h>
 #include <sys/stat.h>
+#include "child_lifetime_ios.h"
 #endif
 
 #include "ntstatus.h"
@@ -423,7 +424,7 @@ struct ios_child_args {
     char **argv;
     int argc;
     struct pe_image_info pe_info;
-    int slot;   /* ios_child_slots index, -1 = none */
+    uint64_t lifetime;   /* generation token, 0 = not tracked */
 };
 
 /* Pseudo-process children that are still running. A launcher stub that
@@ -431,12 +432,22 @@ struct ios_child_args {
  * GTA5_Enhanced.exe and exits ~1 s later) ended the whole session: the main
  * process's exit stops the wineserver, and the game died loading.
  * WineProcessBridge asks madeira_live_game_children() after the main process
- * exits and keeps the session while such a child runs. Crash reporters and
+ * exits and can opt in to keeping the session while such a child runs. Slots
+ * follow the process, not its boot pthread: ExitProcess on a worker thread
+ * does not return through ios_child_thread_entry's setjmp. server_ios.c
+ * captures and pins the PEB's token before teardown and releases it after
+ * cleanup, or when its owner permanently unwinds/terminates during cleanup.
+ * Entry-thread cleanup cannot drop that pin while a worker still needs the
+ * server for teardown.
+ * Generation tokens prevent the later boot-thread cleanup from releasing a
+ * slot that has already been reused for a new child. Crash reporters and
  * helpers (crs-handler, crashpad, *helper*, *report*) do not count: they live
  * as long as the game and used to end with it. */
 #define IOS_CHILD_SLOTS 32
 static pthread_mutex_t ios_child_lock = PTHREAD_MUTEX_INITIALIZER;
-static struct { char name[64]; double started; int used; } ios_child_slots[IOS_CHILD_SLOTS];
+static struct { char name[64]; double started; void *peb; uint64_t token; int exiting; } ios_child_slots[IOS_CHILD_SLOTS];
+static uint64_t ios_child_next_token;
+static _Thread_local uint64_t ios_child_current_token;
 
 static double ios_child_now(void)
 {
@@ -453,11 +464,11 @@ static int ios_child_is_helper( const char *name )
     return 0;
 }
 
-static int ios_child_slot_take( const UNICODE_STRING *image )
+static uint64_t ios_child_slot_take( const UNICODE_STRING *image )
 {
     char name[64];
     unsigned i, n = 0, start = 0, len = image->Length / sizeof(WCHAR);
-    int slot = -1;
+    uint64_t token = 0;
 
     for (i = 0; i < len; i++) if (image->Buffer[i] == '\\' || image->Buffer[i] == '/') start = i + 1;
     for (i = start; i < len && n < sizeof(name) - 1; i++)
@@ -470,23 +481,112 @@ static int ios_child_slot_take( const UNICODE_STRING *image )
     pthread_mutex_lock( &ios_child_lock );
     for (i = 0; i < IOS_CHILD_SLOTS; i++)
     {
-        if (ios_child_slots[i].used) continue;
-        ios_child_slots[i].used = 1;
+        if (ios_child_slots[i].token) continue;
+        /* Never wrap into a token that a delayed cleanup might still hold. */
+        if (ios_child_next_token == UINT64_MAX) break;
+        token = ++ios_child_next_token;
+        ios_child_slots[i].token = token;
+        ios_child_slots[i].peb = NULL;
+        ios_child_slots[i].exiting = 0;
         ios_child_slots[i].started = ios_child_now();
         memcpy( ios_child_slots[i].name, name, n + 1 );
-        slot = i;
         break;
     }
     pthread_mutex_unlock( &ios_child_lock );
-    return slot;
+    return token;
 }
 
-static void ios_child_slot_release( int slot )
+void madeira_child_lifetime_bind( void *peb )
 {
-    if (slot < 0 || slot >= IOS_CHILD_SLOTS) return;
+    unsigned i;
+    if (!peb || !ios_child_current_token) return;
     pthread_mutex_lock( &ios_child_lock );
-    ios_child_slots[slot].used = 0;
+    for (i = 0; i < IOS_CHILD_SLOTS; i++)
+        if (ios_child_slots[i].token == ios_child_current_token)
+        {
+            if (!ios_child_slots[i].exiting) ios_child_slots[i].peb = peb;
+            break;
+        }
     pthread_mutex_unlock( &ios_child_lock );
+}
+
+uint64_t madeira_child_lifetime_begin_exit( void *peb )
+{
+    uint64_t token = 0;
+    unsigned i;
+    if (!peb) return 0;
+    pthread_mutex_lock( &ios_child_lock );
+    for (i = 0; i < IOS_CHILD_SLOTS; i++)
+        if (ios_child_slots[i].token && ios_child_slots[i].peb == peb)
+        {
+            token = ios_child_slots[i].token;
+            ios_child_slots[i].exiting = 1;
+            ios_child_slots[i].peb = NULL;
+            break;
+        }
+    pthread_mutex_unlock( &ios_child_lock );
+    return token;
+}
+
+static void ios_child_lifetime_release( uint64_t token, int exiting )
+{
+    unsigned i;
+    if (!token) return;
+    pthread_mutex_lock( &ios_child_lock );
+    for (i = 0; i < IOS_CHILD_SLOTS; i++)
+        if (ios_child_slots[i].token == token)
+        {
+            if (ios_child_slots[i].exiting == exiting)
+            {
+                ios_child_slots[i].token = 0;
+                ios_child_slots[i].peb = NULL;
+                ios_child_slots[i].exiting = 0;
+            }
+            break;
+        }
+    pthread_mutex_unlock( &ios_child_lock );
+}
+
+void madeira_child_lifetime_release( uint64_t token )
+{
+    ios_child_lifetime_release( token, 0 );
+}
+
+void madeira_child_lifetime_finish_exit( uint64_t token )
+{
+    ios_child_lifetime_release( token, 1 );
+}
+
+static _Thread_local struct madeira_child_exit_scope *ios_child_exit_scope;
+
+void madeira_child_exit_scope_prepare( struct madeira_child_exit_scope *scope, uint64_t token )
+{
+    scope->previous = ios_child_exit_scope;
+    scope->token = token;
+    scope->status = 0;
+}
+
+void madeira_child_exit_scope_enter( struct madeira_child_exit_scope *scope )
+{
+    ios_child_exit_scope = scope;
+}
+
+void madeira_child_exit_scope_cleanup( void *arg )
+{
+    struct madeira_child_exit_scope *scope = arg;
+    if (ios_child_exit_scope == scope) ios_child_exit_scope = scope->previous;
+    madeira_child_lifetime_finish_exit( scope->token );
+}
+
+/* Called only before wine_ios_exit's longjmp. Other abrupt thread exits are
+ * handled by pthread cleanup. This is not a guard for arbitrary longjmp,
+ * asynchronous signal handlers, or fatal termination of the host process. */
+void madeira_child_lifetime_redirect_exit( int status )
+{
+    struct madeira_child_exit_scope *scope = ios_child_exit_scope;
+    if (!scope) return;
+    scope->status = status;
+    longjmp( scope->jump, 1 );
 }
 
 /* Children still running that are not helpers, started at most max_age
@@ -502,7 +602,7 @@ int madeira_live_game_children( char *buf, int len, double max_age )
     pthread_mutex_lock( &ios_child_lock );
     for (i = 0; i < IOS_CHILD_SLOTS; i++)
     {
-        if (!ios_child_slots[i].used || ios_child_is_helper( ios_child_slots[i].name )) continue;
+        if (!ios_child_slots[i].token || ios_child_is_helper( ios_child_slots[i].name )) continue;
         if (max_age >= 0 && now - ios_child_slots[i].started > max_age) continue;
         count++;
         if (buf && len - used > 1)
@@ -531,6 +631,7 @@ _Thread_local const char *ios_child_boot_stage = "not started";
 static void *ios_child_thread_entry( void *arg )
 {
     struct ios_child_args *args = arg;
+    ios_child_current_token = args->lifetime;
 
     /* An IL-only .NET image without 32BITREQUIRED runs as a native process: the
      * server and exec_wineloader both promote it, so it must not get a guest
@@ -575,7 +676,8 @@ static void *ios_child_thread_entry( void *arg )
      * back to the slot is the owner-thread match in ios_wow_slot_current().
      * It is a no-op once the window has been released. */
     ios_wow_window_release_current();
-    ios_child_slot_release( args->slot );
+    madeira_child_lifetime_release( args->lifetime );
+    ios_child_current_token = 0;
     free( args->argv );
     free( args );
 
@@ -622,7 +724,7 @@ static NTSTATUS spawn_process( const RTL_USER_PROCESS_PARAMETERS *params, int so
     args->argv = argv;
     args->argc = argc;
     args->pe_info = *pe_info;
-    args->slot = ios_child_slot_take( &params->ImagePathName );
+    args->lifetime = ios_child_slot_take( &params->ImagePathName );
 
     if (winedebug) putenv( winedebug );
 
@@ -632,7 +734,7 @@ static NTSTATUS spawn_process( const RTL_USER_PROCESS_PARAMETERS *params, int so
     ret = pthread_create( &child_thread, NULL, ios_child_thread_entry, args );
     if (ret) {
         ERR("spawn_process: pthread_create failed: %d\n", ret);
-        ios_child_slot_release( args->slot );
+        madeira_child_lifetime_release( args->lifetime );
         free( argv );
         free( args );
         return STATUS_NO_MEMORY;

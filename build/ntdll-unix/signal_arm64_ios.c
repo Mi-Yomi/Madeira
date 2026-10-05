@@ -73,6 +73,7 @@
 #include <pthread/pthread.h>
 #include <pthread/qos.h>
 #include <fcntl.h>
+#include "ios_jit_dump.h"
 #endif
 #ifdef HAVE_SYS_PARAM_H
 # include <sys/param.h>
@@ -1396,6 +1397,70 @@ static int ios_x18_derived_base( uint64_t fault_pc, int rn )
     if ((p & 0xff800000u) == 0x91000000u) return pn == 18;                       /* ADD Xd, X18, #imm */
     if ((p & 0xffffffe0u) == (0xaa0003e0u | (18u << 16))) return 1;              /* MOV Xd, X18 */
     return 0;
+}
+
+/* Port of upstream ml1242's opt-in/sparse JIT diagnostics, with bounded I/O.
+ * Preparation is once per HOST app run, before either handler is installed.
+ * Changing diagnostic settings takes effect after restarting the app. */
+static struct ios_jit_dump_policy ios_jit_dump_policy;
+static unsigned int ios_jit_dump_state;
+static pthread_once_t ios_jit_dump_once = PTHREAD_ONCE_INIT;
+
+static void ios_init_jit_dump_policy(void)
+{
+    const char *enabled = getenv( "MADEIRA_JIT_DUMP" ); /* 1: opt-in sparse JIT capture; off by default; restart app; may contain private guest memory */
+    const char *max_mb = getenv( "MADEIRA_JIT_DUMP_MAX_MB" ); /* JIT capture prefix cap in MiB, 1-1024; default 16; restart app; larger captures cost I/O and memory */
+    ios_jit_dump_prepare( &ios_jit_dump_policy, enabled, max_mb,
+                          getenv( "MADEIRA_DOCS_DIR" ), vm_page_size );
+    __atomic_store_n( &ios_jit_dump_state, IOS_JIT_DUMP_READY, __ATOMIC_RELEASE );
+}
+
+/* A single bounded metadata line, without stdio, allocation or pool contents.
+ * Existing fault/register/stack diagnostics and exception delivery are intact. */
+static void ios_jit_dump_append( char *line, size_t *len, const char *text )
+{
+    while (*text && *len < 255) line[(*len)++] = *text++;
+}
+
+static void ios_jit_dump_number( char *line, size_t *len, size_t value )
+{
+    char digits[3 * sizeof(size_t)];
+    size_t n = 0;
+    do { digits[n++] = '0' + value % 10; value /= 10; } while (value);
+    while (n && *len < 255) line[(*len)++] = digits[--n];
+}
+
+static void ios_dump_jit_pool( const char *why )
+{
+    extern void *ios_jit_rw_base_global;
+    extern size_t ios_jit_pool_size_global;
+    int saved_errno = errno;
+    struct ios_jit_dump_result r = ios_jit_dump_capture( &ios_jit_dump_policy,
+            &ios_jit_dump_state, ios_jit_rw_base_global, ios_jit_pool_size_global );
+    if (r.attempted)
+    {
+        char line[256];
+        size_t len = 0;
+        ios_jit_dump_append( line, &len, "[jit-dump] " );
+        ios_jit_dump_append( line, &len, why );
+        ios_jit_dump_append( line, &len, ": " );
+        ios_jit_dump_append( line, &len, r.status );
+        ios_jit_dump_append( line, &len, " written=" );
+        ios_jit_dump_number( line, &len, r.written_bytes );
+        ios_jit_dump_append( line, &len, " logical=" );
+        ios_jit_dump_number( line, &len, r.logical_bytes );
+        ios_jit_dump_append( line, &len, " pool=" );
+        ios_jit_dump_number( line, &len, r.pool_bytes );
+        ios_jit_dump_append( line, &len, " queries=" );
+        ios_jit_dump_number( line, &len, r.query_calls );
+        ios_jit_dump_append( line, &len, " writes=" );
+        ios_jit_dump_number( line, &len, r.write_calls );
+        ios_jit_dump_append( line, &len, " errno=" );
+        ios_jit_dump_number( line, &len, r.error );
+        line[len++] = '\n';
+        write( STDERR_FILENO, line, len );
+    }
+    errno = saved_errno;
 }
 
 static void *ios_mach_exception_thread( void *arg )
@@ -5309,47 +5374,8 @@ skip_reclaim_band: ;
                             fp_walk = frame_buf[0];
                         }
                     }
-                    /* One-shot dump: on the first UNHANDLED exec fault, dump the
-                     * JIT-pool RW alias contents around the relevant FEX CodeBuffer
-                     * slots to a file. Lets us disassemble FEX-emitted ARM64 offline
-                     * to verify codegen correctness independently. */
-                    static volatile int dumped = 0;
-                    if (cnt == 1 && __sync_bool_compare_and_swap(&dumped, 0, 1))
-                    {
-                        extern void *ios_jit_rw_base_global;
-                        extern size_t ios_jit_pool_size_global;
-                        if (ios_jit_rw_base_global && ios_jit_pool_size_global)
-                        {
-                            const char *docs = getenv("MADEIRA_DOCS_DIR");
-                            char path[512];
-                            if (docs)
-                                snprintf(path, sizeof(path), "%s/fex-jit-dump.bin", docs);
-                            else
-                                snprintf(path, sizeof(path), "/tmp/fex-jit-dump.bin");
-                            int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                            if (fd >= 0)
-                            {
-                                /* Dump the entire JIT pool RW alias. ~128MB but
-                                 * mostly zero. Compresses well; helpful to scan
-                                 * any populated region. */
-                                ssize_t off = 0;
-                                size_t total = ios_jit_pool_size_global;
-                                while ((size_t)off < total)
-                                {
-                                    ssize_t n = write(fd, (char*)ios_jit_rw_base_global + off,
-                                                       total - off > 0x10000 ? 0x10000 : total - off);
-                                    if (n <= 0) break;
-                                    off += n;
-                                }
-                                close(fd);
-                                dprintf(STDERR_FILENO, "[mach_exc] DUMPED JIT pool RW alias (%zd bytes) to %s rev=ml347\n", off, path);
-                            }
-                            else
-                            {
-                                dprintf(STDERR_FILENO, "[mach_exc] DUMP open failed errno=%d path=%s\n", errno, path);
-                            }
-                        }
-                    }
+                    /* A single opt-in attempt shared with SIGILL; disabled by default. */
+                    if (cnt == 1) ios_dump_jit_pool( "mach UNHANDLED" );
                     /* Diagnostic: query the kernel for what VM region the fault PC lives in.
                      * Helps identify mystery regions (e.g. JIT pool guard zone, wineserver heap). */
                     if (cnt <= 3)
@@ -5880,6 +5906,8 @@ static void ios_install_task_exception_port(void)
 static void ios_setup_mach_exception_handler( thread_t pe_thread, uintptr_t teb,
                                                void *trampoline )
 {
+    pthread_once( &ios_jit_dump_once, ios_init_jit_dump_policy );
+
     /* One-time initialization: create shared port and handler thread */
     if (!ios_exc_handler_started)
     {
@@ -10216,34 +10244,8 @@ static void ill_handler( int signal, siginfo_t *siginfo, void *sigcontext )
                         (unsigned long long)rec[4], (unsigned long long)rec[5]);
             }
         }
-        /* iOS-Madeira: also dump JIT pool here (the Mach UNHANDLED path may not
-         * fire for ILL since we deliver via setup_exception). One-shot. */
-        {
-            static volatile int ill_dumped = 0;
-            if (__sync_bool_compare_and_swap(&ill_dumped, 0, 1)) {
-                extern void *ios_jit_rw_base_global;
-                extern size_t ios_jit_pool_size_global;
-                if (ios_jit_rw_base_global && ios_jit_pool_size_global) {
-                    const char *docs = getenv("MADEIRA_DOCS_DIR");
-                    char path[512];
-                    if (docs) snprintf(path, sizeof(path), "%s/fex-jit-dump.bin", docs);
-                    else      snprintf(path, sizeof(path), "/tmp/fex-jit-dump.bin");
-                    int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                    if (fd >= 0) {
-                        ssize_t off = 0;
-                        size_t total = ios_jit_pool_size_global;
-                        while ((size_t)off < total) {
-                            ssize_t n = write(fd, (char*)ios_jit_rw_base_global + off,
-                                              total - off > 0x10000 ? 0x10000 : total - off);
-                            if (n <= 0) break;
-                            off += n;
-                        }
-                        close(fd);
-                        ERR("ILL diag: DUMPED JIT pool RW alias (%zd bytes) to %s\n", off, path);
-                    }
-                }
-            }
-        }
+        /* SIGILL may bypass Mach UNHANDLED; both use the same one-shot guard. */
+        ios_dump_jit_pool( "ILL diag" );
     }
 #endif
 
@@ -12962,6 +12964,8 @@ void signal_init_process(void)
     signal_alloc_thread( NtCurrentTeb() );
 
 #ifdef WINE_IOS
+    pthread_once( &ios_jit_dump_once, ios_init_jit_dump_policy );
+
     /* Create TLS key for TEB storage (used by x18 binary patcher trampolines) */
     if (!ios_teb_tls_key_created)
     {

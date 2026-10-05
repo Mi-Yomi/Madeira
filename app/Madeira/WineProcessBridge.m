@@ -1606,8 +1606,10 @@ static void *wine_process_thread(void *arg) {
          * no such child is left (process_ios.c, madeira_live_game_children).
          * A game that exits normally long after starting its helpers is not
          * affected. Opt-in, MADEIRA_WAIT_CHILDREN=1 (madeira.cfg, or a game's
-         * own config): a child that ends from a worker thread never releases its
-         * slot (process_ios.c), and the session would then wait forever. */
+         * own config). Child slots are released by the common process-exit
+         * path, including worker-thread exits. Keep this opt-in: the helper
+         * name/age heuristic is not a complete descendant-process tree, and
+         * a live background child can intentionally keep the session open. */
         {
             extern int madeira_live_game_children(char *buf, int len, double max_age);
             const char *wc = getenv("MADEIRA_WAIT_CHILDREN");

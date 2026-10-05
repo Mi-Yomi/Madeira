@@ -644,36 +644,40 @@ enum StikJITHelper {
         // now needs. The alias has no placement requirement of its own (FEX
         // derives WriteOffset from the real distance), so send it high, where it
         // lived in every run before ml977, and keep the scarce low gap for RX.
-        rwAddr = 0x7000000000
-        var kr1 = vm_remap(
-            mach_task_self_,
-            &rwAddr,
-            vm_size_t(poolSize),
-            0,
-            VM_FLAGS_ANYWHERE,
-            mach_task_self_,
-            vm_address_t(bitPattern: rxPtr),
-            0, // copy = false
-            &curProt,
-            &maxProt,
-            VM_INHERIT_NONE
-        )
-
-        // Lets the kernel place the JIT pool's RW alias when the 0x7000000000 hint is
-        // past the end of the address map (63 GB maps); 0 fails at the hint as before.
-        // A process without the extended-virtual-addressing entitlement has a map
-        // that ends at 0xfc0000000, and an ANYWHERE search that starts past the end
-        // of the map does not wrap: every alias failed with KERN_NO_SPACE although
-        // ~50 GB was free, no pool was made and no session could start. On such a
-        // map the kernel's choice is directly above the RX pool, below the 16 GB
-        // floor of the small-map guest-window band.
-        if kr1 == KERN_NO_SPACE && MadeiraConfig.flag("MADEIRA_RW_ALIAS_RETRY") {
-            rwAddr = 0
-            kr1 = vm_remap(mach_task_self_, &rwAddr, vm_size_t(poolSize), 0, VM_FLAGS_ANYWHERE,
-                           mach_task_self_, vm_address_t(bitPattern: rxPtr), 0,
-                           &curProt, &maxProt, VM_INHERIT_NONE)
-            LogStore.shared.log(String(format: "[rw-alias] high hint out of reach; kernel placement kr=%d RW=0x%lx",
-                                       kr1, Int(rwAddr)), level: kr1 == KERN_SUCCESS ? .info : .error)
+        // A process without the extended-virtual-addressing entitlement has a
+        // 63 GB map; an ANYWHERE search starting at the high hint cannot wrap.
+        // A no-hint retry can consume the low hole needed by fixed-base x64
+        // images, so first try above the RX pool. This follows upstream
+        // 184591a92806214d8009ccee3fd7bdb7da4944b0. Keep the original high hint
+        // first, and the kernel's choice last; these are hints, never fixed maps.
+        let (abovePoolHint, hintOverflow) = rxAddrV.addingReportingOverflow(vm_address_t(poolSize))
+        let aliasHints: [vm_address_t] = hintOverflow
+            ? [0x7000000000, 0]
+            : [0x7000000000, abovePoolHint, 0]
+        var kr1: kern_return_t = KERN_NO_SPACE
+        // Places the JIT pool's RW alias lower when the 0x7000000000 hint is past the end of the address map (63 GB maps): just above the RX pool, then where the kernel chooses; 0 fails at the hint as before.
+        let aliasRetry = MadeiraConfig.flag("MADEIRA_RW_ALIAS_RETRY")
+        for hint in aliasHints {
+            rwAddr = hint
+            kr1 = vm_remap(
+                mach_task_self_,
+                &rwAddr,
+                vm_size_t(poolSize),
+                0,
+                VM_FLAGS_ANYWHERE,
+                mach_task_self_,
+                vm_address_t(bitPattern: rxPtr),
+                0, // copy = false
+                &curProt,
+                &maxProt,
+                VM_INHERIT_NONE
+            )
+            if hint != 0x7000000000 {
+                LogStore.shared.log(String(format: "[rw-alias] high hint out of reach; %@ kr=%d RW=0x%lx",
+                                           hint == 0 ? "kernel placement" : String(format: "above the RX pool (hint 0x%lx)", hint),
+                                           kr1, rwAddr), level: kr1 == KERN_SUCCESS ? .info : .error)
+            }
+            if kr1 != KERN_NO_SPACE || !aliasRetry { break }
         }
 
         guard kr1 == KERN_SUCCESS else {

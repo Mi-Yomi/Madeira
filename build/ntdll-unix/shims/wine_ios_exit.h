@@ -5,6 +5,7 @@
 #include <os/log.h>
 #include <pthread.h>
 #include <setjmp.h>
+#include "../child_lifetime_ios.h"
 
 /* Thread-local: each Wine "process" thread has its own jmpbuf */
 extern _Thread_local jmp_buf wine_ios_exit_jmpbuf;
@@ -16,6 +17,9 @@ static inline __attribute__((noreturn)) void wine_ios_exit(int status) {
     os_log_error(OS_LOG_DEFAULT, "[Wine ntdll] exit(%d) intercepted on iOS (tid=%p)",
                  status, (void*)pthread_self());
     if (wine_ios_exit_initialized && pthread_equal(pthread_self(), wine_ios_main_thread)) {
+        /* A child teardown scope must pop its pthread cleanup handler before
+         * returning to the boot thread's outer setjmp. */
+        madeira_child_lifetime_redirect_exit(status);
         wine_ios_exit_code = status;
         longjmp(wine_ios_exit_jmpbuf, 1);
     }

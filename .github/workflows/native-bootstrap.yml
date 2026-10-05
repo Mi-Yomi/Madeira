@@ -28,6 +28,9 @@ on:
       - tests/host/check-native-bootstrap*.py
       - tests/host/check-fex-snapshot-link.py
       - tests/host/check-crypto-link-tables.py
+      - tests/host/check-child-lifetime.py
+      - tests/host/check-jit-dump.py
+      - tests/host/fixtures/jit-dump-*.c
 
 permissions:
   contents: read
@@ -55,6 +58,8 @@ jobs:
           python3 tests/host/check-fex-source-repairs.py
           python3 tests/host/check-fex-snapshot-link.py
           python3 tests/host/check-crypto-link-tables.py
+          python3 tests/host/check-child-lifetime.py
+          python3 tests/host/check-jit-dump.py
           python3 tests/host/check-metal-toolchain-setup.py
           for script in .github/ci/*.sh build/fex-ios/build.sh build/freetype-ios/build.sh build/gnutls-ios/build.sh build/ffmpeg/build.sh build/ntdll-unix/build.sh build/wineserver/*.sh; do
             bash -n "$script"
@@ -100,6 +105,8 @@ jobs:
           python3 tests/host/check-fex-source-repairs.py
           python3 tests/host/check-fex-snapshot-link.py
           python3 tests/host/check-crypto-link-tables.py
+          python3 tests/host/check-child-lifetime.py
+          python3 tests/host/check-jit-dump.py
           python3 tests/host/check-native-bootstrap-workflow.py
           python3 tests/host/check-native-bootstrap-artifacts.py
       - name: Build native dependencies, at most two compile jobs
