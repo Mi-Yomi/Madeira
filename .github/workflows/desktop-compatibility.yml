@@ -31,6 +31,7 @@ jobs:
           python3 tests/host/check-unixlib-binder.py
           python3 tests/host/check-window-visibility.py
           CFLAGS='-fsanitize=undefined -fno-sanitize-recover=all' python3 tests/host/check-max-track-size.py
+          CFLAGS='-fsanitize=undefined -fno-sanitize-recover=all' python3 tests/host/check-display-size.py --c-only
       - name: Check native-bootstrap failure handling and artifact validation
         run: |
           python3 tests/host/check-native-bootstrap-scripts.py
@@ -63,6 +64,7 @@ jobs:
           python3 tests/host/check-msi-windows-reference.py
           python3 tests/host/check-msi-madeira-reference.py
           python3 tests/host/check-mesa-windows-reference.py
+          python3 tests/host/check-mesa-modern-canary.py
       - name: Check Blender probe syntax
         run: python3 -m py_compile tests/desktop/blender_cpu_smoke.py
       - name: Check JIT pool ownership and readiness wiring
@@ -106,6 +108,7 @@ jobs:
           python3 tests/host/check-working-directory.py
           python3 tests/host/check-launch-diagnostics.py
           python3 tests/host/check-frontend.py
+          python3 tests/host/check-display-size.py
           python3 tests/host/check-steam-games.py
       - name: Check compiled Unicode encoding and queue
         run: python3 tests/host/check-unicode-input.py

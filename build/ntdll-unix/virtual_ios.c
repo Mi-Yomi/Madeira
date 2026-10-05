@@ -114,8 +114,10 @@ extern kern_return_t vm_protect(mach_port_t target_task, vm_address_t address,
 #include "ddk/wdm.h"
 #include "wine/list.h"
 #include "wine/rbtree.h"
-#include "unix_private.h"
+/* This TU owns ios_wow_base. Select its strong helpers before unix_private.h
+ * includes wine/unixlib.h's optional-importer weak declaration. */
 #include "ios_wow.h"
+#include "unix_private.h"
 #include "wine/debug.h"
 
 /* ml648: the Mono-bridge alias table is defined further down, but the anon-alias

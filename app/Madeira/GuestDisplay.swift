@@ -131,9 +131,12 @@ enum GuestDisplay {
         var mode = defaultMode(forLandscapeView: view)
         var source = "view"
         if let raw = knob?.trimmingCharacters(in: .whitespacesAndNewlines), !raw.isEmpty {
-            let parts = raw.lowercased().split(separator: "x")
-            if parts.count == 2, let w = Int(parts[0]), let h = Int(parts[1]), w > 0, h > 0 {
-                mode = (w, h)
+            let parts = raw.lowercased().split(separator: "x", omittingEmptySubsequences: false)
+            // The native display API takes signed 32-bit dimensions. Reject an
+            // unrepresentable knob before exporting it or converting to Int32.
+            // This is an integer bound, not a supported rendering-size limit.
+            if parts.count == 2, let w = Int32(parts[0]), let h = Int32(parts[1]), w > 0, h > 0 {
+                mode = (Int(w), Int(h))
                 source = "knob"
             }
         }

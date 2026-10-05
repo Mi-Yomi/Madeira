@@ -348,8 +348,9 @@ struct LibraryEntry: Codable, Identifiable {
     var effectiveFPSMode: Int32 { fpsMode == 3 && !ProMotionIntent.has30Cap ? 1 : Int32(fpsMode) }
 
     func validate() throws {
-        let size = resolution.split(separator: "x").compactMap { Int($0) }
-        guard size.count == 2, (320...4096).contains(size[0]), (240...4096).contains(size[1]),
+        let size = resolution.split(separator: "x", omittingEmptySubsequences: false)
+        guard size.count == 2, let width = Int(size[0]), let height = Int(size[1]),
+              (320...4096).contains(width), (240...4096).contains(height),
               (0...3).contains(fpsMode), !arguments.contains("\0"), !windowsPath.contains("\0"),
               !launchArguments.contains("\0"), !launchWindowsPath.contains("\0"),
               launchWindowsPath.utf8.count < 1024 else {
@@ -2422,7 +2423,7 @@ struct ExecutableBrowser: View {
         .task {
             do {
                 files = try FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: [.isDirectoryKey], options: .skipsHiddenFiles)
-                    .filter { ($0.hasDirectoryPath || $0.pathExtension.lowercased() == "exe") && $0.resolvingSymlinksInPath().path.hasPrefix(LibraryModel.drive.path + "/") }
+                    .filter { ($0.hasDirectoryPath || $0.pathExtension.lowercased() == "exe") && $0.resolvingSymlinksInPath().path.utf8.starts(with: (LibraryModel.drive.path + "/").utf8) }
                     .sorted { if $0.hasDirectoryPath != $1.hasDirectoryPath { return $0.hasDirectoryPath }; return $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
             } catch { self.error = error.localizedDescription }
         }

@@ -5,7 +5,7 @@
     ".github/ci/native-artifacts.py": "23e61932d94e3309f8b71f403c9f25a7a9d6e1dfad6a235b0816a661331015b8",
     "build/ntdll-unix/build.sh": "7418b8a45ecebb95dcb97df6aba79dca5ba82a57426b6c725d10352fdf0e59c4",
     "build/win32u-unix/build.sh": "d372861de2067968764d45b3c7e3b2609eef69d37d212f935ef3039273798c60",
-    "build/ntdll-unix/virtual_ios.c": "482190dd223f16002cfed80ee9d7934aeb8b9c2a9e7a53e696c01016a1508af4",
+    "build/ntdll-unix/virtual_ios.c": "c3f8e7e24d91991bd2d84db41a01203bcca97ef55fc504f8ea7b59eacde12974",
     "build/ntdll-unix/process_ios.c": "c2eabbf7e6037491eff744e6c3527f4b0dfe42b0827bf8fb587bca7a0e7b9c08",
     "build/ntdll-unix/loader_ios.c": "4e4f544495d597aa955204fc15a394e92a9e9cc53f03ede704641ca6b30ae5f0",
     "build/ntdll-unix/server_ios.c": "91a5361121c171f520e0acd5e2588cbdd5341f86db36d8088335c210bda869ec",

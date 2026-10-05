@@ -159,3 +159,12 @@ The first tests proof rejection, archive/size/hash controls and workflow
 constraints without Windows or downloads. The second exercises the host pixel
 oracle under ASan/UBSan and optionally cross-compiles the Windows canary; it
 never executes Windows code. Neither substitutes for the future Windows run.
+
+## Prepared strict modern mode
+
+A separate `modern` stage and mandatory acceptance hook are documented in
+[MODERN.md](MODERN.md). They exercise actual twelve-block compute and vertex/
+fragment storage, indirect draw parameters and clip-control behavior. This does
+not alter the existing softpipe workflow or its unavailable core4.3 classification.
+Until a separately reviewed llvmpipe job executes and passes the new required
+stage, these additional capabilities remain runtime-unvalidated.

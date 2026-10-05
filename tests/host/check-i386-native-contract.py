@@ -266,6 +266,38 @@ int nsi_get_parameter_ex(void *p) { return p != 0; }
         with self.assertRaisesRegex(ValueError, "unrenamed unixlib"):
             contract.Contract(self.objects).validate()
 
+    def test_production_wow_base_owner_is_strong_and_optional_importer_stays_weak(self):
+        source = (ROOT / "build/ntdll-unix/virtual_ios.c").read_text()
+        owner = (ROOT / "build/ntdll-unix/ios_wow.h").read_text()
+        unixlib = (ROOT / "wine/include/wine/unixlib.h").read_text()
+        start = unixlib.index("#ifndef __MADEIRA_IOS_WOW_HOST_PTR")
+        end = unixlib.index("#endif /* __MADEIRA_IOS_WOW_HOST_PTR */", start)
+        importer = unixlib[start:end] + "#endif\n"
+        owner_include = source.index('#include "ios_wow.h"')
+        for header in ("windef.h", "winnt.h", "winternl.h"):
+            self.assertLess(source.index('#include "' + header + '"'), owner_include)
+        # Reproduce the owning TU's include order using the full owner header
+        # and the exact guarded optional-importer block from wine/unixlib.h.
+        order = re.findall(r'^#include "(ios_wow.h|unix_private.h)"$', source, re.M)
+        self.assertEqual(order, ["ios_wow.h", "unix_private.h"])
+        headers = {"ios_wow.h": owner, "unix_private.h": importer}
+        prefix = NSI_TYPES + "\n#define WINE_IOS 1\n"
+        definition = "\nULONG_PTR ios_wow_base(void) { return 0x7100000000ul; }\n"
+        key = (contract.NTDLL, "owner-header.o")
+        self.compile(key, prefix + "\n".join(headers[name] for name in order) + definition)
+        contract.Contract(self.objects).require_provider("_ios_wow_base", key)
+        self.compile(key, prefix + importer + owner + definition)
+        with self.assertRaisesRegex(ValueError, "weak definition _ios_wow_base"):
+            contract.Contract(self.objects).require_provider("_ios_wow_base", key)
+        key = ("importer", "optional.o")
+        self.compile(key, prefix + importer + "\nvoid *optional(ULONG addr) { return ios_wow_host_ptr(addr); }\n")
+        obj = self.objects[key]
+        symbol, = [s for s in obj.symbols if s.name == "_ios_wow_base"]
+        self.assertFalse(symbol.defined)
+        self.assertTrue(symbol.external)
+        self.assertTrue(symbol.descriptor & 0x40)  # N_WEAK_REF, not a provider
+        self.assertIn("_ios_wow_base", obj.references("_optional"))
+
     def test_missing_class_query_registration_or_guest_conversion_edges(self):
         evidence = self.fixture()
         for key, reference in [
@@ -439,6 +471,111 @@ int main(void) { server_test((void *)1); return fex_test_execute() + load_test((
         source.write_text(source.read_text() + "\n/* changed */\n")
         with self.assertRaisesRegex(ValueError, "dependency changed"):
             contract.capture_binding(self.root, record_path.parent, contract.NTDLL, output.name, output.read_bytes())
+
+    def compiled_nsi_layout_dump(self):
+        native, helper, table, wrappers = nsi_production_fragments()
+        header = (ROOT / "wine/include/wine/nsi.h").read_text()
+        # The actual unrelated NSI record contains repeated nested Length
+        # members. Only its outer declaration is production ABI source here;
+        # these minimal nested type doubles exercise Clang's dump indentation.
+        nested_types = """
+typedef unsigned short USHORT;
+typedef struct { unsigned int Data1; USHORT Data2, Data3; unsigned char Data4[8]; } GUID;
+typedef struct { USHORT Length; USHORT String[4]; } IF_COUNTED_STRING;
+typedef struct { USHORT Length; unsigned char Address[4]; } IF_PHYSICAL_ADDRESS;
+"""
+        source, output = self.root / "nsi-layout-fixture.c", self.root / "nsi-layout-fixture.o"
+        source.write_text(NSI_TYPES + nested_types + structures(header, ("nsi_ndis_ifinfo_rw",)) + native
+                          + structures(wrappers, ("nsi_enumerate_all_ex32", "nsi_get_all_parameters_ex32",
+                                                  "nsi_get_parameter_ex32")))
+        result = self.run_command([self.clang, "-target", "arm64-apple-ios17.0", "-Xclang",
+                                   "-fdump-record-layouts-complete", "-c", source, "-o", output])
+        self.assertTrue(output.is_file())
+        return result.stdout
+
+    def test_compiled_nested_nsi_layouts_keep_only_direct_fields(self):
+        text = self.compiled_nsi_layout_dump()
+        expected = json.loads((HERE / "contract.json").read_text())["nsi_layouts"]
+        self.assertEqual(len(expected), 6)
+        self.assertGreaterEqual(len(re.findall(r"\|     USHORT Length$", text, re.M)), 3)
+        parsed = contract.parse_layouts(text)
+        self.assertEqual(set(parsed["nsi_ndis_ifinfo_rw"]["fields"]),
+                         {"network_guid", "admin_status", "alias", "phys_addr", "pad", "name2", "unk"})
+        self.assertEqual({name: parsed[name] for name in expected}, expected)
+        self.assertEqual(contract.check_layouts({"record_layouts": text}, expected), expected)
+
+    def test_required_nsi_layouts_reject_changed_missing_and_duplicate_evidence(self):
+        text = self.compiled_nsi_layout_dump()
+        expected = json.loads((HERE / "contract.json").read_text())["nsi_layouts"]
+        separator = "*** Dumping AST Record Layout"
+        blocks = text.split(separator)
+        for name, layout in expected.items():
+            block, = [b for b in blocks if re.search(r"^\s*0 \| struct " + name + r"\s*$", b, re.M)]
+            field = re.search(r"^(\s*)(\d+)( \|   \S[^\n]*)$", block, re.M)
+            self.assertIsNotNone(field)
+            line = field[0]
+            changed_offset = field[1] + str(int(field[2]) + 1) + field[3]
+            extent = "[sizeof=" + str(layout["size"]) + ", align=" + str(layout["align"]) + "]"
+            self.assertIn(extent, block)
+            cases = {
+                "offset": (block.replace(line, changed_offset, 1), "compiled NSI layout differs"),
+                "size": (block.replace(extent, extent.replace("sizeof=" + str(layout["size"]),
+                                                             "sizeof=" + str(layout["size"] + 1)), 1),
+                         "compiled NSI layout differs"),
+                "alignment": (block.replace(extent, extent.replace("align=" + str(layout["align"]),
+                                                                  "align=" + str(layout["align"] * 2)), 1),
+                              "compiled NSI layout differs"),
+                "missing field": (block.replace(line, "", 1), "compiled NSI layout differs"),
+                "nested field": (block.replace(line, line.replace("|   ", "|     ", 1), 1),
+                                 "compiled NSI layout differs"),
+                "duplicate field": (block.replace(line, line + "\n" + line, 1), "duplicate layout field"),
+                "extra field": (block.replace(line, line + "\n         0 |   int unexpected", 1),
+                                "compiled NSI layout differs"),
+                "missing extent": (block.replace(extent, "", 1), "missing record extent"),
+                "missing record": ("", "compiled NSI layout differs"),
+                "duplicate record": (block + separator + block, "duplicate record layout"),
+            }
+            for change, (replacement, message) in cases.items():
+                with self.subTest(record=name, change=change):
+                    altered = text.replace(separator + block, separator + replacement, 1)
+                    self.assertNotEqual(altered, text)
+                    with self.assertRaisesRegex(ValueError, message):
+                        contract.check_layouts({"record_layouts": altered}, expected)
+
+    def test_layout_failure_reports_only_bounded_required_records(self):
+        text = self.compiled_nsi_layout_dump()
+        expected = json.loads((HERE / "contract.json").read_text())["nsi_layouts"]
+        changed = text.replace("[sizeof=60, align=4]", "[sizeof=64, align=4]", 1)
+        self.assertNotEqual(changed, text)
+        with self.assertRaisesRegex(ValueError, "compiled NSI layout differs: nsi_enumerate_all_ex32") as error:
+            contract.check_layouts({"record_layouts": changed}, expected)
+        message = str(error.exception)
+        for name in expected:
+            self.assertIn(name + ": 1 captured record(s)", message)
+        self.assertIn("[sizeof=64, align=4]", message)
+        self.assertNotIn("nsi_ndis_ifinfo_rw", message)
+        for name in expected:
+            changed = re.sub(r"(\| struct " + name + r"\n)",
+                             r"\1" + "x" * 12000 + " OMITTED_LAYOUT_TAIL\n", changed)
+        with self.assertRaises(ValueError) as error:
+            contract.check_layouts({"record_layouts": changed}, expected)
+        message = str(error.exception)
+        self.assertLessEqual(len(message.encode("utf-8")), 8192 + 256)
+        self.assertNotIn("OMITTED_LAYOUT_TAIL", message)
+        self.assertIn("[truncated]", message)
+        for name in expected:
+            self.assertIn(name + ": 1 captured record(s)", message)
+        with self.assertRaisesRegex(ValueError, "^compiled NSI layout differs:"):
+            contract.check_layouts({"record_layouts": changed + "\ud800"}, expected)
+
+        for missing in ({}, {"record_layouts": None}, {"record_layouts": []}):
+            with self.subTest(capture=missing):
+                with self.assertRaises(ValueError) as error:
+                    contract.check_layouts(missing, expected)
+                message = str(error.exception)
+                self.assertLessEqual(len(message.encode("utf-8")), 8192 + 256)
+                for name in expected:
+                    self.assertIn(name + ": 0 captured record(s)", message)
 
     def test_capture_cli_preserves_bounded_real_compiler_failure_tails(self):
         source, output = self.root / "broken.c", self.root / "broken.o"

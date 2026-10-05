@@ -2,7 +2,7 @@
  * Madeira's staged Windows GDI/WGL canary. No OpenGL import at process startup.
  * Build: x86_64-w64-mingw32-clang -std=c11 -Wall -Wextra -Werror -O2
  *        wgl_canary.c -o wgl-canary.exe -lgdi32 -luser32
- * Run: wgl-canary.exe --stage gdi|legacy|core43 [--hold-ms 3000]
+ * Run: wgl-canary.exe --stage gdi|legacy|core43|modern [--hold-ms 3000]
  * Exit zero proves only the named stages printed here, never Blender support.
  */
 #define WIN32_LEAN_AND_MEAN
@@ -20,6 +20,7 @@
 static HMODULE gl_module;
 static int source_built_reference;
 static int core_unavailable;
+static int strict_modern;
 static PROC (WINAPI *get_gl_proc)(LPCSTR);
 static HGLRC (WINAPI *create_context)(HDC);
 static BOOL (WINAPI *make_current)(HDC, HGLRC);
@@ -103,6 +104,20 @@ static void pump_for(DWORD milliseconds)
     } while (GetTickCount() - start < milliseconds);
 }
 
+/* Strict mode checks the cleanup of prerequisite GDI probes too. */
+static int strict_gdi_cleanup(HDC memory, HBITMAP bitmap, HGDIOBJ previous)
+{
+    int ok = 1;
+    if (previous && previous != HGDI_ERROR) {
+        HGDIOBJ restored = SelectObject(memory, previous);
+        if (!restored || restored == HGDI_ERROR) ok = 0;
+    }
+    if (bitmap && !DeleteObject(bitmap)) ok = 0;
+    if (memory && !DeleteDC(memory)) ok = 0;
+    if (!ok) fail("modern-gdi-cleanup");
+    return ok;
+}
+
 /* Match Mesa's positive padded bitmap width and negative top-down height.
  * The visible source width is intentionally different from its row stride.
  */
@@ -160,9 +175,13 @@ static int check_gdi(HDC window_dc)
     ok = 1;
 out:
     if (!ok) fail("gdi");
-    if (previous && previous != HGDI_ERROR) SelectObject(memory_dc, previous);
-    if (bitmap) DeleteObject(bitmap);
-    if (memory_dc) DeleteDC(memory_dc);
+    if (strict_modern) {
+        if (!strict_gdi_cleanup(memory_dc, bitmap, previous)) ok = 0;
+    } else {
+        if (previous && previous != HGDI_ERROR) SelectObject(memory_dc, previous);
+        if (bitmap) DeleteObject(bitmap);
+        if (memory_dc) DeleteDC(memory_dc);
+    }
     return ok;
 }
 
@@ -224,9 +243,13 @@ static int check_window_pixel(HDC dc, const char *stage, unsigned r, unsigned g,
     if (ok) pass(stage);
 out:
     if (!ok) fail(stage);
-    if (previous && previous != HGDI_ERROR) SelectObject(memory, previous);
-    if (bitmap) DeleteObject(bitmap);
-    if (memory) DeleteDC(memory);
+    if (strict_modern) {
+        if (!strict_gdi_cleanup(memory, bitmap, previous)) ok = 0;
+    } else {
+        if (previous && previous != HGDI_ERROR) SelectObject(memory, previous);
+        if (bitmap) DeleteObject(bitmap);
+        if (memory) DeleteDC(memory);
+    }
     return ok;
 }
 
@@ -356,9 +379,13 @@ out:
     if (array) delete_arrays(1, &array);
     if (program) delete_program(program);
     for (unsigned i = 0; i < 2; ++i) if (shaders[i]) delete_shader(shaders[i]);
+    if (strict_modern && get_error() != GL_NO_ERROR) { fail("modern-core-shader-cleanup"); ok = 0; }
     if (!ok) fail("core-shader");
     return ok;
 }
+
+/* The original three modes retain their original behavior. */
+#include "wgl_canary_modern.h"
 
 static int check_wgl(HDC dc, int modern)
 {
@@ -400,8 +427,12 @@ static int check_wgl(HDC dc, int modern)
         get_integer(GL_MINOR_VERSION, &minor);
         if (major > 3 || (major == 3 && minor >= 2)) get_integer(GL_CONTEXT_PROFILE_MASK, &profile);
         printf("LEGACY version=%d.%d profile=0x%x\n", major, minor, profile);
-        if (get_error() || major < 3 || strcmp((const char *)renderer, "softpipe") ||
-            !strstr((const char *)version, "Mesa 26.2.4")) { fail("softpipe-identity"); goto out; }
+        if (get_error() || major < 3 ||
+            (strict_modern ? strncmp((const char *)renderer, "llvmpipe (", 10) :
+                             strcmp((const char *)renderer, "softpipe")) ||
+            !strstr((const char *)version, "Mesa 26.2.4")) {
+            fail(strict_modern ? "llvmpipe-identity" : "softpipe-identity"); goto out;
+        }
     }
     pass("legacy-context");
     viewport(0, 0, 32, 32);
@@ -453,7 +484,8 @@ static int check_wgl(HDC dc, int modern)
         get_integer(GL_CONTEXT_PROFILE_MASK, &profile);
         printf("CORE version=%d.%d profile=0x%x\n", major, minor, profile);
         if (get_error() || major < 4 || (major == 4 && minor < 3) ||
-            !(profile & GL_CONTEXT_CORE_PROFILE_BIT)) goto out;
+            !(profile & GL_CONTEXT_CORE_PROFILE_BIT) ||
+            (strict_modern && profile != GL_CONTEXT_CORE_PROFILE_BIT)) goto out;
     }
     pass("core43-context");
     if (!check_shader()) goto out;
@@ -462,6 +494,13 @@ static int check_wgl(HDC dc, int modern)
     pass("core-swap");
     if (!check_window_pixel(dc, "core-window-readback", 255, 0, 0)) goto out;
     puts("LIMIT swap=API-success; compositor-display-unverified");
+    if (strict_modern) {
+        if (!check_modern(dc)) goto out;
+        HMODULE gallium = GetModuleHandleW(L"libgallium_wgl.dll");
+        if (!gallium || !module_identity(gl_module, L"opengl32.dll", "opengl32-after") ||
+            !module_identity(gallium, L"libgallium_wgl.dll", "gallium-after")) goto out;
+        pass("modern-module-recheck");
+    }
     ok = 1;
 out:
     if (!ok && !core_unavailable) fail("wgl");
@@ -478,7 +517,7 @@ int main(int argc, char **argv)
     WNDCLASSW cls = {0};
     HWND window = NULL;
     HDC dc = NULL;
-    int result = 1;
+    int result = 1, registered = 0;
     setvbuf(stdout, NULL, _IONBF, 0);
     for (int i = 1; i < argc; ++i) {
         if (!strcmp(argv[i], "--source-built-reference")) source_built_reference = 1;
@@ -490,7 +529,9 @@ int main(int argc, char **argv)
             hold_ms = (DWORD)n;
         } else return 2;
     }
-    if (strcmp(stage, "gdi") && strcmp(stage, "legacy") && strcmp(stage, "core43")) return 2;
+    if (strcmp(stage, "gdi") && strcmp(stage, "legacy") && strcmp(stage, "core43") && strcmp(stage, "modern")) return 2;
+    strict_modern = !strcmp(stage, "modern");
+    if (strict_modern && (!source_built_reference || hold_ms)) return 2;
     printf("CANARY stage=%s pointer_bits=%u\n", stage, (unsigned)(8 * sizeof(void *)));
     begin("window");
     cls.style = CS_OWNDC;
@@ -498,6 +539,7 @@ int main(int argc, char **argv)
     cls.hInstance = GetModuleHandleW(NULL);
     cls.lpszClassName = L"MadeiraWglCanary";
     if (!RegisterClassW(&cls)) { fail("window-class"); goto out; }
+    registered = 1;
     window = CreateWindowW(cls.lpszClassName, L"Madeira WGL canary", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
                           CW_USEDEFAULT, CW_USEDEFAULT, 240, 180, NULL, NULL, cls.hInstance, NULL);
     if (!window) { fail("window-create"); goto out; }
@@ -510,17 +552,26 @@ int main(int argc, char **argv)
     pass("window");
     pump_for(0);
     if (!check_gdi(dc)) goto out;
-    if (strcmp(stage, "gdi") && !check_wgl(dc, !strcmp(stage, "core43"))) {
-        if (core_unavailable) result = 77;
+    if (strcmp(stage, "gdi") && !check_wgl(dc, strict_modern || !strcmp(stage, "core43"))) {
+        if (core_unavailable && !strict_modern) result = 77;
+        if (strict_modern) fail("modern-required");
         goto out;
     }
-    printf("PASS requested-stage=%s\n", stage);
+    if (!strict_modern) printf("PASS requested-stage=%s\n", stage);
     result = 0;
 out:
     pump_for(hold_ms);
-    if (dc) ReleaseDC(window, dc);
-    if (window) DestroyWindow(window);
-    if (gl_module) FreeLibrary(gl_module);
-    UnregisterClassW(cls.lpszClassName, cls.hInstance);
+    if (strict_modern) {
+        if (dc && !ReleaseDC(window, dc)) { fail("release-dc"); result = 1; }
+        if (window && !DestroyWindow(window)) { fail("destroy-window"); result = 1; }
+        if (gl_module && !FreeLibrary(gl_module)) { fail("free-gl-module"); result = 1; }
+        if (registered && !UnregisterClassW(cls.lpszClassName, cls.hInstance)) { fail("unregister-class"); result = 1; }
+        if (!result) { pass("modern-platform-cleanup"); printf("PASS requested-stage=%s\n", stage); }
+    } else {
+        if (dc) ReleaseDC(window, dc);
+        if (window) DestroyWindow(window);
+        if (gl_module) FreeLibrary(gl_module);
+        UnregisterClassW(cls.lpszClassName, cls.hInstance);
+    }
     return result;
 }

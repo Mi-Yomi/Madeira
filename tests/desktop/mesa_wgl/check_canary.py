@@ -33,6 +33,12 @@ env = os.environ.copy()
 env["ASAN_OPTIONS"] = "detect_leaks=0"
 subprocess.run([str(host)], check=True, env=env)
 result["host_pixel_oracle"] = "passed-asan-ubsan; leak-check-not-run"
+modern = options.out_dir / "check-canary-modern"
+subprocess.run(shlex.split(options.host_cc) + ["-std=c11", "-Wall", "-Wextra", "-Werror",
+    "-O1", "-g", "-fsanitize=address,undefined", "-fno-omit-frame-pointer",
+    str(ROOT / "check_canary_modern.c"), "-o", str(modern)], check=True)
+subprocess.run([str(modern)], check=True, env=env)
+result["host_modern_oracle"] = "passed-asan-ubsan; leak-check-not-run"
 if options.windows_cc:
     target = options.out_dir / "wgl-canary-x64.exe"
     subprocess.run(shlex.split(options.windows_cc) + ["-std=c11", "-Wall", "-Wextra", "-Werror",
@@ -55,6 +61,7 @@ if options.windows_cc:
 else:
     print("NOT RUN: Windows cross-compile (supply --windows-cc)")
 result["source_sha256"] = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
-                           for name in ("wgl_canary.c", "wgl_canary_pixels.h", "check_canary_pixels.c")}
+                           for name in ("wgl_canary.c", "wgl_canary_pixels.h", "check_canary_pixels.c",
+                                        "wgl_canary_modern.h", "wgl_canary_modern_values.h", "check_canary_modern.c")}
 (options.out_dir / "verification.json").write_text(json.dumps(result, indent=2) + "\n")
 print("NOT RUN: Windows runtime, Wine runtime, FEX, iOS compositor and Blender acceptance")

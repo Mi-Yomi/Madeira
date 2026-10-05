@@ -93,6 +93,7 @@ jobs:
         timeout-minutes: 2
         # Strong fixture definitions mirror production; Apple ld links the
         # selected iPhoneOS SDK's real libSystem before map verification.
+        # Compiler-generated nested NSI records also exercise direct-field parsing.
         run: |
           CLANG="$(xcrun --sdk iphoneos --find clang)" \
           LLVM_AR="$(xcrun --find ar)" \

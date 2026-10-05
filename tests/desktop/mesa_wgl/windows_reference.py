@@ -10,6 +10,7 @@ an unavailable executable wrapper. Real compilation and linking must still pass.
 from __future__ import annotations
 import argparse
 import hashlib
+import importlib.util
 import json
 import ntpath
 import os
@@ -121,7 +122,9 @@ def parse_proof(output, code, stage, expected_dir):
                     ntpath.normcase(ntpath.join(str(expected_dir), filename))):
                 raise ValueError(f'Wrong loaded module identity: {label}')
         identity = [r for r in rows if r.startswith('GL renderer=')]
-        if len(identity) != 1 or not re.fullmatch(r'GL renderer=softpipe version=.+ Mesa 26\.2\.4', identity[0]):
+        renderer_pattern = (r'GL renderer=llvmpipe \([^\r\n]+\) version=.+ Mesa 26\.2\.4'
+                            if stage == 'modern' else r'GL renderer=softpipe version=.+ Mesa 26\.2\.4')
+        if len(identity) != 1 or not re.fullmatch(renderer_pattern, identity[0]):
             raise ValueError('Wrong actual renderer/source version')
         version = [r for r in rows if r.startswith('LEGACY version=')]
         if len(version) != 1 or not re.fullmatch(r'LEGACY version=[3-9]\.[0-9]+ profile=0x[0-9a-f]+', version[0]):
@@ -148,7 +151,7 @@ def parse_proof(output, code, stage, expected_dir):
         raise ValueError(f'Canary failed or omitted final proof: {stage}, exit {code}')
     if any(r.startswith('UNAVAILABLE ') for r in rows):
         raise ValueError('Contradictory unavailability')
-    if stage == 'core43':
+    if stage in {'core43', 'modern'}:
         for tag in ['core43-context', 'core-shader-readback', 'core-swap', 'core-window-readback']:
             if rows.count(f'PASS stage={tag}') != 1:
                 raise ValueError(f'Missing real core43 proof: {tag}')
@@ -160,6 +163,11 @@ def parse_proof(output, code, stage, expected_dir):
             raise ValueError('Core version/profile below the tested floor')
         pixel_proof(rows, 'core-shader-readback', (255, 0, 0), False)
         pixel_proof(rows, 'core-window-readback', (255, 0, 0), True)
+    if stage == 'modern':
+        spec = importlib.util.spec_from_file_location('madeira_modern_proof', SOURCES / 'modern_proof.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        proof['modern'] = module.validate_modern(rows, expected_dir)
     return proof
 
 

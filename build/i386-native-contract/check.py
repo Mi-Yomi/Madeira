@@ -123,7 +123,7 @@ def parse_layouts(text):
         fields = {}
         # These six records are flat. Exactly three spaces after '|' selects
         # direct fields and avoids accidentally accepting nested member offsets.
-        for offset, field in re.findall(r"^\s*(\d+) \|   [^\n]*\b(\w+)\s*$", block, re.M):
+        for offset, field in re.findall(r"^\s*(\d+) \|   (?!\s)[^\n]*\b(\w+)\s*$", block, re.M):
             require(field not in fields, f"duplicate layout field: {name}.{field}")
             fields[field] = int(offset)
         result[name] = {"size": int(size[1]), "align": int(size[2]), "fields": fields}
@@ -131,9 +131,26 @@ def parse_layouts(text):
 
 
 def check_layouts(record, expected):
-    layouts = parse_layouts(record.get("record_layouts", ""))
-    for name, layout in expected.items():
-        require(layouts.get(name) == layout, f"compiled NSI layout differs: {name}")
+    text = record.get("record_layouts", "")
+    try:
+        require(isinstance(text, str), "invalid captured NSI record layouts")
+        layouts = parse_layouts(text)
+        for name, layout in expected.items():
+            require(layouts.get(name) == layout, f"compiled NSI layout differs: {name}")
+    except ValueError as exc:
+        # Preserve the six captured records when a CI failure would otherwise
+        # discard them. This is diagnostic text only, never substitute evidence.
+        summary = []
+        blocks = text.split("*** Dumping AST Record Layout") if isinstance(text, str) else []
+        for name in expected:
+            matches = [b for b in blocks if re.search(r"^\s*0 \| struct " + re.escape(name) + r"\s*$", b, re.M)]
+            summary.append(f"{name}: {len(matches)} captured record(s)")
+            if matches:
+                raw = matches[0].strip().encode("utf-8", errors="replace")
+                summary.append(raw[:1024].decode("utf-8", errors="ignore") + ("\n[truncated]" if len(raw) > 1024 else ""))
+        details = "\n".join(summary).encode("utf-8")
+        bounded = details[:8192].decode("utf-8", errors="ignore")
+        raise ValueError(f"{exc}\nCaptured required NSI layouts (bounded):\n{bounded}") from exc
     return expected
 
 

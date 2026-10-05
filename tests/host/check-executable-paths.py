@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Compile production executable selection/inspection against disposable files.
+"""Compile production executable selection/inspection/browser against disposable files.
 
 Exercises exact Unicode spelling, PE headers, resolved drive roots, and symlink
-confinement. No Windows executable is run. Needs swiftc (SWIFTC to override).
+confinement, listing filters and ordering. No Windows executable is run.
+Needs swiftc (SWIFTC to override).
 """
 from pathlib import Path
 import json
@@ -25,6 +26,11 @@ def function(name):
 
 drive_start = source.index('    static var drive: URL {')
 drive = source[drive_start:source.index('\n', drive_start)]
+# Compile the entire production listing expression, including enumeration,
+# filtering and sorting. Do not reproduce its predicate in the test harness.
+browser_start = source.index('                files = try ', source.index('struct ExecutableBrowser: View {'))
+browser_end = source.index('\n            } catch', browser_start)
+browser = source[browser_start:browser_end].strip().removeprefix('files = ')
 harness = r'''
 import Foundation
 enum LibraryError: Error { case message(String) }
@@ -52,6 +58,7 @@ struct Result: Encodable {
     var title: String? = nil
     var bits: Int? = nil
     var error: String? = nil
+    var files: [String]? = nil
 }
 let fixtures = try JSONDecoder().decode([Fixture].self, from: FileHandle.standardInput.readDataToEndOfFile())
 var results: [Result] = []
@@ -61,6 +68,10 @@ for fixture in fixtures {
     do {
         if fixture.operation == "executable" {
             result.path = try LibraryModel.executable(fixture.path).path
+        } else if fixture.operation == "browse" {
+            let folder = URL(fileURLWithPath: fixture.path, isDirectory: true)
+            let files = BROWSER
+            result.files = files.map { $0.lastPathComponent }
         } else {
             let entry = try LibraryModel.inspect(URL(fileURLWithPath: fixture.path))
             result.relative = entry.relativePath
@@ -75,7 +86,7 @@ for fixture in fixtures {
 }
 let encoded = try JSONEncoder().encode(results)
 FileHandle.standardOutput.write(encoded)
-'''.replace('DRIVE', drive).replace('FUNCTIONS', '\n'.join(
+'''.replace('DRIVE', drive).replace('BROWSER', browser).replace('FUNCTIONS', '\n'.join(
     function(name) for name in ['executable', 'inspect', 'apiNames', 'graphicsImports', 'importNames']))
 
 compiler = shutil.which(os.environ.get('SWIFTC', 'swiftc'))
@@ -203,6 +214,90 @@ with tempfile.TemporaryDirectory(prefix='madeira-executable-paths-') as director
                 dict(error=inspect_error), nfd_documents)
     accepted('decomposed drive ancestor', 'native.exe', docs=nfd_documents)
 
+    # Real directory enumeration must preserve directories-first natural order,
+    # case-insensitive .exe matching, and omission of hidden/non-executable files.
+    browser_documents = temp / 'BrowserDocuments'
+    browser_drive = browser_documents / 'wine' / 'drive_c'
+    order = browser_drive / 'order'
+    for name in ['folder10', 'folder2', '.hidden-folder']:
+        (order / name).mkdir(parents=True)
+    for name in ['app10.EXE', 'app2.exe', 'plain.txt', '.hidden.exe']:
+        (order / name).write_bytes(pe())
+    fixture('browser directory/exe filtering and natural sorting', 'browse', order,
+            dict(files=['folder2', 'folder10', 'app2.exe', 'app10.EXE']), browser_documents)
+
+    leading_documents = temp / 'LeadingBrowserDocuments'
+    leading_drive = leading_documents / 'wine/drive_c'
+    (leading_drive / '\u0301folder').mkdir(parents=True)
+    (leading_drive / '\u0301app.exe').write_bytes(pe())
+    fixture('browser leading combining root children', 'browse', leading_drive,
+            dict(files=['\u0301folder', '\u0301app.exe']), leading_documents)
+
+    unicode_folder = browser_drive / 'unicode'
+    (unicode_folder / '\u0301folder').mkdir(parents=True)
+    (unicode_folder / '\u0301folder' / 'nested.exe').write_bytes(pe())
+    (unicode_folder / '\u0301app.exe').write_bytes(pe())
+    unicode_files = ['\u0301folder', '\u0301app.exe']
+    fixture('browser leading combining file and folder', 'browse', unicode_folder,
+            dict(files=unicode_files), browser_documents)
+    fixture('browser inside leading combining folder', 'browse', unicode_folder / '\u0301folder',
+            dict(files=['nested.exe']), browser_documents)
+    for name, filename in [('Cyrillic', '1С_Предприятие.exe'), ('non-BMP', '🧪_app.EXE'),
+                           ('decomposed', 'Re\u0301sume\u0301.exe')]:
+        folder = browser_drive / name
+        folder.mkdir()
+        (folder / filename).write_bytes(pe())
+        fixture('browser ' + name, 'browse', folder, dict(files=[filename]), browser_documents)
+
+    # Exercise real root aliases, rather than replacing URL paths in memory.
+    browser_alias = temp / 'BrowserDocumentsAlias'
+    browser_alias.symlink_to(browser_documents, target_is_directory=True)
+    fixture('browser document-root symlink', 'browse', browser_alias / 'wine/drive_c/unicode',
+            dict(files=unicode_files), browser_alias)
+    browser_linked = temp / 'BrowserLinkedDriveDocuments'
+    (browser_linked / 'wine').mkdir(parents=True)
+    (browser_linked / 'wine/drive_c').symlink_to(browser_drive, target_is_directory=True)
+    fixture('browser drive-root symlink', 'browse', browser_linked / 'wine/drive_c/unicode',
+            dict(files=unicode_files), browser_linked)
+
+    # Some Foundation hosts enumerate directory symlinks without a directory
+    # URL suffix. An .exe link name reaches containment on either host, keeping
+    # the production directory/extension classification unchanged.
+    for name, destination, visible in [
+        ('inside-directory', unicode_folder, True),
+        ('outside-directory', outside, False),
+        ('drive-root-directory', browser_drive, False),
+    ]:
+        folder = browser_drive / name
+        folder.mkdir()
+        link = folder / (name + '.exe')
+        link.symlink_to(destination, target_is_directory=True)
+        fixture('browser ' + name + ' symlink', 'browse', folder,
+                dict(files=[link.name] if visible else []), browser_documents)
+    dangling_folder = browser_drive / 'dangling'
+    dangling_folder.mkdir()
+    dangling_link = dangling_folder / 'dangling-directory'
+    dangling_link.symlink_to(outside / 'missing-directory', target_is_directory=True)
+    fixture('browser dangling directory symlink omitted', 'browse', dangling_folder,
+            dict(files=[]), browser_documents)
+    fixture('browser dangling directory traversal fails', 'browse', dangling_link,
+            dict(error='filesystem error'), browser_documents)
+
+    if nfd_documents.samefile(nfc_documents):
+        fixture('browser actual equivalent root alias', 'browse', nfc_documents / 'wine/drive_c',
+                dict(files=['native.exe']), nfc_documents)
+    else:
+        equivalent_links = nfd_drive / 'links'
+        equivalent_links.mkdir()
+        foreign_folder = foreign.parent / 'foreign-folder'
+        foreign_folder.mkdir()
+        (equivalent_links / 'foreign-directory.exe').symlink_to(foreign_folder, target_is_directory=True)
+        (equivalent_links / 'foreign.exe').symlink_to(foreign)
+        fixture('browser distinct equivalent root symlinks', 'browse', equivalent_links,
+                dict(files=[]), nfd_documents)
+        fixture('browser distinct equivalent root contents', 'browse', foreign.parent,
+                dict(files=[]), nfd_documents)
+
     malformed = [
         ('short.exe', b'MZ', 'This is not a Windows executable.'),
         ('not-mz.exe', b'XX' + bytes(68), 'This is not a Windows executable.'),
@@ -242,5 +337,5 @@ with tempfile.TemporaryDirectory(prefix='madeira-executable-paths-') as director
             failures.append(f'{want["name"]}:\n  expected {want!r}\n  received {got!r}')
     if failures:
         raise SystemExit('FAIL: ' + '\n'.join(failures))
-    print(f'PASS: {len(fixtures)} compiled production executable-path, Unicode, PE and symlink cases')
+    print(f'PASS: {len(fixtures)} compiled production executable-path/browser, Unicode, PE and symlink cases')
     print(f'PASS: {len(controls)} strict filesystem-alias and exact-metadata comparison controls')

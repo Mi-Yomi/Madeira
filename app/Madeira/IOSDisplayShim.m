@@ -12,6 +12,7 @@
 #import <pthread.h>
 
 #include "IOSDisplayShim.h"
+#include "../../build/madeira_display_size.h"
 
 // --- Types mirroring DXMT's expectations (see winemetal_unix.c lines ~1524) ---
 
@@ -75,8 +76,8 @@ void winios_screen_size(int *w, int *h) {
         // Nothing published: the session default, read each time because the
         // app sets it per launch.
         const char *we = getenv("MADEIRA_SCREEN_W"), *he = getenv("MADEIRA_SCREEN_H");
-        sw = (we && atoi(we) > 0) ? atoi(we) : 1024;
-        sh = (he && atoi(he) > 0) ? atoi(he) : 768;
+        sw = madeira_screen_dimension(we, 1024);
+        sh = madeira_screen_dimension(he, 768);
     }
     if (w) *w = sw;
     if (h) *h = sh;

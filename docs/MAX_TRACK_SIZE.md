@@ -16,20 +16,23 @@ The upstream commit explicitly reports build-only verification, without a
 device log proving this clamp. This port adds saturation and host regression
 coverage. Existing Wine copyright and LGPL notices remain in the C file.
 
-Only the narrow C behavior is ported. No resolution picker, session defaults,
-saved preferences, mode list or preference migrations change.
+Only the narrow maximum-track behavior is ported here. No resolution picker,
+valid session default, saved preference, mode list or preference migration
+changes. The separate [session-size validation fix](DISPLAY_SIZE_VALIDATION.md)
+rejects malformed/out-of-range strings before native conversion.
 
 ## Source and size semantics
 
 - `app/Madeira/Library.swift` already offers 2560×1440; smaller choices such as
   1408×648 and 1280×720 keep the same maximum track values.
 - `GuestDisplay.configureSessionDefault` exports selected positive dimensions
-  through `MADEIRA_SCREEN_W/H`. It has no upper bound on the parsed positive
-  Swift `Int`; conversion to `Int32` has separate pre-existing limits.
+  through `MADEIRA_SCREEN_W/H`. Its separate validation fix requires a positive
+  `Int32` before publication; valid library profiles keep their existing bounds.
 - `ios_screen_size` reads the session default once. Unset, nonnumeric and
-  non-positive `atoi` results fall back independently to 1024 and 768. Later
-  environment edits do not change an initialized session. Its existing `atoi`
-  parsing is not made safe for out-of-range strings by this patch.
+  non-positive, malformed or out-of-range dimensions fall back independently
+  to 1024 and 768. The shared integer-safe parser comes from the separate
+  session-size validation fix. Later environment edits do not change an
+  initialized session.
 - `ios_virtual_change_display_settings` changes the current values for supported
   modes, and restores the session default on a null mode. The new metrics read
   those current values on every call, including after growth and shrinkage.
@@ -78,8 +81,8 @@ regression test on 2560×1440. `--source` and `--probe` can compare revisions.
 | INT_MAX×INT_MAX | 1920×1080 | INT_MAX×INT_MAX |
 
 Extreme sizes test only the new maximum-track arithmetic. They are not
-supported rendering sizes: existing maximized-metric arithmetic, parsing,
-mode-area arithmetic, allocations and UI conversion limits remain outside
+supported rendering sizes: existing maximized-metric arithmetic, mode-area
+arithmetic, allocations and downstream UI conversion limits remain outside
 this fix. There is no claim that a device can render those extreme sizes.
 
 ## Native rebuild and remaining verification

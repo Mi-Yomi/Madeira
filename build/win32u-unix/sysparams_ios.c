@@ -29,6 +29,9 @@
 #include <limits.h>
 #include <unistd.h>  /* iOS-Madeira: dprintf for BADMODE diagnostic */
 #include <stdio.h>
+#ifdef WINE_IOS
+#include "../madeira_display_size.h"
+#endif
 
 #include "ntstatus.h"
 #include "ntgdi_private.h"
@@ -216,8 +219,13 @@ static void ios_screen_size( int *w, int *h )
          * MADEIRA_SCREEN_SRC names where the default came from, for the log. */
         const char *we = getenv( "MADEIRA_SCREEN_W" ), *he = getenv( "MADEIRA_SCREEN_H" );
         const char *src = getenv( "MADEIRA_SCREEN_SRC" );
-        int sw = (we && atoi( we ) > 0) ? atoi( we ) : 1024;
-        int sh = (he && atoi( he ) > 0) ? atoi( he ) : 768;
+        int sw = madeira_screen_dimension( we, 0 );
+        int sh = madeira_screen_dimension( he, 0 );
+
+        if (we && !sw) dprintf( STDERR_FILENO, "[display] invalid MADEIRA_SCREEN_W; using 1024\n" );
+        if (he && !sh) dprintf( STDERR_FILENO, "[display] invalid MADEIRA_SCREEN_H; using 768\n" );
+        if (!sw) sw = 1024;
+        if (!sh) sh = 768;
 
         ios_screen_def_w = sw;
         ios_screen_def_h = sh;

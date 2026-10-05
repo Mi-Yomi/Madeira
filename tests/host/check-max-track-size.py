@@ -49,6 +49,7 @@ harness = r'''
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "madeira_display_size.h"
 _Static_assert(INT_MAX == 2147483647, "tests require 32-bit int, as on iOS");
 #define WINE_IOS 1
 #define min(a,b) ((a) < (b) ? (a) : (b))
@@ -234,6 +235,7 @@ with tempfile.TemporaryDirectory(prefix="madeira-max-track-") as directory:
     command = shlex.split(os.environ.get("CC", "cc"))
     command += ["-std=c11", "-O2", "-g", "-Wall", "-Wextra", "-Werror"]
     command += shlex.split(os.environ.get("CFLAGS", ""))
+    command += ["-I", str(ROOT / "build")]
     subprocess.run(command + [str(c_file), "-o", str(binary)], check=True)
     subprocess.run([str(binary)] + (["--probe"] if args.probe else []), check=True)
     if not args.probe:
