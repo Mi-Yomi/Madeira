@@ -74,7 +74,7 @@ class OverlayPlanTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="madeira-overlay-plan-test-")
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         self.stage, self.bundle = self.root / "stage", self.root / "bundle"
         self.manifest = planner.inventory.manifest()
         self.pin = self.manifest["wine_revision"]

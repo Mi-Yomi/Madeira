@@ -36,7 +36,7 @@ class IntegratedDesktopTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="madeira-tracked-desktop-")
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         self.app = self.root / "app/Madeira"
         self.stage = self.root / integration.RECEIPT
         app_tests.fixture(self.app)
@@ -236,10 +236,29 @@ class IntegratedDesktopTests(unittest.TestCase):
 
 
 class ReviewedSourceTests(unittest.TestCase):
+    def test_system_temp_alias_is_canonicalized_before_resource_checks(self):
+        # macOS exposes its system temporary directory through /var -> /private/var.
+        # Normalize the trusted fixture root, while production still rejects
+        # symlinked resources and the explicit adversarial symlink tests remain.
+        with tempfile.TemporaryDirectory(prefix="madeira-temp-alias-") as directory:
+            base = Path(directory).resolve()
+            real, alias = base / "real", base / "alias"
+            real.mkdir()
+            alias.symlink_to(real, target_is_directory=True)
+            fixture = IntegratedDesktopTests(methodName="test_untracked_reviewed_dll_is_also_rejected")
+            try:
+                with mock.patch.object(tempfile, "tempdir", str(alias)):
+                    fixture.setUp()
+                self.assertNotIn(alias, fixture.root.parents)
+                self.assertEqual(fixture.root, fixture.root.resolve())
+                fixture.test_untracked_reviewed_dll_is_also_rejected()
+            finally:
+                fixture.doCleanups()
+
     def test_autocrlf_checkout_preserves_seal_and_hash_bound_notices(self):
         with tempfile.TemporaryDirectory(prefix="madeira-exact-checkout-") as directory:
-            seed = Path(directory) / "seed"
-            checkout = Path(directory) / "checkout"
+            seed = Path(directory).resolve() / "seed"
+            checkout = Path(directory).resolve() / "checkout"
             seed.mkdir()
 
             def git(root, *args):
@@ -318,7 +337,7 @@ class ReviewedSourceTests(unittest.TestCase):
 
     def test_existing_farm_substitution_rejected_before_parser(self):
         with tempfile.TemporaryDirectory(prefix="madeira-old-farm-") as directory:
-            root = Path(directory)
+            root = Path(directory).resolve()
             farm = root / "app/Madeira/aarch64-windows"
             shutil.copytree(ROOT / "app/Madeira/aarch64-windows", farm)
             target = farm / "kernel32.dll"

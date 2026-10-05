@@ -33,6 +33,7 @@ jobs:
           python3 build/app-ios/link_diagnostic.py request
           python3 build/wine-pe/verify_desktop_integration.py
           python3 tests/host/check-desktop-integration.py
+          python3 tests/host/check-desktop-overlay-plan.py
           python3 tests/host/check-app-link-diagnostic.py
           python3 tests/host/check-app-link-workflow.py
           python3 tests/host/check-app-bootstrap.py
@@ -75,6 +76,7 @@ jobs:
           python3 build/app-ios/link_diagnostic.py request
           python3 build/wine-pe/verify_desktop_integration.py
           python3 tests/host/check-desktop-integration.py
+          python3 tests/host/check-desktop-overlay-plan.py
           python3 tests/host/check-app-link-diagnostic.py
           python3 tests/host/check-app-link-workflow.py
           python3 tests/host/check-app-bootstrap.py
