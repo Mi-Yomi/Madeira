@@ -1,0 +1,39 @@
+name: LLVM preinstalled Windows provider inventory
+
+on:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - tests/desktop/llvm_sdk/provider-inventory-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: llvm-provider-inventory-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inventory:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    runs-on: windows-2025
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Exercise inert provider inventory controls
+        timeout-minutes: 1
+        run: python tests/host/check-llvm-provider-inventory.py
+      - name: Read preinstalled provider bytes and record unresolved edges
+        timeout-minutes: 8
+        run: python tests/desktop/llvm_sdk/provider_inventory.py --work-root "$env:RUNNER_TEMP/llvm-provider-inventory-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Report inventory boundary
+        if: always()
+        run: |
+          Write-Output "Read-only MSVC/Windows SDK/ATL/DIA provider inventory; every new dependency/directive awaits review."
+          Write-Output "No SDK download, compile, link, JIT, Mesa build, installation, system mutation or runtime test."
+          Write-Output "No private input, credential, artifact upload, cache, signing or IPA. No Madeira/FEX/ARM64EC/iOS result."

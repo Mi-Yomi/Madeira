@@ -1,0 +1,3465 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only preinstalled provider inventory; not dependency approval or ABI/JIT proof",
+  "sdk": {
+    "version": "22.1.4",
+    "filename": "clang+llvm-22.1.4-x86_64-pc-windows-msvc.tar.xz",
+    "sha256": "ed775bdaea7087c6c1aeac9498352cfcd8610d92dc4fe9eda9aecb15ce712a2c",
+    "size": 861945788
+  },
+  "sdk_exports_sha256": "6baed87bde9a30b74545fb377b4042775fedc499a2d37dff248d60eedf3b822e",
+  "components": [
+    "bitwriter",
+    "engine",
+    "mcdisassembler",
+    "mcjit",
+    "core",
+    "executionengine",
+    "scalaropts",
+    "transformutils",
+    "instcombine",
+    "native",
+    "coroutines",
+    "lto"
+  ],
+  "selected_libraries_link_order": [
+    "LLVMLTO",
+    "LLVMPlugins",
+    "LLVMPasses",
+    "LLVMHipStdPar",
+    "LLVMExtensions",
+    "LLVMCoroutines",
+    "LLVMipo",
+    "LLVMVectorize",
+    "LLVMSandboxIR",
+    "LLVMLinker",
+    "LLVMFrontendOpenMP",
+    "LLVMFrontendDirective",
+    "LLVMFrontendAtomic",
+    "LLVMFrontendOffloading",
+    "LLVMObjectYAML",
+    "LLVMX86TargetMCA",
+    "LLVMMCA",
+    "LLVMX86Disassembler",
+    "LLVMX86AsmParser",
+    "LLVMX86CodeGen",
+    "LLVMX86Desc",
+    "LLVMX86Info",
+    "LLVMInstrumentation",
+    "LLVMIRPrinter",
+    "LLVMGlobalISel",
+    "LLVMSelectionDAG",
+    "LLVMCFGuard",
+    "LLVMAsmPrinter",
+    "LLVMMCJIT",
+    "LLVMMCDisassembler",
+    "LLVMInterpreter",
+    "LLVMExecutionEngine",
+    "LLVMRuntimeDyld",
+    "LLVMOrcTargetProcess",
+    "LLVMOrcShared",
+    "LLVMCodeGen",
+    "LLVMTarget",
+    "LLVMScalarOpts",
+    "LLVMInstCombine",
+    "LLVMAggressiveInstCombine",
+    "LLVMObjCARCOpts",
+    "LLVMTransformUtils",
+    "LLVMCodeGenTypes",
+    "LLVMCGData",
+    "LLVMBitWriter",
+    "LLVMAnalysis",
+    "LLVMProfileData",
+    "LLVMSymbolize",
+    "LLVMDebugInfoBTF",
+    "LLVMDebugInfoPDB",
+    "LLVMDebugInfoMSF",
+    "LLVMDebugInfoCodeView",
+    "LLVMDebugInfoGSYM",
+    "LLVMDebugInfoDWARF",
+    "LLVMObject",
+    "LLVMTextAPI",
+    "LLVMMCParser",
+    "LLVMIRReader",
+    "LLVMAsmParser",
+    "LLVMMC",
+    "LLVMDebugInfoDWARFLowLevel",
+    "LLVMBitReader",
+    "LLVMFrontendHLSL",
+    "LLVMCore",
+    "LLVMRemarks",
+    "LLVMBitstreamReader",
+    "LLVMBinaryFormat",
+    "LLVMTargetParser",
+    "LLVMSupport",
+    "LLVMDemangle"
+  ],
+  "selected_libraries": {
+    "LLVMAggressiveInstCombine": {
+      "sha256": "0607cf16da7d7ae3a730b06ff92334a4b1dce92321e5f02b2403fcd3d89f4ae6",
+      "size": 269930,
+      "objects": 2,
+      "directive_objects": 2,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMAnalysis": {
+      "sha256": "313464ab6e865db134fd1278c3c8fedce132c7431668a047e3a2d1faec028c56",
+      "size": 15308896,
+      "objects": 125,
+      "directive_objects": 125,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMAsmParser": {
+      "sha256": "e56ce850267d52f5b8eca1788a373271753a4225fe3f26b45258e2d2bc5b0a5b",
+      "size": 1722600,
+      "objects": 4,
+      "directive_objects": 4,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMAsmPrinter": {
+      "sha256": "911fe025171cc7072637240f537b44101f1970062944d1dd7b27bda9071a7eb6",
+      "size": 3218356,
+      "objects": 27,
+      "directive_objects": 27,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMBinaryFormat": {
+      "sha256": "095aed36eaccf6d850c7ce7936a0ed5863a14ef635a56ca42c8a6bb26921e923",
+      "size": 886868,
+      "objects": 14,
+      "directive_objects": 14,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMBitReader": {
+      "sha256": "2bcdcb227fe01ad4164b880b163a7e55197d7f0f36481e37980f1b499fcb5336",
+      "size": 1421164,
+      "objects": 5,
+      "directive_objects": 5,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMBitWriter": {
+      "sha256": "6fd1c71e58a2f8949aeb6185239a6a4bc9e81bafc07b592190b4e02af3f26ca9",
+      "size": 748638,
+      "objects": 4,
+      "directive_objects": 4,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMBitstreamReader": {
+      "sha256": "1808c973602a687cdf7df4bf512c4fef5c36cab6b8ee7c8db3e78a57f2899b6b",
+      "size": 77876,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMCFGuard": {
+      "sha256": "2e39416358b1f7f99465146984cb1ddec37235812917d5bfa4293394867a03da",
+      "size": 61618,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMCGData": {
+      "sha256": "33a859b1ee166d9b8a25a388a0485bb3f5874de349082848bd9cf2191fa1ebdc",
+      "size": 546156,
+      "objects": 7,
+      "directive_objects": 7,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMCodeGen": {
+      "sha256": "1376a1fd3bc09abbd1cb74d17c5fc7d99bbcef7bd30a9712827e825e73f81a05",
+      "size": 24437034,
+      "objects": 237,
+      "directive_objects": 237,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMCodeGenTypes": {
+      "sha256": "59369256765d6607c01aec8af62baa13b05cdf1c85a35c2aeb4d1840ed15281a",
+      "size": 12448,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMCore": {
+      "sha256": "7f2e985f84d05a18711b79467325cb5d9dcd01db07f23245991638cec7048a5a",
+      "size": 12343548,
+      "objects": 80,
+      "directive_objects": 80,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMCoroutines": {
+      "sha256": "4a7b584e7853901d1aa0476636bb85b6583785fd7bd9f8b236953e86d7222a37",
+      "size": 937658,
+      "objects": 11,
+      "directive_objects": 11,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMDebugInfoBTF": {
+      "sha256": "23774a579787b4887d2b76a6ac0353099db89ae3d3f459795717ecd2cf6fbd3a",
+      "size": 145798,
+      "objects": 2,
+      "directive_objects": 2,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMDebugInfoCodeView": {
+      "sha256": "d0e7b58f619af9cae5e1078feee183688214e902f72250813908400f014b5b2d",
+      "size": 2231062,
+      "objects": 40,
+      "directive_objects": 40,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMDebugInfoDWARF": {
+      "sha256": "a4b990151d9710c52b4550dd089e2873ceaa0df6202d0566a8aa0d889e826f5a",
+      "size": 2830698,
+      "objects": 29,
+      "directive_objects": 29,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMDebugInfoDWARFLowLevel": {
+      "sha256": "47f3fe35c7c1420c02cece25886080df35a7c736a9339cfb901cc0fc38230708",
+      "size": 125928,
+      "objects": 3,
+      "directive_objects": 3,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMDebugInfoGSYM": {
+      "sha256": "0d790f005bf85d42eb94bd65ccfdbafaf499b08be299c738a9a8047e3d6dd0b5",
+      "size": 955570,
+      "objects": 14,
+      "directive_objects": 14,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "_PPLTASK_ASYNC_LOGGING": [
+          "1"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ],
+        "ppltask_saved_frame_numbers": [
+          "PPL_TASK_SAVE_FRAME_COUNT"
+        ]
+      }
+    },
+    "LLVMDebugInfoMSF": {
+      "sha256": "62117e69f7a81533ff1ed52837bac4284df78190ad0a8d1fd89bf75e762fdda1",
+      "size": 180296,
+      "objects": 4,
+      "directive_objects": 4,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMDebugInfoPDB": {
+      "sha256": "ccfe7b5753307aa62633ab2b0b843f604863bdc7c1cf604bb9a0eab2a0aebad1",
+      "size": 4079818,
+      "objects": 111,
+      "directive_objects": 111,
+      "default_libraries": [
+        "advapi32",
+        "atls",
+        "kernel32",
+        "libcmt",
+        "libcpmt",
+        "oldnames",
+        "ole32",
+        "oleaut32",
+        "shell32",
+        "shlwapi",
+        "user32",
+        "uuid"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMDemangle": {
+      "sha256": "675157584dcfbc61f67e0abbced4c0ddc4b70000fc0a4e384a82a00c2b266b18",
+      "size": 653232,
+      "objects": 6,
+      "directive_objects": 6,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMExecutionEngine": {
+      "sha256": "7f551b350923c099b8125038b012f4e127af13775678cc5e422bc2fb9d7eaf00",
+      "size": 295166,
+      "objects": 5,
+      "directive_objects": 5,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMExtensions": {
+      "sha256": "259414b391a68367f65643a2cdd2e5d1fc8b6cb7f98de429e6c567b7b9d7a157",
+      "size": 1856,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMFrontendAtomic": {
+      "sha256": "4ac23c75557debb3a3580aa14a9df3c05cc2ef01cf450dfc5a00958aede01390",
+      "size": 33028,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMFrontendDirective": {
+      "sha256": "1807baafdb6a6dd5b19dbf95177d96392a9ee263b3049b25e6d950d1cbfd628e",
+      "size": 2072,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMFrontendHLSL": {
+      "sha256": "cc462ee7d850a035fc1540d88900d7887f2d47d83f9429584ac21657bde1e77e",
+      "size": 221762,
+      "objects": 6,
+      "directive_objects": 6,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMFrontendOffloading": {
+      "sha256": "2dcb270e2eed0cc8e461669ea0cda886c6f5c2afb013f23555a8e36dcfe4ee47",
+      "size": 284322,
+      "objects": 3,
+      "directive_objects": 3,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMFrontendOpenMP": {
+      "sha256": "d1cab078d20e7298d500049b9904f918a37113760c2086c0e627f3be7ddc12d1",
+      "size": 1748608,
+      "objects": 4,
+      "directive_objects": 4,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMGlobalISel": {
+      "sha256": "a0ea340c5f9450e4fd1917e6008ae2fe2d9829d6b4fa0b8ead746719270cdf5c",
+      "size": 3634324,
+      "objects": 30,
+      "directive_objects": 30,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMHipStdPar": {
+      "sha256": "46796984745a768e8db9280796067f352b352859556ac5ad1b26b0f3bc74e656",
+      "size": 134814,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMIRPrinter": {
+      "sha256": "32a0d094bd8831d812316703c53f1acf62a647a5576b4dfd3fd9def9878c3679",
+      "size": 14262,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMIRReader": {
+      "sha256": "1345240ac80e8eaa52ef71b84e6a053740ecba8cb26cf1e696f92805f6801311",
+      "size": 62412,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMInstCombine": {
+      "sha256": "5ce36b9033b153c699ca56dd18decceec22d17afe0c3c330b6b3fa1488d2f2a9",
+      "size": 3779142,
+      "objects": 15,
+      "directive_objects": 15,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMInstrumentation": {
+      "sha256": "012f41521cac30a5643fe67502de3c3038a175978a35a1d194070e0566c96834",
+      "size": 5182942,
+      "objects": 28,
+      "directive_objects": 28,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMInterpreter": {
+      "sha256": "51d22170a064085107d0862482b22d5feb836d743b50b0765fb89995df15cc00",
+      "size": 284118,
+      "objects": 3,
+      "directive_objects": 3,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMLTO": {
+      "sha256": "c21a174551d1842df0f51be0384414d0f3a316837dc3b056772c55d600ab3d86",
+      "size": 1928718,
+      "objects": 6,
+      "directive_objects": 6,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "_PPLTASK_ASYNC_LOGGING": [
+          "1"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ],
+        "ppltask_saved_frame_numbers": [
+          "PPL_TASK_SAVE_FRAME_COUNT"
+        ]
+      }
+    },
+    "LLVMLinker": {
+      "sha256": "4a9c3edc5836707744d45969914163ab1369baf986918eb2f2751afcde422033",
+      "size": 345236,
+      "objects": 2,
+      "directive_objects": 2,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMMC": {
+      "sha256": "fe3539f73add7521921f6a8261155627a99f8ce096313d3d615c90f68159a101",
+      "size": 3213952,
+      "objects": 70,
+      "directive_objects": 70,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMMCA": {
+      "sha256": "7c6af7a3cbb30ad7f0042354b911011b709d3bed206a69fc57192d668b865ba6",
+      "size": 410502,
+      "objects": 24,
+      "directive_objects": 24,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMMCDisassembler": {
+      "sha256": "a774d8d54cf8ddd9000a454f5e6219790a9706b66eaeb78c829f2c69245278b6",
+      "size": 57678,
+      "objects": 5,
+      "directive_objects": 5,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMMCJIT": {
+      "sha256": "921a0304f8e9cb340135b34e55323577eb7f90b123494282ad6f320bb49b69b2",
+      "size": 98716,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMMCParser": {
+      "sha256": "2d1c66b569cec0c16512b5854a2f7edb3756db4b87686c6ae0e341ff86e1634b",
+      "size": 1457768,
+      "objects": 13,
+      "directive_objects": 13,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMObjCARCOpts": {
+      "sha256": "279259ac9023892106fa57b7c89b952795f8398c36ccb44833216cf34a34ed02",
+      "size": 399124,
+      "objects": 8,
+      "directive_objects": 8,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMObject": {
+      "sha256": "3432525cea8a7b1340c9dc002371521c73d748108fc0b638ee47b3c9aca9622c",
+      "size": 5195928,
+      "objects": 36,
+      "directive_objects": 36,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMObjectYAML": {
+      "sha256": "8af73b39070c55e0ce6dd20cf076df03b2d919645abaeeb3b49c85fda3acf031",
+      "size": 6335010,
+      "objects": 29,
+      "directive_objects": 29,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMOrcShared": {
+      "sha256": "529124dcd82aa9d2994b5adaf0a8b0d99e2c34eb03ceb106b67feba038473d31",
+      "size": 160050,
+      "objects": 7,
+      "directive_objects": 7,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMOrcTargetProcess": {
+      "sha256": "db48a09df59d401f6c2a4cd7908ddcf6cfcac7f88e4f9593ae4dceac643d4106",
+      "size": 983146,
+      "objects": 15,
+      "directive_objects": 15,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames",
+        "uuid"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "_PPLTASK_ASYNC_LOGGING": [
+          "1"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ],
+        "ppltask_saved_frame_numbers": [
+          "PPL_TASK_SAVE_FRAME_COUNT"
+        ]
+      }
+    },
+    "LLVMPasses": {
+      "sha256": "9a6f738f0f0a3c440305dd4609a1970dbfab1d99adcf21873e8a77e86e4c7510",
+      "size": 9795366,
+      "objects": 6,
+      "directive_objects": 6,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMPlugins": {
+      "sha256": "7d56f1717a5bcd9bd411ba736b8416ec052c623c9a8da700f8d278b2d858369d",
+      "size": 10112,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMProfileData": {
+      "sha256": "7677ad60b03ee98b1adcf5a299f395977530ae10ce14f48af91b94acf67a913c",
+      "size": 4171958,
+      "objects": 21,
+      "directive_objects": 21,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMRemarks": {
+      "sha256": "146088b4b55af755cb048ce0c1c2befddb041a58e594a7280653a8b7cd80dab9",
+      "size": 551416,
+      "objects": 11,
+      "directive_objects": 11,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMRuntimeDyld": {
+      "sha256": "15aef2d043e2b86521fd983cc7d94bd4bf8a03aa9696c407fdcb6451200e6e0e",
+      "size": 1129740,
+      "objects": 8,
+      "directive_objects": 8,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "_PPLTASK_ASYNC_LOGGING": [
+          "1"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ],
+        "ppltask_saved_frame_numbers": [
+          "PPL_TASK_SAVE_FRAME_COUNT"
+        ]
+      }
+    },
+    "LLVMSandboxIR": {
+      "sha256": "848f3e67da5d14dd9cc70b77a5d982b72a1799427f0aa912e34289135bd21a0c",
+      "size": 1194946,
+      "objects": 15,
+      "directive_objects": 15,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMScalarOpts": {
+      "sha256": "da2bcf2a8df3b841dbe70dbaf062ccd0e3d609fc66d417c420e49c6b927a2d25",
+      "size": 9742418,
+      "objects": 81,
+      "directive_objects": 81,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMSelectionDAG": {
+      "sha256": "543416583d0c6dfa7dbad184e051a5f70e849d6596a07c58841195e217614ee3",
+      "size": 8427082,
+      "objects": 26,
+      "directive_objects": 26,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMSupport": {
+      "sha256": "ad8b52825d73ac41f4e6ffd0be1310f497eaf56506d8a0cbe377072b3ba3ae59",
+      "size": 6777068,
+      "objects": 180,
+      "directive_objects": 176,
+      "default_libraries": [
+        "advapi32",
+        "libcmt",
+        "libcpmt",
+        "oldnames",
+        "ole32",
+        "psapi",
+        "shell32",
+        "uuid"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "_PPLTASK_ASYNC_LOGGING": [
+          "1"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ],
+        "ppltask_saved_frame_numbers": [
+          "PPL_TASK_SAVE_FRAME_COUNT"
+        ]
+      }
+    },
+    "LLVMSymbolize": {
+      "sha256": "34eed42023540788e9271c2094aa37e409443d6674c3a559d590c501743f5240",
+      "size": 561290,
+      "objects": 5,
+      "directive_objects": 5,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMTarget": {
+      "sha256": "901a528f91f179cdd36dfd25b571e32a9c2851ee976f57e289bd12944462de29",
+      "size": 168434,
+      "objects": 5,
+      "directive_objects": 5,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMTargetParser": {
+      "sha256": "ea2e8c13fc4bdb132f59e75ef6c3b354b3b8fc1ccd9ef622bb8018020948023c",
+      "size": 1629338,
+      "objects": 15,
+      "directive_objects": 15,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMTextAPI": {
+      "sha256": "cae1f04b53feb06f35f9f5e457adc254139ec30d3d4f78b3940a8189cb8d34c8",
+      "size": 1169632,
+      "objects": 15,
+      "directive_objects": 15,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMTransformUtils": {
+      "sha256": "4f7bb89a52680cf1499724692f4ff1b93d0323ea5d5bd424a250baff548c3be4",
+      "size": 8251420,
+      "objects": 94,
+      "directive_objects": 94,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMVectorize": {
+      "sha256": "be80e22aede35b113bed09756005c1ee3d203869eb52e94ff16973c3aa1ba4f1",
+      "size": 9239756,
+      "objects": 33,
+      "directive_objects": 33,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMX86AsmParser": {
+      "sha256": "7da10a527c1fae85c956e8b7ddf4766bd82a6f71df5850f94e1093828bf056a2",
+      "size": 1207506,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMX86CodeGen": {
+      "sha256": "b5c3f7b943021fd9b786c93f0ba407e5502e54000355f13abd25ebe6f330c6f4",
+      "size": 11322776,
+      "objects": 66,
+      "directive_objects": 66,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMX86Desc": {
+      "sha256": "8948fafb418f40a8fc638140789ea5391a641c2bc2659154e9d15ff2e7f2e5d9",
+      "size": 3939452,
+      "objects": 16,
+      "directive_objects": 16,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMX86Disassembler": {
+      "sha256": "f45e7536daffc53b83380874b63de7f4c8d2ac35b6b446c3840f6ca89768fec3",
+      "size": 2950498,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMX86Info": {
+      "sha256": "2dd4947ad0517d765bb420222b9c1f18edf2e2a7f959e95668e10229e6d2885f",
+      "size": 7234,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMX86TargetMCA": {
+      "sha256": "6c07f8adc4db270fd98d696653d9f66ac521eed1ea6f0d98b570f4e340138d6f",
+      "size": 6754,
+      "objects": 1,
+      "directive_objects": 1,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    },
+    "LLVMipo": {
+      "sha256": "49280e7be78994c2ae61aeb56c287ec133bc026d95e172705a594231d9cf3434",
+      "size": 11997024,
+      "objects": 45,
+      "directive_objects": 45,
+      "default_libraries": [
+        "libcmt",
+        "libcpmt",
+        "oldnames"
+      ],
+      "mismatches": {
+        "LLVM_ENABLE_ABI_BREAKING_CHECKS": [
+          "0"
+        ],
+        "RuntimeLibrary": [
+          "MT_StaticRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      }
+    }
+  },
+  "exported_edges": {
+    "LLVMAggressiveInstCombine": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTransformUtils"
+    ],
+    "LLVMAnalysis": [
+      "LLVMBinaryFormat",
+      "LLVMCore",
+      "LLVMFrontendHLSL",
+      "LLVMObject",
+      "LLVMProfileData",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMAsmParser": [
+      "LLVMBinaryFormat",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMAsmPrinter": [
+      "LLVMAnalysis",
+      "LLVMBinaryFormat",
+      "LLVMCodeGen",
+      "LLVMCodeGenTypes",
+      "LLVMCore",
+      "LLVMDebugInfoCodeView",
+      "LLVMDebugInfoDWARF",
+      "LLVMDebugInfoDWARFLowLevel",
+      "LLVMMC",
+      "LLVMMCParser",
+      "LLVMProfileData",
+      "LLVMRemarks",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTargetParser"
+    ],
+    "LLVMBinaryFormat": [
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMBitReader": [
+      "LLVMBitstreamReader",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMBitWriter": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMObject",
+      "LLVMProfileData",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMBitstreamReader": [
+      "LLVMSupport"
+    ],
+    "LLVMCFGuard": [
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMCGData": [
+      "LLVMBitReader",
+      "LLVMBitWriter",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMObject"
+    ],
+    "LLVMCodeGen": [
+      "LLVMAnalysis",
+      "LLVMBitReader",
+      "LLVMBitWriter",
+      "LLVMCGData",
+      "LLVMCodeGenTypes",
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMObjCARCOpts",
+      "LLVMProfileData",
+      "LLVMScalarOpts",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTargetParser",
+      "LLVMTransformUtils"
+    ],
+    "LLVMCodeGenTypes": [
+      "LLVMSupport"
+    ],
+    "LLVMCore": [
+      "LLVMBinaryFormat",
+      "LLVMDemangle",
+      "LLVMRemarks",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMCoroutines": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMipo",
+      "LLVMScalarOpts",
+      "LLVMSupport",
+      "LLVMTransformUtils",
+      "LLVMTargetParser"
+    ],
+    "LLVMDebugInfoBTF": [
+      "LLVMSupport"
+    ],
+    "LLVMDebugInfoCodeView": [
+      "LLVMSupport"
+    ],
+    "LLVMDebugInfoDWARF": [
+      "LLVMBinaryFormat",
+      "LLVMDebugInfoDWARFLowLevel",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMDebugInfoDWARFLowLevel": [
+      "LLVMBinaryFormat",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMDebugInfoGSYM": [
+      "LLVMMC",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMDebugInfoDWARF"
+    ],
+    "LLVMDebugInfoMSF": [
+      "LLVMSupport"
+    ],
+    "LLVMDebugInfoPDB": [
+      "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/DIA SDK/lib/amd64/diaguids.lib",
+      "LLVMBinaryFormat",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMDebugInfoCodeView",
+      "LLVMDebugInfoMSF"
+    ],
+    "LLVMDemangle": [
+      ""
+    ],
+    "LLVMExecutionEngine": [
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMObject",
+      "LLVMOrcTargetProcess",
+      "LLVMRuntimeDyld",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTargetParser"
+    ],
+    "LLVMExtensions": [
+      "LLVMSupport"
+    ],
+    "LLVMFrontendAtomic": [
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMAnalysis"
+    ],
+    "LLVMFrontendDirective": [
+      "LLVMSupport"
+    ],
+    "LLVMFrontendHLSL": [
+      "LLVMBinaryFormat",
+      "LLVMCore",
+      "LLVMSupport"
+    ],
+    "LLVMFrontendOffloading": [
+      "LLVMCore",
+      "LLVMBinaryFormat",
+      "LLVMObject",
+      "LLVMObjectYAML",
+      "LLVMSupport",
+      "LLVMTransformUtils",
+      "LLVMTargetParser"
+    ],
+    "LLVMFrontendOpenMP": [
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMTransformUtils",
+      "LLVMAnalysis",
+      "LLVMDemangle",
+      "LLVMMC",
+      "LLVMScalarOpts",
+      "LLVMBitReader",
+      "LLVMFrontendOffloading",
+      "LLVMFrontendAtomic",
+      "LLVMFrontendDirective"
+    ],
+    "LLVMGlobalISel": [
+      "LLVMAnalysis",
+      "LLVMCodeGen",
+      "LLVMCodeGenTypes",
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMSelectionDAG",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTransformUtils"
+    ],
+    "LLVMHipStdPar": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTransformUtils"
+    ],
+    "LLVMIRPrinter": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMSupport"
+    ],
+    "LLVMIRReader": [
+      "LLVMAsmParser",
+      "LLVMBitReader",
+      "LLVMCore",
+      "LLVMSupport"
+    ],
+    "LLVMInstCombine": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTransformUtils"
+    ],
+    "LLVMInstrumentation": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMDemangle",
+      "LLVMMC",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMTransformUtils",
+      "LLVMProfileData"
+    ],
+    "LLVMInterpreter": [
+      "LLVMCodeGen",
+      "LLVMCore",
+      "LLVMExecutionEngine",
+      "LLVMSupport"
+    ],
+    "LLVMLTO": [
+      "LLVMAggressiveInstCombine",
+      "LLVMAnalysis",
+      "LLVMBinaryFormat",
+      "LLVMBitReader",
+      "LLVMBitWriter",
+      "LLVMCGData",
+      "LLVMCodeGen",
+      "LLVMCodeGenTypes",
+      "LLVMCore",
+      "LLVMExtensions",
+      "LLVMipo",
+      "LLVMInstCombine",
+      "LLVMInstrumentation",
+      "LLVMLinker",
+      "LLVMMC",
+      "LLVMObjCARCOpts",
+      "LLVMObject",
+      "LLVMPasses",
+      "LLVMPlugins",
+      "LLVMRemarks",
+      "LLVMScalarOpts",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTargetParser",
+      "LLVMTransformUtils"
+    ],
+    "LLVMLinker": [
+      "LLVMCore",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMTransformUtils",
+      "LLVMTargetParser"
+    ],
+    "LLVMMC": [
+      "LLVMBinaryFormat",
+      "LLVMDebugInfoDWARFLowLevel",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMMCA": [
+      "LLVMMC",
+      "LLVMSupport"
+    ],
+    "LLVMMCDisassembler": [
+      "LLVMMC",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMMCJIT": [
+      "LLVMCore",
+      "LLVMExecutionEngine",
+      "LLVMObject",
+      "LLVMRuntimeDyld",
+      "LLVMSupport",
+      "LLVMTarget"
+    ],
+    "LLVMMCParser": [
+      "LLVMMC",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMObjCARCOpts": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMTransformUtils"
+    ],
+    "LLVMObject": [
+      "LLVMBitReader",
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMIRReader",
+      "LLVMBinaryFormat",
+      "LLVMMCParser",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMTextAPI"
+    ],
+    "LLVMObjectYAML": [
+      "LLVMBinaryFormat",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMDebugInfoCodeView",
+      "LLVMMC"
+    ],
+    "LLVMOrcShared": [
+      "LLVMSupport"
+    ],
+    "LLVMOrcTargetProcess": [
+      "LLVMBinaryFormat",
+      "LLVMObject",
+      "LLVMOrcShared",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMPasses": [
+      "LLVMAggressiveInstCombine",
+      "LLVMAnalysis",
+      "LLVMCFGuard",
+      "LLVMCodeGen",
+      "LLVMGlobalISel",
+      "LLVMCore",
+      "LLVMCoroutines",
+      "LLVMHipStdPar",
+      "LLVMipo",
+      "LLVMInstCombine",
+      "LLVMIRPrinter",
+      "LLVMObjCARCOpts",
+      "LLVMScalarOpts",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTransformUtils",
+      "LLVMVectorize",
+      "LLVMInstrumentation"
+    ],
+    "LLVMPlugins": [
+      "LLVMSupport"
+    ],
+    "LLVMProfileData": [
+      "LLVMBitstreamReader",
+      "LLVMCore",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMDemangle",
+      "LLVMSymbolize",
+      "LLVMDebugInfoDWARF",
+      "LLVMDebugInfoDWARFLowLevel",
+      "LLVMTargetParser"
+    ],
+    "LLVMRemarks": [
+      "LLVMBitstreamReader",
+      "LLVMSupport"
+    ],
+    "LLVMRuntimeDyld": [
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMSandboxIR": [
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMAnalysis"
+    ],
+    "LLVMScalarOpts": [
+      "LLVMAggressiveInstCombine",
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMInstCombine",
+      "LLVMProfileData",
+      "LLVMSupport",
+      "LLVMTransformUtils"
+    ],
+    "LLVMSelectionDAG": [
+      "LLVMAnalysis",
+      "LLVMCodeGen",
+      "LLVMCodeGenTypes",
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTargetParser",
+      "LLVMTransformUtils"
+    ],
+    "LLVMSupport": [
+      "psapi",
+      "shell32",
+      "ole32",
+      "uuid",
+      "advapi32",
+      "ws2_32",
+      "ntdll",
+      "delayimp",
+      "-delayload:shell32.dll",
+      "-delayload:ole32.dll",
+      "-INCLUDE:malloc",
+      "LLVMDemangle"
+    ],
+    "LLVMSymbolize": [
+      "LLVMDebugInfoDWARF",
+      "LLVMDebugInfoGSYM",
+      "LLVMDebugInfoPDB",
+      "LLVMDebugInfoBTF",
+      "LLVMObject",
+      "LLVMSupport",
+      "LLVMDemangle",
+      "LLVMTargetParser"
+    ],
+    "LLVMTarget": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMMC",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMTargetParser": [
+      "LLVMSupport"
+    ],
+    "LLVMTextAPI": [
+      "LLVMSupport",
+      "LLVMBinaryFormat",
+      "LLVMTargetParser"
+    ],
+    "LLVMTransformUtils": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTargetParser"
+    ],
+    "LLVMVectorize": [
+      "LLVMAnalysis",
+      "LLVMCore",
+      "LLVMSupport",
+      "LLVMTransformUtils",
+      "LLVMSandboxIR"
+    ],
+    "LLVMX86AsmParser": [
+      "LLVMMC",
+      "LLVMMCParser",
+      "LLVMSupport",
+      "LLVMX86Desc",
+      "LLVMX86Info"
+    ],
+    "LLVMX86CodeGen": [
+      "LLVMAnalysis",
+      "LLVMAsmPrinter",
+      "LLVMCFGuard",
+      "LLVMCodeGen",
+      "LLVMCodeGenTypes",
+      "LLVMCore",
+      "LLVMGlobalISel",
+      "LLVMIRPrinter",
+      "LLVMInstrumentation",
+      "LLVMMC",
+      "LLVMObjCARCOpts",
+      "LLVMProfileData",
+      "LLVMScalarOpts",
+      "LLVMSelectionDAG",
+      "LLVMSupport",
+      "LLVMTarget",
+      "LLVMTargetParser",
+      "LLVMTransformUtils",
+      "LLVMX86Desc",
+      "LLVMX86Info"
+    ],
+    "LLVMX86Desc": [
+      "LLVMBinaryFormat",
+      "LLVMCodeGenTypes",
+      "LLVMMC",
+      "LLVMMCDisassembler",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMX86Info"
+    ],
+    "LLVMX86Disassembler": [
+      "LLVMMCDisassembler",
+      "LLVMSupport",
+      "LLVMX86Info"
+    ],
+    "LLVMX86Info": [
+      "LLVMMC",
+      "LLVMSupport"
+    ],
+    "LLVMX86TargetMCA": [
+      "LLVMCodeGenTypes",
+      "LLVMMC",
+      "LLVMMCA",
+      "LLVMMCParser",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMX86Desc",
+      "LLVMX86Info"
+    ],
+    "LLVMipo": [
+      "LLVMAggressiveInstCombine",
+      "LLVMAnalysis",
+      "LLVMBitReader",
+      "LLVMBitWriter",
+      "LLVMCore",
+      "LLVMFrontendOpenMP",
+      "LLVMInstCombine",
+      "LLVMIRReader",
+      "LLVMDemangle",
+      "LLVMLinker",
+      "LLVMObject",
+      "LLVMProfileData",
+      "LLVMScalarOpts",
+      "LLVMSupport",
+      "LLVMTargetParser",
+      "LLVMTransformUtils",
+      "LLVMVectorize",
+      "LLVMInstrumentation"
+    ]
+  },
+  "exported_link_options": {
+    "LLVMAggressiveInstCombine": [
+      ""
+    ],
+    "LLVMAnalysis": [
+      ""
+    ],
+    "LLVMAsmParser": [
+      ""
+    ],
+    "LLVMAsmPrinter": [
+      ""
+    ],
+    "LLVMBinaryFormat": [
+      ""
+    ],
+    "LLVMBitReader": [
+      ""
+    ],
+    "LLVMBitWriter": [
+      ""
+    ],
+    "LLVMBitstreamReader": [
+      ""
+    ],
+    "LLVMCFGuard": [
+      ""
+    ],
+    "LLVMCGData": [
+      ""
+    ],
+    "LLVMCodeGen": [
+      ""
+    ],
+    "LLVMCodeGenTypes": [
+      ""
+    ],
+    "LLVMCore": [
+      ""
+    ],
+    "LLVMCoroutines": [
+      ""
+    ],
+    "LLVMDebugInfoBTF": [
+      ""
+    ],
+    "LLVMDebugInfoCodeView": [
+      ""
+    ],
+    "LLVMDebugInfoDWARF": [
+      ""
+    ],
+    "LLVMDebugInfoDWARFLowLevel": [
+      ""
+    ],
+    "LLVMDebugInfoGSYM": [
+      ""
+    ],
+    "LLVMDebugInfoMSF": [
+      ""
+    ],
+    "LLVMDebugInfoPDB": [
+      ""
+    ],
+    "LLVMDemangle": [
+      ""
+    ],
+    "LLVMExecutionEngine": [
+      ""
+    ],
+    "LLVMExtensions": [
+      ""
+    ],
+    "LLVMFrontendAtomic": [
+      ""
+    ],
+    "LLVMFrontendDirective": [
+      ""
+    ],
+    "LLVMFrontendHLSL": [
+      ""
+    ],
+    "LLVMFrontendOffloading": [
+      ""
+    ],
+    "LLVMFrontendOpenMP": [
+      ""
+    ],
+    "LLVMGlobalISel": [
+      ""
+    ],
+    "LLVMHipStdPar": [
+      ""
+    ],
+    "LLVMIRPrinter": [
+      ""
+    ],
+    "LLVMIRReader": [
+      ""
+    ],
+    "LLVMInstCombine": [
+      ""
+    ],
+    "LLVMInstrumentation": [
+      ""
+    ],
+    "LLVMInterpreter": [
+      ""
+    ],
+    "LLVMLTO": [
+      ""
+    ],
+    "LLVMLinker": [
+      ""
+    ],
+    "LLVMMC": [
+      ""
+    ],
+    "LLVMMCA": [
+      ""
+    ],
+    "LLVMMCDisassembler": [
+      ""
+    ],
+    "LLVMMCJIT": [
+      ""
+    ],
+    "LLVMMCParser": [
+      ""
+    ],
+    "LLVMObjCARCOpts": [
+      ""
+    ],
+    "LLVMObject": [
+      ""
+    ],
+    "LLVMObjectYAML": [
+      ""
+    ],
+    "LLVMOrcShared": [
+      ""
+    ],
+    "LLVMOrcTargetProcess": [
+      ""
+    ],
+    "LLVMPasses": [
+      ""
+    ],
+    "LLVMPlugins": [
+      ""
+    ],
+    "LLVMProfileData": [
+      ""
+    ],
+    "LLVMRemarks": [
+      ""
+    ],
+    "LLVMRuntimeDyld": [
+      ""
+    ],
+    "LLVMSandboxIR": [
+      ""
+    ],
+    "LLVMScalarOpts": [
+      ""
+    ],
+    "LLVMSelectionDAG": [
+      ""
+    ],
+    "LLVMSupport": [
+      ""
+    ],
+    "LLVMSymbolize": [
+      ""
+    ],
+    "LLVMTarget": [
+      ""
+    ],
+    "LLVMTargetParser": [
+      ""
+    ],
+    "LLVMTextAPI": [
+      ""
+    ],
+    "LLVMTransformUtils": [
+      ""
+    ],
+    "LLVMVectorize": [
+      ""
+    ],
+    "LLVMX86AsmParser": [
+      ""
+    ],
+    "LLVMX86CodeGen": [
+      ""
+    ],
+    "LLVMX86Desc": [
+      ""
+    ],
+    "LLVMX86Disassembler": [
+      ""
+    ],
+    "LLVMX86Info": [
+      ""
+    ],
+    "LLVMX86TargetMCA": [
+      ""
+    ],
+    "LLVMipo": [
+      ""
+    ]
+  },
+  "explicit_system_libraries": [
+    "advapi32",
+    "delayimp",
+    "ntdll",
+    "ole32",
+    "psapi",
+    "shell32",
+    "uuid",
+    "ws2_32"
+  ],
+  "link_options": [
+    "-delayload:shell32.dll",
+    "-delayload:ole32.dll",
+    "-INCLUDE:malloc"
+  ],
+  "coff_default_libraries": [
+    "advapi32",
+    "atls",
+    "kernel32",
+    "libcmt",
+    "libcpmt",
+    "oldnames",
+    "ole32",
+    "oleaut32",
+    "psapi",
+    "shell32",
+    "shlwapi",
+    "user32",
+    "uuid"
+  ],
+  "external_dia_edge": {
+    "target": "LLVMDebugInfoPDB",
+    "raw": "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/DIA SDK/lib/amd64/diaguids.lib",
+    "relative_to_selected_vs": "DIA SDK/lib/amd64/diaguids.lib",
+    "mapping_status": "proposed_identity_binding_only_no_linking"
+  },
+  "provider_roles": {
+    "advapi32": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "kernel32": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "ntdll": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "ole32": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "oleaut32": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "psapi": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "shell32": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "shlwapi": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "user32": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "ws2_32": {
+      "root": "windows_um",
+      "kind": "os_import",
+      "required": true
+    },
+    "libcmt": {
+      "root": "msvc",
+      "kind": "static_code",
+      "required": true
+    },
+    "libcpmt": {
+      "root": "msvc",
+      "kind": "static_code",
+      "required": true
+    },
+    "libvcruntime": {
+      "root": "msvc",
+      "kind": "static_code",
+      "required": true
+    },
+    "oldnames": {
+      "root": "msvc",
+      "kind": "static_code",
+      "required": true
+    },
+    "delayimp": {
+      "root": "msvc",
+      "kind": "static_code",
+      "required": true
+    },
+    "libucrt": {
+      "root": "windows_ucrt",
+      "kind": "static_code",
+      "required": true
+    },
+    "uuid": {
+      "root": "windows_um",
+      "kind": "guid_data",
+      "required": true
+    },
+    "atls": {
+      "root": "atl",
+      "kind": "static_code",
+      "required": true
+    },
+    "diaguids": {
+      "root": "dia",
+      "kind": "guid_data",
+      "required": true
+    },
+    "libconcrt": {
+      "root": "msvc",
+      "kind": "static_code",
+      "required": false,
+      "reason": "Inventory candidate for the MSVC static concurrency runtime; only a discovered edge makes it required. No claim that LLVM directly defaults it."
+    }
+  },
+  "sdk_object_directive_tokens": [
+    "/EXPORT:__jit_debug_descriptor,DATA",
+    "/EXPORT:__jit_debug_register_code",
+    "/INCLUDE:\"?EmptyDivergenceDesc@?$GenericSyncDependenceAnalysis@V?$GenericSSAContext@VFunction@llvm@@@llvm@@@llvm@@0UDivergenceDescriptor@12@A\"",
+    "/INCLUDE:\"?EmptyDivergenceDesc@?$GenericSyncDependenceAnalysis@V?$GenericSSAContext@VMachineFunction@llvm@@@llvm@@@llvm@@0UDivergenceDescriptor@12@A\"",
+    "/INCLUDE:\"?EmptyKey@?$DenseMapInfo@PEAU?$ReachabilityQueryInfo@VFunction@llvm@@@@X@llvm@@2U?$ReachabilityQueryInfo@VFunction@llvm@@@@A\"",
+    "/INCLUDE:\"?EmptyKey@?$DenseMapInfo@PEAU?$ReachabilityQueryInfo@VInstruction@llvm@@@@X@llvm@@2U?$ReachabilityQueryInfo@VInstruction@llvm@@@@A\"",
+    "/INCLUDE:\"?TombstoneKey@?$DenseMapInfo@PEAU?$ReachabilityQueryInfo@VFunction@llvm@@@@X@llvm@@2U?$ReachabilityQueryInfo@VFunction@llvm@@@@A\"",
+    "/INCLUDE:\"?TombstoneKey@?$DenseMapInfo@PEAU?$ReachabilityQueryInfo@VInstruction@llvm@@@@X@llvm@@2U?$ReachabilityQueryInfo@VInstruction@llvm@@@@A\"",
+    "/INCLUDE:\"?_AtlComModule@ATL@@3VCAtlComModule@1@A\"",
+    "/INCLUDE:\"?_AtlWinModule@ATL@@3VCAtlWinModule@1@A\"",
+    "/INCLUDE:\"?atlTraceAllocation@ATL@@3V?$CTraceCategoryEx@$0BAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceCOM@ATL@@3V?$CTraceCategoryEx@$01$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceCache@ATL@@3V?$CTraceCategoryEx@$0IAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceControls@ATL@@3V?$CTraceCategoryEx@$0EA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceDBClient@ATL@@3V?$CTraceCategoryEx@$0BAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceDBProvider@ATL@@3V?$CTraceCategoryEx@$0CAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceException@ATL@@3V?$CTraceCategoryEx@$0CAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceGeneral@ATL@@3V?$CTraceCategoryEx@$00$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceHosting@ATL@@3V?$CTraceCategoryEx@$0IA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceISAPI@ATL@@3V?$CTraceCategoryEx@$0EAAAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceMap@ATL@@3V?$CTraceCategoryEx@$0EAAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceNotImpl@ATL@@3V?$CTraceCategoryEx@$0IAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceQI@ATL@@3V?$CTraceCategoryEx@$03$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceRefcount@ATL@@3V?$CTraceCategoryEx@$0BA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceRegistrar@ATL@@3V?$CTraceCategoryEx@$07$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceSecurity@ATL@@3V?$CTraceCategoryEx@$0BAAAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceSnapin@ATL@@3V?$CTraceCategoryEx@$0EAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceStencil@ATL@@3V?$CTraceCategoryEx@$0BAAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceString@ATL@@3V?$CTraceCategoryEx@$0CAAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceSync@ATL@@3V?$CTraceCategoryEx@$0CAAAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceTime@ATL@@3V?$CTraceCategoryEx@$0EAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceUtil@ATL@@3V?$CTraceCategoryEx@$0IAAAA@$0A@@1@A\"",
+    "/INCLUDE:\"?atlTraceWindowing@ATL@@3V?$CTraceCategoryEx@$0CA@$0A@@1@A\"",
+    "/INCLUDE:\"?id@?$num_put@DV?$ostreambuf_iterator@DU?$char_traits@D@std@@@std@@@std@@2V0locale@2@A\"",
+    "/INCLUDE:\"?id@?$numpunct@D@std@@2V0locale@2@A\"",
+    "/INCLUDE:_tls_used",
+    "/INCLUDE:rpmalloc_tls_thread_exit_callback",
+    "/alternatename:_Avx2WmemEnabled=_Avx2WmemEnabledWeakValue",
+    "/include:??3@YAXPEAX@Z",
+    "/merge:ATL=.rdata"
+  ],
+  "runtime_observation_only": {
+    "msdia140.dll": "DIA may activate this through COM or NoRegCoCreate; inventory existence/hash/PE headers only, never load or register it."
+  },
+  "sources": [
+    "https://github.com/llvm/llvm-project/blob/llvmorg-22.1.4/llvm/lib/DebugInfo/PDB/CMakeLists.txt",
+    "https://github.com/llvm/llvm-project/blob/llvmorg-22.1.4/llvm/include/llvm/DebugInfo/PDB/DIA/DIASupport.h",
+    "https://github.com/llvm/llvm-project/blob/llvmorg-22.1.4/llvm/lib/Support/CMakeLists.txt",
+    "https://learn.microsoft.com/en-us/visualstudio/debugger/debug-interface-access/getting-started-debug-interface-access-sdk",
+    "https://learn.microsoft.com/en-us/cpp/c-runtime-library/crt-library-features",
+    "https://learn.microsoft.com/en-us/cpp/porting/visual-cpp-change-history-2003-2015",
+    "https://learn.microsoft.com/en-us/cpp/build/reference/linker-support-for-delay-loaded-dlls",
+    "https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-notes-v17.9#1791"
+  ]
+}
