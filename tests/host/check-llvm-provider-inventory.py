@@ -4,10 +4,13 @@
 import contextlib
 import copy
 import importlib.util
+import hashlib
+import os
 import io
 import json
 from pathlib import Path
 import struct
+import subprocess
 import tempfile
 import time
 from unittest.mock import patch
@@ -105,6 +108,57 @@ for change in [
     altered = copy.deepcopy(requirements)
     change(altered)
     reject(lambda r=altered: m.validate_requirements(r), 'Mutated source dependency inventory')
+
+# Exercise actual Git checkout conversion, not a Python newline normalization.
+# The sealed file must keep its exact digest with core.autocrlf=true, while an
+# unprotected sibling proves the checkout really performed LF -> CRLF conversion.
+with tempfile.TemporaryDirectory() as checkout_td:
+    checkout = Path(checkout_td)
+    empty_config = checkout / 'empty-config'
+    empty_config.write_bytes(b'')
+    fixture = checkout / 'repo'
+    fixture.mkdir()
+    git_env = {key: value for key, value in os.environ.items() if not key.upper().startswith('GIT_')}
+    git_env.update(GIT_CONFIG_NOSYSTEM='1', GIT_ATTR_NOSYSTEM='1', GIT_CONFIG_GLOBAL=str(empty_config))
+    def git(*arguments, autocrlf='false'):
+        result = subprocess.run(['git', '-c', 'core.autocrlf=' + autocrlf,
+            '-c', 'core.attributesfile=' + str(empty_config), *arguments],
+            cwd=fixture, env=git_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            timeout=20, check=True)
+        return result.stdout
+    git('init', '--quiet')
+    relative = 'tests/desktop/llvm_sdk/provider-requirements.json'
+    control_relative = 'tests/desktop/llvm_sdk/provider-requirements-control.json'
+    sealed = fixture / relative
+    control = fixture / control_relative
+    sealed.parent.mkdir(parents=True)
+    original = (SOURCE / 'provider-requirements.json').read_bytes()
+    check(b'\r' not in original and b'\n' in original, 'Pinned source evidence is exact LF bytes')
+    sealed.write_bytes(original)
+    control.write_bytes(original)
+    (fixture / '.gitattributes').write_bytes((ROOT / '.gitattributes').read_bytes())
+    git('add', '--', '.gitattributes', relative, control_relative)
+    sealed.unlink()
+    control.unlink()
+    git('checkout-index', '--all', autocrlf='true')
+    check(git('check-attr', 'text', '--', relative).decode().strip().endswith(': text: unset'),
+          'Exact sealed-file attribute disables checkout conversion')
+    check(git('check-attr', 'text', '--', control_relative).decode().strip().endswith(': text: unspecified'),
+          'Byte-preservation attribute does not expand to sibling evidence')
+    check(sealed.read_bytes() == original, 'Real autocrlf checkout preserves sealed bytes')
+    expected_crlf = original.replace(b'\n', b'\r\n')
+    check(control.read_bytes() == expected_crlf, 'Unprotected control really converts to CRLF')
+    check(hashlib.sha256(sealed.read_bytes()).hexdigest() == request['requirements_sha256'],
+          'Actual protected checkout keeps requested evidence digest')
+    check(hashlib.sha256(control.read_bytes()).hexdigest() != request['requirements_sha256'],
+          'Actual unprotected checkout reproduces evidence digest mismatch')
+    (sealed.parent / 'provider-inventory-request.json').write_bytes(
+        (SOURCE / 'provider-inventory-request.json').read_bytes())
+    with patch.object(m, 'HERE', sealed.parent):
+        check(m.load_requirements()[1]['requirements_sha256'] == request['requirements_sha256'],
+              'Unchanged production loader accepts actual protected checkout')
+        sealed.write_bytes(control.read_bytes())
+        reject(m.load_requirements, 'Unchanged production loader rejects actual CRLF checkout bytes')
 
 parsed = m.parse_directives(' /DEFAULTLIB:LIBCMT.LIB -defaultlib:"uuid.lib" /FAILIFMISMATCH:"RuntimeLibrary=MT_StaticRelease" /INCLUDE:malloc')
 check(parsed['default_libraries'] == ['libcmt', 'uuid'], 'Canonical defaults')
