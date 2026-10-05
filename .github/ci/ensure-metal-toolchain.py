@@ -9,6 +9,8 @@ References:
 https://developer.apple.com/documentation/xcode/downloading-and-installing-additional-xcode-components
 https://developer.apple.com/documentation/technotes/tn3127-inside-code-signing-requirements
 https://developer.apple.com/library/archive/documentation/Miscellaneous/Conceptual/MetalProgrammingGuide/Dev-Technique/Dev-Technique.html
+https://developer.apple.com/documentation/metal/building-a-shader-library-by-precompiling-source-files
+https://developer.apple.com/videos/play/wwdc2020/10615/
 """
 import argparse
 from datetime import datetime, timezone
@@ -35,6 +37,8 @@ DOWNLOAD_SECONDS = 300
 TOTAL_SECONDS = 420  # Included in, never added to, the 35-minute bootstrap budget.
 COMMAND_SECONDS = 30
 SMOKE_SECONDS = 60
+SMOKE_TARGET = 'air64-apple-ios27.0'
+SMOKE_KERNEL = 'madeira_setup_smoke'
 OUTPUT_LIMIT = 16 * 1024
 SYSTEM_TOOLS = {'select': '/usr/bin/xcode-select', 'xcrun': '/usr/bin/xcrun',
                 'codesign': '/usr/bin/codesign'}
@@ -218,9 +222,15 @@ class Setup:
         if roots[0] not in actual_linker.parents:
             raise SetupFailure('verification-failed', 'Metal linker escapes the verified component root')
         actual_linker = self.verify_executable('metallib-linker', actual_linker)
+        # Inspect the linked library with the compiler's own signed symbol tool.
+        # metal-nm is documented by Apple for exported Metal library symbols.
+        inspector = self.path(str(actual.parent / 'metal-nm'))
+        if roots[0] not in inspector.parents:
+            raise SetupFailure('verification-failed', 'Metal symbol inspector escapes the verified component root')
+        inspector = self.verify_executable('metal-symbol-inspector', inspector)
         self.data.update({'compiler_version': real_version, 'component_root': str(roots[0]),
                           'entrypoints_are_component_binaries': entry == actual and linker == actual_linker})
-        return actual, actual_linker
+        return actual, inspector
 
     def prepare(self):
         if platform.system() != 'Darwin' or platform.machine() != 'arm64':
@@ -270,27 +280,43 @@ class Setup:
             tools = self.probe()
             if tools is None:
                 raise SetupFailure('verification-failed', 'Apple downloader returned success but the Metal compiler remains unavailable')
-        compiler, linker = tools
-        self.data['smoke_test']['status'] = 'running'
+        compiler, inspector = tools
+        self.data['smoke_test'].update({'status': 'running', 'target': SMOKE_TARGET,
+            'compile_target': SMOKE_TARGET, 'link_target': SMOKE_TARGET,
+            'link_driver': str(compiler), 'kernel': SMOKE_KERNEL, 'kernel_retained': False})
         with tempfile.TemporaryDirectory(prefix='madeira-metal-smoke-') as directory:
             directory = Path(directory)
             source, air, library = (directory / name for name in ('smoke.metal', 'smoke.air', 'smoke.metallib'))
             source.write_text(SHADER)
             try:
                 self.command('Compile disposable iOS Metal shader',
-                             [compiler, '-target', 'air64-apple-ios27.0', '-isysroot', sdk_path,
+                             [compiler, '-target', SMOKE_TARGET, '-isysroot', sdk_path,
                               '-c', source, '-o', air], timeout=SMOKE_SECONDS)
                 if not air.is_file() or air.stat().st_size == 0:
                     raise SetupFailure('smoke-failed', 'Metal compiler produced no AIR object')
-                self.command('Link disposable Metal library', [linker, air, '-o', library], timeout=SMOKE_SECONDS)
+                # Apple's current workflow links IR through the metal driver.
+                # Direct air-lld/metallib defaults to macOS and can ignore an
+                # iOS AIR input yet return success with a nonempty, empty library.
+                _, link_output = self.command('Link disposable iOS Metal library',
+                    [compiler, '-target', SMOKE_TARGET, '-isysroot', sdk_path,
+                     air, '-o', library], timeout=SMOKE_SECONDS)
+                if link_output or self.data['commands'][-1]['output_truncated']:
+                    raise SetupFailure('smoke-failed', 'Metal linker emitted diagnostics; expected a clean link')
                 if not library.is_file() or library.stat().st_size == 0:
                     raise SetupFailure('smoke-failed', 'Metal linker produced no library')
+                with library.open('rb') as stream:
+                    if stream.read(4) != b'MTLB':
+                        raise SetupFailure('smoke-failed', 'Metal linker output is not a Metal library')
+                _, symbols = self.command('Verify smoke kernel in linked Metal library',
+                    [inspector, '--defined-only', '--extern-only', '-j', library], timeout=SMOKE_SECONDS)
+                if self.data['commands'][-1]['output_truncated'] or SMOKE_KERNEL not in symbols.splitlines():
+                    raise SetupFailure('smoke-failed', 'Linked Metal library does not export the defined smoke kernel')
             except SetupFailure as exc:
                 self.data['smoke_test']['status'] = 'failed'
                 if exc.status == 'command-failed':
                     raise SetupFailure('smoke-failed', str(exc)) from exc
                 raise
-            self.data['smoke_test'].update({'status': 'passed', 'target': 'air64-apple-ios27.0',
+            self.data['smoke_test'].update({'status': 'passed', 'kernel_retained': True,
                 'shader_sha256': sha256(source), 'air_bytes': air.stat().st_size,
                 'library_bytes': library.stat().st_size, 'library_sha256': sha256(library),
                 'outputs_disposable': True})

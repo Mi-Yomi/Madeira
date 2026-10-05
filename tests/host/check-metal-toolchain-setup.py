@@ -18,7 +18,7 @@ SPEC = importlib.util.spec_from_file_location('metal_setup', ROOT / '.github/ci/
 METAL = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(METAL)
 HEADER = '''#!/usr/bin/env python3
-import json, os, pathlib, subprocess, sys, time
+import json, os, pathlib, re, subprocess, sys, time
 from pathlib import Path
 root = Path(os.environ['FIXTURE_ROOT'])
 mode = os.environ.get('FIXTURE_MODE', 'missing')
@@ -63,6 +63,7 @@ if '--verify' in args:
     if mode == 'bad-downloader-signature' and args[-1].endswith('xcodebuild'): sys.exit(8)
     if mode == 'verification-failure' and 'Metal.xctoolchain' in args[-1]: sys.exit(8)
     if mode == 'bad-linker-signature' and args[-1].endswith('/metallib'): sys.exit(8)
+    if mode == 'bad-inspector-signature' and args[-1].endswith('/metal-nm'): sys.exit(8)
     print('explicit requirement satisfied')
 else: print('Authority=Software Signing\\nAuthority=Apple Root CA\\nIdentifier=fixture')
 ''')
@@ -89,19 +90,48 @@ if args == ['--version']:
     print('Apple metal version 33000.1 (fixture)\\nTarget: air64-apple-darwin26.0\\nThread model: posix')
     print('InstalledDir: ' + str(root if mode == 'wrong-component-path' else component))
     sys.exit(0)
+if '-c' not in args:
+    sys.exit(subprocess.run([component / 'metallib', *args]).returncode)
 if mode == 'compile-failure': sys.exit('fixture Metal compilation failed')
 assert args[:4] == ['-target', 'air64-apple-ios27.0', '-isysroot', str(dev / 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.0.sdk')]
 source = Path(args[args.index('-c') + 1])
 assert '#include <metal_stdlib>' in source.read_text()
-if mode != 'missing-air': Path(args[args.index('-o') + 1]).write_bytes(b'fixture AIR')
+if mode != 'missing-air':
+    Path(args[args.index('-o') + 1]).write_text(json.dumps({
+        'target': args[1], 'kernel': re.search(r'kernel void (\\w+)', source.read_text())[1]}))
 '''
         linker = '''
 if mode == 'link-failure': sys.exit('fixture Metal link failed')
-assert Path(args[0]).read_bytes() == b'fixture AIR'
-if mode != 'missing-library': Path(args[args.index('-o') + 1]).write_bytes(b'MTLB fixture library')
+air = json.loads(next(Path(arg) for arg in args if arg.endswith('.air')).read_text())
+target = args[args.index('-target') + 1] if '-target' in args else 'air64-apple-macosx10.11.0'
+output = Path(args[args.index('-o') + 1])
+if mode == 'missing-library': sys.exit(0)
+if target != air['target'] or mode == 'ignored-input':
+    print('air-lld: warning: ignoring smoke.air built for ' + air['target'] + ' incompatible with target ' + target)
+    output.write_bytes(b'MTLB' + bytes(88))
+    sys.exit(0)
+if mode == 'empty-library': output.write_bytes(b'MTLB' + bytes(88)); sys.exit(0)
+if mode == 'invalid-library': output.write_bytes(b'not a metallib ' + air['kernel'].encode()); sys.exit(0)
+name = air['kernel']
+if mode == 'wrong-kernel': name = 'another_kernel'
+if mode == 'substring-kernel': name += '_not_the_kernel'
+symbol = {'name': name, 'defined': mode != 'undefined-kernel', 'external': mode != 'internal-kernel'}
+output.write_bytes(b'MTLB' + json.dumps({'symbols': [symbol], 'debug_string': air['kernel']}).encode())
+if mode == 'link-warning-with-kernel': print('air-lld: warning: fixture link warning')
 '''
         self.write_tool(self.component / 'metal', compiler)
         self.write_tool(self.component / 'metallib', linker)
+        self.write_tool(self.component / 'metal-nm', '''
+if mode == 'inspection-failure': sys.exit('fixture symbol inspection failed')
+if mode == 'inspection-timeout': time.sleep(30)
+assert args[:3] == ['--defined-only', '--extern-only', '-j']
+library = Path(args[-1]).read_bytes()
+assert library[:4] == b'MTLB'
+if library == b'MTLB' + bytes(88): sys.exit(0)
+if mode == 'truncated-symbol-output': print('x' * 20000)
+for symbol in json.loads(library[4:])['symbols']:
+    if symbol['defined'] and symbol['external']: print(symbol['name'])
+''')
         stub = self.dev / 'Toolchains/XcodeDefault.xctoolchain/usr/bin/metal'
         self.write_tool(stub, "sys.exit('fixture stub must be invoked through xcrun')\n")
         self.write_tool(stub.with_name('metallib'), "sys.exit('fixture stub not the actual linker')\n")
@@ -140,6 +170,11 @@ if mode != 'missing-library': Path(args[args.index('-o') + 1]).write_bytes(b'MTL
         self.assertEqual(self.data['status'], 'available')
         self.assertEqual(self.data['download_result'], 'not-needed')
         self.assertEqual(self.data['smoke_test']['status'], 'passed')
+        self.assertTrue(self.data['smoke_test']['kernel_retained'])
+        self.assertEqual(self.data['smoke_test']['kernel'], 'madeira_setup_smoke')
+        self.assertEqual(self.data['smoke_test']['compile_target'], 'air64-apple-ios27.0')
+        self.assertEqual(self.data['smoke_test']['link_target'], 'air64-apple-ios27.0')
+        self.assertEqual(self.data['smoke_test']['link_driver'], str(self.component / 'metal'))
         self.assertEqual(self.data['approved_agreement']['identifier'], 'EA2002')
         for evidence in self.data['verified_executables'].values():
             self.assertTrue(evidence['verification_passed'])
@@ -147,7 +182,14 @@ if mode != 'missing-library': Path(args[args.index('-o') + 1]).write_bytes(b'MTL
             self.assertEqual(len(evidence['sha256']), 64)
         compiled = [e for e in self.trace if e[0] == 'metal' and '-c' in e]
         self.assertEqual(len(compiled), 1)
+        linked = [e for e in self.trace if e[0] == 'metal' and '-o' in e and '-c' not in e]
+        self.assertEqual(len(linked), 1)
+        self.assertEqual(compiled[0][1:5], linked[0][1:5])
+        inspected = [e for e in self.trace if e[0] == 'metal-nm']
+        self.assertEqual(len(inspected), 1)
+        self.assertEqual(inspected[0][-1], linked[0][-1])
         self.assertFalse(Path(compiled[0][compiled[0].index('-c') + 1]).exists())
+        self.assertFalse(Path(inspected[0][-1]).exists())
 
     def test_missing_without_explicit_permission_does_not_install(self):
         self.assertEqual(self.run_setup(allow=False), 1)
@@ -199,6 +241,48 @@ if mode != 'missing-library': Path(args[args.index('-o') + 1]).write_bytes(b'MTL
         self.assertEqual(self.run_setup('bad-linker-signature', installed=True), 1)
         self.assertEqual(self.data['status'], 'verification-failed')
         self.assertEqual(self.data['smoke_test']['status'], 'not-run')
+
+    def test_symbol_inspector_must_be_verified_inside_component(self):
+        self.assertEqual(self.run_setup('bad-inspector-signature', installed=True), 1)
+        self.assertEqual(self.data['status'], 'verification-failed')
+        self.assertFalse(any(e[0] == 'metal-nm' for e in self.trace))
+        self.assertEqual(self.data['smoke_test']['status'], 'not-run')
+        inspector = self.component / 'metal-nm'
+        escaped = self.root / 'outside-inspector'
+        inspector.rename(escaped)
+        inspector.symlink_to(escaped)
+        self.assertEqual(self.run_setup(installed=True), 1)
+        self.assertEqual(self.data['status'], 'verification-failed')
+        self.assertIn('escapes the verified component root', self.data['error'])
+        self.assertFalse(any(e[0] == 'outside-inspector' for e in self.trace))
+
+    def test_ignored_input_success_and_link_warnings_fail_closed(self):
+        for mode in ('ignored-input', 'link-warning-with-kernel'):
+            with self.subTest(mode=mode):
+                self.assertEqual(self.run_setup(mode, installed=True, allow=False), 1)
+                self.assertEqual(self.data['status'], 'smoke-failed')
+                self.assertEqual(self.data['smoke_test']['status'], 'failed')
+                self.assertFalse(self.data['smoke_test']['kernel_retained'])
+                link = next(e for e in self.data['commands'] if e['stage'] == 'Link disposable iOS Metal library')
+                self.assertEqual(link['returncode'], 0)
+                self.assertIn('warning:', link['output_tail'])
+                self.assertEqual(self.downloads(), [])
+
+    def test_nonempty_library_needs_exact_defined_external_kernel(self):
+        for mode in ('empty-library', 'invalid-library', 'wrong-kernel', 'substring-kernel',
+                     'undefined-kernel', 'internal-kernel', 'inspection-failure', 'truncated-symbol-output'):
+            with self.subTest(mode=mode):
+                self.assertEqual(self.run_setup(mode, installed=True, allow=False), 1)
+                self.assertEqual(self.data['status'], 'smoke-failed')
+                self.assertEqual(self.data['smoke_test']['status'], 'failed')
+                self.assertFalse(self.data['smoke_test']['kernel_retained'])
+                self.assertEqual(self.downloads(), [])
+
+    def test_symbol_inspection_remains_bounded(self):
+        self.assertEqual(self.run_setup('inspection-timeout', installed=True, allow=False, SMOKE_SECONDS=0.15), 1)
+        self.assertEqual(self.data['status'], 'timed-out')
+        self.assertEqual(self.data['smoke_test']['status'], 'failed')
+        self.assertFalse(self.data['smoke_test']['kernel_retained'])
 
     def test_generic_probe_error_does_not_trigger_install(self):
         self.assertEqual(self.run_setup('probe-error'), 1)
