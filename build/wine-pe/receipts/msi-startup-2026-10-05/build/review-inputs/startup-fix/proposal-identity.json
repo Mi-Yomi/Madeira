@@ -1,0 +1,22 @@
+{
+  "baseline_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "source_sha256": "0feda873cdce7625044f153c10ad05fa3d49939bde94f4fe28fce75b0735669f",
+  "patch_sha256": "a3c010ea77cf18c3b37ad2bc249692758839d9f83fbe7b081b08312dc8e36bae",
+  "helper_sha256": "b982c9579fb3b0f79d5765b0367ea36a88eba9920e2f3614113011350819da09",
+  "new_called_apis": [
+    "CancelIoEx",
+    "CreateEventW",
+    "GetOverlappedResult",
+    "WaitForMultipleObjects",
+    "SetLastError"
+  ],
+  "expected_new_imports": [
+    "CancelIoEx",
+    "CreateEventW",
+    "GetOverlappedResult",
+    "WaitForMultipleObjects"
+  ],
+  "set_last_error_note": "Check Wine inline TEB implementation; MinGW ABI-only fixture imports SetLastError.",
+  "runtime_tested": false,
+  "primary_checkout_changed": false
+}

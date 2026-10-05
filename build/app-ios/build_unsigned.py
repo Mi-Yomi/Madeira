@@ -30,6 +30,7 @@ import verify_desktop_integration
 import verify_msi_integration
 import verify_loader_integration
 import verify_msi_client_integration
+import verify_msi_startup_integration
 
 CONVERTER = "d3d12/libmetalirconverter.dylib"
 CONVERTER_SHA256 = "073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2"
@@ -136,7 +137,8 @@ def resource_inputs():
                 verify_desktop_integration.RECORD, verify_desktop_integration.RECEIPT,
                 verify_msi_integration.RECORD, verify_msi_integration.RECEIPT,
                 verify_loader_integration.RECORD, verify_loader_integration.RECEIPT,
-                verify_msi_client_integration.RECORD, verify_msi_client_integration.RECEIPT).split("\0")
+                verify_msi_client_integration.RECORD, verify_msi_client_integration.RECEIPT,
+                verify_msi_startup_integration.RECORD, verify_msi_startup_integration.RECEIPT).split("\0")
     expected = {name.removeprefix("app/Madeira/"): digest(ROOT / name) for name in names
                 if name.startswith("app/Madeira/")}
     for name in RESOURCE_FILES:
@@ -178,9 +180,12 @@ def guest_pe_evidence(pe):
     """One exact receipt contract shared with the unsigned link diagnostic."""
     has_msi = verify_msi_integration.BINARIES <= pe.keys()
     has_loader = verify_loader_integration.BINARIES <= pe.keys()
-    has_client = has_msi and has_loader and all(pe.get(name) == item["sha256"]
-        for name, item in verify_msi_client_integration.CANDIDATES.items())
-    return {"status": ("tracked-existing-plus-reviewed-desktop-msi-loader-and-client-fix" if has_client else
+    has_startup = has_msi and has_loader and all(pe.get(name) == item["sha256"]
+        for name, item in verify_msi_startup_integration.CANDIDATES.items())
+    has_client = has_startup or (has_msi and has_loader and all(pe.get(name) == item["sha256"]
+        for name, item in verify_msi_client_integration.CANDIDATES.items()))
+    return {"status": ("tracked-existing-plus-reviewed-desktop-msi-loader-client-and-startup-fixes" if has_startup else
+                       "tracked-existing-plus-reviewed-desktop-msi-loader-and-client-fix" if has_client else
                        "tracked-existing-plus-reviewed-desktop-msi-and-loader" if has_loader else
                        "tracked-existing-plus-reviewed-desktop-and-msi" if has_msi else
                        "tracked-existing-plus-reviewed-source-built-desktop"),
@@ -198,8 +203,14 @@ def guest_pe_evidence(pe):
             "msi_client_source_sha256": verify_msi_client_integration.SOURCE_SHA256 if has_client else None,
             "msi_client_before_sha256": {name: item["sha256"] for name, item in
                                          verify_msi_client_integration.BEFORE.items()} if has_client else {},
-            "source_built_msi_client_sha256": {name: pe[name] for name in
-                                               verify_msi_client_integration.BINARIES} if has_client else {}}
+            "source_built_msi_client_sha256": {name: item["sha256"] for name, item in
+                                               verify_msi_client_integration.CANDIDATES.items()} if has_client else {},
+            "msi_startup_stage_seal_sha256": verify_msi_startup_integration.REVIEWED_SEAL if has_startup else None,
+            "msi_startup_source_sha256": verify_msi_startup_integration.SOURCE_SHA256 if has_startup else None,
+            "msi_startup_before_sha256": {name: item["sha256"] for name, item in
+                                          verify_msi_startup_integration.BEFORE.items()} if has_startup else {},
+            "source_built_msi_startup_sha256": {name: pe[name] for name in
+                                                verify_msi_startup_integration.BINARIES} if has_startup else {}}
 
 
 def verify_archives(native, actual, expected):

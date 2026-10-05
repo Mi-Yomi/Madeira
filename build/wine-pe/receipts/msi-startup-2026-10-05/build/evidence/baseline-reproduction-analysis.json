@@ -1,0 +1,414 @@
+[
+  {
+    "architecture": "aarch64",
+    "claim": "Same source, toolchain and compiler flags. Absolute source strings and PE timestamps differ; exact bitwise reproduction is not established and no exhaustive equivalence is inferred from static contracts.",
+    "compile_command_equal_after_root_path_normalization": true,
+    "differing_bytes": 144734,
+    "published": {
+      "embedded_workspace_strings": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/assembly.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c: custom_action_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/handle.c: handle_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/handle.c: object_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/table.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/where.c"
+      ],
+      "pe_timestamp": 1791189019,
+      "sections": [
+        {
+          "name": ".text",
+          "raw_bytes": 524288,
+          "rva": "0x10000",
+          "sha256": "138bc323e0a079c04de90cdab3fdaa33796e34c8764ea3be37222a7610be596c",
+          "virtual_bytes": 519984
+        },
+        {
+          "name": ".rdata",
+          "raw_bytes": 262144,
+          "rva": "0x90000",
+          "sha256": "31d9b6ef743df7856b73b3f0a959c7aa5df96a3fb49fa4fb6b93e1f6dfcb4915",
+          "virtual_bytes": 204692
+        },
+        {
+          "name": ".data",
+          "raw_bytes": 65536,
+          "rva": "0xd0000",
+          "sha256": "23cb955012a10cf4b83bf5d9808bc0c863467143ef64b62a0f5a3a4ebe5ee6b9",
+          "virtual_bytes": 2648
+        },
+        {
+          "name": ".pdata",
+          "raw_bytes": 65536,
+          "rva": "0xe0000",
+          "sha256": "418c1a8a45253fd79f41b0b91487c65d3fcff831834437b26242b3b6d38b776c",
+          "virtual_bytes": 12768
+        },
+        {
+          "name": ".rsrc",
+          "raw_bytes": 65536,
+          "rva": "0xf0000",
+          "sha256": "c02f84df69c639df478346c16fa65a95b7cc66640e48026e5151a0cdc00df9fd",
+          "virtual_bytes": 36380
+        },
+        {
+          "name": ".reloc",
+          "raw_bytes": 65536,
+          "rva": "0x100000",
+          "sha256": "7def18bb1a804db1811c32a921b7f3e397f9a08c5f4a472834c21269d1c41ad2",
+          "virtual_bytes": 1452
+        }
+      ]
+    },
+    "published_compile_command": {
+      "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/aarch64-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target aarch64-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -gdwarf-4 -g -O2",
+      "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-aarch64",
+      "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c",
+      "output": "dlls/msi/aarch64-windows/custom.o"
+    },
+    "rebuilt": {
+      "embedded_workspace_strings": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/assembly.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c: custom_action_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/handle.c: handle_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/handle.c: object_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/table.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/where.c"
+      ],
+      "pe_timestamp": 1791204166,
+      "sections": [
+        {
+          "name": ".text",
+          "raw_bytes": 524288,
+          "rva": "0x10000",
+          "sha256": "7f04a9f9d690def7c525023777d021b571e9f34205c3d979467c5c9a5fd68756",
+          "virtual_bytes": 519984
+        },
+        {
+          "name": ".rdata",
+          "raw_bytes": 262144,
+          "rva": "0x90000",
+          "sha256": "b5bf6b568345df7239f166f40326f5111117cb92eb57a01c36223c6cce235ec6",
+          "virtual_bytes": 204676
+        },
+        {
+          "name": ".data",
+          "raw_bytes": 65536,
+          "rva": "0xd0000",
+          "sha256": "8e6fababf40346872c436cc08f5269188375a4ea9cbcb687583c37f5a6392b25",
+          "virtual_bytes": 2648
+        },
+        {
+          "name": ".pdata",
+          "raw_bytes": 65536,
+          "rva": "0xe0000",
+          "sha256": "6025997337c99769e4add3ccf76c47e7598d20d2b37c52c5131dd5f80aaa25dd",
+          "virtual_bytes": 12768
+        },
+        {
+          "name": ".rsrc",
+          "raw_bytes": 65536,
+          "rva": "0xf0000",
+          "sha256": "c02f84df69c639df478346c16fa65a95b7cc66640e48026e5151a0cdc00df9fd",
+          "virtual_bytes": 36380
+        },
+        {
+          "name": ".reloc",
+          "raw_bytes": 65536,
+          "rva": "0x100000",
+          "sha256": "c8fe5d19b6b9b0fa6346d06a162cd03cc60dbd2129b8fa445a2e8d5c4e9afc1f",
+          "virtual_bytes": 1452
+        }
+      ]
+    },
+    "rebuilt_compile_command": {
+      "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/aarch64-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target aarch64-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -gdwarf-4 -g -O2",
+      "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/build-aarch64",
+      "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c",
+      "output": "dlls/msi/aarch64-windows/custom.o"
+    }
+  },
+  {
+    "architecture": "arm64ec",
+    "claim": "Same source, toolchain and compiler flags. Absolute source strings and PE timestamps differ; exact bitwise reproduction is not established and no exhaustive equivalence is inferred from static contracts.",
+    "compile_command_equal_after_root_path_normalization": true,
+    "differing_bytes": 145251,
+    "published": {
+      "embedded_workspace_strings": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/assembly.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c: custom_action_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/handle.c: handle_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/handle.c: object_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/table.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/where.c"
+      ],
+      "pe_timestamp": 1791189054,
+      "sections": [
+        {
+          "name": ".text",
+          "raw_bytes": 589824,
+          "rva": "0x10000",
+          "sha256": "ed76b3d06d981bd9593da4746ce02c39f1059168e3f7c68fafa9110f25328ace",
+          "virtual_bytes": 566390
+        },
+        {
+          "name": ".hexpthk",
+          "raw_bytes": 65536,
+          "rva": "0xa0000",
+          "sha256": "e2263d30a62618b160cc036111b652c9095b0d5d3c1f11194887fd6f0dd18a9a",
+          "virtual_bytes": 4752
+        },
+        {
+          "name": ".rdata",
+          "raw_bytes": 262144,
+          "rva": "0xb0000",
+          "sha256": "b1c4e5751c08dab2ebd4f92b952bce3d5805beaa8ad71969a3262d9e4bdd7e06",
+          "virtual_bytes": 219888
+        },
+        {
+          "name": ".data",
+          "raw_bytes": 65536,
+          "rva": "0xf0000",
+          "sha256": "a933dde6ce26bc519abba7e87b3f74b95650bf84ac48534efc6a98864e793a06",
+          "virtual_bytes": 2728
+        },
+        {
+          "name": ".pdata",
+          "raw_bytes": 65536,
+          "rva": "0x100000",
+          "sha256": "cb0918d19fe9597865120469071dddec24088889ed11fa98ce5b8cc47e5bb311",
+          "virtual_bytes": 13840
+        },
+        {
+          "name": ".a64xrm",
+          "raw_bytes": 65536,
+          "rva": "0x110000",
+          "sha256": "78faec3f3ae5040176ce72c9698475eaec141c87be60672bf8a1c4384da72db0",
+          "virtual_bytes": 2384
+        },
+        {
+          "name": ".rsrc",
+          "raw_bytes": 65536,
+          "rva": "0x120000",
+          "sha256": "0696e12069b490c1921cde540e3cec49ca0a4d68dd195e170274097c36b0ab36",
+          "virtual_bytes": 36380
+        },
+        {
+          "name": ".reloc",
+          "raw_bytes": 65536,
+          "rva": "0x130000",
+          "sha256": "582ec641cac6a93c3f9752a1b4e89c6f8d86b6e89c86378f4b8c64537e12b247",
+          "virtual_bytes": 2784
+        }
+      ]
+    },
+    "published_compile_command": {
+      "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/arm64ec-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target arm64ec-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -gdwarf-4 -g -O2",
+      "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-arm64ec",
+      "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c",
+      "output": "dlls/msi/arm64ec-windows/custom.o"
+    },
+    "rebuilt": {
+      "embedded_workspace_strings": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/assembly.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c: custom_action_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/handle.c: handle_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/handle.c: object_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/table.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/where.c"
+      ],
+      "pe_timestamp": 1791204202,
+      "sections": [
+        {
+          "name": ".text",
+          "raw_bytes": 589824,
+          "rva": "0x10000",
+          "sha256": "2dd1d201872bfcb704b92c9a0c7d031a85edd82ecf067611f086f38d33534dce",
+          "virtual_bytes": 566390
+        },
+        {
+          "name": ".hexpthk",
+          "raw_bytes": 65536,
+          "rva": "0xa0000",
+          "sha256": "e2263d30a62618b160cc036111b652c9095b0d5d3c1f11194887fd6f0dd18a9a",
+          "virtual_bytes": 4752
+        },
+        {
+          "name": ".rdata",
+          "raw_bytes": 262144,
+          "rva": "0xb0000",
+          "sha256": "ec82efaddff69c6f97eb2149f230a2c1c3ae58124d34eb98ae0fca691daabdfe",
+          "virtual_bytes": 219888
+        },
+        {
+          "name": ".data",
+          "raw_bytes": 65536,
+          "rva": "0xf0000",
+          "sha256": "9a3dc2210ab298ce7aa85e31ee4a62b48c19c885151f0f8368658914fa65e374",
+          "virtual_bytes": 2728
+        },
+        {
+          "name": ".pdata",
+          "raw_bytes": 65536,
+          "rva": "0x100000",
+          "sha256": "a5a88fe023c4cd9863f242299ed6e4bbfeed3f295eaf9a0c625b74f8c9afb930",
+          "virtual_bytes": 13840
+        },
+        {
+          "name": ".a64xrm",
+          "raw_bytes": 65536,
+          "rva": "0x110000",
+          "sha256": "78faec3f3ae5040176ce72c9698475eaec141c87be60672bf8a1c4384da72db0",
+          "virtual_bytes": 2384
+        },
+        {
+          "name": ".rsrc",
+          "raw_bytes": 65536,
+          "rva": "0x120000",
+          "sha256": "0696e12069b490c1921cde540e3cec49ca0a4d68dd195e170274097c36b0ab36",
+          "virtual_bytes": 36380
+        },
+        {
+          "name": ".reloc",
+          "raw_bytes": 65536,
+          "rva": "0x130000",
+          "sha256": "2dff05eb6809d8be4d80aba6819b7ad1bbc2784b9352a1b70359dfc4fc2c635c",
+          "virtual_bytes": 2784
+        }
+      ]
+    },
+    "rebuilt_compile_command": {
+      "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/arm64ec-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target arm64ec-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -gdwarf-4 -g -O2",
+      "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/build-arm64ec",
+      "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c",
+      "output": "dlls/msi/arm64ec-windows/custom.o"
+    }
+  },
+  {
+    "architecture": "i386",
+    "claim": "Same source, toolchain and compiler flags. Absolute source strings and PE timestamps differ; exact bitwise reproduction is not established and no exhaustive equivalence is inferred from static contracts.",
+    "compile_command_equal_after_root_path_normalization": true,
+    "differing_bytes": 143481,
+    "published": {
+      "embedded_workspace_strings": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/assembly.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c: custom_action_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/handle.c: handle_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/handle.c: object_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/table.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/where.c"
+      ],
+      "pe_timestamp": 1791189087,
+      "sections": [
+        {
+          "name": ".text",
+          "raw_bytes": 487424,
+          "rva": "0x1000",
+          "sha256": "c7dbfaa20282a1d3a618e19123eae96d22a3f9b4eb8c19e9023755ad8c4862f6",
+          "virtual_bytes": 484925
+        },
+        {
+          "name": ".rdata",
+          "raw_bytes": 180224,
+          "rva": "0x78000",
+          "sha256": "c8a18aa1d5a47449a80c0bf9113914cb9f507b2b7a7efe4579d6716ee70a10ba",
+          "virtual_bytes": 176866
+        },
+        {
+          "name": ".data",
+          "raw_bytes": 4096,
+          "rva": "0xa4000",
+          "sha256": "e3369ab6cc05c851c701c03fc27a6f03c032c984d1fb2e8c269ba4177f3a590a",
+          "virtual_bytes": 1996
+        },
+        {
+          "name": ".eh_fram",
+          "raw_bytes": 12288,
+          "rva": "0xa5000",
+          "sha256": "5969682b02991111631c5e5ca57130fdbfaf98070533f4f445aff7c65df7ff93",
+          "virtual_bytes": 8892
+        },
+        {
+          "name": ".rsrc",
+          "raw_bytes": 36864,
+          "rva": "0xa8000",
+          "sha256": "177457a1430c40bb4285567c345721bfe054eeae3453a42a5e1802850de324ec",
+          "virtual_bytes": 36372
+        },
+        {
+          "name": ".reloc",
+          "raw_bytes": 36864,
+          "rva": "0xb1000",
+          "sha256": "dd984012cdcf8b1e67f2bb2813d491fd2bd4e110084e6947db177111386596cb",
+          "virtual_bytes": 33600
+        }
+      ]
+    },
+    "published_compile_command": {
+      "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/i386-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target i686-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -fms-hotpatch -fno-omit-frame-pointer -mlong-double-64 -gdwarf-4 -g -O2",
+      "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/build-i386",
+      "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-client-provider-build-20261005/wine/dlls/msi/custom.c",
+      "output": "dlls/msi/i386-windows/custom.o"
+    },
+    "rebuilt": {
+      "embedded_workspace_strings": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/assembly.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c: custom_action_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/handle.c: handle_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/handle.c: object_cs",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/table.c",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/where.c"
+      ],
+      "pe_timestamp": 1791204238,
+      "sections": [
+        {
+          "name": ".text",
+          "raw_bytes": 487424,
+          "rva": "0x1000",
+          "sha256": "b2e80d8abe7ea7fdc887b7b649bddeeb35a04961401b7f5239251745ba0758a8",
+          "virtual_bytes": 484925
+        },
+        {
+          "name": ".rdata",
+          "raw_bytes": 180224,
+          "rva": "0x78000",
+          "sha256": "a0af2a3a86e84e83b0e5df94d8c2f124906eea28f4295aad15403d9590f4267d",
+          "virtual_bytes": 176798
+        },
+        {
+          "name": ".data",
+          "raw_bytes": 4096,
+          "rva": "0xa4000",
+          "sha256": "228977f05a9ae4ba71624ffeca9eeb3f5f17d082f62abb8c77c11c8ff5da19b7",
+          "virtual_bytes": 1996
+        },
+        {
+          "name": ".eh_fram",
+          "raw_bytes": 12288,
+          "rva": "0xa5000",
+          "sha256": "5969682b02991111631c5e5ca57130fdbfaf98070533f4f445aff7c65df7ff93",
+          "virtual_bytes": 8892
+        },
+        {
+          "name": ".rsrc",
+          "raw_bytes": 36864,
+          "rva": "0xa8000",
+          "sha256": "177457a1430c40bb4285567c345721bfe054eeae3453a42a5e1802850de324ec",
+          "virtual_bytes": 36372
+        },
+        {
+          "name": ".reloc",
+          "raw_bytes": 36864,
+          "rva": "0xb1000",
+          "sha256": "40cbc70f4fb8d18c5bad32c2e496ccf80d823bc6427e64b486b65f16552176b6",
+          "virtual_bytes": 33600
+        }
+      ]
+    },
+    "rebuilt_compile_command": {
+      "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang -D__STDC__ -c -o dlls/msi/i386-windows/custom.o /workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c -Idlls/msi -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi -Iinclude -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/include -I/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/include/msvcrt -D_UCRT -D__WINESRC__ -D__WINE_PE_BUILD -Wall -target i686-windows -fuse-ld=lld --no-default-config -fno-strict-aliasing -Wdeclaration-after-statement -Wempty-body -Wignored-qualifiers -Winit-self -Wno-microsoft-enum-forward-reference -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter -Wvla -Wwrite-strings -Wpointer-arith -Wabsolute-value -ffunction-sections -fasync-exceptions -ffp-exception-behavior=maytrap -fms-hotpatch -fno-omit-frame-pointer -mlong-double-64 -gdwarf-4 -g -O2",
+      "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/build-i386",
+      "file": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/wine/dlls/msi/custom.c",
+      "output": "dlls/msi/i386-windows/custom.o"
+    }
+  }
+]

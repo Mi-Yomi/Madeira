@@ -1,0 +1,45 @@
+{
+  "configure_flags": [
+    "--without-x",
+    "--without-vulkan",
+    "--without-freetype",
+    "--without-gnutls",
+    "--without-gstreamer",
+    "--disable-tests"
+  ],
+  "guest_execution": false,
+  "i386_activation": false,
+  "jobs": 2,
+  "primary_writes": false,
+  "rebuild_script": {
+    "bytes": 12735,
+    "sha256": "982775903787cab69d60727aebb7a50ba4fc2e5d689ac7f8dbe7516cd0fe5626"
+  },
+  "recipe_helpers": {
+    "build_desktop.py": {
+      "bytes": 18008,
+      "sha256": "da5788f1b8b07e3235a6c74111f2c3db4ce375ffe4d5264e4724e9e9e1ec0f1f"
+    },
+    "build_receipt.py": {
+      "bytes": 18698,
+      "sha256": "2a8db696e3b72f5b5a5015375364630c6226f63c03ed50719667d4515ba7a119"
+    },
+    "desktop-components.json": {
+      "bytes": 1050,
+      "sha256": "bf9c12dfee52159d1d48af000dc5c697c0bf54acef95c885cab148948d538fea"
+    },
+    "guest_inventory.py": {
+      "bytes": 17342,
+      "sha256": "03575d2929bf46bd52c2cc09e474e127d88080a09292d966f9d5286f41250ebe"
+    },
+    "symbol_audit.py": {
+      "bytes": 25845,
+      "sha256": "6b5cb1f2fd5f644d68ca6463008f824f7c454f81dbe79fb51e8580e89071b1a2"
+    }
+  },
+  "remote_writes": false,
+  "seconds_limit": 1800,
+  "source_sha256": "0feda873cdce7625044f153c10ad05fa3d49939bde94f4fe28fce75b0735669f",
+  "wine_pin": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f",
+  "workspace_bytes_limit": 2147483648
+}

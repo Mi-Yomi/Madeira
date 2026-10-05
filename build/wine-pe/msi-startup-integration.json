@@ -1,0 +1,92 @@
+{
+  "added_imports": [
+    [
+      "import",
+      "kernel32.dll",
+      "CancelIoEx"
+    ],
+    [
+      "import",
+      "kernel32.dll",
+      "CreateEventW"
+    ],
+    [
+      "import",
+      "kernel32.dll",
+      "GetOverlappedResult"
+    ],
+    [
+      "import",
+      "kernel32.dll",
+      "WaitForMultipleObjects"
+    ]
+  ],
+  "build_seal_sha256": "4e2a53480a0ae3650f4ae8d1e273c4aac08e08d4cf611b03c08848f5bc6eebbe",
+  "files": {
+    "aarch64-windows/msi.dll": {
+      "bytes": 1572864,
+      "sha256": "6845b17db8b5650fd7637718c2fbcd8467b02060d179354e78ed3037321d2f6e"
+    },
+    "arm64ec-windows/msi.dll": {
+      "bytes": 1769472,
+      "sha256": "6b611ac3a9c9b1200314397ab033e03ce1a5d9e93f6be3337a935ca33f124a9f"
+    },
+    "legal/Wine-MSI-startup-INTEGRATION.md": {
+      "bytes": 4029,
+      "sha256": "49c4b8a38396dff388087d6cf033d502849641da6d204119f74fba39024ea591"
+    },
+    "legal/Wine-MSI-startup-MODIFICATIONS.md": {
+      "bytes": 1455,
+      "sha256": "e83ccad5e2c39228a2cfa683731632acbb47ee784bb3894d682279ab9b5a3745"
+    },
+    "legal/Wine-MSI-startup-SOURCE-REBUILD.md": {
+      "bytes": 5144,
+      "sha256": "a14d973dfe1cf50de67a85455803685e2240214ad23c748377870ae7db2df774"
+    },
+    "legal/Wine-MSI-startup.patch": {
+      "bytes": 6356,
+      "sha256": "a3c010ea77cf18c3b37ad2bc249692758839d9f83fbe7b081b08312dc8e36bae"
+    }
+  },
+  "historical_seals": {
+    "desktop": "a0f56fd773375a2c2cc2bd76d01db0fbf28973ca1d7bf36a7dd6dbd6c9a02023",
+    "loader": "033316ebff397f5988935ecc653171c25f0341aecb856a79a2190abb6b694df5",
+    "msi": "3d748dc6f9fa84d386c79acdaf9b4952755719daa79f8ac161f1c07d27fee0fe",
+    "msi_client": "98c5adfb9a4e8bee95eadfcf390898eb7cc49059a4c436de86d29c4bfe61cc23"
+  },
+  "i386_activated": false,
+  "incremental_patch_sha256": "a3c010ea77cf18c3b37ad2bc249692758839d9f83fbe7b081b08312dc8e36bae",
+  "package_ready": false,
+  "receipt_directory": "build/wine-pe/receipts/msi-startup-2026-10-05",
+  "replacements": {
+    "aarch64-windows/msi.dll": {
+      "after": {
+        "bytes": 1572864,
+        "sha256": "6845b17db8b5650fd7637718c2fbcd8467b02060d179354e78ed3037321d2f6e"
+      },
+      "before": {
+        "bytes": 1572864,
+        "sha256": "c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a"
+      }
+    },
+    "arm64ec-windows/msi.dll": {
+      "after": {
+        "bytes": 1769472,
+        "sha256": "6b611ac3a9c9b1200314397ab033e03ce1a5d9e93f6be3337a935ca33f124a9f"
+      },
+      "before": {
+        "bytes": 1769472,
+        "sha256": "3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae"
+      }
+    }
+  },
+  "residual_dependency_counts": {
+    "aarch64": 13,
+    "arm64ec": 10
+  },
+  "runtime_tested": false,
+  "schema_version": 1,
+  "source_sha256": "0feda873cdce7625044f153c10ad05fa3d49939bde94f4fe28fce75b0735669f",
+  "stage_seal_sha256": "98ba33f210fc2a01becb2be20e1f19242a2c8a15e28b0138782778f8ea8cd119",
+  "wine_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f"
+}

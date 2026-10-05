@@ -1,0 +1,9 @@
+{
+  "exit_code": 0,
+  "stdout": "Exact patched source and host prerequisites prepared; no provider built or installed\n",
+  "stderr": "",
+  "elapsed_seconds": 2.478,
+  "workspace": "/tmp/madeira-msi-startup-prepare-check-20261005",
+  "purpose": "Independently exercise compact-stage offline source/prerequisite restoration against exact pinned archive and three historical package digests",
+  "provider_build_or_guest_execution": false
+}

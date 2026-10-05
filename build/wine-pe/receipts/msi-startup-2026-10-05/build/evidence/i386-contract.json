@@ -1,0 +1,2248 @@
+{
+  "architecture": "i386",
+  "exports": [
+    {
+      "names": [
+        "MsiAdvertiseProductA"
+      ],
+      "ordinal": 5
+    },
+    {
+      "names": [
+        "MsiAdvertiseProductW"
+      ],
+      "ordinal": 6
+    },
+    {
+      "names": [
+        "MsiCloseAllHandles"
+      ],
+      "ordinal": 7
+    },
+    {
+      "names": [
+        "MsiCloseHandle"
+      ],
+      "ordinal": 8
+    },
+    {
+      "names": [
+        "MsiCollectUserInfoA"
+      ],
+      "ordinal": 9
+    },
+    {
+      "names": [
+        "MsiCollectUserInfoW"
+      ],
+      "ordinal": 10
+    },
+    {
+      "names": [
+        "MsiConfigureFeatureA"
+      ],
+      "ordinal": 11
+    },
+    {
+      "names": [
+        "MsiConfigureFeatureFromDescriptorA"
+      ],
+      "ordinal": 12
+    },
+    {
+      "names": [
+        "MsiConfigureFeatureFromDescriptorW"
+      ],
+      "ordinal": 13
+    },
+    {
+      "names": [
+        "MsiConfigureFeatureW"
+      ],
+      "ordinal": 14
+    },
+    {
+      "names": [
+        "MsiConfigureProductA"
+      ],
+      "ordinal": 15
+    },
+    {
+      "names": [
+        "MsiConfigureProductW"
+      ],
+      "ordinal": 16
+    },
+    {
+      "names": [
+        "MsiCreateRecord"
+      ],
+      "ordinal": 17
+    },
+    {
+      "names": [
+        "MsiDatabaseApplyTransformA"
+      ],
+      "ordinal": 18
+    },
+    {
+      "names": [
+        "MsiDatabaseApplyTransformW"
+      ],
+      "ordinal": 19
+    },
+    {
+      "names": [
+        "MsiDatabaseCommit"
+      ],
+      "ordinal": 20
+    },
+    {
+      "names": [
+        "MsiDatabaseExportA"
+      ],
+      "ordinal": 21
+    },
+    {
+      "names": [
+        "MsiDatabaseExportW"
+      ],
+      "ordinal": 22
+    },
+    {
+      "names": [
+        "MsiDatabaseGenerateTransformA"
+      ],
+      "ordinal": 23
+    },
+    {
+      "names": [
+        "MsiDatabaseGenerateTransformW"
+      ],
+      "ordinal": 24
+    },
+    {
+      "names": [
+        "MsiDatabaseGetPrimaryKeysA"
+      ],
+      "ordinal": 25
+    },
+    {
+      "names": [
+        "MsiDatabaseGetPrimaryKeysW"
+      ],
+      "ordinal": 26
+    },
+    {
+      "names": [
+        "MsiDatabaseImportA"
+      ],
+      "ordinal": 27
+    },
+    {
+      "names": [
+        "MsiDatabaseImportW"
+      ],
+      "ordinal": 28
+    },
+    {
+      "names": [
+        "MsiDatabaseMergeA"
+      ],
+      "ordinal": 29
+    },
+    {
+      "names": [
+        "MsiDatabaseMergeW"
+      ],
+      "ordinal": 30
+    },
+    {
+      "names": [
+        "MsiDatabaseOpenViewA"
+      ],
+      "ordinal": 31
+    },
+    {
+      "names": [
+        "MsiDatabaseOpenViewW"
+      ],
+      "ordinal": 32
+    },
+    {
+      "names": [
+        "MsiDoActionA"
+      ],
+      "ordinal": 33
+    },
+    {
+      "names": [
+        "MsiDoActionW"
+      ],
+      "ordinal": 34
+    },
+    {
+      "names": [
+        "MsiEnableUIPreview"
+      ],
+      "ordinal": 35
+    },
+    {
+      "names": [
+        "MsiEnumClientsA"
+      ],
+      "ordinal": 36
+    },
+    {
+      "names": [
+        "MsiEnumClientsW"
+      ],
+      "ordinal": 37
+    },
+    {
+      "names": [
+        "MsiEnumComponentQualifiersA"
+      ],
+      "ordinal": 38
+    },
+    {
+      "names": [
+        "MsiEnumComponentQualifiersW"
+      ],
+      "ordinal": 39
+    },
+    {
+      "names": [
+        "MsiEnumComponentsA"
+      ],
+      "ordinal": 40
+    },
+    {
+      "names": [
+        "MsiEnumComponentsW"
+      ],
+      "ordinal": 41
+    },
+    {
+      "names": [
+        "MsiEnumFeaturesA"
+      ],
+      "ordinal": 42
+    },
+    {
+      "names": [
+        "MsiEnumFeaturesW"
+      ],
+      "ordinal": 43
+    },
+    {
+      "names": [
+        "MsiEnumProductsA"
+      ],
+      "ordinal": 44
+    },
+    {
+      "names": [
+        "MsiEnumProductsW"
+      ],
+      "ordinal": 45
+    },
+    {
+      "names": [
+        "MsiEvaluateConditionA"
+      ],
+      "ordinal": 46
+    },
+    {
+      "names": [
+        "MsiEvaluateConditionW"
+      ],
+      "ordinal": 47
+    },
+    {
+      "names": [
+        "MsiGetLastErrorRecord"
+      ],
+      "ordinal": 48
+    },
+    {
+      "names": [
+        "MsiGetActiveDatabase"
+      ],
+      "ordinal": 49
+    },
+    {
+      "names": [
+        "MsiGetComponentStateA"
+      ],
+      "ordinal": 50
+    },
+    {
+      "names": [
+        "MsiGetComponentStateW"
+      ],
+      "ordinal": 51
+    },
+    {
+      "names": [
+        "MsiGetDatabaseState"
+      ],
+      "ordinal": 52
+    },
+    {
+      "names": [
+        "MsiGetFeatureCostA"
+      ],
+      "ordinal": 53
+    },
+    {
+      "names": [
+        "MsiGetFeatureCostW"
+      ],
+      "ordinal": 54
+    },
+    {
+      "names": [
+        "MsiGetFeatureInfoA"
+      ],
+      "ordinal": 55
+    },
+    {
+      "names": [
+        "MsiGetFeatureInfoW"
+      ],
+      "ordinal": 56
+    },
+    {
+      "names": [
+        "MsiGetFeatureStateA"
+      ],
+      "ordinal": 57
+    },
+    {
+      "names": [
+        "MsiGetFeatureStateW"
+      ],
+      "ordinal": 58
+    },
+    {
+      "names": [
+        "MsiGetFeatureUsageA"
+      ],
+      "ordinal": 59
+    },
+    {
+      "names": [
+        "MsiGetFeatureUsageW"
+      ],
+      "ordinal": 60
+    },
+    {
+      "names": [
+        "MsiGetFeatureValidStatesA"
+      ],
+      "ordinal": 61
+    },
+    {
+      "names": [
+        "MsiGetFeatureValidStatesW"
+      ],
+      "ordinal": 62
+    },
+    {
+      "names": [
+        "MsiGetLanguage"
+      ],
+      "ordinal": 63
+    },
+    {
+      "names": [
+        "MsiGetMode"
+      ],
+      "ordinal": 64
+    },
+    {
+      "names": [
+        "MsiGetProductCodeA"
+      ],
+      "ordinal": 65
+    },
+    {
+      "names": [
+        "MsiGetProductCodeW"
+      ],
+      "ordinal": 66
+    },
+    {
+      "names": [
+        "MsiGetProductInfoA"
+      ],
+      "ordinal": 67
+    },
+    {
+      "names": [
+        "MsiGetProductInfoFromScriptA"
+      ],
+      "ordinal": 68
+    },
+    {
+      "names": [
+        "MsiGetProductInfoFromScriptW"
+      ],
+      "ordinal": 69
+    },
+    {
+      "names": [
+        "MsiGetProductInfoW"
+      ],
+      "ordinal": 70
+    },
+    {
+      "names": [
+        "MsiGetProductPropertyA"
+      ],
+      "ordinal": 71
+    },
+    {
+      "names": [
+        "MsiGetProductPropertyW"
+      ],
+      "ordinal": 72
+    },
+    {
+      "names": [
+        "MsiGetPropertyA"
+      ],
+      "ordinal": 73
+    },
+    {
+      "names": [
+        "MsiGetPropertyW"
+      ],
+      "ordinal": 74
+    },
+    {
+      "names": [
+        "MsiGetSourcePathA"
+      ],
+      "ordinal": 75
+    },
+    {
+      "names": [
+        "MsiGetSourcePathW"
+      ],
+      "ordinal": 76
+    },
+    {
+      "names": [
+        "MsiGetSummaryInformationA"
+      ],
+      "ordinal": 77
+    },
+    {
+      "names": [
+        "MsiGetSummaryInformationW"
+      ],
+      "ordinal": 78
+    },
+    {
+      "names": [
+        "MsiGetTargetPathA"
+      ],
+      "ordinal": 79
+    },
+    {
+      "names": [
+        "MsiGetTargetPathW"
+      ],
+      "ordinal": 80
+    },
+    {
+      "names": [
+        "MsiGetUserInfoA"
+      ],
+      "ordinal": 81
+    },
+    {
+      "names": [
+        "MsiGetUserInfoW"
+      ],
+      "ordinal": 82
+    },
+    {
+      "names": [
+        "MsiInstallMissingComponentA"
+      ],
+      "ordinal": 83
+    },
+    {
+      "names": [
+        "MsiInstallMissingComponentW"
+      ],
+      "ordinal": 84
+    },
+    {
+      "names": [
+        "MsiInstallMissingFileA"
+      ],
+      "ordinal": 85
+    },
+    {
+      "names": [
+        "MsiInstallMissingFileW"
+      ],
+      "ordinal": 86
+    },
+    {
+      "names": [
+        "MsiInstallProductA"
+      ],
+      "ordinal": 87
+    },
+    {
+      "names": [
+        "MsiInstallProductW"
+      ],
+      "ordinal": 88
+    },
+    {
+      "names": [
+        "MsiLocateComponentA"
+      ],
+      "ordinal": 89
+    },
+    {
+      "names": [
+        "MsiLocateComponentW"
+      ],
+      "ordinal": 90
+    },
+    {
+      "names": [
+        "MsiOpenDatabaseA"
+      ],
+      "ordinal": 91
+    },
+    {
+      "names": [
+        "MsiOpenDatabaseW"
+      ],
+      "ordinal": 92
+    },
+    {
+      "names": [
+        "MsiOpenPackageA"
+      ],
+      "ordinal": 93
+    },
+    {
+      "names": [
+        "MsiOpenPackageW"
+      ],
+      "ordinal": 94
+    },
+    {
+      "names": [
+        "MsiOpenProductA"
+      ],
+      "ordinal": 95
+    },
+    {
+      "names": [
+        "MsiOpenProductW"
+      ],
+      "ordinal": 96
+    },
+    {
+      "names": [
+        "MsiPreviewBillboardA"
+      ],
+      "ordinal": 97
+    },
+    {
+      "names": [
+        "MsiPreviewBillboardW"
+      ],
+      "ordinal": 98
+    },
+    {
+      "names": [
+        "MsiPreviewDialogA"
+      ],
+      "ordinal": 99
+    },
+    {
+      "names": [
+        "MsiPreviewDialogW"
+      ],
+      "ordinal": 100
+    },
+    {
+      "names": [
+        "MsiProcessAdvertiseScriptA"
+      ],
+      "ordinal": 101
+    },
+    {
+      "names": [
+        "MsiProcessAdvertiseScriptW"
+      ],
+      "ordinal": 102
+    },
+    {
+      "names": [
+        "MsiProcessMessage"
+      ],
+      "ordinal": 103
+    },
+    {
+      "names": [
+        "MsiProvideComponentA"
+      ],
+      "ordinal": 104
+    },
+    {
+      "names": [
+        "MsiProvideComponentFromDescriptorA"
+      ],
+      "ordinal": 105
+    },
+    {
+      "names": [
+        "MsiProvideComponentFromDescriptorW"
+      ],
+      "ordinal": 106
+    },
+    {
+      "names": [
+        "MsiProvideComponentW"
+      ],
+      "ordinal": 107
+    },
+    {
+      "names": [
+        "MsiProvideQualifiedComponentA"
+      ],
+      "ordinal": 108
+    },
+    {
+      "names": [
+        "MsiProvideQualifiedComponentW"
+      ],
+      "ordinal": 109
+    },
+    {
+      "names": [
+        "MsiQueryFeatureStateA"
+      ],
+      "ordinal": 110
+    },
+    {
+      "names": [
+        "MsiQueryFeatureStateW"
+      ],
+      "ordinal": 111
+    },
+    {
+      "names": [
+        "MsiQueryProductStateA"
+      ],
+      "ordinal": 112
+    },
+    {
+      "names": [
+        "MsiQueryProductStateW"
+      ],
+      "ordinal": 113
+    },
+    {
+      "names": [
+        "MsiRecordDataSize"
+      ],
+      "ordinal": 114
+    },
+    {
+      "names": [
+        "MsiRecordGetFieldCount"
+      ],
+      "ordinal": 115
+    },
+    {
+      "names": [
+        "MsiRecordGetInteger"
+      ],
+      "ordinal": 116
+    },
+    {
+      "names": [
+        "MsiRecordGetStringA"
+      ],
+      "ordinal": 117
+    },
+    {
+      "names": [
+        "MsiRecordGetStringW"
+      ],
+      "ordinal": 118
+    },
+    {
+      "names": [
+        "MsiRecordIsNull"
+      ],
+      "ordinal": 119
+    },
+    {
+      "names": [
+        "MsiRecordReadStream"
+      ],
+      "ordinal": 120
+    },
+    {
+      "names": [
+        "MsiRecordSetInteger"
+      ],
+      "ordinal": 121
+    },
+    {
+      "names": [
+        "MsiRecordSetStreamA"
+      ],
+      "ordinal": 122
+    },
+    {
+      "names": [
+        "MsiRecordSetStreamW"
+      ],
+      "ordinal": 123
+    },
+    {
+      "names": [
+        "MsiRecordSetStringA"
+      ],
+      "ordinal": 124
+    },
+    {
+      "names": [
+        "MsiRecordSetStringW"
+      ],
+      "ordinal": 125
+    },
+    {
+      "names": [
+        "MsiReinstallFeatureA"
+      ],
+      "ordinal": 126
+    },
+    {
+      "names": [
+        "MsiReinstallFeatureFromDescriptorA"
+      ],
+      "ordinal": 127
+    },
+    {
+      "names": [
+        "MsiReinstallFeatureFromDescriptorW"
+      ],
+      "ordinal": 128
+    },
+    {
+      "names": [
+        "MsiReinstallFeatureW"
+      ],
+      "ordinal": 129
+    },
+    {
+      "names": [
+        "MsiReinstallProductA"
+      ],
+      "ordinal": 130
+    },
+    {
+      "names": [
+        "MsiReinstallProductW"
+      ],
+      "ordinal": 131
+    },
+    {
+      "names": [
+        "MsiSequenceA"
+      ],
+      "ordinal": 132
+    },
+    {
+      "names": [
+        "MsiSequenceW"
+      ],
+      "ordinal": 133
+    },
+    {
+      "names": [
+        "MsiSetComponentStateA"
+      ],
+      "ordinal": 134
+    },
+    {
+      "names": [
+        "MsiSetComponentStateW"
+      ],
+      "ordinal": 135
+    },
+    {
+      "names": [
+        "MsiSetExternalUIA"
+      ],
+      "ordinal": 136
+    },
+    {
+      "names": [
+        "MsiSetExternalUIW"
+      ],
+      "ordinal": 137
+    },
+    {
+      "names": [
+        "MsiSetFeatureStateA"
+      ],
+      "ordinal": 138
+    },
+    {
+      "names": [
+        "MsiSetFeatureStateW"
+      ],
+      "ordinal": 139
+    },
+    {
+      "names": [
+        "MsiSetInstallLevel"
+      ],
+      "ordinal": 140
+    },
+    {
+      "names": [
+        "MsiSetInternalUI"
+      ],
+      "ordinal": 141
+    },
+    {
+      "names": [
+        "MsiVerifyDiskSpace"
+      ],
+      "ordinal": 142
+    },
+    {
+      "names": [
+        "MsiSetMode"
+      ],
+      "ordinal": 143
+    },
+    {
+      "names": [
+        "MsiSetPropertyA"
+      ],
+      "ordinal": 144
+    },
+    {
+      "names": [
+        "MsiSetPropertyW"
+      ],
+      "ordinal": 145
+    },
+    {
+      "names": [
+        "MsiSetTargetPathA"
+      ],
+      "ordinal": 146
+    },
+    {
+      "names": [
+        "MsiSetTargetPathW"
+      ],
+      "ordinal": 147
+    },
+    {
+      "names": [
+        "MsiSummaryInfoGetPropertyA"
+      ],
+      "ordinal": 148
+    },
+    {
+      "names": [
+        "MsiSummaryInfoGetPropertyCount"
+      ],
+      "ordinal": 149
+    },
+    {
+      "names": [
+        "MsiSummaryInfoGetPropertyW"
+      ],
+      "ordinal": 150
+    },
+    {
+      "names": [
+        "MsiSummaryInfoPersist"
+      ],
+      "ordinal": 151
+    },
+    {
+      "names": [
+        "MsiSummaryInfoSetPropertyA"
+      ],
+      "ordinal": 152
+    },
+    {
+      "names": [
+        "MsiSummaryInfoSetPropertyW"
+      ],
+      "ordinal": 153
+    },
+    {
+      "names": [
+        "MsiUseFeatureA"
+      ],
+      "ordinal": 154
+    },
+    {
+      "names": [
+        "MsiUseFeatureW"
+      ],
+      "ordinal": 155
+    },
+    {
+      "names": [
+        "MsiVerifyPackageA"
+      ],
+      "ordinal": 156
+    },
+    {
+      "names": [
+        "MsiVerifyPackageW"
+      ],
+      "ordinal": 157
+    },
+    {
+      "names": [
+        "MsiViewClose"
+      ],
+      "ordinal": 158
+    },
+    {
+      "names": [
+        "MsiViewExecute"
+      ],
+      "ordinal": 159
+    },
+    {
+      "names": [
+        "MsiViewFetch"
+      ],
+      "ordinal": 160
+    },
+    {
+      "names": [
+        "MsiViewGetErrorA"
+      ],
+      "ordinal": 161
+    },
+    {
+      "names": [
+        "MsiViewGetErrorW"
+      ],
+      "ordinal": 162
+    },
+    {
+      "names": [
+        "MsiViewModify"
+      ],
+      "ordinal": 163
+    },
+    {
+      "names": [
+        "MsiDatabaseIsTablePersistentA"
+      ],
+      "ordinal": 164
+    },
+    {
+      "names": [
+        "MsiDatabaseIsTablePersistentW"
+      ],
+      "ordinal": 165
+    },
+    {
+      "names": [
+        "MsiViewGetColumnInfo"
+      ],
+      "ordinal": 166
+    },
+    {
+      "names": [
+        "MsiRecordClearData"
+      ],
+      "ordinal": 167
+    },
+    {
+      "names": [
+        "MsiEnableLogA"
+      ],
+      "ordinal": 168
+    },
+    {
+      "names": [
+        "MsiEnableLogW"
+      ],
+      "ordinal": 169
+    },
+    {
+      "names": [
+        "MsiFormatRecordA"
+      ],
+      "ordinal": 170
+    },
+    {
+      "names": [
+        "MsiFormatRecordW"
+      ],
+      "ordinal": 171
+    },
+    {
+      "names": [
+        "MsiGetComponentPathA"
+      ],
+      "ordinal": 172
+    },
+    {
+      "names": [
+        "MsiGetComponentPathW"
+      ],
+      "ordinal": 173
+    },
+    {
+      "names": [
+        "MsiApplyPatchA"
+      ],
+      "ordinal": 174
+    },
+    {
+      "names": [
+        "MsiApplyPatchW"
+      ],
+      "ordinal": 175
+    },
+    {
+      "names": [
+        "MsiAdvertiseScriptA"
+      ],
+      "ordinal": 176
+    },
+    {
+      "names": [
+        "MsiAdvertiseScriptW"
+      ],
+      "ordinal": 177
+    },
+    {
+      "names": [
+        "MsiGetPatchInfoA"
+      ],
+      "ordinal": 178
+    },
+    {
+      "names": [
+        "MsiGetPatchInfoW"
+      ],
+      "ordinal": 179
+    },
+    {
+      "names": [
+        "MsiEnumPatchesA"
+      ],
+      "ordinal": 180
+    },
+    {
+      "names": [
+        "MsiEnumPatchesW"
+      ],
+      "ordinal": 181
+    },
+    {
+      "names": [
+        "DllGetVersion"
+      ],
+      "ordinal": 182
+    },
+    {
+      "names": [
+        "MsiGetProductCodeFromPackageCodeA"
+      ],
+      "ordinal": 183
+    },
+    {
+      "names": [
+        "MsiGetProductCodeFromPackageCodeW"
+      ],
+      "ordinal": 184
+    },
+    {
+      "names": [
+        "MsiCreateTransformSummaryInfoA"
+      ],
+      "ordinal": 185
+    },
+    {
+      "names": [
+        "MsiCreateTransformSummaryInfoW"
+      ],
+      "ordinal": 186
+    },
+    {
+      "names": [
+        "MsiQueryFeatureStateFromDescriptorA"
+      ],
+      "ordinal": 187
+    },
+    {
+      "names": [
+        "MsiQueryFeatureStateFromDescriptorW"
+      ],
+      "ordinal": 188
+    },
+    {
+      "names": [
+        "MsiConfigureProductExA"
+      ],
+      "ordinal": 189
+    },
+    {
+      "names": [
+        "MsiConfigureProductExW"
+      ],
+      "ordinal": 190
+    },
+    {
+      "names": [
+        "MsiInvalidateFeatureCache"
+      ],
+      "ordinal": 191
+    },
+    {
+      "names": [
+        "MsiUseFeatureExA"
+      ],
+      "ordinal": 192
+    },
+    {
+      "names": [
+        "MsiUseFeatureExW"
+      ],
+      "ordinal": 193
+    },
+    {
+      "names": [
+        "MsiGetFileVersionA"
+      ],
+      "ordinal": 194
+    },
+    {
+      "names": [
+        "MsiGetFileVersionW"
+      ],
+      "ordinal": 195
+    },
+    {
+      "names": [
+        "MsiLoadStringA"
+      ],
+      "ordinal": 196
+    },
+    {
+      "names": [
+        "MsiLoadStringW"
+      ],
+      "ordinal": 197
+    },
+    {
+      "names": [
+        "MsiMessageBoxA"
+      ],
+      "ordinal": 198
+    },
+    {
+      "names": [
+        "MsiMessageBoxW"
+      ],
+      "ordinal": 199
+    },
+    {
+      "names": [
+        "MsiDecomposeDescriptorA"
+      ],
+      "ordinal": 200
+    },
+    {
+      "names": [
+        "MsiDecomposeDescriptorW"
+      ],
+      "ordinal": 201
+    },
+    {
+      "names": [
+        "MsiProvideQualifiedComponentExA"
+      ],
+      "ordinal": 202
+    },
+    {
+      "names": [
+        "MsiProvideQualifiedComponentExW"
+      ],
+      "ordinal": 203
+    },
+    {
+      "names": [
+        "MsiEnumRelatedProductsA"
+      ],
+      "ordinal": 204
+    },
+    {
+      "names": [
+        "MsiEnumRelatedProductsW"
+      ],
+      "ordinal": 205
+    },
+    {
+      "names": [
+        "MsiSetFeatureAttributesA"
+      ],
+      "ordinal": 206
+    },
+    {
+      "names": [
+        "MsiSetFeatureAttributesW"
+      ],
+      "ordinal": 207
+    },
+    {
+      "names": [
+        "MsiSourceListClearAllA"
+      ],
+      "ordinal": 208
+    },
+    {
+      "names": [
+        "MsiSourceListClearAllW"
+      ],
+      "ordinal": 209
+    },
+    {
+      "names": [
+        "MsiSourceListAddSourceA"
+      ],
+      "ordinal": 210
+    },
+    {
+      "names": [
+        "MsiSourceListAddSourceW"
+      ],
+      "ordinal": 211
+    },
+    {
+      "names": [
+        "MsiSourceListForceResolutionA"
+      ],
+      "ordinal": 212
+    },
+    {
+      "names": [
+        "MsiSourceListForceResolutionW"
+      ],
+      "ordinal": 213
+    },
+    {
+      "names": [
+        "MsiIsProductElevatedA"
+      ],
+      "ordinal": 214
+    },
+    {
+      "names": [
+        "MsiIsProductElevatedW"
+      ],
+      "ordinal": 215
+    },
+    {
+      "names": [
+        "MsiGetShortcutTargetA"
+      ],
+      "ordinal": 216
+    },
+    {
+      "names": [
+        "MsiGetShortcutTargetW"
+      ],
+      "ordinal": 217
+    },
+    {
+      "names": [
+        "MsiGetFileHashA"
+      ],
+      "ordinal": 218
+    },
+    {
+      "names": [
+        "MsiGetFileHashW"
+      ],
+      "ordinal": 219
+    },
+    {
+      "names": [
+        "MsiEnumComponentCostsA"
+      ],
+      "ordinal": 220
+    },
+    {
+      "names": [
+        "MsiEnumComponentCostsW"
+      ],
+      "ordinal": 221
+    },
+    {
+      "names": [
+        "MsiCreateAndVerifyInstallerDirectory"
+      ],
+      "ordinal": 222
+    },
+    {
+      "names": [
+        "MsiGetFileSignatureInformationA"
+      ],
+      "ordinal": 223
+    },
+    {
+      "names": [
+        "MsiGetFileSignatureInformationW"
+      ],
+      "ordinal": 224
+    },
+    {
+      "names": [
+        "MsiProvideAssemblyA"
+      ],
+      "ordinal": 225
+    },
+    {
+      "names": [
+        "MsiProvideAssemblyW"
+      ],
+      "ordinal": 226
+    },
+    {
+      "names": [
+        "MsiAdvertiseProductExA"
+      ],
+      "ordinal": 227
+    },
+    {
+      "names": [
+        "MsiAdvertiseProductExW"
+      ],
+      "ordinal": 228
+    },
+    {
+      "names": [
+        "MsiNotifySidChangeA"
+      ],
+      "ordinal": 229
+    },
+    {
+      "names": [
+        "MsiNotifySidChangeW"
+      ],
+      "ordinal": 230
+    },
+    {
+      "names": [
+        "MsiOpenPackageExA"
+      ],
+      "ordinal": 231
+    },
+    {
+      "names": [
+        "MsiOpenPackageExW"
+      ],
+      "ordinal": 232
+    },
+    {
+      "names": [
+        "MsiDeleteUserDataA"
+      ],
+      "ordinal": 233
+    },
+    {
+      "names": [
+        "MsiDeleteUserDataW"
+      ],
+      "ordinal": 234
+    },
+    {
+      "names": [
+        "Migrate10CachedPackagesA"
+      ],
+      "ordinal": 235
+    },
+    {
+      "names": [
+        "Migrate10CachedPackagesW"
+      ],
+      "ordinal": 236
+    },
+    {
+      "names": [
+        "MsiRemovePatchesA"
+      ],
+      "ordinal": 237
+    },
+    {
+      "names": [
+        "MsiRemovePatchesW"
+      ],
+      "ordinal": 238
+    },
+    {
+      "names": [
+        "MsiApplyMultiplePatchesA"
+      ],
+      "ordinal": 239
+    },
+    {
+      "names": [
+        "MsiApplyMultiplePatchesW"
+      ],
+      "ordinal": 240
+    },
+    {
+      "names": [
+        "MsiExtractPatchXMLDataA"
+      ],
+      "ordinal": 241
+    },
+    {
+      "names": [
+        "MsiExtractPatchXMLDataW"
+      ],
+      "ordinal": 242
+    },
+    {
+      "names": [
+        "MsiGetPatchInfoExA"
+      ],
+      "ordinal": 243
+    },
+    {
+      "names": [
+        "MsiGetPatchInfoExW"
+      ],
+      "ordinal": 244
+    },
+    {
+      "names": [
+        "MsiEnumProductsExA"
+      ],
+      "ordinal": 245
+    },
+    {
+      "names": [
+        "MsiEnumProductsExW"
+      ],
+      "ordinal": 246
+    },
+    {
+      "names": [
+        "MsiGetProductInfoExA"
+      ],
+      "ordinal": 247
+    },
+    {
+      "names": [
+        "MsiGetProductInfoExW"
+      ],
+      "ordinal": 248
+    },
+    {
+      "names": [
+        "MsiQueryComponentStateA"
+      ],
+      "ordinal": 249
+    },
+    {
+      "names": [
+        "MsiQueryComponentStateW"
+      ],
+      "ordinal": 250
+    },
+    {
+      "names": [
+        "MsiQueryFeatureStateExA"
+      ],
+      "ordinal": 251
+    },
+    {
+      "names": [
+        "MsiQueryFeatureStateExW"
+      ],
+      "ordinal": 252
+    },
+    {
+      "names": [
+        "MsiDeterminePatchSequenceA"
+      ],
+      "ordinal": 253
+    },
+    {
+      "names": [
+        "MsiDeterminePatchSequenceW"
+      ],
+      "ordinal": 254
+    },
+    {
+      "names": [
+        "MsiSourceListAddSourceExA"
+      ],
+      "ordinal": 255
+    },
+    {
+      "names": [
+        "MsiSourceListAddSourceExW"
+      ],
+      "ordinal": 256
+    },
+    {
+      "names": [
+        "MsiSourceListClearSourceA"
+      ],
+      "ordinal": 257
+    },
+    {
+      "names": [
+        "MsiSourceListClearSourceW"
+      ],
+      "ordinal": 258
+    },
+    {
+      "names": [
+        "MsiSourceListClearAllExA"
+      ],
+      "ordinal": 259
+    },
+    {
+      "names": [
+        "MsiSourceListClearAllExW"
+      ],
+      "ordinal": 260
+    },
+    {
+      "names": [
+        "MsiSourceListForceResolutionExA"
+      ],
+      "ordinal": 261
+    },
+    {
+      "names": [
+        "MsiSourceListForceResolutionExW"
+      ],
+      "ordinal": 262
+    },
+    {
+      "names": [
+        "MsiSourceListEnumSourcesA"
+      ],
+      "ordinal": 263
+    },
+    {
+      "names": [
+        "MsiSourceListEnumSourcesW"
+      ],
+      "ordinal": 264
+    },
+    {
+      "names": [
+        "MsiSourceListGetInfoA"
+      ],
+      "ordinal": 265
+    },
+    {
+      "names": [
+        "MsiSourceListGetInfoW"
+      ],
+      "ordinal": 266
+    },
+    {
+      "names": [
+        "MsiSourceListSetInfoA"
+      ],
+      "ordinal": 267
+    },
+    {
+      "names": [
+        "MsiSourceListSetInfoW"
+      ],
+      "ordinal": 268
+    },
+    {
+      "names": [
+        "MsiEnumPatchesExA"
+      ],
+      "ordinal": 269
+    },
+    {
+      "names": [
+        "MsiEnumPatchesExW"
+      ],
+      "ordinal": 270
+    },
+    {
+      "names": [
+        "MsiSourceListEnumMediaDisksA"
+      ],
+      "ordinal": 271
+    },
+    {
+      "names": [
+        "MsiSourceListEnumMediaDisksW"
+      ],
+      "ordinal": 272
+    },
+    {
+      "names": [
+        "MsiSourceListAddMediaDiskA"
+      ],
+      "ordinal": 273
+    },
+    {
+      "names": [
+        "MsiSourceListAddMediaDiskW"
+      ],
+      "ordinal": 274
+    },
+    {
+      "names": [
+        "MsiSourceListClearMediaDiskA"
+      ],
+      "ordinal": 275
+    },
+    {
+      "names": [
+        "MsiSourceListClearMediaDiskW"
+      ],
+      "ordinal": 276
+    },
+    {
+      "names": [
+        "MsiDetermineApplicablePatchesA"
+      ],
+      "ordinal": 277
+    },
+    {
+      "names": [
+        "MsiDetermineApplicablePatchesW"
+      ],
+      "ordinal": 278
+    },
+    {
+      "names": [
+        "MsiMessageBoxExA"
+      ],
+      "ordinal": 279
+    },
+    {
+      "names": [
+        "MsiMessageBoxExW"
+      ],
+      "ordinal": 280
+    },
+    {
+      "names": [
+        "MsiSetExternalUIRecord"
+      ],
+      "ordinal": 281
+    },
+    {
+      "names": [
+        "MsiGetPatchFileListA"
+      ],
+      "ordinal": 282
+    },
+    {
+      "names": [
+        "MsiGetPatchFileListW"
+      ],
+      "ordinal": 283
+    },
+    {
+      "names": [
+        "MsiBeginTransactionA"
+      ],
+      "ordinal": 284
+    },
+    {
+      "names": [
+        "MsiBeginTransactionW"
+      ],
+      "ordinal": 285
+    },
+    {
+      "names": [
+        "MsiEndTransaction"
+      ],
+      "ordinal": 286
+    },
+    {
+      "names": [
+        "MsiJoinTransaction"
+      ],
+      "ordinal": 287
+    },
+    {
+      "names": [
+        "MsiSetOfflineContextW"
+      ],
+      "ordinal": 288
+    },
+    {
+      "names": [
+        "MsiEnumComponentsExA"
+      ],
+      "ordinal": 289
+    },
+    {
+      "names": [
+        "MsiEnumComponentsExW"
+      ],
+      "ordinal": 290
+    },
+    {
+      "names": [
+        "MsiEnumClientsExA"
+      ],
+      "ordinal": 291
+    },
+    {
+      "names": [
+        "MsiEnumClientsExW"
+      ],
+      "ordinal": 292
+    },
+    {
+      "names": [
+        "MsiGetComponentPathExA"
+      ],
+      "ordinal": 293
+    },
+    {
+      "names": [
+        "MsiGetComponentPathExW"
+      ],
+      "ordinal": 294
+    },
+    {
+      "names": [
+        "QueryInstanceCount"
+      ],
+      "ordinal": 295
+    },
+    {
+      "names": [
+        "DllCanUnloadNow"
+      ],
+      "ordinal": 296
+    },
+    {
+      "names": [
+        "DllGetClassObject"
+      ],
+      "ordinal": 297
+    },
+    {
+      "names": [
+        "DllRegisterServer"
+      ],
+      "ordinal": 298
+    },
+    {
+      "names": [
+        "DllUnregisterServer"
+      ],
+      "ordinal": 299
+    },
+    {
+      "names": [
+        "__wine_msi_call_dll_function"
+      ],
+      "ordinal": 300
+    }
+  ],
+  "imports": [
+    {
+      "kind": "import",
+      "module": "urlmon.dll",
+      "symbols": [
+        "URLDownloadToCacheFileW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "wininet.dll",
+      "symbols": [
+        "GetUrlCacheEntryInfoW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "comctl32.dll",
+      "symbols": [
+        "ImageList_Add",
+        "ImageList_Create",
+        "ImageList_Destroy",
+        "ImageList_ReplaceIcon"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "shell32.dll",
+      "symbols": [
+        "SHGetFolderPathW",
+        "ShellExecuteW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "shlwapi.dll",
+      "symbols": [
+        "PathAddBackslashW",
+        "PathAppendW",
+        "PathFindFileNameW",
+        "PathIsRelativeW",
+        "PathRemoveBackslashW",
+        "PathRemoveFileSpecW",
+        "PathStripPathW",
+        "PathStripToRootW",
+        "SHCreateStreamOnFileW",
+        "StrFormatByteSizeW",
+        "UrlIsW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "cabinet.dll",
+      "symbols": [
+        "FDICopy",
+        "FDICreate",
+        "FDIDestroy"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "oleaut32.dll",
+      "symbols": [
+        "DispGetParam",
+        "LoadRegTypeLib",
+        "LoadTypeLib",
+        "LoadTypeLibEx",
+        "OleLoadPicture",
+        "RegisterTypeLib",
+        "SysAllocString",
+        "SysAllocStringByteLen",
+        "SysAllocStringLen",
+        "SysFreeString",
+        "SystemTimeToVariantTime",
+        "UnRegisterTypeLib",
+        "VariantChangeType",
+        "VariantClear",
+        "VariantCopy",
+        "VariantCopyInd",
+        "VariantInit",
+        "VariantTimeToSystemTime"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "ole32.dll",
+      "symbols": [
+        "CLSIDFromProgID",
+        "CLSIDFromString",
+        "CoCreateGuid",
+        "CoCreateInstance",
+        "CoInitialize",
+        "CoInitializeEx",
+        "CoTaskMemFree",
+        "CoUninitialize",
+        "CreateILockBytesOnHGlobal",
+        "CreateStreamOnHGlobal",
+        "StgCreateDocfile",
+        "StgOpenStorage",
+        "StgOpenStorageOnILockBytes",
+        "StringFromGUID2"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "version.dll",
+      "symbols": [
+        "GetFileVersionInfoSizeW",
+        "GetFileVersionInfoW",
+        "VerQueryValueW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "user32.dll",
+      "symbols": [
+        "AdjustWindowRect",
+        "AppendMenuA",
+        "CallWindowProcW",
+        "CharLowerW",
+        "CharUpperW",
+        "CreatePopupMenu",
+        "CreateWindowExW",
+        "DefWindowProcW",
+        "DestroyIcon",
+        "DestroyMenu",
+        "DestroyWindow",
+        "DispatchMessageW",
+        "EnableWindow",
+        "EnumChildWindows",
+        "GetClientRect",
+        "GetDC",
+        "GetFocus",
+        "GetNextDlgTabItem",
+        "GetParent",
+        "GetPropW",
+        "GetWindowLongW",
+        "GetWindowRect",
+        "GetWindowTextW",
+        "InvalidateRect",
+        "IsDialogMessageW",
+        "LoadBitmapW",
+        "LoadCursorW",
+        "LoadIconW",
+        "LoadImageW",
+        "LoadStringW",
+        "MapWindowPoints",
+        "MessageBoxExA",
+        "MessageBoxExW",
+        "MessageBoxW",
+        "MsgWaitForMultipleObjects",
+        "MsgWaitForMultipleObjectsEx",
+        "PeekMessageW",
+        "PostMessageW",
+        "RegisterClassW",
+        "ReleaseDC",
+        "RemovePropW",
+        "SendMessageW",
+        "SetFocus",
+        "SetPropW",
+        "SetWindowLongW",
+        "SetWindowPos",
+        "SetWindowTextW",
+        "ShowWindow",
+        "TrackPopupMenu",
+        "TranslateMessage",
+        "UnregisterClassW",
+        "wsprintfA",
+        "wsprintfW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "gdi32.dll",
+      "symbols": [
+        "CreateCompatibleBitmap",
+        "CreateCompatibleDC",
+        "CreateFontIndirectW",
+        "DeleteDC",
+        "DeleteObject",
+        "GetDeviceCaps",
+        "GetObjectW",
+        "GetStockObject",
+        "GetTextMetricsW",
+        "SelectObject",
+        "SetBkMode",
+        "SetTextColor",
+        "StretchBlt"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "advapi32.dll",
+      "symbols": [
+        "ChangeServiceConfig2W",
+        "CloseServiceHandle",
+        "ControlService",
+        "ConvertSidToStringSidW",
+        "CreateProcessAsUserW",
+        "CreateServiceW",
+        "DeleteService",
+        "EnumDependentServicesW",
+        "GetServiceDisplayNameW",
+        "GetTokenInformation",
+        "GetUserNameW",
+        "LookupAccountNameW",
+        "MD5Final",
+        "MD5Init",
+        "MD5Update",
+        "OpenProcessToken",
+        "OpenSCManagerW",
+        "OpenServiceW",
+        "QueryServiceStatusEx",
+        "RegCloseKey",
+        "RegCreateKeyExW",
+        "RegCreateKeyW",
+        "RegDeleteKeyExW",
+        "RegDeleteKeyW",
+        "RegDeleteTreeW",
+        "RegDeleteValueW",
+        "RegEnumKeyExW",
+        "RegEnumKeyW",
+        "RegEnumValueW",
+        "RegGetValueW",
+        "RegOpenKeyExW",
+        "RegOpenKeyW",
+        "RegQueryInfoKeyW",
+        "RegQueryValueExW",
+        "RegSetValueExW",
+        "StartServiceW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "rpcrt4.dll",
+      "symbols": [
+        "I_RpcExceptionFilter",
+        "NdrClientCall2",
+        "NdrServerCall2",
+        "RpcBindingFree",
+        "RpcBindingFromStringBindingW",
+        "RpcServerRegisterIfEx",
+        "RpcServerUnregisterIf",
+        "RpcServerUseProtseqEpW",
+        "RpcStringBindingComposeW",
+        "RpcStringFreeW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "sxs.dll",
+      "symbols": [
+        "CreateAssemblyCache"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "imagehlp.dll",
+      "symbols": [
+        "BindImage"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "mspatcha.dll",
+      "symbols": [
+        "ApplyPatchToFileW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "odbccp32.dll",
+      "symbols": [
+        "SQLConfigDataSourceW",
+        "SQLInstallDriverExW",
+        "SQLInstallTranslatorExW",
+        "SQLRemoveDriverW",
+        "SQLRemoveTranslatorW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "wintrust.dll",
+      "symbols": [
+        "WTHelperGetProvCertFromChain",
+        "WTHelperGetProvSignerFromChain",
+        "WinVerifyTrustEx"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "crypt32.dll",
+      "symbols": [
+        "CertDuplicateCertificateContext"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "ucrtbase.dll",
+      "symbols": [
+        "__acrt_iob_func",
+        "__stdio_common_vsprintf",
+        "__stdio_common_vswprintf",
+        "_assert",
+        "_strdup",
+        "_wcsdup",
+        "_wcsicmp",
+        "_wcsnicmp",
+        "_wcsupr",
+        "_wtoi",
+        "bsearch",
+        "calloc",
+        "free",
+        "fwrite",
+        "getenv",
+        "iswdigit",
+        "iswspace",
+        "malloc",
+        "memcmp",
+        "memcpy",
+        "memmove",
+        "memset",
+        "qsort",
+        "realloc",
+        "strcat",
+        "strchr",
+        "strcmp",
+        "strcpy",
+        "strcspn",
+        "strlen",
+        "strtol",
+        "towupper",
+        "wcscat",
+        "wcschr",
+        "wcscmp",
+        "wcscpy",
+        "wcslen",
+        "wcsncmp",
+        "wcsrchr",
+        "wcsstr",
+        "wcstol"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "kernel32.dll",
+      "symbols": [
+        "CancelIoEx",
+        "CloseHandle",
+        "ConnectNamedPipe",
+        "CopyFileW",
+        "CreateDirectoryW",
+        "CreateEventW",
+        "CreateFileMappingW",
+        "CreateFileW",
+        "CreateNamedPipeW",
+        "CreateProcessW",
+        "CreateThread",
+        "DebugBreak",
+        "DeleteCriticalSection",
+        "DeleteFileW",
+        "DisableThreadLibraryCalls",
+        "DosDateTimeToFileTime",
+        "DuplicateHandle",
+        "EnterCriticalSection",
+        "EnumResourceNamesW",
+        "ExpandEnvironmentStringsW",
+        "FileTimeToLocalFileTime",
+        "FileTimeToSystemTime",
+        "FindClose",
+        "FindFirstFileW",
+        "FindNextFileW",
+        "FindResourceExW",
+        "FindResourceW",
+        "FreeLibrary",
+        "GetComputerNameW",
+        "GetCurrentDirectoryW",
+        "GetDateFormatW",
+        "GetDiskFreeSpaceExW",
+        "GetDriveTypeW",
+        "GetEnvironmentVariableW",
+        "GetExitCodeProcess",
+        "GetExitCodeThread",
+        "GetFileAttributesW",
+        "GetFileSize",
+        "GetFullPathNameW",
+        "GetLocalTime",
+        "GetLogicalDriveStringsW",
+        "GetLogicalDrives",
+        "GetModuleFileNameW",
+        "GetModuleHandleW",
+        "GetNativeSystemInfo",
+        "GetOverlappedResult",
+        "GetPrivateProfileStringW",
+        "GetProcAddress",
+        "GetShortPathNameW",
+        "GetSystemDefaultLangID",
+        "GetSystemDirectoryW",
+        "GetSystemWow64DirectoryW",
+        "GetTempFileNameW",
+        "GetTempPathW",
+        "GetTickCount64",
+        "GetTickCount",
+        "GetTimeFormatW",
+        "GetUserDefaultLangID",
+        "GetVersion",
+        "GetVolumeInformationW",
+        "GetWindowsDirectoryW",
+        "GlobalAlloc",
+        "GlobalFree",
+        "GlobalMemoryStatusEx",
+        "HeapAlloc",
+        "HeapFree",
+        "HeapReAlloc",
+        "IsBadStringPtrA",
+        "IsBadStringPtrW",
+        "IsValidCodePage",
+        "IsValidLocale",
+        "IsWow64Process2",
+        "IsWow64Process",
+        "LeaveCriticalSection",
+        "LoadLibraryA",
+        "LoadLibraryExW",
+        "LoadLibraryW",
+        "LoadResource",
+        "LocalFileTimeToFileTime",
+        "LocalFree",
+        "LockResource",
+        "MapViewOfFile",
+        "MoveFileExW",
+        "MulDiv",
+        "MultiByteToWideChar",
+        "RaiseException",
+        "ReadFile",
+        "RemoveDirectoryW",
+        "RtlUnwind",
+        "SearchPathW",
+        "SetFileAttributesW",
+        "SetFilePointer",
+        "SetFileTime",
+        "SizeofResource",
+        "Sleep",
+        "SystemTimeToFileTime",
+        "TzSpecificLocalTimeToSystemTime",
+        "UnmapViewOfFile",
+        "WaitForMultipleObjects",
+        "WaitForSingleObject",
+        "WideCharToMultiByte",
+        "Wow64DisableWow64FsRedirection",
+        "Wow64RevertWow64FsRedirection",
+        "WriteFile",
+        "WritePrivateProfileStringW"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "ntdll.dll",
+      "symbols": [
+        "NtCreateSection",
+        "NtQuerySection",
+        "RtlGetVersion",
+        "_chkstk",
+        "_vsnprintf"
+      ]
+    }
+  ],
+  "machine": "0x14c"
+}

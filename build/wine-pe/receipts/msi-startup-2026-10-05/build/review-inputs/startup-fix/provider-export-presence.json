@@ -1,0 +1,58 @@
+[
+  {
+    "arch": "aarch64",
+    "provider": "kernel32",
+    "sha256": "dd12d93903cc0df570462018f92fb8f1451efc389dac518325c7da6836452eb3",
+    "found": [
+      "CancelIoEx",
+      "CreateEventW",
+      "GetOverlappedResult",
+      "SetLastError",
+      "WaitForMultipleObjects"
+    ],
+    "missing": [],
+    "scope": "export presence only"
+  },
+  {
+    "arch": "aarch64",
+    "provider": "kernelbase",
+    "sha256": "cfe61575b101e7d59303d34aa57bd169a178aef433d9d694eaa340400693971d",
+    "found": [
+      "CancelIoEx",
+      "CreateEventW",
+      "GetOverlappedResult",
+      "SetLastError",
+      "WaitForMultipleObjects"
+    ],
+    "missing": [],
+    "scope": "export presence only"
+  },
+  {
+    "arch": "arm64ec",
+    "provider": "kernel32",
+    "sha256": "91ff5ec8cf5b72ef081f93ee7f16069be15101c9f39b6c3d65b5445e10f5c69b",
+    "found": [
+      "CancelIoEx",
+      "CreateEventW",
+      "GetOverlappedResult",
+      "SetLastError",
+      "WaitForMultipleObjects"
+    ],
+    "missing": [],
+    "scope": "export presence only"
+  },
+  {
+    "arch": "arm64ec",
+    "provider": "kernelbase",
+    "sha256": "ee8bf461cf881b0b04a22696fa8f6397f1eb877dfb52944c2cbec4d25987f718",
+    "found": [
+      "CancelIoEx",
+      "CreateEventW",
+      "GetOverlappedResult",
+      "SetLastError",
+      "WaitForMultipleObjects"
+    ],
+    "missing": [],
+    "scope": "export presence only"
+  }
+]

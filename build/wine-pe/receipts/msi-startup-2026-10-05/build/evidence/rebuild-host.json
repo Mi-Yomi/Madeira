@@ -1,0 +1,205 @@
+{
+  "aarch64-w64-mingw32-clang": {
+    "bytes": 2988,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-clang",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang-target-wrapper.sh",
+    "sha256": "c9b86311ade81d53235c93fafabdf98328d094de344ea9a9038e0dab6695ee9f",
+    "version": "clang version 22.1.4 (https://github.com/llvm/llvm-project.git 35990504507d79e0b9deb809c8ee5e1b34ceef20)"
+  },
+  "aarch64-w64-mingw32-strip": {
+    "bytes": 174304,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-strip",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-objcopy",
+    "sha256": "b90ededc92db02846e3a0e7a6501bdad4f3adf1f136ae793e5e12a592e394807",
+    "version": "llvm-strip, compatible with GNU strip"
+  },
+  "arm64ec-w64-mingw32-clang": {
+    "bytes": 2988,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-clang",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang-target-wrapper.sh",
+    "sha256": "c9b86311ade81d53235c93fafabdf98328d094de344ea9a9038e0dab6695ee9f",
+    "version": "clang version 22.1.4 (https://github.com/llvm/llvm-project.git 35990504507d79e0b9deb809c8ee5e1b34ceef20)"
+  },
+  "arm64ec-w64-mingw32-strip": {
+    "bytes": 174304,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-strip",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-objcopy",
+    "sha256": "b90ededc92db02846e3a0e7a6501bdad4f3adf1f136ae793e5e12a592e394807",
+    "version": "llvm-strip, compatible with GNU strip"
+  },
+  "clang": {
+    "bytes": 111488,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang-22",
+    "sha256": "eb408127882193c07fe3a32523009ad14d788dc867092840199d533de799f273",
+    "version": "clang version 22.1.4 (https://github.com/llvm/llvm-project.git 35990504507d79e0b9deb809c8ee5e1b34ceef20)"
+  },
+  "compiler_environment": {
+    "AR": "/usr/bin/ar",
+    "BISON": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisite-bin/bison",
+    "CC": "/usr/bin/cc",
+    "CFLAGS": "-O2",
+    "CONFIG_SHELL": "/usr/bin/sh",
+    "CONFIG_SITE": "/dev/null",
+    "CPP": "/usr/bin/cpp",
+    "CROSSCFLAGS": "-g -O2",
+    "CXX": "/usr/bin/c++",
+    "FLEX": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisites/usr/bin/flex",
+    "GIT": "/usr/local/bin/git",
+    "LC_ALL": "C",
+    "LD": "/usr/bin/ld",
+    "M4": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisites/usr/bin/m4",
+    "MAKE": "/usr/bin/make",
+    "PATH": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin:/bin:/usr/bin",
+    "PKG_CONFIG": "/usr/bin/pkg-config",
+    "RANLIB": "/usr/bin/ranlib",
+    "STRIP": "/usr/bin/strip",
+    "aarch64_CC": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang",
+    "arm64ec_CC": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang",
+    "i386_CC": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang",
+    "x86_64_CC": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang"
+  },
+  "host_system": {
+    "machine": "x86_64",
+    "release": "6.18.44",
+    "system": "Linux"
+  },
+  "host_tools": {
+    "AR": {
+      "bytes": 52480,
+      "path": "/usr/bin/ar",
+      "resolved_path": "/usr/bin/x86_64-linux-gnu-ar",
+      "sha256": "f8fe09d485b40b1d47c534c96f5cbaaa9148e247aa0494c087104421f48ac5eb"
+    },
+    "BISON": {
+      "bytes": 258,
+      "path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisite-bin/bison",
+      "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisite-bin/bison",
+      "sha256": "1e8bdbdc424fc4622f67bdebecde15103286de4b8c2ddba35ef480abbfac156c",
+      "version": "bison (GNU Bison) 3.8.2"
+    },
+    "CC": {
+      "bytes": 1162264,
+      "path": "/usr/bin/cc",
+      "resolved_path": "/usr/bin/x86_64-linux-gnu-gcc-14",
+      "sha256": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f",
+      "version": "cc (Debian 14.2.0-19) 14.2.0"
+    },
+    "CONFIG_SHELL": {
+      "bytes": 129736,
+      "path": "/usr/bin/sh",
+      "resolved_path": "/usr/bin/dash",
+      "sha256": "a6f559e00b69a4aa4d8cb607be18d9386c5aee55c509e2c075549dcf00e00fc7"
+    },
+    "CPP": {
+      "bytes": 1166360,
+      "path": "/usr/bin/cpp",
+      "resolved_path": "/usr/bin/x86_64-linux-gnu-cpp-14",
+      "sha256": "2c9c820b88db48c4bbbc67e9f2e0c3e140cbc2794302cbd6b7468f7f5891f9ff",
+      "version": "cpp (Debian 14.2.0-19) 14.2.0"
+    },
+    "CXX": {
+      "bytes": 1166360,
+      "path": "/usr/bin/c++",
+      "resolved_path": "/usr/bin/x86_64-linux-gnu-g++-14",
+      "sha256": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+      "version": "c++ (Debian 14.2.0-19) 14.2.0"
+    },
+    "FLEX": {
+      "bytes": 439120,
+      "path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisites/usr/bin/flex",
+      "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisites/usr/bin/flex",
+      "sha256": "2f756d9099e5e926d938e916b342b36f11e209a413e2bbedee059fa4a87560bf",
+      "version": "flex 2.6.4"
+    },
+    "GIT": {
+      "bytes": 19295504,
+      "path": "/usr/local/bin/git",
+      "resolved_path": "/usr/local/bin/git",
+      "sha256": "9dae295c1a4ffae4ee772e6205fcf22b26e1bfeeb5ee98f278b5139bda7ca22f",
+      "version": "git version 2.52.0"
+    },
+    "LD": {
+      "bytes": 1861256,
+      "path": "/usr/bin/ld",
+      "resolved_path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+      "sha256": "d2766988b6a1b1d1518cdc09242e726d1f24e151e16410ada3092b11ffd9081b"
+    },
+    "M4": {
+      "bytes": 286232,
+      "path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisites/usr/bin/m4",
+      "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/prerequisites/usr/bin/m4",
+      "sha256": "24066e3ebc4b7a0eeb33b3d50e108afcfd384f1f01dd1797fa0423d5494cce16",
+      "version": "m4 (GNU M4) 1.4.19"
+    },
+    "MAKE": {
+      "bytes": 278448,
+      "path": "/usr/bin/make",
+      "resolved_path": "/usr/bin/make",
+      "sha256": "8a229baf64671988cfb5af43ba3070c6ce7214cf32bcf96155115559d1466fa7",
+      "version": "GNU Make 4.4.1"
+    },
+    "PKG_CONFIG": {
+      "bytes": 45096,
+      "path": "/usr/bin/pkg-config",
+      "resolved_path": "/usr/bin/pkgconf",
+      "sha256": "37fdaa317c00805da16bc9c4c8de2300ad1e34511c33bf5e5170bf52c0e3a48e",
+      "version": "1.8.1"
+    },
+    "PYTHON": {
+      "bytes": 30894944,
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "resolved_path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+    },
+    "RANLIB": {
+      "bytes": 52480,
+      "path": "/usr/bin/ranlib",
+      "resolved_path": "/usr/bin/x86_64-linux-gnu-ranlib",
+      "sha256": "4610e832470b987c8c9d82d78c1c16e5e2bc9b8c64db455fad0cf63d420ec86e"
+    },
+    "STRIP": {
+      "bytes": 159600,
+      "path": "/usr/bin/strip",
+      "resolved_path": "/usr/bin/x86_64-linux-gnu-strip",
+      "sha256": "a97ae77cd5d88799edc0edb31caa2fc81d32eecaa9619d329bed890f6fd06e3a"
+    }
+  },
+  "i686-w64-mingw32-clang": {
+    "bytes": 2988,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/i686-w64-mingw32-clang",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang-target-wrapper.sh",
+    "sha256": "c9b86311ade81d53235c93fafabdf98328d094de344ea9a9038e0dab6695ee9f",
+    "version": "clang version 22.1.4 (https://github.com/llvm/llvm-project.git 35990504507d79e0b9deb809c8ee5e1b34ceef20)"
+  },
+  "i686-w64-mingw32-strip": {
+    "bytes": 174304,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/i686-w64-mingw32-strip",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-objcopy",
+    "sha256": "b90ededc92db02846e3a0e7a6501bdad4f3adf1f136ae793e5e12a592e394807",
+    "version": "llvm-strip, compatible with GNU strip"
+  },
+  "ld.lld": {
+    "bytes": 5999280,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/ld.lld",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/lld",
+    "sha256": "1fe703341291deb7941bf53bfa859c89696e94d816431ad027841bb31ffb71ea",
+    "version": "LLD 22.1.4 (https://github.com/llvm/llvm-project.git 35990504507d79e0b9deb809c8ee5e1b34ceef20) (compatible with GNU linkers)"
+  },
+  "limits": "Host tool executables are recorded separately; external host headers, libraries, wrapper data and OS are not a hermetic image.",
+  "llvm-readobj": {
+    "bytes": 1928688,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-readobj",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-readobj",
+    "sha256": "274a70238b165bbc79a92d8a64ee0c45a2feac915372d4e62f4957c5a584b90f",
+    "version": "LLVM (http://llvm.org/):"
+  },
+  "x86_64-w64-mingw32-clang": {
+    "bytes": 2988,
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/x86_64-w64-mingw32-clang",
+    "resolved_path": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang-target-wrapper.sh",
+    "sha256": "c9b86311ade81d53235c93fafabdf98328d094de344ea9a9038e0dab6695ee9f",
+    "version": "clang version 22.1.4 (https://github.com/llvm/llvm-project.git 35990504507d79e0b9deb809c8ee5e1b34ceef20)"
+  }
+}

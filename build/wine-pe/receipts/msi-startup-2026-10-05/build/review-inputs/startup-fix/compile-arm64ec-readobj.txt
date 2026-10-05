@@ -1,0 +1,742 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile-arm64ec.o
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64EC (0xA641)
+  SectionCount: 25
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  PointerToSymbolTable: 0x11AE
+  SymbolCount: 85
+  StringTableSize: 763
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}
+Symbols [
+  Symbol {
+    Name: .text
+    Value: 0
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 1416
+      RelocationCount: 51
+      LineNumberCount: 0
+      Checksum: 0x57AD7FA7
+      Number: 1
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .data
+    Value: 0
+    Section: .data (2)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 0
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x0
+      Number: 2
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .bss
+    Value: 0
+    Section: .bss (3)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 0
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x0
+      Number: 3
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .text$#audit_connect
+    Value: 0
+    Section: .text$#audit_connect (4)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 40
+      RelocationCount: 1
+      LineNumberCount: 0
+      Checksum: 0x16E17EC8
+      Number: 4
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: #audit_connect
+    Value: 0
+    Section: .text$#audit_connect (4)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .xdata$#audit_connect
+    Value: 0
+    Section: .xdata$#audit_connect (5)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 8
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x2D3B25E0
+      Number: 5
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: .xdata
+    Value: 0
+    Section: .xdata (6)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 24
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x26254E87
+      Number: 6
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .text$#audit_io
+    Value: 0
+    Section: .text$#audit_io (7)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 64
+      RelocationCount: 1
+      LineNumberCount: 0
+      Checksum: 0x53A3FCDF
+      Number: 7
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: #audit_io
+    Value: 0
+    Section: .text$#audit_io (7)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .xdata$#audit_io
+    Value: 0
+    Section: .xdata$#audit_io (8)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 8
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x91130759
+      Number: 8
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (9)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 72
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x3266893D
+      Number: 9
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $ientry_thunk$cdecl$i8$i8i8
+    Value: 0
+    Section: .wowthk$aa (9)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .xdata$aa
+    Value: 0
+    Section: .xdata$aa (10)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 120
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0xF5678D73
+      Number: 10
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (11)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 76
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x1F8DF779
+      Number: 11
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $ientry_thunk$cdecl$i8$i8i8i8i8i8
+    Value: 0
+    Section: .wowthk$aa (11)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (12)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 44
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x109376D1
+      Number: 12
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $iexit_thunk$cdecl$i8$i8i8i8i8
+    Value: 0
+    Section: .wowthk$aa (12)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (13)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 44
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x109376D1
+      Number: 13
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $iexit_thunk$cdecl$i8$v
+    Value: 0
+    Section: .wowthk$aa (13)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (14)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 44
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x109376D1
+      Number: 14
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $iexit_thunk$cdecl$i8$i8i8
+    Value: 0
+    Section: .wowthk$aa (14)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (15)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 44
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x109376D1
+      Number: 15
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $iexit_thunk$cdecl$i8$i8
+    Value: 0
+    Section: .wowthk$aa (15)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (16)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 52
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0xF3CBDD31
+      Number: 16
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $iexit_thunk$cdecl$i8$i8i8i8i8i8
+    Value: 0
+    Section: .wowthk$aa (16)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .wowthk$aa
+    Value: 0
+    Section: .wowthk$aa (17)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 40
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0xCD1AD83
+      Number: 17
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: $iexit_thunk$cdecl$v$i8
+    Value: 0
+    Section: .wowthk$aa (17)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .hybmp$x
+    Value: 0
+    Section: .hybmp$x (18)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 168
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x433C08AD
+      Number: 18
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .rdata$.refptr.__os_arm64x_dispatch_call_no_redirect
+    Value: 0
+    Section: .rdata$.refptr.__os_arm64x_dispatch_call_no_redirect (19)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 8
+      RelocationCount: 1
+      LineNumberCount: 0
+      Checksum: 0x0
+      Number: 19
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: .refptr.__os_arm64x_dispatch_call_no_redirect
+    Value: 0
+    Section: .rdata$.refptr.__os_arm64x_dispatch_call_no_redirect (19)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .debug$S
+    Value: 0
+    Section: .debug$S (20)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 156
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0xE45073B1
+      Number: 20
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .pdata$#audit_connect
+    Value: 0
+    Section: .pdata$#audit_connect (21)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 8
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x0
+      Number: 21
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: .pdata
+    Value: 0
+    Section: .pdata (22)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 24
+      RelocationCount: 6
+      LineNumberCount: 0
+      Checksum: 0x9918B929
+      Number: 22
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .pdata$#audit_io
+    Value: 0
+    Section: .pdata$#audit_io (23)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 8
+      RelocationCount: 2
+      LineNumberCount: 0
+      Checksum: 0x0
+      Number: 23
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: .pdata$aa
+    Value: 0
+    Section: .pdata$aa (24)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 64
+      RelocationCount: 16
+      LineNumberCount: 0
+      Checksum: 0x4A5C8276
+      Number: 24
+      Selection: Any (0x2)
+    }
+  }
+  Symbol {
+    Name: .llvm_addrsig
+    Value: 0
+    Section: .llvm_addrsig (25)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 14
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x583AC4AB
+      Number: 25
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: @feat.00
+    Value: 0
+    Section: IMAGE_SYM_ABSOLUTE (-1)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: audit_connect
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: WeakExternal (0x69)
+    AuxSymbolCount: 1
+    AuxWeakExternal {
+      Linked: #audit_connect (8)
+      Search: AntiDependency (0x4)
+    }
+  }
+  Symbol {
+    Name: custom_connect_server
+    Value: 0
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_CreateEventW
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_GetLastError
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_ConnectNamedPipe
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_WaitForMultipleObjects
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: custom_pipe_result
+    Value: 984
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_CancelIoEx
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_WaitForSingleObject
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_CloseHandle
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: audit_io
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: WeakExternal (0x69)
+    AuxSymbolCount: 1
+    AuxWeakExternal {
+      Linked: #audit_io (15)
+      Search: AntiDependency (0x4)
+    }
+  }
+  Symbol {
+    Name: custom_pipe_io
+    Value: 752
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_WriteFile
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_ReadFile
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_GetOverlappedResult
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_Sleep
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_SetLastError
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __os_arm64x_dispatch_ret
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __os_arm64x_dispatch_call_no_redirect
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .file
+    Value: 0
+    Section: IMAGE_SYM_DEBUG (-2)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: File (0x67)
+    AuxSymbolCount: 1
+    AuxFileRecord {
+      FileName: compile_api.c
+    }
+  }
+]

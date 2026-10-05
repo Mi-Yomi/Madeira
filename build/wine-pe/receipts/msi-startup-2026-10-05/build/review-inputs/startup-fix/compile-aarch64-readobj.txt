@@ -1,0 +1,311 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile-aarch64.o
+Format: COFF-ARM64
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64 (0xAA64)
+  SectionCount: 7
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  PointerToSymbolTable: 0xA81
+  SymbolCount: 34
+  StringTableSize: 327
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}
+Symbols [
+  Symbol {
+    Name: .text
+    Value: 0
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 1520
+      RelocationCount: 53
+      LineNumberCount: 0
+      Checksum: 0xCC0B334
+      Number: 1
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .data
+    Value: 0
+    Section: .data (2)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 0
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x0
+      Number: 2
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .bss
+    Value: 0
+    Section: .bss (3)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 0
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0x0
+      Number: 3
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .xdata
+    Value: 0
+    Section: .xdata (4)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 40
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0xF8BB9E53
+      Number: 4
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .debug$S
+    Value: 0
+    Section: .debug$S (5)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 156
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0xE45073B1
+      Number: 5
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .pdata
+    Value: 0
+    Section: .pdata (6)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 40
+      RelocationCount: 10
+      LineNumberCount: 0
+      Checksum: 0x328F3F65
+      Number: 6
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: .llvm_addrsig
+    Value: 0
+    Section: .llvm_addrsig (7)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 1
+    AuxSectionDef {
+      Length: 3
+      RelocationCount: 0
+      LineNumberCount: 0
+      Checksum: 0xC1D6BD40
+      Number: 7
+      Selection: 0x0
+    }
+  }
+  Symbol {
+    Name: @feat.00
+    Value: 0
+    Section: IMAGE_SYM_ABSOLUTE (-1)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: audit_connect
+    Value: 0
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: custom_connect_server
+    Value: 40
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_CreateEventW
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_GetLastError
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_ConnectNamedPipe
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_WaitForMultipleObjects
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: custom_pipe_result
+    Value: 1088
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_CancelIoEx
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_WaitForSingleObject
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_CloseHandle
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: audit_io
+    Value: 792
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: custom_pipe_io
+    Value: 856
+    Section: .text (1)
+    BaseType: Null (0x0)
+    ComplexType: Function (0x2)
+    StorageClass: Static (0x3)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_WriteFile
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_ReadFile
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_GetOverlappedResult
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_Sleep
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: __imp_SetLastError
+    Value: 0
+    Section: IMAGE_SYM_UNDEFINED (0)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: External (0x2)
+    AuxSymbolCount: 0
+  }
+  Symbol {
+    Name: .file
+    Value: 0
+    Section: IMAGE_SYM_DEBUG (-2)
+    BaseType: Null (0x0)
+    ComplexType: Null (0x0)
+    StorageClass: File (0x67)
+    AuxSymbolCount: 1
+    AuxFileRecord {
+      FileName: compile_api.c
+    }
+  }
+]

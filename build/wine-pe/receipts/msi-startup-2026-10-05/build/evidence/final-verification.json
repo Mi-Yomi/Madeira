@@ -1,0 +1,13 @@
+{
+  "export_contracts_unchanged": true,
+  "guest_execution": false,
+  "i386_activation": false,
+  "only_expected_import_delta": true,
+  "primary_writes": false,
+  "remote_writes": false,
+  "resolver_snapshots_preserved": true,
+  "source_preserved": true,
+  "three_providers_rebuilt": true,
+  "toolchain_preserved": true,
+  "workspace_bytes": 905222901
+}

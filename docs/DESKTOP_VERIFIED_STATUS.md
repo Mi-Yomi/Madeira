@@ -43,6 +43,38 @@ control. Its host tests and cross-compiles passed; its iPhone runtime has not
 run. See the [device acceptance contract](../tests/desktop/msi_wow64/DEVICE-ACCEPTANCE.md).
 Ordinary i386 app launches remain disabled.
 
+### Dead custom-action child during startup
+
+The reviewed MSI startup change makes the parent wait for either its pipe
+connection or child-process termination. A child that dies before connecting
+now produces a nonzero failure. Pending connection cancellation is drained
+before releasing its event or stack storage; later operations on that pipe use
+the matching overlapped-I/O contract. No production installer timeout is added.
+
+The exact three helper bodies passed the
+[real Windows API reference](https://github.com/Mi-Yomi/Madeira/actions/runs/37314605300)
+at `1769ad970b8292cd70bc766834d0360b6de7ce08`: all eight cases passed, with
+64 connection/death races and 256 complete serialized exchanges. Every case
+confirmed cleanup, and no outer test watchdog fired. The deterministic
+both-signaled case observed process-first selection and the cancellation race.
+The separate 64-race case observed 64 successful connections before child exit;
+it does not claim both race outcomes occurred in that particular run.
+
+The source-built AArch64/ARM64EC MSI replacements preserve all 296 exports and
+add exactly four kernel32 imports. Their 331/332 imports resolve in the current
+farms. The [fixed integration record](../build/wine-pe/msi-startup-integration.json)
+and [source/rebuild receipt](../build/wine-pe/receipts/msi-startup-2026-10-05/build/README.md)
+bind the exact source, toolchain, outputs, predecessor identities and notices.
+Historical receipts remain unchanged. The rebuilt i386 provider remains
+evidence-only and has no fresh full peer-farm import-resolution result.
+
+This Windows helper result does not establish execution of the rebuilt Wine
+DLLs, Madeira or a 1C installer. A live child that never connects, stalled later
+action I/O and shutdown retain their existing unbounded waits. Bitwise build
+reproducibility across paths/times/hosts is not established. The full app-link
+checkpoint above predates this new provider pair; its new app result must be
+recorded separately when available.
+
 ## Graphics reference and remaining blocker
 
 The source-built Mesa 26.2.4 softpipe

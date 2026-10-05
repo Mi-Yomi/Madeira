@@ -17,6 +17,7 @@ import plan_desktop_overlay as planner
 import verify_msi_integration as msi
 import verify_loader_integration as loader
 import verify_msi_client_integration as client
+import verify_msi_startup_integration as startup
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORD = "build/wine-pe/desktop-integration.json"
@@ -64,6 +65,8 @@ def validate_farms(root, stage, msi_extension=None, loader_extension=None):
         if msi_extension is not None and msi_extension.get("client") is not None:
             planner.require(loader_extension is not None, "MSI client requires sealed loader integration")
             old = client.bind_reports(msi_extension["client"], old, arch)
+            if msi_extension["client"].get("startup") is not None:
+                old = startup.bind_reports(msi_extension["client"]["startup"], old, arch)
         expected = old["modules"]
         paths = {}
         for path in planner.children(farm, inventory.MAX_FARM_FILES):
@@ -99,6 +102,9 @@ def validate(root, resources, tracked):
     """
     root, tracked = Path(root), set(tracked)
     wine_gitlink(root)
+    if startup.present(root):
+        planner.require(msi.present(root) and loader.present(root) and client.present(root),
+                        "MSI startup requires every historical integration")
     planner.require(RECORD in tracked, "Desktop integration record must be tracked")
     record = planner.document(root, RECORD)
     planner.require(record.get("schema_version") == 1 and
@@ -155,7 +161,9 @@ def validate(root, resources, tracked):
             "current_dependency_counts": counts,
             "msi": extension["summary"] if extension else None,
             "loader": loader_extension["summary"] if loader_extension else None,
-            "msi_client": extension["client"]["summary"] if extension and extension.get("client") else None}
+            "msi_client": extension["client"]["summary"] if extension and extension.get("client") else None,
+            "msi_startup": extension["client"]["startup"]["summary"]
+            if extension and extension.get("client") and extension["client"].get("startup") else None}
 
 
 def main():
@@ -166,7 +174,8 @@ def main():
     tracked = git_output(root, "ls-files", "-z", "--").split("\0")
     required = (set(COPIES) | MERGED_NOTICES | (msi.FILES if msi.present(root) else set()) |
                 (loader.FILES if loader.present(root) else set()) |
-                (client.FILES if client.present(root) else set()))
+                (client.FILES if client.present(root) else set()) |
+                (startup.FILES if startup.present(root) else set()))
     resources = {name.removeprefix("app/Madeira/"): planner.identity(root / name)["sha256"]
                  for name in tracked if name.startswith("app/Madeira/") and
                  name.removeprefix("app/Madeira/") in required}

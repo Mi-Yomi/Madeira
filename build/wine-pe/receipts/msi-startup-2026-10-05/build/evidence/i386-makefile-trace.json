@@ -1,0 +1,11 @@
+{
+  "after": {
+    "bytes": 52729706,
+    "sha256": "a2f232caea427c88e527e271d0f8587c277bdce10714e4aaec2c0d50de05c57d"
+  },
+  "before": {
+    "bytes": 52729691,
+    "sha256": "94cde54319a8906391d70cf41d9f8a556611ed5cc0e8a83b50ba7b645a1eedd6"
+  },
+  "change": "Add only -v -save-temps to generated MSI link command"
+}

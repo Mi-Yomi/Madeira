@@ -71,6 +71,7 @@ try {
         integrated_source_sha256 = $integratedHash
     }
     $build | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath 'build-identity.json' -Encoding utf8
+    Write-Host ("BUILD_IDENTITY " + ($build | ConvertTo-Json -Depth 5 -Compress))
     & './fixture.exe'
     $fixtureExit = $LASTEXITCODE
     foreach ($log in Get-ChildItem -Filter 'case-*.log' | Sort-Object Name) {
@@ -95,6 +96,11 @@ try {
                 Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
         }
     }
+    if ((Get-FileHash -LiteralPath './fixture.exe' -Algorithm SHA256).Hash.ToLowerInvariant() -ne $build.fixture_sha256 -or
+        (Get-FileHash -LiteralPath './own_child.exe' -Algorithm SHA256).Hash.ToLowerInvariant() -ne $build.own_child_sha256) {
+        throw 'Compiled fixture executables changed during execution'
+    }
+    Write-Host 'BUILD_OUTPUTS_UNCHANGED true'
     if ($fixtureExit -ne 0 -or $report.ran -ne 8 -or $report.passed -ne 8 -or
         @($report.cases | Where-Object { $_.status -ne 'passed' -or -not $_.ran -or $_.watchdog_fired }).Count) {
         throw "Windows reference fixture failed or was incomplete (exit $fixtureExit)"

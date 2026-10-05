@@ -1,0 +1,182 @@
+diff --git a/dlls/msi/custom.c b/dlls/msi/custom.c
+--- a/dlls/msi/custom.c
++++ b/dlls/msi/custom.c
+@@ -540,11 +540,15 @@
+         midl_user_free( dll );
+         midl_user_free( proc );
+         MsiCloseHandle( hPackage );
+-        return ERROR_SUCCESS;
++        return ERROR_INSTALL_FAILURE;
+     }
+ 
+     fn = (MsiCustomActionEntryPoint) GetProcAddress( hModule, proc );
+-    if (!fn) WARN( "GetProcAddress(%s) failed\n", debugstr_a(proc) );
++    if (!fn)
++    {
++        WARN( "GetProcAddress(%s) failed\n", debugstr_a(proc) );
++        r = ERROR_INSTALL_FAILURE;
++    }
+     else
+     {
+         handle_msi_break(action);
+@@ -557,7 +561,7 @@
+         {
+             ERR( "Custom action (%s:%s) caused a page fault: %#lx\n",
+                  debugstr_w(dll), debugstr_a(proc), GetExceptionCode() );
+-            r = ERROR_SUCCESS;
++            r = ERROR_INSTALL_FAILURE;
+         }
+         __ENDTRY;
+     }
+@@ -591,11 +595,13 @@
+ {
+     WCHAR path[MAX_PATH], cmdline[MAX_PATH + 23];
+     PROCESS_INFORMATION pi = {0};
+-    STARTUPINFOW si = {0};
++    STARTUPINFOW si = {sizeof(si)};
+     WCHAR buffer[24];
+     HANDLE token;
+     void *cookie;
+     HANDLE pipe;
++    DWORD len, ret = ERROR_SUCCESS;
++    BOOL success = FALSE;
+ 
+     if ((arch == SCS_32BIT_BINARY && package->custom_server_32_process) ||
+         (arch == SCS_64BIT_BINARY && package->custom_server_64_process))
+@@ -606,12 +612,32 @@
+     pipe = CreateNamedPipeW(buffer, PIPE_ACCESS_DUPLEX, 0, 1, sizeof(DWORD64),
+         sizeof(GUID), 0, NULL);
+     if (pipe == INVALID_HANDLE_VALUE)
+-        ERR("failed to create custom action client pipe: %lu\n", GetLastError());
++    {
++        ret = GetLastError();
++        if (!ret) ret = ERROR_FUNCTION_FAILED;
++        ERR("failed to create custom action client pipe: %lu\n", ret);
++        return ret;
++    }
+ 
+     if ((sizeof(void *) == 8 || is_wow64) && arch == SCS_32BIT_BINARY)
+-        GetSystemWow64DirectoryW(path, MAX_PATH - ARRAY_SIZE(L"\\msiexec.exe"));
++    {
++        len = GetSystemWow64DirectoryW(path, ARRAY_SIZE(path));
++        if (!len)
++        {
++            ret = GetLastError();
++            goto failed;
++        }
++    }
+     else
++    {
+         wcscpy(path, sysdir);
++        len = wcslen(path);
++    }
++    if (len > ARRAY_SIZE(path) - ARRAY_SIZE(L"\\msiexec.exe"))
++    {
++        ret = ERROR_INSUFFICIENT_BUFFER;
++        goto failed;
++    }
+     lstrcatW(path, L"\\msiexec.exe");
+     swprintf(cmdline, ARRAY_SIZE(cmdline), L"%s -Embedding %d", path, GetCurrentProcessId());
+ 
+@@ -619,16 +645,36 @@
+ 
+     if (is_wow64 && arch == SCS_64BIT_BINARY)
+     {
+-        Wow64DisableWow64FsRedirection(&cookie);
+-        CreateProcessAsUserW(token, path, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+-        Wow64RevertWow64FsRedirection(cookie);
++        if (Wow64DisableWow64FsRedirection(&cookie))
++        {
++            success = CreateProcessAsUserW(token, path, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
++            if (!success)
++                ret = GetLastError();
++            if (!Wow64RevertWow64FsRedirection(cookie))
++            {
++                if (!ret) ret = GetLastError();
++                success = FALSE;
++            }
++        }
++        else
++            ret = GetLastError();
+     }
+     else
+-        CreateProcessAsUserW(token, path, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
++    {
++        success = CreateProcessAsUserW(token, path, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
++        if (!success)
++            ret = GetLastError();
++    }
+ 
+     if (token) CloseHandle(token);
+-
+-    CloseHandle(pi.hThread);
++    if (pi.hThread) CloseHandle(pi.hThread);
++    if (!success) goto failed;
++
++    if (!ConnectNamedPipe(pipe, NULL))
++    {
++        ret = GetLastError();
++        if (ret != ERROR_PIPE_CONNECTED) goto failed;
++    }
+ 
+     if (arch == SCS_32BIT_BINARY)
+     {
+@@ -641,13 +687,14 @@
+         package->custom_server_64_pipe = pipe;
+     }
+ 
+-    if (!ConnectNamedPipe(pipe, NULL))
+-    {
+-        ERR("failed to connect to custom action server: %lu\n", GetLastError());
+-        return GetLastError();
+-    }
+-
+     return ERROR_SUCCESS;
++
++failed:
++    if (!ret) ret = ERROR_FUNCTION_FAILED;
++    ERR("failed to start custom action server: %lu\n", ret);
++    if (pi.hProcess) CloseHandle(pi.hProcess);
++    CloseHandle(pipe);
++    return ret;
+ }
+ 
+ void custom_stop_server(HANDLE process, HANDLE pipe)
+@@ -767,7 +814,7 @@
+     RPC_STATUS status;
+     BOOL ret;
+ 
+-    info = malloc( sizeof *info );
++    info = calloc( 1, sizeof *info );
+     if (!info)
+         return NULL;
+ 
+@@ -793,6 +840,7 @@
+         if (status != RPC_S_OK)
+         {
+             ERR("RpcServerUseProtseqEp failed: %#lx\n", status);
++            free_custom_action_data( info );
+             return NULL;
+         }
+ 
+@@ -801,6 +849,7 @@
+         if (status != RPC_S_OK)
+         {
+             ERR("RpcServerRegisterIfEx failed: %#lx\n", status);
++            free_custom_action_data( info );
+             return NULL;
+         }
+ 
+@@ -818,7 +867,11 @@
+         return NULL;
+     }
+ 
+-    custom_start_server(package, info->arch);
++    if (custom_start_server(package, info->arch))
++    {
++        free_custom_action_data( info );
++        return NULL;
++    }
+ 
+     info->handle = CreateThread(NULL, 0, custom_client_thread, info, 0, NULL);
+     if (!info->handle)

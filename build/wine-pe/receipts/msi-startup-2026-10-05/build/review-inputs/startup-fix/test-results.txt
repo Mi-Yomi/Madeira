@@ -1,0 +1,34 @@
+PASS event allocation failure before I/O
+PASS event failure never maps to success
+PASS synchronous connection completion
+PASS ERROR_PIPE_CONNECTED has no pending I/O
+PASS immediate connect error preserved
+PASS connect failure never maps to success
+PASS pending connection completes
+PASS pending connection failure preserved
+PASS child death cancels then drains
+PASS child death racing successful connection still fails
+PASS cancel ERROR_NOT_FOUND race still drains
+PASS unexpected cancellation error retains operation until completion
+PASS wait failure preserved across cancellation and close
+PASS wait failure never maps to success
+PASS unexpected wait result cancels then drains
+PASS dead child after immediate completion rejected
+PASS dead child on already-connected path rejected
+PASS child dies while pending completion is collected
+PASS post-connect process check failure preserved
+PASS connect result wait failure cancels and polls to terminal
+PASS failed cancellation drain wait retains stack until terminal
+PASS TRUE result with pending status still waits for terminal status
+PASS immediate write
+PASS pending write drained synchronously
+PASS short write size retained for caller
+PASS immediate write failure
+PASS read result wait failure cancels and retains buffer until terminal
+PASS write result wait failure cancels and retains buffer until terminal
+PASS TRUE read result with pending status is fully drained
+PASS immediate read
+PASS pending read drained synchronously
+PASS short read size retained for caller
+PASS pending read error retains error and drains
+33 deterministic API-model tests passed; no OS/Wine runtime claim

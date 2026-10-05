@@ -1,0 +1,107 @@
+[
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/wine/configure",
+      "--enable-archs=aarch64",
+      "--without-x",
+      "--without-vulkan",
+      "--without-freetype",
+      "--without-gnutls",
+      "--without-gstreamer",
+      "--disable-tests"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-aarch64",
+    "elapsed_seconds": 12.506,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/usr/bin/make",
+      "-j2",
+      "dlls/msi/aarch64-windows/msi.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-aarch64",
+    "elapsed_seconds": 20.083,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-strip",
+      "--strip-debug",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/candidate/aarch64-windows/msi.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-aarch64",
+    "elapsed_seconds": 0.202,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/wine/configure",
+      "--enable-archs=arm64ec",
+      "--without-x",
+      "--without-vulkan",
+      "--without-freetype",
+      "--without-gnutls",
+      "--without-gstreamer",
+      "--disable-tests"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-arm64ec",
+    "elapsed_seconds": 14.935,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/usr/bin/make",
+      "-j2",
+      "dlls/msi/arm64ec-windows/msi.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-arm64ec",
+    "elapsed_seconds": 20.834,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-strip",
+      "--strip-debug",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/candidate/arm64ec-windows/msi.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-arm64ec",
+    "elapsed_seconds": 0.249,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/wine/configure",
+      "--enable-archs=i386",
+      "--without-x",
+      "--without-vulkan",
+      "--without-freetype",
+      "--without-gnutls",
+      "--without-gstreamer",
+      "--disable-tests"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-i386",
+    "elapsed_seconds": 12.544,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/usr/bin/make",
+      "-j2",
+      "dlls/msi/i386-windows/msi.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-i386",
+    "elapsed_seconds": 19.144,
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/i686-w64-mingw32-strip",
+      "--strip-debug",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/candidate/i386-windows/msi.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-i386",
+    "elapsed_seconds": 0.311,
+    "exit_code": 0
+  }
+]

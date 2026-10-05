@@ -1,0 +1,1531 @@
+{
+  "all_archive_bytes_match": true,
+  "all_extracted_regular_files_match": true,
+  "files": {
+    "usr/bin/bison": {
+      "bytes": 557856,
+      "sha256": "39fc36c38e29481dc3be2d08652e0564b9ea9aa297e38ed21ff0da0ff36967e8"
+    },
+    "usr/bin/bison.yacc": {
+      "bytes": 4214,
+      "sha256": "5e8bc41ef20eda07de49a585544c52d43f3c571b651e8b853b9acc978ba5f83e"
+    },
+    "usr/bin/flex": {
+      "bytes": 439120,
+      "sha256": "2f756d9099e5e926d938e916b342b36f11e209a413e2bbedee059fa4a87560bf"
+    },
+    "usr/bin/flex++": {
+      "link": "flex"
+    },
+    "usr/bin/lex": {
+      "link": "flex"
+    },
+    "usr/bin/m4": {
+      "bytes": 286232,
+      "sha256": "24066e3ebc4b7a0eeb33b3d50e108afcfd384f1f01dd1797fa0423d5494cce16"
+    },
+    "usr/share/aclocal/bison-i18n.m4": {
+      "bytes": 1939,
+      "sha256": "d1f25176a9f20d517c39eb81e309a9ceadcc3d7213f7fe092c59a26ac4c0f227"
+    },
+    "usr/share/bison/README.md": {
+      "bytes": 8234,
+      "sha256": "cd063573f09ea45704d1519f90e86bd48a90f86b1192bf17fdc8f3498bb3a874"
+    },
+    "usr/share/bison/bison-default.css": {
+      "bytes": 1862,
+      "sha256": "c20d18c885554d8f1981fba66294b26149fe4688ffe149a818dde867c6fa300d"
+    },
+    "usr/share/bison/m4sugar/foreach.m4": {
+      "bytes": 14761,
+      "sha256": "f853cfbca513526863b0fbfb9388ac7c22d84305163d344e3daa68cc86560ee8"
+    },
+    "usr/share/bison/m4sugar/m4sugar.m4": {
+      "bytes": 123136,
+      "sha256": "8fdb20cf13d61b98037c710a9d962c067db115cd54868b6bfa1d6457536074bf"
+    },
+    "usr/share/bison/skeletons/bison.m4": {
+      "bytes": 43379,
+      "sha256": "a3056074b9d6da3866e4dff3d8fba2b9d81d1ca2ca74920718586822d60df767"
+    },
+    "usr/share/bison/skeletons/c++-skel.m4": {
+      "bytes": 1170,
+      "sha256": "0eb87848bfed0bd60c2377bd6508a503ba6843f19caa1237c351ef2f662a80df"
+    },
+    "usr/share/bison/skeletons/c++.m4": {
+      "bytes": 23066,
+      "sha256": "ee0120e686161120207113183e77019abddd7f9e74de57428839a5cdf99dab8a"
+    },
+    "usr/share/bison/skeletons/c-like.m4": {
+      "bytes": 2565,
+      "sha256": "a1b5c38e07851529110c5720a4fb86fe05ab7c49c2765919effd207c58108973"
+    },
+    "usr/share/bison/skeletons/c-skel.m4": {
+      "bytes": 1164,
+      "sha256": "ec60e7d29b61b0cf752f19a88eecda5e32f5cd5d9fe326901000370c0f06fbc8"
+    },
+    "usr/share/bison/skeletons/c.m4": {
+      "bytes": 34544,
+      "sha256": "328d06afdea69ce9604790634abb406d55c0da0a4f39a103defba8084637a67f"
+    },
+    "usr/share/bison/skeletons/d-skel.m4": {
+      "bytes": 1136,
+      "sha256": "648bc3362d2c8fed246fcdfc911c0bfa83fb37eb07be98ffd6ef6dc86da1feae"
+    },
+    "usr/share/bison/skeletons/d.m4": {
+      "bytes": 19495,
+      "sha256": "7b313e97927d4f3b0a4b57725ecc12c034f27813c386804c7822c4166ba688a6"
+    },
+    "usr/share/bison/skeletons/glr.c": {
+      "bytes": 91333,
+      "sha256": "0af615595a0e0ed252e893ec88b5eb44912f685e30e1cb57f132a811a84b346f"
+    },
+    "usr/share/bison/skeletons/glr.cc": {
+      "bytes": 12669,
+      "sha256": "2171d3d3bb670cbe3a6f09d999c8281b383f1c286657a3ea58eacf2cf5846536"
+    },
+    "usr/share/bison/skeletons/glr2.cc": {
+      "bytes": 115011,
+      "sha256": "7c63a6ba9d9908b401e54ccad6bedbd1cd8d4f549010e5e98a41cec2c2414223"
+    },
+    "usr/share/bison/skeletons/java-skel.m4": {
+      "bytes": 1167,
+      "sha256": "8774449ff4864f61cf6355684146bb57d77292b789fb4f08be78f5571774504c"
+    },
+    "usr/share/bison/skeletons/java.m4": {
+      "bytes": 14594,
+      "sha256": "8952f572e346315183392421a4aee23ac211890f794774689dafcaad6afb9787"
+    },
+    "usr/share/bison/skeletons/lalr1.cc": {
+      "bytes": 51545,
+      "sha256": "67142c22036d1eb995ebe0aa1a266b2cb749208c9970af2b24f2039174ab9a23"
+    },
+    "usr/share/bison/skeletons/lalr1.d": {
+      "bytes": 43502,
+      "sha256": "442f2e5e05f842ea5e7176293877c019f611e60c6b110378105f6dbab438eb00"
+    },
+    "usr/share/bison/skeletons/lalr1.java": {
+      "bytes": 45349,
+      "sha256": "4edd5b536cba7e7574b4b1c0156d0d69574fe4902c8a132a9b9b3b98d55c7627"
+    },
+    "usr/share/bison/skeletons/location.cc": {
+      "bytes": 10393,
+      "sha256": "70ca8b2c5783d462cb662252177b969f1132cf7a6f1b15f1bc63b795b142d696"
+    },
+    "usr/share/bison/skeletons/stack.hh": {
+      "bytes": 4000,
+      "sha256": "d8bff95c9fbd9120102533dc8e35bcf62b5b10200ac7cb11cff1ac271078f6ae"
+    },
+    "usr/share/bison/skeletons/traceon.m4": {
+      "bytes": 87,
+      "sha256": "8211489b86df152b93e9af60d838efc2f17481f2d4307ab815dfb67a4dcf1292"
+    },
+    "usr/share/bison/skeletons/variant.hh": {
+      "bytes": 15031,
+      "sha256": "a21303c3c4a0401777204b3037b623de79d59c713e03b2b817f8417d28df5b5f"
+    },
+    "usr/share/bison/skeletons/yacc.c": {
+      "bytes": 74996,
+      "sha256": "998d3a462761d5e6b9c408b6744b8741dc5b59eb7df47e9057055de45ee799df"
+    },
+    "usr/share/bison/xslt/bison.xsl": {
+      "bytes": 3366,
+      "sha256": "d49605e30acdcb7d904988701c95eb4fd2af1df7bc586c918f15dd98b8b6cc31"
+    },
+    "usr/share/bison/xslt/xml2dot.xsl": {
+      "bytes": 12812,
+      "sha256": "5f8ba954a77a15749d074f5ad0fb0d7293279d6da1d90ac6757653d6f823a06b"
+    },
+    "usr/share/bison/xslt/xml2text.xsl": {
+      "bytes": 18867,
+      "sha256": "20d5a491fb73dd6f9a96e3a1167c115a6f544c0c7a50245d6cc4f488ac5fe961"
+    },
+    "usr/share/bison/xslt/xml2xhtml.xsl": {
+      "bytes": 23252,
+      "sha256": "e8da37276ae95942de9d260f3f90c7efc3cfc3e5677796f183edd534f66d05d7"
+    },
+    "usr/share/doc-base/flex.flex": {
+      "bytes": 946,
+      "sha256": "f56a989a413b0910b03f6b8fb5ba6e734e7310bb021c9fde68e11494633a0b1d"
+    },
+    "usr/share/doc/bison/AUTHORS": {
+      "bytes": 1472,
+      "sha256": "bc5ad04a3bb29a122f64033e12c7108443415634f063d98c5fdca350ae9c8bf9"
+    },
+    "usr/share/doc/bison/ChangeLog-1998.gz": {
+      "bytes": 13081,
+      "sha256": "54f1676d328b792e5332e5ed7e29728818d77fa503db40297cd6b34df19b907a"
+    },
+    "usr/share/doc/bison/ChangeLog-2012.gz": {
+      "bytes": 274958,
+      "sha256": "e5dc8d502d95b7849274dbee129b8b82ff652c67b24499eb3fe7d9f7ce57ac63"
+    },
+    "usr/share/doc/bison/NEWS.gz": {
+      "bytes": 51754,
+      "sha256": "305e042173b3dcca85c13f2bccfa968153df5db5412d70628a92c4337fc56b79"
+    },
+    "usr/share/doc/bison/README.gz": {
+      "bytes": 2640,
+      "sha256": "a33c3775de740fa09eec9895d8bf1ca5899147f96cbe4fc5cf84416c7bca2853"
+    },
+    "usr/share/doc/bison/THANKS.gz": {
+      "bytes": 5175,
+      "sha256": "2593cc56607e59aa980ef70bb85fef5c65689459d4d1240161203607af9e639f"
+    },
+    "usr/share/doc/bison/TODO.gz": {
+      "bytes": 11964,
+      "sha256": "6fd0f98b962f1ecd804629a4e77030aa655f9fe6fdb6b81703fb23ca8e55bad9"
+    },
+    "usr/share/doc/bison/changelog.Debian.amd64.gz": {
+      "bytes": 234,
+      "sha256": "3b87b5f9c839c712a67ac40118dd0a4f3937e364909e087f56ba71592e25ba45"
+    },
+    "usr/share/doc/bison/changelog.Debian.gz": {
+      "bytes": 728,
+      "sha256": "7570faf8e0a85e85238f9c81310493366722e7673d78a7c0b42b8c099a200ada"
+    },
+    "usr/share/doc/bison/changelog.gz": {
+      "bytes": 305469,
+      "sha256": "8672f3cd07e33d988e3ae18d18d9fb92301607b1587462250e3421fef215222d"
+    },
+    "usr/share/doc/bison/copyright": {
+      "bytes": 776,
+      "sha256": "0870e455b94b9043e84948624d3368d9a45d10674ae4398762b99bb2c328dffd"
+    },
+    "usr/share/doc/bison/examples/README.md": {
+      "bytes": 1008,
+      "sha256": "c689a7dddcfafff3c3a4fc803a918152e40366e20ec797a74f1d1d81a60e15d2"
+    },
+    "usr/share/doc/bison/examples/c++/Makefile": {
+      "bytes": 418,
+      "sha256": "19a6481be4d95ec67231032ce4a3d4861adbfd25174103d0e29a6918c5556f92"
+    },
+    "usr/share/doc/bison/examples/c++/README.md": {
+      "bytes": 2337,
+      "sha256": "4e851e8e912ce446b8e1f25af901e11ff88bfea064a81d51ca213731c065bcca"
+    },
+    "usr/share/doc/bison/examples/c++/calc++/Makefile": {
+      "bytes": 723,
+      "sha256": "9d70a20f39f9815fdd25c75ab31959defabe376f68690f9736f8a2f5d378b572"
+    },
+    "usr/share/doc/bison/examples/c++/calc++/README.md": {
+      "bytes": 1664,
+      "sha256": "2b6e001de03d54c0351bb64442466aea37ff389747c70d5306e6b454a30c4272"
+    },
+    "usr/share/doc/bison/examples/c++/calc++/calc++.cc": {
+      "bytes": 1214,
+      "sha256": "4741ed05441093b26f1dbd83d41dcad0411567e98be8bed5350e406139914563"
+    },
+    "usr/share/doc/bison/examples/c++/calc++/driver.cc": {
+      "bytes": 1203,
+      "sha256": "fb71046798f66e970639860b54bb6cd0de39946cb9dcf7e483d77904f2250a3e"
+    },
+    "usr/share/doc/bison/examples/c++/calc++/driver.hh": {
+      "bytes": 1680,
+      "sha256": "edd294021f4f4a10fe0a2c84a8f5091af6a13bd390b42a03ad087eea4f4da971"
+    },
+    "usr/share/doc/bison/examples/c++/calc++/parser.yy": {
+      "bytes": 2039,
+      "sha256": "db3ec75788a13858b02d5cfc98e0a2a7a78e9d8c319f34d2bb480971ffdf8555"
+    },
+    "usr/share/doc/bison/examples/c++/calc++/scanner.ll": {
+      "bytes": 5389,
+      "sha256": "407c38cfef17a478d8539bf63d7b24e1dc2dd90a04bbd42a77b594123483e46c"
+    },
+    "usr/share/doc/bison/examples/c++/simple.yy": {
+      "bytes": 2223,
+      "sha256": "3f981d8e1fb8acac5ba057c2f636accff4d9b61a499cad6489b9bc603bb82a2d"
+    },
+    "usr/share/doc/bison/examples/c++/variant-11.yy": {
+      "bytes": 3708,
+      "sha256": "507cf28cc6cc713a465ac85bc1af6bdcea3cde4b604a21ea10a4544b8c938a7e"
+    },
+    "usr/share/doc/bison/examples/c++/variant.yy": {
+      "bytes": 3319,
+      "sha256": "f8d2bdeca64963d84cf2a2e45d137b20f776d86ed8cddae89e9823668b387318"
+    },
+    "usr/share/doc/bison/examples/c/README.md": {
+      "bytes": 4140,
+      "sha256": "6e6367271b488e8a2deb21ed426f37aad3cc9358944e940271c7f6d98fbfb2b1"
+    },
+    "usr/share/doc/bison/examples/c/bistromathic/Makefile": {
+      "bytes": 996,
+      "sha256": "adf9fd8b7a681dd252583b9a7221850e8211f0a07dfa983246aa07b0edfede33"
+    },
+    "usr/share/doc/bison/examples/c/bistromathic/README.md": {
+      "bytes": 1886,
+      "sha256": "f271823631440dd0e07dfc29f0ba697c1e8b2f3dbc760de80c116abb017125a1"
+    },
+    "usr/share/doc/bison/examples/c/bistromathic/parse.y": {
+      "bytes": 18276,
+      "sha256": "0536e3e95bea815f5cace19874dbe2169a2b0de6148c242494503bece20d9888"
+    },
+    "usr/share/doc/bison/examples/c/calc/Makefile": {
+      "bytes": 499,
+      "sha256": "8048040092872e7ba912c80cfb479997df1dd5ab62fe83662e1d4fc7da088234"
+    },
+    "usr/share/doc/bison/examples/c/calc/README.md": {
+      "bytes": 721,
+      "sha256": "07cfb1f17ee84854fc1dfdd5527024124c77e35fbc18ddf94af8ce5234986a6d"
+    },
+    "usr/share/doc/bison/examples/c/calc/calc.y": {
+      "bytes": 1846,
+      "sha256": "59259755e8619ebb514b1c1832de28574341efbb64f3f593318961c0cfa4aa1b"
+    },
+    "usr/share/doc/bison/examples/c/glr/Makefile": {
+      "bytes": 499,
+      "sha256": "5bf6af9af75115c808e40ca8b9d57cd7fb9bcc4248e9c138649aaf6feace65f5"
+    },
+    "usr/share/doc/bison/examples/c/glr/README.md": {
+      "bytes": 758,
+      "sha256": "053b4050b6a5511f591012a9207f877aacf7fc171d06098d4bf97af8429b7ba2"
+    },
+    "usr/share/doc/bison/examples/c/glr/c++-types.y": {
+      "bytes": 7933,
+      "sha256": "a4b02fa78ec688b797a512306828be3032ea3e3204ba8d267af387dcbdcb58eb"
+    },
+    "usr/share/doc/bison/examples/c/lexcalc/Makefile": {
+      "bytes": 581,
+      "sha256": "986ab5a001e240242177a55da6f9c61dec6bf42e232a3b5a879aa92bced3af2d"
+    },
+    "usr/share/doc/bison/examples/c/lexcalc/README.md": {
+      "bytes": 796,
+      "sha256": "2992b3bcc98fa2a07f34eddd12e89f6a23d434a12ea1bd652249f0e52aa1292b"
+    },
+    "usr/share/doc/bison/examples/c/lexcalc/parse.y": {
+      "bytes": 3313,
+      "sha256": "4faeb31cf76adcba111f07f4a0729a0b2aea8131549c80810a4c471f454aa983"
+    },
+    "usr/share/doc/bison/examples/c/lexcalc/scan.l": {
+      "bytes": 2294,
+      "sha256": "1c104c985548bf7500c2713aaeb12445596488e2662e13e4cc8fb472dc70cec6"
+    },
+    "usr/share/doc/bison/examples/c/mfcalc/Makefile": {
+      "bytes": 423,
+      "sha256": "26da8a6b8ea35023fe00f2bcce85a2f584cbcd03cfade6ef826bb4d2315e42f9"
+    },
+    "usr/share/doc/bison/examples/c/mfcalc/calc.h": {
+      "bytes": 1391,
+      "sha256": "1a757dc642042558ac33a333992a2bd8414128939cbb84fa83a170969a7e7134"
+    },
+    "usr/share/doc/bison/examples/c/mfcalc/mfcalc.y": {
+      "bytes": 5242,
+      "sha256": "4b19334970fbe08005668382ba173031ea817bab0422efa82b74a5e22d7bcc15"
+    },
+    "usr/share/doc/bison/examples/c/pushcalc/Makefile": {
+      "bytes": 493,
+      "sha256": "e4c41b31e96375930d88c3a63c7856efe022a7883beed293c4053d6b0200626b"
+    },
+    "usr/share/doc/bison/examples/c/pushcalc/README.md": {
+      "bytes": 1110,
+      "sha256": "0090a145bbcc420b606eefad3e325f70e3b69240ff9b32c8863b50b584784aa4"
+    },
+    "usr/share/doc/bison/examples/c/pushcalc/calc.y": {
+      "bytes": 3011,
+      "sha256": "922c31255e345086c67a573641779df31e29d05d0c3d3fa40c8d456ed1a1ec12"
+    },
+    "usr/share/doc/bison/examples/c/reccalc/Makefile": {
+      "bytes": 606,
+      "sha256": "dd6fd3065c43debe775b721233a7c8bfff97e2c1da58dc0571f703a82e4fca88"
+    },
+    "usr/share/doc/bison/examples/c/reccalc/README.md": {
+      "bytes": 1029,
+      "sha256": "344201a8a0ea50530fe4f9c6e41199c90e5cebff90b81307c7c14318df68bbc4"
+    },
+    "usr/share/doc/bison/examples/c/reccalc/parse.y": {
+      "bytes": 4702,
+      "sha256": "decf9755da4d9b806bdde7b8ea40abc224c0682d5d8083c249518fc1cc2e19a0"
+    },
+    "usr/share/doc/bison/examples/c/reccalc/scan.l": {
+      "bytes": 2946,
+      "sha256": "97a045419e4482d666a9620efbdaacad0b1e7b8d7e8007ebee37b5464566eb30"
+    },
+    "usr/share/doc/bison/examples/c/rpcalc/Makefile": {
+      "bytes": 435,
+      "sha256": "e4fe9d8795bdf48d7b5d51122e0105122c2ceb1347dd35d0fe906245bc7fb0d1"
+    },
+    "usr/share/doc/bison/examples/c/rpcalc/rpcalc.y": {
+      "bytes": 2287,
+      "sha256": "e4a2d6baf00c8e75a228940c3392ff1757eb2933b86aa4abffa04fca24289c2f"
+    },
+    "usr/share/doc/bison/examples/d/README.md": {
+      "bytes": 854,
+      "sha256": "f3d9cb0b8807ca08cf77a4f17ae455fbd12d63318243a18a04fb36e97469767f"
+    },
+    "usr/share/doc/bison/examples/d/calc/Makefile": {
+      "bytes": 381,
+      "sha256": "3e7afe1c821a1b988b5377e5bba051937de1e9e37aa57498420f9a46fea97b08"
+    },
+    "usr/share/doc/bison/examples/d/calc/calc.y": {
+      "bytes": 4624,
+      "sha256": "cdcb4e8003a1412ec8a9c077217a196c434c4817ba00844475f2567ab1e4e172"
+    },
+    "usr/share/doc/bison/examples/d/simple/Makefile": {
+      "bytes": 381,
+      "sha256": "3e7afe1c821a1b988b5377e5bba051937de1e9e37aa57498420f9a46fea97b08"
+    },
+    "usr/share/doc/bison/examples/d/simple/calc.y": {
+      "bytes": 3472,
+      "sha256": "fa34684b72c4c6f96e4b46b50147b36052940cc1968c866200df33fdf008ab50"
+    },
+    "usr/share/doc/bison/examples/java/README.md": {
+      "bytes": 875,
+      "sha256": "7d0d96616cf939a483e253c6487d8218f9a0e78f92b11aeb37b920c88dc4fa8b"
+    },
+    "usr/share/doc/bison/examples/java/calc/Calc.y": {
+      "bytes": 7475,
+      "sha256": "c431e03361693be9fdf483554d34edff76cd67798ddbaa52c6188cc8c2ad3dbc"
+    },
+    "usr/share/doc/bison/examples/java/calc/Makefile": {
+      "bytes": 454,
+      "sha256": "fe679563cc0ab680c7fa5e0abffc71871f45fbe1668b71809e068c3c3cf5ec43"
+    },
+    "usr/share/doc/bison/examples/java/simple/Calc.y": {
+      "bytes": 3046,
+      "sha256": "4fb8b74a6eea6ed060faeccb26a10c18a12593d2c806ae151fabc4e2960bc500"
+    },
+    "usr/share/doc/bison/examples/java/simple/Makefile": {
+      "bytes": 454,
+      "sha256": "fe679563cc0ab680c7fa5e0abffc71871f45fbe1668b71809e068c3c3cf5ec43"
+    },
+    "usr/share/doc/flex/ABOUT-NLS.gz": {
+      "bytes": 11675,
+      "sha256": "b523c4c2a258759f54b150f5c83aea03395a90b7af1884576977a873f0a6cd41"
+    },
+    "usr/share/doc/flex/AUTHORS": {
+      "bytes": 624,
+      "sha256": "06ef76f80c20dee05013c90d51437c393e8f3c57b008a0c0c87c98faea2f548b"
+    },
+    "usr/share/doc/flex/NEWS.Debian.gz": {
+      "bytes": 1427,
+      "sha256": "a772a4cdf7c97ebd7e41fea23a6774a7600c7800596c6c82b721d7a13db0f5f9"
+    },
+    "usr/share/doc/flex/NEWS.gz": {
+      "bytes": 9533,
+      "sha256": "84bf20af6c303e88096c3b6937945afb59ec5b355c4c77af13ceca04e803ec47"
+    },
+    "usr/share/doc/flex/ONEWS.gz": {
+      "bytes": 16758,
+      "sha256": "7b5f0b8dba52ab5f256037c94b60904940bd5d64553fe39730c02e22dbb19bac"
+    },
+    "usr/share/doc/flex/README.md.gz": {
+      "bytes": 1973,
+      "sha256": "bc1e6efead9521d46512a374a95bb5c3d3145693bb9827676c8b6e630bea449a"
+    },
+    "usr/share/doc/flex/THANKS": {
+      "bytes": 3143,
+      "sha256": "23cb9b602410442722e1196947d373e8c8f698a6cbfa23b83eeabdbd2ce15f6d"
+    },
+    "usr/share/doc/flex/changelog.Debian.amd64.gz": {
+      "bytes": 245,
+      "sha256": "2c391bfdf7ff55276b729c0eae6730a288b542d6b21dc4c75633ebabe0dbb251"
+    },
+    "usr/share/doc/flex/changelog.Debian.gz": {
+      "bytes": 787,
+      "sha256": "bd09c67d722cae31df319108fde8cb297d31170cb98864e810538c1451145c61"
+    },
+    "usr/share/doc/flex/changelog.gz": {
+      "bytes": 73599,
+      "sha256": "9b5d9becd4caab712f38ac3a4188ca085785065623dd45face737d5d919770ea"
+    },
+    "usr/share/doc/flex/copyright": {
+      "bytes": 25695,
+      "sha256": "908e7be25f1d5848fc378b76bdbaed59f3d1e19ae61fdeb9d1ad12640bf0e078"
+    },
+    "usr/share/doc/flex/examples/Makefile.am": {
+      "bytes": 1012,
+      "sha256": "155518955a6ad0ca1344b6cf4439487c7cc2db453fbac5df9e5c031aea20a98c"
+    },
+    "usr/share/doc/flex/examples/README": {
+      "bytes": 656,
+      "sha256": "1188e77ab68ab74f0854336f44929e127d9380711169144fbe66d9cc4ccf12ba"
+    },
+    "usr/share/doc/flex/examples/debflex.awk": {
+      "bytes": 2800,
+      "sha256": "56857eb3464f81de76ba605cf5844d424ab7f461ef3ae6a66dbe4533c783f323"
+    },
+    "usr/share/doc/flex/examples/fastwc/Makefile.am": {
+      "bytes": 1004,
+      "sha256": "6a67307eb46e54df10dcce184f7db67d220a6b8300318c5a0d89f2f8c61c7402"
+    },
+    "usr/share/doc/flex/examples/fastwc/Makefile.in": {
+      "bytes": 14593,
+      "sha256": "d0df6cd7b7d5b56f1d5ef2c02753599b113ba5ef031205d77971849d841b73e6"
+    },
+    "usr/share/doc/flex/examples/fastwc/README": {
+      "bytes": 1883,
+      "sha256": "96da704ec8dbbf3bcd8cae30ea0d2ca07af7766f65d3f7985dbff70d92d10a0f"
+    },
+    "usr/share/doc/flex/examples/fastwc/mywc.c": {
+      "bytes": 409,
+      "sha256": "f139548ea38504161b5becaca063b5e811c5445bb0d64dcc971754f3a4399456"
+    },
+    "usr/share/doc/flex/examples/fastwc/wc1.l": {
+      "bytes": 269,
+      "sha256": "7de8b2751335dfa880da00e82802a7e97b7fccde31260520363e5a0ed845fc22"
+    },
+    "usr/share/doc/flex/examples/fastwc/wc2.l": {
+      "bytes": 370,
+      "sha256": "1e7bcb533d959ccaf36157f1c178c6dd0de6a232dad754eb3872e7ef47fedad3"
+    },
+    "usr/share/doc/flex/examples/fastwc/wc3.l": {
+      "bytes": 536,
+      "sha256": "a803494d91f0e33723d836d92f8b88b18dc1b887972f71f8b3f1c2a2377b3e7d"
+    },
+    "usr/share/doc/flex/examples/fastwc/wc4.l": {
+      "bytes": 680,
+      "sha256": "5f5c20a7cda8d4d1a1dbaf51f90601a6b747e49bd25c5fff6f2604c207bba6b0"
+    },
+    "usr/share/doc/flex/examples/fastwc/wc5.l": {
+      "bytes": 528,
+      "sha256": "9b606a743835f253847e1a5d7e6abdb34ed69eca79031be375b230ac5ce4a791"
+    },
+    "usr/share/doc/flex/examples/manual/ChangeLog": {
+      "bytes": 709,
+      "sha256": "6c0a9c6b9c73b59110ceb17ba152fcdf7df67a67759036805b292a7896d39d44"
+    },
+    "usr/share/doc/flex/examples/manual/Makefile.am": {
+      "bytes": 1420,
+      "sha256": "7273df8032585ef894355ec2708da2ff8bfd38b207dca149f809634ba3189400"
+    },
+    "usr/share/doc/flex/examples/manual/Makefile.examples": {
+      "bytes": 1902,
+      "sha256": "bd06fe444287d43d429954798322253702f215d1458221863795eae1053ec183"
+    },
+    "usr/share/doc/flex/examples/manual/Makefile.in": {
+      "bytes": 15019,
+      "sha256": "b1ffa6ccb0aeaa795079d6b391cc8c3824e02cb93fb62c804d73d921d0824ba6"
+    },
+    "usr/share/doc/flex/examples/manual/README": {
+      "bytes": 349,
+      "sha256": "62bdb83cbf3583ba2accc47f0d56790d8b492df42dfa9c9f0a0103d84da318cd"
+    },
+    "usr/share/doc/flex/examples/manual/cat.lex": {
+      "bytes": 849,
+      "sha256": "6a93588368959532a8b0c614797eb470be18a372c9c7af65da96509f065109e8"
+    },
+    "usr/share/doc/flex/examples/manual/dates.lex": {
+      "bytes": 2870,
+      "sha256": "2042f77fbba3e47608184f95966321d304d7a58270470009870bf904d02203c9"
+    },
+    "usr/share/doc/flex/examples/manual/datetest.dat": {
+      "bytes": 343,
+      "sha256": "567aa32e722043a3c4b4796d03d1df99bc34df3462adbcf494aa5537ee9f145c"
+    },
+    "usr/share/doc/flex/examples/manual/eof_rules.lex": {
+      "bytes": 1333,
+      "sha256": "9cc7a4339a74cd35bd0f82ad6f8f68d905df3894d3223591b2ef671c01472728"
+    },
+    "usr/share/doc/flex/examples/manual/eof_test01.txt": {
+      "bytes": 367,
+      "sha256": "da7c846c93ec8385eb15db2fcf33409ebd43e63864f78398173c2b983f70ec4a"
+    },
+    "usr/share/doc/flex/examples/manual/eof_test02.txt": {
+      "bytes": 104,
+      "sha256": "aae580118a526ee15fe5f538b6b91927c82141290f539261afbed7a4882e137d"
+    },
+    "usr/share/doc/flex/examples/manual/eof_test03.txt": {
+      "bytes": 87,
+      "sha256": "d5d6c7bce3bff84e13dcd9271b1a72fa1f4962abb34ca773ba68346019fd966a"
+    },
+    "usr/share/doc/flex/examples/manual/expr.lex": {
+      "bytes": 619,
+      "sha256": "dcec1cde5a9d7710453e8c04298f2bcfb72f21683b9b0c76320efe894e978a87"
+    },
+    "usr/share/doc/flex/examples/manual/expr.y": {
+      "bytes": 988,
+      "sha256": "5930dc974ab61a9a636581eaa6eeaee1f5b02ee51a65215f07774e8ac823dd24"
+    },
+    "usr/share/doc/flex/examples/manual/front.lex": {
+      "bytes": 1244,
+      "sha256": "b7166e34bfcc6eaf625d1e2aed7debd0d3b687da6ac8a386f3a250e026c20720"
+    },
+    "usr/share/doc/flex/examples/manual/front.y": {
+      "bytes": 2645,
+      "sha256": "88905765f53aed1816cbe57c9f60cba0224edc770e8402fdf480e6f77194f343"
+    },
+    "usr/share/doc/flex/examples/manual/j2t.lex": {
+      "bytes": 12350,
+      "sha256": "2af4e43f0dd36b87c663b601e3c9aae55d29f56e9d46eb5644f5778340a469c1"
+    },
+    "usr/share/doc/flex/examples/manual/myname.lex": {
+      "bytes": 287,
+      "sha256": "d95af6a0a35c4b6193dbbc53afbd8d7b0a15207760671e57bcda4b8f75eadc38"
+    },
+    "usr/share/doc/flex/examples/manual/myname.txt": {
+      "bytes": 170,
+      "sha256": "e5da952206e2746c6cd51cf059d6e03c38813e805f4af5c073fadd538e207fb2"
+    },
+    "usr/share/doc/flex/examples/manual/myname2.lex": {
+      "bytes": 443,
+      "sha256": "83b581c53276e6c546c2aaee4c32cf03cd831e15a76a496bd989bb6491336102"
+    },
+    "usr/share/doc/flex/examples/manual/numbers.lex": {
+      "bytes": 5082,
+      "sha256": "21de731ea2e450b14bf319de7a38e4a1d953762d97dad27d56a96b6c8a84853c"
+    },
+    "usr/share/doc/flex/examples/manual/pas_include.lex": {
+      "bytes": 1670,
+      "sha256": "328742548e0e4aa4f647afb0a3875360b13ff156a42591ba731a7f6c8b8229ad"
+    },
+    "usr/share/doc/flex/examples/manual/pascal.lex": {
+      "bytes": 3197,
+      "sha256": "e4bf12fc72e755be357143d527eb8af0b6badbc91f27f34ac63433ba49022d30"
+    },
+    "usr/share/doc/flex/examples/manual/reject.lex": {
+      "bytes": 245,
+      "sha256": "1a550f4912adbe125ab70fce3ee4e9af71ee7c173ea35f557cddea17a9f181e9"
+    },
+    "usr/share/doc/flex/examples/manual/replace.lex": {
+      "bytes": 529,
+      "sha256": "3b467339d155bee92c92e9bad8af23ac8b872e7cca7918b4829377ba17586f2a"
+    },
+    "usr/share/doc/flex/examples/manual/string1.lex": {
+      "bytes": 2565,
+      "sha256": "beba01ae1c39cb146a6f8558d073bcee65fec68e66f64c441b46a63d707ba114"
+    },
+    "usr/share/doc/flex/examples/manual/string2.lex": {
+      "bytes": 3076,
+      "sha256": "952545aac6f3797a39bd649ca5f8d78a40b8236d79d8fe277dfbd7e1e50a3f5b"
+    },
+    "usr/share/doc/flex/examples/manual/strtest.dat": {
+      "bytes": 733,
+      "sha256": "256c831641a2f14391b8c9a26a45c3f398e44372cd355dcd224aff6309a11989"
+    },
+    "usr/share/doc/flex/examples/manual/unput.lex": {
+      "bytes": 429,
+      "sha256": "7f79b3d42fbb656c1f35ec545e1e0ba653aa9544ef5f16654520cabf0c46288b"
+    },
+    "usr/share/doc/flex/examples/manual/user_act.lex": {
+      "bytes": 303,
+      "sha256": "db9a0953b66a38c56e7bb6a6259337e4f36eb2cfdc2cd807204bcfd92649ab91"
+    },
+    "usr/share/doc/flex/examples/manual/userinit.lex": {
+      "bytes": 514,
+      "sha256": "2d221a2bbb4de0840cea0ccc17d1fdde0c8ecb10cb235c015bd47528ff091df8"
+    },
+    "usr/share/doc/flex/examples/manual/wc.lex": {
+      "bytes": 2736,
+      "sha256": "5d1298ced510eb34e884e9e2642373eccaa87ce107f2b2f27e65d8ada5d5f1d7"
+    },
+    "usr/share/doc/flex/examples/manual/yymore.lex": {
+      "bytes": 566,
+      "sha256": "39ee344b51c0649add63f97a00636059b3740241cbb70227525c33b9eafe3c5e"
+    },
+    "usr/share/doc/flex/examples/manual/yymore2.lex": {
+      "bytes": 720,
+      "sha256": "c6b8472bcdb2d6f9b4b2faa9490f41b37bec5b666331d32d21ebd866dfae85c7"
+    },
+    "usr/share/doc/flex/examples/manual/yymoretest.dat": {
+      "bytes": 115,
+      "sha256": "1c70d5fb09a8be7e5cd3c6dfdc258c994b47ef39b86d0e12f5075ed0483835b8"
+    },
+    "usr/share/doc/flex/examples/testxxLexer.l": {
+      "bytes": 860,
+      "sha256": "806ad2cdf3a70f2c639b9a321627587c4fd78dcad015ba45322be4f765af0783"
+    },
+    "usr/share/doc/m4/NEWS.gz": {
+      "bytes": 11044,
+      "sha256": "b6451cc4dcde95a795543061aaf7648bf9ff78a50fbcc50a82ad6f5b4097b9d2"
+    },
+    "usr/share/doc/m4/README.gz": {
+      "bytes": 2241,
+      "sha256": "2172cd7c72e1c2fdc5a69a21d8fa55d90899efd22a54dd438f6148f321026fdd"
+    },
+    "usr/share/doc/m4/THANKS.gz": {
+      "bytes": 3104,
+      "sha256": "b963b0b42c0c27ee0dadf33a81596ed27d46812e9fdce30ea79d1d4229295bac"
+    },
+    "usr/share/doc/m4/TODO": {
+      "bytes": 2084,
+      "sha256": "870e78a36f3ac0a3a371fd26608a55779fe09e2ae3857de79ff3b4f014da516a"
+    },
+    "usr/share/doc/m4/changelog.Debian.gz": {
+      "bytes": 5129,
+      "sha256": "e70d390713351a67f30df6575535cb72f9013a6693207621152bdbd3f0871f2f"
+    },
+    "usr/share/doc/m4/changelog.gz": {
+      "bytes": 8014,
+      "sha256": "4ae0210e885fbcba465ace0c75c98498e8599401820a39cf43942f03889226d7"
+    },
+    "usr/share/doc/m4/copyright": {
+      "bytes": 1971,
+      "sha256": "9438e0cbd4cf2121d2a9b61f42b1aaf765788dc3454983c55f2107cfe504f11c"
+    },
+    "usr/share/doc/m4/examples/COPYING": {
+      "bytes": 379,
+      "sha256": "d8e7f2f3bb0008142a615fa26a84ce293c59c0b969dcb2636836bda33d66dcd7"
+    },
+    "usr/share/doc/m4/examples/capitalize.m4": {
+      "bytes": 385,
+      "sha256": "3dca0bf4f0305bb2353ddeb88859f5769afd41663828530fd4754728d1e7cccf"
+    },
+    "usr/share/doc/m4/examples/capitalize2.m4": {
+      "bytes": 752,
+      "sha256": "f834741b432ed703666a395a38d5d40cbac6f9b7130e88fa8afcdec59a83addd"
+    },
+    "usr/share/doc/m4/examples/comments.m4": {
+      "bytes": 167,
+      "sha256": "1f7344d509f7d203a23b89a46d272d22be1d4023a5c6f5dc50f8e818f86d69d6"
+    },
+    "usr/share/doc/m4/examples/curry.m4": {
+      "bytes": 192,
+      "sha256": "7d592b78ef5b40f24665c7adfc04dddd4e8c86272d8b9c9bed76be87fcb78289"
+    },
+    "usr/share/doc/m4/examples/ddivert.m4": {
+      "bytes": 123,
+      "sha256": "13b322bbab29f19220ebabc35f3736d4e38a757cb188b7fb8c48da843b71c2e1"
+    },
+    "usr/share/doc/m4/examples/debug.m4": {
+      "bytes": 136,
+      "sha256": "fb2e197cf5264bb33acc85f40c71f8670b954087119d169146a83e7394b00dc3"
+    },
+    "usr/share/doc/m4/examples/esyscmd.m4": {
+      "bytes": 205,
+      "sha256": "cec4dc0d726ea1cd891498dec0290c1e5197d1402a4fe8c347da94815a0b0e54"
+    },
+    "usr/share/doc/m4/examples/exp.m4": {
+      "bytes": 81,
+      "sha256": "a5b3585ba7c3b321687bd6a8e49a6d87cccd11cb3a61c3175523b4fd5a7a9a10"
+    },
+    "usr/share/doc/m4/examples/file.m4": {
+      "bytes": 162,
+      "sha256": "38ece6c4783bef8f5b4ffb8f8cc1316eec531055887f31c5918a7cdd9e152588"
+    },
+    "usr/share/doc/m4/examples/foo": {
+      "bytes": 4,
+      "sha256": "7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730"
+    },
+    "usr/share/doc/m4/examples/foreach.m4": {
+      "bytes": 296,
+      "sha256": "dd3dbd4cb6546f5d5d8d59c949601461f49f94431b8d88b07b2874265f7c2e87"
+    },
+    "usr/share/doc/m4/examples/foreach2.m4": {
+      "bytes": 360,
+      "sha256": "8390425a453f9813c261beb80e4cd0b918b76d94462e59dddf277cfaf10bc45a"
+    },
+    "usr/share/doc/m4/examples/foreachq.m4": {
+      "bytes": 325,
+      "sha256": "482568476dc7bd5fc5db0c0f1c052c10d07b520a23f97058e4eb4e98f0ee5daa"
+    },
+    "usr/share/doc/m4/examples/foreachq2.m4": {
+      "bytes": 378,
+      "sha256": "5b73f93840ed5eadea233ffb816f413efc6183a86f967011949b4c49f646f6ef"
+    },
+    "usr/share/doc/m4/examples/foreachq3.m4": {
+      "bytes": 333,
+      "sha256": "b380dbcf39e312cec3b0ec1c3878011a5b921eb28ef8f9a80837adf09ea1eb2b"
+    },
+    "usr/share/doc/m4/examples/foreachq4.m4": {
+      "bytes": 391,
+      "sha256": "bbb508e04c20739fb06b83d4703ad5fcc487563c5879a24d8466134707f2b975"
+    },
+    "usr/share/doc/m4/examples/forloop.m4": {
+      "bytes": 224,
+      "sha256": "5ffc28bef1a3fbb602ac6d69debcd904d6618d8b4c179a8a94568a83bbe76d54"
+    },
+    "usr/share/doc/m4/examples/forloop2.m4": {
+      "bytes": 473,
+      "sha256": "7c2df4247977a5654208dd1c3b218a317843db4034a8cc51cad4862b4d9a943d"
+    },
+    "usr/share/doc/m4/examples/forloop3.m4": {
+      "bytes": 545,
+      "sha256": "3e369185c9f64f30be81837e35cf0b704f47b8fb4779bf2f2f9a74221c77006f"
+    },
+    "usr/share/doc/m4/examples/fstab.m4": {
+      "bytes": 306,
+      "sha256": "3bf5ac1ad38eeadd5b8c0dcaa0f11f799e8ccece2853575d63c02b3fdc0b4d25"
+    },
+    "usr/share/doc/m4/examples/hanoi.m4": {
+      "bytes": 363,
+      "sha256": "f72102e8076e4ae5f7de83db6a84d1718e0d2eb48e0572905facf0209cbaa23d"
+    },
+    "usr/share/doc/m4/examples/incl-test.m4": {
+      "bytes": 30,
+      "sha256": "2c2aa22bdfe7948b14f528570ceb6e77a2b2793b4d9ad8881869f015391031df"
+    },
+    "usr/share/doc/m4/examples/incl.m4": {
+      "bytes": 40,
+      "sha256": "63b8873c344849c1d9cfb3e63571542290c2161deb9e781ed650be6ad59a1d53"
+    },
+    "usr/share/doc/m4/examples/include.m4": {
+      "bytes": 105,
+      "sha256": "5e574af87307a393c1f747e25d428e8d5287f931f7a1e17b1ecbb79ba6094577"
+    },
+    "usr/share/doc/m4/examples/indir.m4": {
+      "bytes": 285,
+      "sha256": "2cb533135d227163e055d2a409d4e853a6fe3e1da925de216a67a233d0c9095b"
+    },
+    "usr/share/doc/m4/examples/join.m4": {
+      "bytes": 583,
+      "sha256": "0a64a0c295bf82d4a700b73ca217a20c1e94d799ca4d2ba1e41073831198afa6"
+    },
+    "usr/share/doc/m4/examples/loop.m4": {
+      "bytes": 930,
+      "sha256": "2e6d804bdc39e92f814bcfe990823143919f60fb559b717008f69cb99a99c464"
+    },
+    "usr/share/doc/m4/examples/misc.m4": {
+      "bytes": 192,
+      "sha256": "40825a2d778f513c73e097cb34f1901711b0bd77e4f116dfebcb4593e0b6bf8d"
+    },
+    "usr/share/doc/m4/examples/multiquotes.m4": {
+      "bytes": 377,
+      "sha256": "88cd96d0aeecca9179d2620904417f2f4b1056c68d50b476afe432d73d876dae"
+    },
+    "usr/share/doc/m4/examples/patsubst.m4": {
+      "bytes": 305,
+      "sha256": "b55ff967eadd3ed9a4ea2ea67fd100a43f2f0401e7f9b5df317ea6bcd5bf5018"
+    },
+    "usr/share/doc/m4/examples/pushpop.m4": {
+      "bytes": 379,
+      "sha256": "04ef9082cbd95052d2a22ba71d7894dac632d2c6205b6d133e9f79ff9e595c40"
+    },
+    "usr/share/doc/m4/examples/quote.m4": {
+      "bytes": 402,
+      "sha256": "fb3afa047f91c7dfa133037f8388f8a27d04dab4ad3296ce752278f0df4e5397"
+    },
+    "usr/share/doc/m4/examples/regexp.m4": {
+      "bytes": 375,
+      "sha256": "d19533b9570bbf2343eb36579340f8ea1b21f7a9d64155ec5e58c15ccc6d7713"
+    },
+    "usr/share/doc/m4/examples/reverse.m4": {
+      "bytes": 165,
+      "sha256": "ce83072ee1516f3cc3490428971d3fa10a6e970b6cf177a6e3cc8fd6e4045daa"
+    },
+    "usr/share/doc/m4/examples/stack.m4": {
+      "bytes": 656,
+      "sha256": "28bf1b45e6058310c9e6bc036cb07a4a2fd1a14d6294efd9781c72f3bea2c24f"
+    },
+    "usr/share/doc/m4/examples/stack_sep.m4": {
+      "bytes": 745,
+      "sha256": "3c5cef1dc701b7057432a337ef6d767547de65d949a1a54c3da5f96a4de77309"
+    },
+    "usr/share/doc/m4/examples/sync-lines.m4": {
+      "bytes": 286,
+      "sha256": "33fbf56091992ecab411c54e4db090a810a20bb70f4895d6f776b5312739581f"
+    },
+    "usr/share/doc/m4/examples/sysv-args.m4": {
+      "bytes": 332,
+      "sha256": "4cebfc943ea37331fc6747e6f3577a6e5a99961bcbefd523ca629fc293d713f7"
+    },
+    "usr/share/doc/m4/examples/trace.m4": {
+      "bytes": 513,
+      "sha256": "4b58941617138984757db3a51816315da314c81e621c49d99102c6d9c1d12267"
+    },
+    "usr/share/doc/m4/examples/translit.m4": {
+      "bytes": 265,
+      "sha256": "df3ee585c7c72472f1db030ca747f3a07716feb692d7fa08582f0710178ea121"
+    },
+    "usr/share/doc/m4/examples/undivert.incl": {
+      "bytes": 31,
+      "sha256": "cdb77732aee4662930dd52d6a9b1df75610b9b7fb3a5ede72b74ba655d8f065a"
+    },
+    "usr/share/doc/m4/examples/undivert.m4": {
+      "bytes": 122,
+      "sha256": "47cbec5ce21980023abfe01a7129793a1397bfb2ece606be5636930cf0679746"
+    },
+    "usr/share/doc/m4/examples/wrap.m4": {
+      "bytes": 134,
+      "sha256": "777999aba3b4f2fe5394c7c296881e538604bf1fa0fbe6a16292864c99598eb8"
+    },
+    "usr/share/doc/m4/examples/wrapfifo.m4": {
+      "bytes": 388,
+      "sha256": "aad441c4e20f681c1ca82ef4a6adf58afd3c82d33567898b5340e861d36a243b"
+    },
+    "usr/share/doc/m4/examples/wraplifo.m4": {
+      "bytes": 381,
+      "sha256": "9feeb3afd5fb46986a36a039e3487f5942c5dd518885d95e5b95af4fce5cbdfa"
+    },
+    "usr/share/doc/m4/examples/wraplifo2.m4": {
+      "bytes": 351,
+      "sha256": "188c839e005a569361742cfc5897be6774029457ef6ffc3b7ef7ef6d91a9dd3a"
+    },
+    "usr/share/info/flex.info-1.gz": {
+      "bytes": 93505,
+      "sha256": "5ed568dfa1ce72da75773aac8e437553516c7c3fbcc2daca83c36d51c0fc7608"
+    },
+    "usr/share/info/flex.info-2.gz": {
+      "bytes": 3392,
+      "sha256": "192ad33ef0d0a6e377671471c89cda6a9feff5005a282a3bd44b2d4019d4bdca"
+    },
+    "usr/share/info/flex.info.gz": {
+      "bytes": 4443,
+      "sha256": "c51708e7bdbc567994740909faf3fd5148e5d219456b570813ad2c8789e350b4"
+    },
+    "usr/share/info/m4.info-1.gz": {
+      "bytes": 89385,
+      "sha256": "453b3131d3a514dc075aa4dbe05743a2a74ff265592ef1a5392536cc9c2ede96"
+    },
+    "usr/share/info/m4.info-2.gz": {
+      "bytes": 13016,
+      "sha256": "a15c89db95b7f2c48c4f5f472afc0aac489e01e835c9074a8facc89ef04294de"
+    },
+    "usr/share/info/m4.info.gz": {
+      "bytes": 1689,
+      "sha256": "83da41dcfb84b331199875a82aeaa9e9e75b2a6931e8d334d64c7aac89564f77"
+    },
+    "usr/share/lintian/overrides/bison": {
+      "bytes": 93,
+      "sha256": "bb02f70e6b400c1cf350aaf97c661552c3b2d5941446255aa8e9a119af042317"
+    },
+    "usr/share/locale/af/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1495,
+      "sha256": "fce7a01171fdb152e2831434a62272839cdc4bee0f0fbdb298280931bac23fb6"
+    },
+    "usr/share/locale/ast/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1352,
+      "sha256": "e95e45051eb11aa0b28b3778859b24d56f13e396519f81144564573dcba95e09"
+    },
+    "usr/share/locale/be/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1930,
+      "sha256": "11830004e73f3874cd630d85fe9676dc6e9674a610253cbe320289a16109249f"
+    },
+    "usr/share/locale/bg/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 5636,
+      "sha256": "bc27d038cabd2cf4b25a57596134bab2ce8c42647189726a7be15924f102ee6f"
+    },
+    "usr/share/locale/bg/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1658,
+      "sha256": "e675cda5dbc154e01ec2b1974e96527e354efbf8230d2a88e5e23cdbea7bd5d4"
+    },
+    "usr/share/locale/bg/LC_MESSAGES/bison.mo": {
+      "bytes": 39399,
+      "sha256": "8c5d74f0d74c100da095fee7a92ce56949bec65ef45d58342e4f065f2f8b1782"
+    },
+    "usr/share/locale/bg/LC_MESSAGES/m4.mo": {
+      "bytes": 2595,
+      "sha256": "ee53a546d43d57920d3081780d58424f93d14e9f9b3edf06efd14b14a3459964"
+    },
+    "usr/share/locale/ca/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1595,
+      "sha256": "472499b74d720a92fea01e6784c31444d7580bc1de2a9c43d9c8c3cda0f431cb"
+    },
+    "usr/share/locale/ca/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1367,
+      "sha256": "cca22d371e2fe3e9ddff90bdab6984eb726fe6c27fbd00ced4fa1e2ae2ba36f5"
+    },
+    "usr/share/locale/ca/LC_MESSAGES/bison.mo": {
+      "bytes": 12492,
+      "sha256": "b1d18748e835d8c9cfa567a4fe07d8046f3eb4752030ab6077a0802cab4fd0c3"
+    },
+    "usr/share/locale/ca/LC_MESSAGES/flex.mo": {
+      "bytes": 16553,
+      "sha256": "c0b415167bb71dbd63307d7106b3267e965a33e654203ef516301308a77fd6ee"
+    },
+    "usr/share/locale/cs/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2393,
+      "sha256": "113650304be1f13ccde7a1c86e43b6206da8382ffa76755d5a029f4a40114d78"
+    },
+    "usr/share/locale/cs/LC_MESSAGES/m4.mo": {
+      "bytes": 1995,
+      "sha256": "5033c15c907727b240644f021a2d73f7f1b804933faa5a564640338222194ae3"
+    },
+    "usr/share/locale/da/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2257,
+      "sha256": "2d7b13b40a4e93118db626260035b13d6589ef15e2f1db865b930616f760b0ec"
+    },
+    "usr/share/locale/da/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1304,
+      "sha256": "261466f7cd5b72b72e7e91a8cbf40268804482d2c7697feb3572fae57df07cde"
+    },
+    "usr/share/locale/da/LC_MESSAGES/bison.mo": {
+      "bytes": 14352,
+      "sha256": "d529f9feda470aeb7b48fc29d52c73e8518c15eeb23294c4577d9167fe30b26c"
+    },
+    "usr/share/locale/da/LC_MESSAGES/flex.mo": {
+      "bytes": 15398,
+      "sha256": "1fc11be6145ba2963c5be59980adea65a5419f99866ba6eace0fb5e5f0f80ea4"
+    },
+    "usr/share/locale/da/LC_MESSAGES/m4.mo": {
+      "bytes": 1998,
+      "sha256": "77843cdbb6fae8dcd77240dd4722ce4af400aaf578161733c7236bf45d92b279"
+    },
+    "usr/share/locale/de/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4417,
+      "sha256": "85dab578a38ff0091e3cb47bb72ecba7b04d2e849a349740c2b9281cdd9fb2d8"
+    },
+    "usr/share/locale/de/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1383,
+      "sha256": "f60104ef52713addf713b93daf91f5d3a6d30976806dd8e28c126dd54de98a11"
+    },
+    "usr/share/locale/de/LC_MESSAGES/bison.mo": {
+      "bytes": 29259,
+      "sha256": "bed0b445a8c8c8050c2ff6e96260cf02ebfc42d36c616960249e5534c27149f4"
+    },
+    "usr/share/locale/de/LC_MESSAGES/flex.mo": {
+      "bytes": 16353,
+      "sha256": "d68bb31cbaf5633051dc97f5b1594335d95e65cb401d9906eb2e214a187f78c1"
+    },
+    "usr/share/locale/de/LC_MESSAGES/m4.mo": {
+      "bytes": 2104,
+      "sha256": "6f89830c752cef2d691f68a4669cb562eb0d2192e6a8259f14e067b70f81cb9b"
+    },
+    "usr/share/locale/el/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1001,
+      "sha256": "ae6e1d9c7f9f539ca321d5ccad6d460c11a2b45b474a219c4400b77e21d42317"
+    },
+    "usr/share/locale/el/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1672,
+      "sha256": "d1fb7f05982545ce834287d348575f4bc4a7206933e37b5bd92e747449927975"
+    },
+    "usr/share/locale/el/LC_MESSAGES/bison.mo": {
+      "bytes": 34097,
+      "sha256": "9546708cc27035ba2cce2df2a2f0654bcccd327a0a479b3e07e7ad8b569203b7"
+    },
+    "usr/share/locale/el/LC_MESSAGES/m4.mo": {
+      "bytes": 815,
+      "sha256": "8c91ceb1d8da91502ba157617158eefd035ae1be27d043a529f0dc111212e7db"
+    },
+    "usr/share/locale/en@boldquot/LC_MESSAGES/flex.mo": {
+      "bytes": 21029,
+      "sha256": "77014de425dcba94bb1169785d35a0312bdc2b59fc64873eaf57386fd0018aa2"
+    },
+    "usr/share/locale/en@quot/LC_MESSAGES/flex.mo": {
+      "bytes": 20913,
+      "sha256": "7361ca30bc9c117c552ba77b23dd075dc0b8b17eb5d7cf5629d3e8a20ab729da"
+    },
+    "usr/share/locale/eo/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4105,
+      "sha256": "e119828689cda499c485b24f81217fa4d7f6ac53a98554cd6ed952bc336167b2"
+    },
+    "usr/share/locale/eo/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1330,
+      "sha256": "f1c9dd2727b37e936d3b4e76aac75818f2cc7ae7159e1dc9c428a486f2497fe6"
+    },
+    "usr/share/locale/eo/LC_MESSAGES/bison.mo": {
+      "bytes": 26094,
+      "sha256": "9accde35a4f4b2e14f9a5c0cf57b2fcb6e5080eae9d4956357e85b81e30e6ce3"
+    },
+    "usr/share/locale/eo/LC_MESSAGES/flex.mo": {
+      "bytes": 15388,
+      "sha256": "53a00922e9b929e0a30143375d31f9d1cbe13dc2b7dcc3002fa484e112f3367c"
+    },
+    "usr/share/locale/eo/LC_MESSAGES/m4.mo": {
+      "bytes": 1969,
+      "sha256": "d5d0247af3c3b224b6bc816a6d061950d4d5fdbe3e6ce21176a08f991fc8345d"
+    },
+    "usr/share/locale/es/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2348,
+      "sha256": "02d4fddceeeb4877b5f2474f7bea0def62880bb89e9980affbf8a30c112dab84"
+    },
+    "usr/share/locale/es/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1368,
+      "sha256": "674644709ca642a01d94ced8d9b4d97c8a5a8e75af40ad83784c5b088bf9f571"
+    },
+    "usr/share/locale/es/LC_MESSAGES/bison.mo": {
+      "bytes": 12672,
+      "sha256": "230b21b59824f84d0e9fadbc996296969978ecdd66e2f9343982174693a00827"
+    },
+    "usr/share/locale/es/LC_MESSAGES/flex.mo": {
+      "bytes": 12775,
+      "sha256": "f6bf39c158595d989914e2c15a4d5cdf6eca6fead80e3b43b83d85faef47f8ed"
+    },
+    "usr/share/locale/es/LC_MESSAGES/m4.mo": {
+      "bytes": 2153,
+      "sha256": "cae2fd9ae36ac2b3ce9f7a25e11c23ac66eaa6e1d7059c7c584d33296204103b"
+    },
+    "usr/share/locale/et/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2297,
+      "sha256": "b583662c643216e206f87ea00a680dfa4055c551cabad7bad2ec0e5a4bacaacf"
+    },
+    "usr/share/locale/et/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1309,
+      "sha256": "183c766b570e3988c3fbd88db6f73e54bd08d72528096616d8653f38a1109aaf"
+    },
+    "usr/share/locale/et/LC_MESSAGES/bison.mo": {
+      "bytes": 28260,
+      "sha256": "fc2031259170eb14bd8f885c39e24703736a0bffd6d38e1e968658e9f1747d44"
+    },
+    "usr/share/locale/eu/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1060,
+      "sha256": "8b1195d0edf9182d75799b077e3f9df6e48d22bf0478554a65cbdb276ef93c09"
+    },
+    "usr/share/locale/fi/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4307,
+      "sha256": "465c127272fd237ac423969a3a1a9a56f9d4a26308714ea96c5b24ba0e01f549"
+    },
+    "usr/share/locale/fi/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1387,
+      "sha256": "94bd789083ca9af06d506ce1abf0dac2e8c50ff24d6ba7c93040336f1d198f38"
+    },
+    "usr/share/locale/fi/LC_MESSAGES/bison.mo": {
+      "bytes": 27693,
+      "sha256": "1a98355afb8d10e34ed1e7cbf00794c4337d5c2b5bbb11c1694059f51bd93819"
+    },
+    "usr/share/locale/fi/LC_MESSAGES/flex.mo": {
+      "bytes": 16333,
+      "sha256": "3545c0d9975ba4653b7db9d4da4a45c4129e56c85d79cef5ddb61adeb873e791"
+    },
+    "usr/share/locale/fi/LC_MESSAGES/m4.mo": {
+      "bytes": 2107,
+      "sha256": "dfcb28448483da6015be9efeb51b71db5f26dc64d3cf01dcd0a0935694921126"
+    },
+    "usr/share/locale/fr/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4366,
+      "sha256": "ca244dd41ef91bea58fcbac52236a0596839f7039c1c1fd43672541c5f67a92c"
+    },
+    "usr/share/locale/fr/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1329,
+      "sha256": "265144c3e33f37e7074d3bd9840a055b7932a39944287ff3d1270aa235b54701"
+    },
+    "usr/share/locale/fr/LC_MESSAGES/bison.mo": {
+      "bytes": 30251,
+      "sha256": "cdeee8a7139712c64412aaac5a0fd9e51f46ec1d8999cc3dc2c8bb0812624293"
+    },
+    "usr/share/locale/fr/LC_MESSAGES/flex.mo": {
+      "bytes": 16608,
+      "sha256": "d9d208d400aeba8655bcf0d46a3a0a72e1813290a25de3fbd0014281412bd1bb"
+    },
+    "usr/share/locale/fr/LC_MESSAGES/m4.mo": {
+      "bytes": 2100,
+      "sha256": "a49eb776b4f36445ad444e999a2d761143a0fff9a79d978d4b51518fe09371e2"
+    },
+    "usr/share/locale/ga/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1993,
+      "sha256": "fcbc0f3b4e53de222ad0bdff1bdba9ae3d1cd205fc672a55dac878ac245e5a01"
+    },
+    "usr/share/locale/ga/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1421,
+      "sha256": "5e17e283e693699d838b95f4e0d7282eb9e96083a58c80b31a1346caff26cfa2"
+    },
+    "usr/share/locale/ga/LC_MESSAGES/bison.mo": {
+      "bytes": 13782,
+      "sha256": "e1293beb31ed8333540476506cda2e615057cad710a7d2e359318a0c2ace25a6"
+    },
+    "usr/share/locale/ga/LC_MESSAGES/flex.mo": {
+      "bytes": 16249,
+      "sha256": "59af71f14410020f909ed941c93bb81aedcfb36c4c0db67d640cc4261d3927ce"
+    },
+    "usr/share/locale/ga/LC_MESSAGES/m4.mo": {
+      "bytes": 1999,
+      "sha256": "f708d17b2b40dba1ab556ecf77024da831b2304379c0cf13818cffb876fbef91"
+    },
+    "usr/share/locale/gl/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2157,
+      "sha256": "8f2e36a62b466ab183a231023b90c39a6281e6010b65e31a1b80c431c4d98e8f"
+    },
+    "usr/share/locale/gl/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1418,
+      "sha256": "88ac29f88821ca8dea15ecad50737086609937331ec5fe97b314f0cf76ff6c99"
+    },
+    "usr/share/locale/gl/LC_MESSAGES/m4.mo": {
+      "bytes": 2152,
+      "sha256": "3f6983faa53a8c9cdcc8d443186b266fe56f68571c07a1ecc7daf1979274d129"
+    },
+    "usr/share/locale/hr/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1480,
+      "sha256": "ebc9ba73f4aa97faecda5498c046f220697dccc7c875bc8b105bcd4cef487506"
+    },
+    "usr/share/locale/hr/LC_MESSAGES/bison.mo": {
+      "bytes": 11327,
+      "sha256": "042e0c54a079dfc4701c09d26d24314a8725b10d727ee778bd414b36dac17a5f"
+    },
+    "usr/share/locale/hr/LC_MESSAGES/flex.mo": {
+      "bytes": 3516,
+      "sha256": "167519d455254efce3faeb9b68a8193448be56ffc7145c38e08b0a050de94e22"
+    },
+    "usr/share/locale/hr/LC_MESSAGES/m4.mo": {
+      "bytes": 1904,
+      "sha256": "a81fe29c46c009562d565a5578b82318b0d698fea079418e550b4a34d8faff88"
+    },
+    "usr/share/locale/hu/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2524,
+      "sha256": "7e889da7c7c0487254d8cef7a18118baacdddffc3764c172745bcf7757242cbe"
+    },
+    "usr/share/locale/hu/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1365,
+      "sha256": "4b1f3df1fee6fb4e1d401df934527900ac9f59db752684c4a5c143fc78349c33"
+    },
+    "usr/share/locale/ia/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1300,
+      "sha256": "76713258ba5e548d08bda01395e3a73dcc9f38eb389d5b398c7bc84bc8634565"
+    },
+    "usr/share/locale/id/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1429,
+      "sha256": "790908a4c5a6ffe8a7708fd361d0a7ddeccae3a2454d5126e153f3d672d97f71"
+    },
+    "usr/share/locale/id/LC_MESSAGES/bison.mo": {
+      "bytes": 6844,
+      "sha256": "d4d89991b18ad9145bb889c3a4c26bde3f10a219092e58a36391cc92658c41b8"
+    },
+    "usr/share/locale/id/LC_MESSAGES/m4.mo": {
+      "bytes": 2032,
+      "sha256": "c84b6cf30d727b646a203ea08e6cfa9117663f4629b6519e3e9484fcf4740b5f"
+    },
+    "usr/share/locale/it/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4294,
+      "sha256": "e8737f892f157174adf808a57446327defb11bb3a56b623eac97201484cb170b"
+    },
+    "usr/share/locale/it/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1383,
+      "sha256": "32846790ed2a4a03229e31673cccb8e6a374ecee82b0133fdc2b40de731719c4"
+    },
+    "usr/share/locale/it/LC_MESSAGES/bison.mo": {
+      "bytes": 4066,
+      "sha256": "7181e3cdd122e6eb42d7981397dd4fbc1c9e0d1decc38ca1f2a5668eac13e812"
+    },
+    "usr/share/locale/ja/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2577,
+      "sha256": "a5e789a6d0a713db0455419966baf354e95bf5acac5734b8064c4fb8958caa36"
+    },
+    "usr/share/locale/ja/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1555,
+      "sha256": "23869aae6b0cf19df82417a9161b7dce99bebff9308fa8514723deb66fedb440"
+    },
+    "usr/share/locale/ja/LC_MESSAGES/bison.mo": {
+      "bytes": 31017,
+      "sha256": "fc28aedf0a509900c8de7a2f72655edea197a0b373339349a7043031f65e1d31"
+    },
+    "usr/share/locale/ja/LC_MESSAGES/m4.mo": {
+      "bytes": 7613,
+      "sha256": "e6a4030e9d77650e67b90e736b32f93f5fba2e682173bdc5253bf2aaf981451e"
+    },
+    "usr/share/locale/ko/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1349,
+      "sha256": "218bcedb71cb00a03dc09e7a3ad745c5432b85d884435a5e3d4a51198068a8d3"
+    },
+    "usr/share/locale/ko/LC_MESSAGES/flex.mo": {
+      "bytes": 10308,
+      "sha256": "2bd02535b1040a058f2c163e8c66cdd665b92917bac95e3af8965881496333d4"
+    },
+    "usr/share/locale/ko/LC_MESSAGES/m4.mo": {
+      "bytes": 22998,
+      "sha256": "0b1c733df4eb2df84ef7eb9b2080b37285af98aec6fa97d197cbbcedf9c10b41"
+    },
+    "usr/share/locale/ky/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1618,
+      "sha256": "f3d66e357a2e02ad63470a4c98b04bf5eab72de0213637704d3b1cf39176fb08"
+    },
+    "usr/share/locale/lt/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1443,
+      "sha256": "ae813560fd3d7fd6970889f8348012a049b6c9fa74fe60c9cb558661d59a2802"
+    },
+    "usr/share/locale/lv/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1473,
+      "sha256": "f626513397b63091f8f51e8b307d29a5f1005bc897f4ba41d4b551958eb8c61c"
+    },
+    "usr/share/locale/ms/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1476,
+      "sha256": "24a8dda35a0c35e0c1751f3ac750721c4fc46779c4366e126cba62cb09b56838"
+    },
+    "usr/share/locale/ms/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1398,
+      "sha256": "2f5d046c0804435da217e4e7e11abdf8e48659e944fe52d4caf64cb4919c3266"
+    },
+    "usr/share/locale/ms/LC_MESSAGES/bison.mo": {
+      "bytes": 22477,
+      "sha256": "b0f6b66f3c45ba87a87179aa0759f5bc85af64710a0049e522481cf4120fb471"
+    },
+    "usr/share/locale/nb/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1009,
+      "sha256": "033db9ea1b71870130b01ff41f13e8991a713b3721ac4da750b9f9b2d1098258"
+    },
+    "usr/share/locale/nb/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1338,
+      "sha256": "166541a16188930da8cbcd7363c89da92fbc25e0f062ffe1590e9cad2b0834e1"
+    },
+    "usr/share/locale/nb/LC_MESSAGES/bison.mo": {
+      "bytes": 4036,
+      "sha256": "d2a129f00b4de5b71c1c131e50ccacd03426d3fec3fa05fa99adfaa3a434f6d7"
+    },
+    "usr/share/locale/nl/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4238,
+      "sha256": "32724a045882b2aac86672a2d11296e5c3739520e23ff1d8030bdaeaa1bbe56b"
+    },
+    "usr/share/locale/nl/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1311,
+      "sha256": "b9cff1f17b663902c2d10f0a133ac456e6c971869d00380ff932c4bbaeefbd7a"
+    },
+    "usr/share/locale/nl/LC_MESSAGES/bison.mo": {
+      "bytes": 14772,
+      "sha256": "b5b90a8b5be2ef0235d04d3ea231ad9b8ef266f17070fd5a545781b852e2bb6f"
+    },
+    "usr/share/locale/nl/LC_MESSAGES/flex.mo": {
+      "bytes": 15915,
+      "sha256": "59eb029dca4753cd773cf714d5826a8789694142e0e5fe40f67365b0bb0dcf80"
+    },
+    "usr/share/locale/nl/LC_MESSAGES/m4.mo": {
+      "bytes": 22752,
+      "sha256": "96afc4b05193049ec751d145d06569c451a6a206f26a932242ef0a543454c3eb"
+    },
+    "usr/share/locale/pl/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4304,
+      "sha256": "f271335e9a97e559909e1605f4dd7ee1ededb8bf66323f727e0525e79639b07d"
+    },
+    "usr/share/locale/pl/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1500,
+      "sha256": "cbde610620eaaadd74c2e08f338e1919036ae90c3b6eb2aeb1f0625efb270cf6"
+    },
+    "usr/share/locale/pl/LC_MESSAGES/bison.mo": {
+      "bytes": 13134,
+      "sha256": "b6c23669365374c04e18585e4bff88e1d2e6eba95bfcf17b1e9ada073a0996a9"
+    },
+    "usr/share/locale/pl/LC_MESSAGES/flex.mo": {
+      "bytes": 15642,
+      "sha256": "3ba12a4b4a3b59d4c9db64c8f2464370ad12a99e42582e392566a0eb870157ac"
+    },
+    "usr/share/locale/pl/LC_MESSAGES/m4.mo": {
+      "bytes": 2072,
+      "sha256": "07e3ebf1c908fd4a2b880dde5702c5ac8e79410edf495bb96dad066f714947bb"
+    },
+    "usr/share/locale/pt/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1134,
+      "sha256": "a1671abf8847ac177209c0304c5aca39238fb569f966238d8d3c3b5009080299"
+    },
+    "usr/share/locale/pt/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1375,
+      "sha256": "629a8cf96ed4480512aa548dd5be038fa7582e9448624d52603618f17453255f"
+    },
+    "usr/share/locale/pt/LC_MESSAGES/bison.mo": {
+      "bytes": 28781,
+      "sha256": "2302058a6e7c96de32d5441b8230beeeeeb2091442b391716b540ccc487cf2f1"
+    },
+    "usr/share/locale/pt_BR/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4359,
+      "sha256": "5e7b8813882054928f740a09776ae78147b8a5e2f62e835f27f349042ce79184"
+    },
+    "usr/share/locale/pt_BR/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1323,
+      "sha256": "4caa28973d1e72f4a1960d4e5b0b5ac0f36b34b7ceeaee8ff51797d87594de13"
+    },
+    "usr/share/locale/pt_BR/LC_MESSAGES/bison.mo": {
+      "bytes": 29408,
+      "sha256": "2f508f292e0a88f7f081681fc80e1e1aa2b77f29130d9a4759c85b8bd329753e"
+    },
+    "usr/share/locale/pt_BR/LC_MESSAGES/flex.mo": {
+      "bytes": 16235,
+      "sha256": "3314a41139b13c744cecad6b484b1436c2de01bd61599b55908e62ce1864de92"
+    },
+    "usr/share/locale/pt_BR/LC_MESSAGES/m4.mo": {
+      "bytes": 2196,
+      "sha256": "19e3fab65eb51673aae5f68b6d5f7582f933b4d9bf7b3ff07f6b3cb66a41f080"
+    },
+    "usr/share/locale/ro/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 508,
+      "sha256": "318dac4b8c28cbc6a6f4423a5e3d31c8d7d440777ccb59f1cff77587357f4fb2"
+    },
+    "usr/share/locale/ro/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1402,
+      "sha256": "580caae120e6d5bb8ecacd92ea3063a2e39f306d5822aff2d3f7317ab900cdfc"
+    },
+    "usr/share/locale/ro/LC_MESSAGES/bison.mo": {
+      "bytes": 4186,
+      "sha256": "5a5f00334c3afa94ef7873e73402a2c4c79d440dff0d44d30b75fb2f38c386eb"
+    },
+    "usr/share/locale/ro/LC_MESSAGES/flex.mo": {
+      "bytes": 14641,
+      "sha256": "304404bde964b958aa4281b5d3dc2eb95a58e770d3522530e3a7f93df3f619a9"
+    },
+    "usr/share/locale/ro/LC_MESSAGES/m4.mo": {
+      "bytes": 2093,
+      "sha256": "3bcbdc288b7b89dd47075cb5221674e0ff420d025330ef1b286f3490a16e5709"
+    },
+    "usr/share/locale/ru/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 5374,
+      "sha256": "9827a30c0ac3b65113147e36fac8836e2a918a860e76034b7dfc93713a03c3a3"
+    },
+    "usr/share/locale/ru/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1732,
+      "sha256": "4f2c0162955aa52c984ef9adb3f1e5e749622bbdb0c102e66a047bf521b602cf"
+    },
+    "usr/share/locale/ru/LC_MESSAGES/bison.mo": {
+      "bytes": 8591,
+      "sha256": "492f8f0297edacc1bce6a12edfde7ab863060d36476b3eee495fc33f8c79e685"
+    },
+    "usr/share/locale/ru/LC_MESSAGES/flex.mo": {
+      "bytes": 20884,
+      "sha256": "fab4a083b0b7b6f223f0d75b1cf29aa593c3e330e888403e3c83d048c79de060"
+    },
+    "usr/share/locale/ru/LC_MESSAGES/m4.mo": {
+      "bytes": 2059,
+      "sha256": "3b96a9e7f57fc2d8b1a8acf6050f52c14b3c705ebe954cddd11e7437d0c26787"
+    },
+    "usr/share/locale/rw/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 540,
+      "sha256": "cccded90977e3cb398723e9a6dde386a3f7cc950cc38436cdccbb81fad4763b2"
+    },
+    "usr/share/locale/sk/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 863,
+      "sha256": "e327501a330abe5da93653c4616bf71f269666f65f2c25e7435a5d5e6a98f5d2"
+    },
+    "usr/share/locale/sl/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2393,
+      "sha256": "3aa05b81b344dc91e4043d73a1881627c3db47878270e3ebcdb18868adb9fc28"
+    },
+    "usr/share/locale/sl/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1448,
+      "sha256": "85faf13e12d14ea0113626dedfd16a570bcc583a39a986c8989f127243f02073"
+    },
+    "usr/share/locale/sq/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1337,
+      "sha256": "b3435d7f23ec3021f25261904fb7843465d4e15042dbf5f50de211bff23b0932"
+    },
+    "usr/share/locale/sr/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 5206,
+      "sha256": "3fb29a4ea6a9c02b2cb35eb240e3b3f37664058f87c069a8c697b008aa65d4f5"
+    },
+    "usr/share/locale/sr/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1772,
+      "sha256": "5a02a8b563d519e2c89e841663edc8ade0e7eeeafa752ee2bcfae7ba2a59b797"
+    },
+    "usr/share/locale/sr/LC_MESSAGES/bison.mo": {
+      "bytes": 33953,
+      "sha256": "3f35e76caeffa17c1e7cbe838cc46094cd8222afaffe12461dead6e42b21c78a"
+    },
+    "usr/share/locale/sr/LC_MESSAGES/flex.mo": {
+      "bytes": 19958,
+      "sha256": "67820d97593ab7746f4bb8e70c6ca8dc46fca908208c77515803df3b068d1ce9"
+    },
+    "usr/share/locale/sr/LC_MESSAGES/m4.mo": {
+      "bytes": 2654,
+      "sha256": "fea93dc6dcd25068c892e3b897b5ebdd99e27dfeec2888c7f5ec130e5b443297"
+    },
+    "usr/share/locale/sv/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 4142,
+      "sha256": "d0586fe0306ccd0eb718d6ab9d5c83fb41d353c20ad04355c6e990955fc72145"
+    },
+    "usr/share/locale/sv/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1286,
+      "sha256": "bce75d21e816da89203125dbbf8582ed7867be2577ac92313dd43715d72e2253"
+    },
+    "usr/share/locale/sv/LC_MESSAGES/bison.mo": {
+      "bytes": 28610,
+      "sha256": "7328c474c571d79c760b06fd9ddbcc6ee11c518d43d11156d1100fa368e6dd5d"
+    },
+    "usr/share/locale/sv/LC_MESSAGES/flex.mo": {
+      "bytes": 15651,
+      "sha256": "06e39a3e6ae27e86a4c62a36cfa8133fc70f67c82d164d036eff033fc7b75fd8"
+    },
+    "usr/share/locale/sv/LC_MESSAGES/m4.mo": {
+      "bytes": 2004,
+      "sha256": "2552e332f5d70c7f56c19d1897880ae39402c43a3a7d9cc9bf1be148ec115507"
+    },
+    "usr/share/locale/ta/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1905,
+      "sha256": "8fedf92877910d93fac0c055b35c8da19243e00c5473c098be2ee24c7172d00c"
+    },
+    "usr/share/locale/th/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 2292,
+      "sha256": "f7bff4e96be081bf7f498471927ba7d1c872ae7e97d7dc53ac6e1a70f4cdf005"
+    },
+    "usr/share/locale/tr/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 1569,
+      "sha256": "22e87b888abe9b1da0a945e683319ffcb912f0c9ca9dae4da17a85df2925484c"
+    },
+    "usr/share/locale/tr/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1370,
+      "sha256": "fc6996a01561becf37b540ed140450297db6ed2b5e319dcc166bf5c7579c2722"
+    },
+    "usr/share/locale/tr/LC_MESSAGES/bison.mo": {
+      "bytes": 13388,
+      "sha256": "9c6de32814a927e299737b1b6c972b2a8b3d299ebea7c16ee4f77dbc8b3c59a3"
+    },
+    "usr/share/locale/tr/LC_MESSAGES/flex.mo": {
+      "bytes": 14525,
+      "sha256": "97a76e381d68cfdebce49037ae8f6a36310d950a2233d4464b7f555b2df33d8b"
+    },
+    "usr/share/locale/uk/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 5368,
+      "sha256": "c9dffffe7b054bd44c595dc9baf50b028a7a5ec9e0eea4239a86d5c8859dbb63"
+    },
+    "usr/share/locale/uk/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1817,
+      "sha256": "e1b497be39d95a761250a260bee3a80234503e12abb3778d95e3604f9084af31"
+    },
+    "usr/share/locale/uk/LC_MESSAGES/bison.mo": {
+      "bytes": 38774,
+      "sha256": "4b2feb51f1ed4b181b87f2ee3c8518bd0ccf8505ce13fdda902eecc2bd0d25cb"
+    },
+    "usr/share/locale/uk/LC_MESSAGES/m4.mo": {
+      "bytes": 29869,
+      "sha256": "2160acb3d06fdfffcd022c882e8c6f2991ca399d0e8a06d4a0fc2821c18da850"
+    },
+    "usr/share/locale/vi/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2579,
+      "sha256": "c4631d9bd8da9171e38058036ca33447c9a861f05ce1953586404a7694c08a85"
+    },
+    "usr/share/locale/vi/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1599,
+      "sha256": "157eabb735cfb5b9534857b5752147860a14d200b030f12f08fede4319bd9ca6"
+    },
+    "usr/share/locale/vi/LC_MESSAGES/bison.mo": {
+      "bytes": 14330,
+      "sha256": "a07f658a5c1cf229b9cd0b69d8bc276758b9e901ea0c0e7922b097b3e87735cf"
+    },
+    "usr/share/locale/vi/LC_MESSAGES/flex.mo": {
+      "bytes": 17671,
+      "sha256": "71c184383b5d42d86563b7427165ddc99b063a22de8da7a4aa28a06ab556da00"
+    },
+    "usr/share/locale/vi/LC_MESSAGES/m4.mo": {
+      "bytes": 2286,
+      "sha256": "b56b60eb0dbfdb20e7d8699689bcfecd45c9f899f0d0d374ea77764f37aa1b55"
+    },
+    "usr/share/locale/zh_CN/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 2207,
+      "sha256": "bfd21ce353010115049dbb7deb3153cbca7a39f1592e0c9d936bd281dc9bd360"
+    },
+    "usr/share/locale/zh_CN/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1340,
+      "sha256": "7e1724a1c0925f3430e2d6de0d0b244a9464fa76e7e2fee079680365a091cfe4"
+    },
+    "usr/share/locale/zh_CN/LC_MESSAGES/bison.mo": {
+      "bytes": 11608,
+      "sha256": "441134ca97845e17ed36d07bba20dd6e48e06f31f4008bffc96280e1cc3a38f5"
+    },
+    "usr/share/locale/zh_CN/LC_MESSAGES/flex.mo": {
+      "bytes": 14821,
+      "sha256": "43554ee7f12d19daecbdba9148791eb323518879bfb7a138be7ccc4f8a8ae971"
+    },
+    "usr/share/locale/zh_CN/LC_MESSAGES/m4.mo": {
+      "bytes": 12900,
+      "sha256": "6cad00cf3a3669037432ea6b06db390f887b46e6d5bea7614e9012823eedeb96"
+    },
+    "usr/share/locale/zh_TW/LC_MESSAGES/bison-gnulib.mo": {
+      "bytes": 3804,
+      "sha256": "7b6c36c22f763af6c41da881dabb2dda0735bb21040bf603d67cbbbaa3d3649a"
+    },
+    "usr/share/locale/zh_TW/LC_MESSAGES/bison-runtime.mo": {
+      "bytes": 1334,
+      "sha256": "4fe2354a29f92a63eeaa9734db473b5a496a2ebefffbdeebb095531ce6f44057"
+    },
+    "usr/share/locale/zh_TW/LC_MESSAGES/bison.mo": {
+      "bytes": 20759,
+      "sha256": "6300bef4d2f8169652f38d224e4cbb45f20ac9654803e56d5dc7f9db3c5a4016"
+    },
+    "usr/share/locale/zh_TW/LC_MESSAGES/flex.mo": {
+      "bytes": 14913,
+      "sha256": "6eee772de9522f6f43e2423935e9c4fdafa3fa2044bf361bc6b6aae584f04c03"
+    },
+    "usr/share/locale/zh_TW/LC_MESSAGES/m4.mo": {
+      "bytes": 2037,
+      "sha256": "1fbf2a6e714e6a77c21e7e927563ef4ef6fe4c7d5bed4f56dc7da7e5fa98ef74"
+    },
+    "usr/share/man/man1/bison.1.gz": {
+      "bytes": 2883,
+      "sha256": "44fc47de387a0ae2b5c8d9223d2d736d354ffe2ef1b69a4771dcf388dbb27617"
+    },
+    "usr/share/man/man1/bison.yacc.1.gz": {
+      "bytes": 650,
+      "sha256": "1d1034c019e50429e0ea9870fb29757f617d8b8968ce531213c0f803949d2279"
+    },
+    "usr/share/man/man1/flex++.1.gz": {
+      "link": "flex.1.gz"
+    },
+    "usr/share/man/man1/flex.1.gz": {
+      "bytes": 1532,
+      "sha256": "80fcb28c02b66a8522d55b188bd92e3ee42d159c15ba5232de230600115106fc"
+    },
+    "usr/share/man/man1/lex.1.gz": {
+      "link": "flex.1.gz"
+    },
+    "usr/share/man/man1/m4.1.gz": {
+      "bytes": 1896,
+      "sha256": "b5cbaf0e46f18decf3d15cddd962862e97aacb9a5e7dd793ef74ccbae43f4dae"
+    }
+  },
+  "wrapper": {
+    "bytes": 258,
+    "sha256": "1e8bdbdc424fc4622f67bdebecde15103286de4b8c2ddba35ef480abbfac156c"
+  },
+  "wrapper_note": "Only absolute prefix changed to this isolated workspace; Bison data relocated through BISON_PKGDATADIR."
+}

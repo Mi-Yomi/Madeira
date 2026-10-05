@@ -1,0 +1,42 @@
+[
+  {
+    "path": "dlls/kernelbase/sync.c",
+    "git_blob": "94036acfad4b71decf00c5872f3240c9fc7dd690",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/dlls/kernelbase/sync.c"
+  },
+  {
+    "path": "server/named_pipe.c",
+    "git_blob": "13982d13581686d1c133ef6e4d01ea3d05e1aefe",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/server/named_pipe.c"
+  },
+  {
+    "path": "dlls/ntdll/unix/file.c",
+    "git_blob": "b2f445e04aeaed6c88aa0b31b7472215d85f3ed5",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/dlls/ntdll/unix/file.c"
+  },
+  {
+    "path": "programs/msiexec/msiexec.c",
+    "git_blob": "b4fe9a7e6e8f3068b04cd1e0a8a941e904e1d5fb",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/programs/msiexec/msiexec.c"
+  },
+  {
+    "path": "dlls/kernelbase/file.c",
+    "git_blob": "83977a2c40be197d160f381336bff77451d77619",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/dlls/kernelbase/file.c"
+  },
+  {
+    "path": "server/async.c",
+    "git_blob": "3813dea077890473b0c065aea58f2e3f548a88bb",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/server/async.c"
+  },
+  {
+    "path": "dlls/msi/package.c",
+    "git_blob": "feb50f232e7b3e4d16c313916c07a2288ada5fd4",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/dlls/msi/package.c"
+  },
+  {
+    "path": "dlls/msi/msipriv.h",
+    "git_blob": "0efc367c76dea8c9cb27ed6c3d49dbca32d30e24",
+    "url": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/dlls/msi/msipriv.h"
+  }
+]

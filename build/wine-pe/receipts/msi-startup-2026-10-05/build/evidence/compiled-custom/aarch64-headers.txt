@@ -1,0 +1,16 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/build-aarch64/dlls/msi/aarch64-windows/custom.o
+Format: COFF-ARM64
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64 (0xAA64)
+  SectionCount: 236
+  TimeDateStamp: 2026-10-05 12:46:08 (0x6AC39C10)
+  PointerToSymbolTable: 0x2C271
+  SymbolCount: 737
+  StringTableSize: 10120
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}

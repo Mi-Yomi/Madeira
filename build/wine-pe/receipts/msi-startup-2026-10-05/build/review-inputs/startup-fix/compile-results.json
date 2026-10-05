@@ -1,0 +1,59 @@
+[
+  {
+    "arch": "aarch64",
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile_api.c",
+      "-o",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile-aarch64.o"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "helper_sha256": "b982c9579fb3b0f79d5765b0367ea36a88eba9920e2f3614113011350819da09",
+    "output_sha256": "989ca8de0c7e931185e2c24a7d6907a4e2c68e4b191ae1d8aaef3f127f41162e"
+  },
+  {
+    "arch": "arm64ec",
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile_api.c",
+      "-o",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile-arm64ec.o"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "helper_sha256": "b982c9579fb3b0f79d5765b0367ea36a88eba9920e2f3614113011350819da09",
+    "output_sha256": "8ae9af6c4395fd7537d1264b43f945ca555f35c617f7eec2725ccc243e460b6d"
+  },
+  {
+    "arch": "i686",
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/i686-w64-mingw32-clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile_api.c",
+      "-o",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-wait-audit-20261005/compile-i686.o"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "",
+    "helper_sha256": "b982c9579fb3b0f79d5765b0367ea36a88eba9920e2f3614113011350819da09",
+    "output_sha256": "5cbc9243f9bc70ec8c7405fb3f5a2b11e0df177a794ad70a5014ecda9b42dc4d"
+  }
+]

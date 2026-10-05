@@ -1,0 +1,157 @@
+{
+  "bitwise_reproducibility_established": false,
+  "final_source_sha256": "0feda873cdce7625044f153c10ad05fa3d49939bde94f4fe28fce75b0735669f",
+  "guest_execution": false,
+  "incremental_baseline_sha256": "9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50",
+  "incremental_patch_sha256": "a3c010ea77cf18c3b37ad2bc249692758839d9f83fbe7b081b08312dc8e36bae",
+  "installed": false,
+  "outputs": [
+    {
+      "active": false,
+      "added_imports": [
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "CancelIoEx"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "CreateEventW"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "GetOverlappedResult"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "WaitForMultipleObjects"
+        }
+      ],
+      "architecture": "aarch64",
+      "architecture_export_contract_equal": true,
+      "custom_object": {
+        "bytes": 204235,
+        "sha256": "cfca807612779c6ef70bfe2ad5f321fcdc4ec4db93f06ea048f3650b8e02ea63"
+      },
+      "full_current_farm_import_resolution": true,
+      "identity": {
+        "bytes": 1572864,
+        "sha256": "6845b17db8b5650fd7637718c2fbcd8467b02060d179354e78ed3037321d2f6e"
+      },
+      "import_delta_verified": true,
+      "output": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/candidate/aarch64-windows/msi.dll",
+      "published": {
+        "bytes": 1572864,
+        "sha256": "c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a"
+      },
+      "removed_imports": [],
+      "runtime_tested": false,
+      "static_counts": {
+        "checked_export_forwarders": 0,
+        "checked_import_symbols": 331,
+        "exports": 296
+      }
+    },
+    {
+      "active": false,
+      "added_imports": [
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "CancelIoEx"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "CreateEventW"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "GetOverlappedResult"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "WaitForMultipleObjects"
+        }
+      ],
+      "architecture": "arm64ec",
+      "architecture_export_contract_equal": true,
+      "custom_object": {
+        "bytes": 228744,
+        "sha256": "ef4c9fee3788536f2ba344a3d88d4666e6d8b7e3807ba5550265ae6d3035be1c"
+      },
+      "full_current_farm_import_resolution": true,
+      "identity": {
+        "bytes": 1769472,
+        "sha256": "6b611ac3a9c9b1200314397ab033e03ce1a5d9e93f6be3337a935ca33f124a9f"
+      },
+      "import_delta_verified": true,
+      "output": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/candidate/arm64ec-windows/msi.dll",
+      "published": {
+        "bytes": 1769472,
+        "sha256": "3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae"
+      },
+      "removed_imports": [],
+      "runtime_tested": false,
+      "static_counts": {
+        "checked_export_forwarders": 0,
+        "checked_import_symbols": 332,
+        "exports": 296
+      }
+    },
+    {
+      "active": false,
+      "added_imports": [
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "CancelIoEx"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "CreateEventW"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "GetOverlappedResult"
+        },
+        {
+          "kind": "import",
+          "module": "kernel32.dll",
+          "symbol": "WaitForMultipleObjects"
+        }
+      ],
+      "architecture": "i386",
+      "architecture_export_contract_equal": true,
+      "custom_object": {
+        "bytes": 164580,
+        "sha256": "d8e55c5fb78b7a5622ea6ccc4bc3fbdc7177db0a69c3376ff119c23e11844538"
+      },
+      "full_current_farm_import_resolution": false,
+      "identity": {
+        "bytes": 1208320,
+        "sha256": "46d3348f16188e5b05a13b3e01564a652b0b3f7af0b6555d23d110e8169bd0e0"
+      },
+      "import_delta_verified": true,
+      "output": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/candidate/i386-windows/msi.dll",
+      "published": {
+        "bytes": 1208320,
+        "sha256": "1fe600254f476fb48e9b9694f7b4e9ef7b7bdc1980358cc5d0727186d9dc2b23"
+      },
+      "removed_imports": [],
+      "resolution_limit": "Historical i386 peer farm is absent after reset; exact reviewed four-symbol import delta is verified but fresh full resolution was not run.",
+      "runtime_tested": false
+    }
+  ],
+  "published": false,
+  "runtime_tested": false,
+  "status": "inactive-static-audited",
+  "wine_pin": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f"
+}

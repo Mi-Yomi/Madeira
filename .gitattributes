@@ -7,3 +7,4 @@ build/wine-pe/receipts/msi-2026-10-05/** -text -whitespace
 build/wine-pe/receipts/loader-2026-10-05/** -text -whitespace
 build/wine-pe/receipts/msi-client-2026-10-05/** -text -whitespace
 tests/desktop/llvm_sdk/provider-requirements.json -text
+build/wine-pe/receipts/msi-startup-2026-10-05/** -text -whitespace

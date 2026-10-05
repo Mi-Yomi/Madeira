@@ -37,17 +37,28 @@ Retain one receipt with:
 - Complete bounded runtime output, its SHA-256, native loader/binder output and
   the relevant parent/child PIDs; retain failures and timeouts as failures
 
-The current matched MSI `custom.c` SHA-256 is
-`9c6db8469d1db7d1fff83af45e4f4851238e3b09fc06055996cfbb956fd6af50`.
+The current matched MSI set includes the reviewed dead-child startup wait fix.
+Its `custom.c` SHA-256 is
+`0feda873cdce7625044f153c10ad05fa3d49939bde94f4fe28fce75b0735669f`.
 Its provider hashes are:
 
-- aarch64: `c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a`
-- ARM64EC: `3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae`
-- i386, inactive: `1fe600254f476fb48e9b9694f7b4e9ef7b7bdc1980358cc5d0727186d9dc2b23`
+- aarch64: `6845b17db8b5650fd7637718c2fbcd8467b02060d179354e78ed3037321d2f6e`
+- ARM64EC: `6b611ac3a9c9b1200314397ab033e03ce1a5d9e93f6be3337a935ca33f124a9f`
+- i386, inactive: `46d3348f16188e5b05a13b3e01564a652b0b3f7af0b6555d23d110e8169bd0e0`
 
-These identify this reviewed MSI set, not a complete device build. The old i386
-MSI ending `13a7746` predates the client property-reply correction and must not
-be substituted for the matched i386 provider. Re-audit any changed provider.
+These identify this reviewed MSI set, not a complete device build. The previous
+client-fix set used source `9c6db846…`, AArch64 `c04b4aa7…`, ARM64EC `3c69a7be…`
+and inactive i386 `1fe60025…`; it is retained as historical evidence and lacks
+the startup fix. The older i386 MSI ending `13a7746` also predates the client
+property-reply correction. Neither historical set may substitute for these
+matched providers. Re-audit any changed provider.
+
+The new static checks preserve the 296-export API and allow exactly four added
+`kernel32.dll` imports. Fresh full import resolution was checked for the two
+active architectures only; the i386 provider remains inactive evidence. The fix
+handles a child that exits before connecting. A live child that never connects,
+later stalled action I/O and shutdown remain unbounded. The build and source
+model tests do not establish any of the runtime observations below.
 
 ## Required observations on an iPhone with working JIT
 

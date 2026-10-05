@@ -1,0 +1,17 @@
+{
+  "aarch64": {
+    "bytes": 1572864,
+    "preserved": true,
+    "sha256": "c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a"
+  },
+  "arm64ec": {
+    "bytes": 1769472,
+    "preserved": true,
+    "sha256": "3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae"
+  },
+  "i386": {
+    "bytes": 1208320,
+    "preserved": true,
+    "sha256": "1fe600254f476fb48e9b9694f7b4e9ef7b7bdc1980358cc5d0727186d9dc2b23"
+  }
+}

@@ -200,6 +200,7 @@ def bind_reports(extension, baseline, arch):
 def validate(root, resources, tracked):
     import verify_msi_integration as msi
     import verify_loader_integration as loader
+    import verify_msi_startup_integration as startup
     root, tracked = Path(root), set(tracked)
     planner.require(RECORD in tracked, "MSI client integration record must be tracked")
     planner.require(loader.present(root), "MSI client replacement requires reviewed loader integration")
@@ -211,11 +212,13 @@ def validate(root, resources, tracked):
     planner.require(json.dumps(record, sort_keys=True) == json.dumps(record_contract(sealed), sort_keys=True),
                     "MSI client integration record differs from the exact reviewed replacement")
     check_source(stage, sealed)
+    replacement = startup.validate(root, resources, tracked) if startup.present(root) else None
     for name, source in COPIES.items():
         planner.require("app/Madeira/" + name in tracked, "MSI client resource must be tracked: " + name)
         path = planner.safe_path(root / "app/Madeira", name)
         actual = planner.identity(path)
-        planner.require(actual == sealed[source] and resources.get(name) == actual["sha256"],
+        expected = startup.CANDIDATES[name] if replacement is not None and name in BINARIES else sealed[source]
+        planner.require(actual == expected and resources.get(name) == actual["sha256"],
                         "MSI client resource differs from sealed replacement: " + name)
         if name in BINARIES:
             raw = inventory.read_pe_bytes(path)
@@ -227,12 +230,14 @@ def validate(root, resources, tracked):
             planner.require(planner.identity(old_path) == BEFORE[name],
                             "MSI client historical provider precondition changed")
             old_raw = inventory.read_pe_bytes(old_path)
-            planner.require(hashlib.sha256(old_raw).hexdigest() == BEFORE[name]["sha256"] and
-                            pe_contract(raw) == pe_contract(old_raw),
+            historical_raw = raw if replacement is None else inventory.read_pe_bytes(planner.safe_path(stage, source))
+            planner.require(hashlib.sha256(historical_raw).hexdigest() == sealed[source]["sha256"] and
+                            hashlib.sha256(old_raw).hexdigest() == BEFORE[name]["sha256"] and
+                            pe_contract(historical_raw) == pe_contract(old_raw),
                             "MSI client architecture/import/export contract changed")
     combined = checked_reports(stage)
     planner.require(seal(stage) == sealed, "MSI client evidence changed during verification")
-    return {"combined": combined, "summary": {"stage_seal_sha256": REVIEWED_SEAL,
+    return {"combined": combined, "startup": replacement, "summary": {"stage_seal_sha256": REVIEWED_SEAL,
             "build_seal_sha256": BUILD_SEAL, "source_sha256": SOURCE_SHA256,
             "replacement_count": 2, "evidence_files": len(sealed) + 1,
             "runtime_tested": False, "package_ready": False, "i386_activated": False}}

@@ -1,0 +1,2072 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-startup-provider-build-20261005/candidate/i386-windows/msi.dll
+Format: COFF-i386
+Arch: i386
+AddressSize: 32bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_I386 (0x14C)
+  SectionCount: 6
+  TimeDateStamp: 2026-10-05 12:47:22 (0x6AC39C5A)
+  PointerToSymbolTable: 0xBA000
+  SymbolCount: 8009
+  StringTableSize: 300546
+  OptionalHeaderSize: 224
+  Characteristics [ (0x2102)
+    IMAGE_FILE_32BIT_MACHINE (0x100)
+    IMAGE_FILE_DLL (0x2000)
+    IMAGE_FILE_EXECUTABLE_IMAGE (0x2)
+  ]
+}
+ImageOptionalHeader {
+  Magic: 0x10B
+  MajorLinkerVersion: 14
+  MinorLinkerVersion: 0
+  SizeOfCode: 487424
+  SizeOfInitializedData: 270336
+  SizeOfUninitializedData: 0
+  AddressOfEntryPoint: 0x76A80
+  BaseOfCode: 0x1000
+  BaseOfData: 0x0
+  ImageBase: 0x10000000
+  SectionAlignment: 4096
+  FileAlignment: 4096
+  MajorOperatingSystemVersion: 6
+  MinorOperatingSystemVersion: 0
+  MajorImageVersion: 0
+  MinorImageVersion: 0
+  MajorSubsystemVersion: 6
+  MinorSubsystemVersion: 0
+  SizeOfImage: 761856
+  SizeOfHeaders: 4096
+  CheckSum: 0x0
+  Subsystem: IMAGE_SUBSYSTEM_WINDOWS_CUI (0x3)
+  Characteristics [ (0x540)
+    IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE (0x40)
+    IMAGE_DLL_CHARACTERISTICS_NO_SEH (0x400)
+    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT (0x100)
+  ]
+  SizeOfStackReserve: 1048576
+  SizeOfStackCommit: 4096
+  SizeOfHeapReserve: 1048576
+  SizeOfHeapCommit: 4096
+  NumberOfRvaAndSize: 16
+  DataDirectory {
+    ExportTableRVA: 0x9E9F4
+    ExportTableSize: 0x24CE
+    ImportTableRVA: 0xA0EC4
+    ImportTableSize: 0x1CC
+    ResourceTableRVA: 0xA8000
+    ResourceTableSize: 0x8E14
+    ExceptionTableRVA: 0x0
+    ExceptionTableSize: 0x0
+    CertificateTableRVA: 0x0
+    CertificateTableSize: 0x0
+    BaseRelocationTableRVA: 0xB1000
+    BaseRelocationTableSize: 0x836C
+    DebugRVA: 0x9E9A4
+    DebugSize: 0x1C
+    ArchitectureRVA: 0x0
+    ArchitectureSize: 0x0
+    GlobalPtrRVA: 0x0
+    GlobalPtrSize: 0x0
+    TLSTableRVA: 0x0
+    TLSTableSize: 0x0
+    LoadConfigTableRVA: 0x78908
+    LoadConfigTableSize: 0xC0
+    BoundImportRVA: 0x0
+    BoundImportSize: 0x0
+    IATRVA: 0xA1618
+    IATSize: 0x588
+    DelayImportDescriptorRVA: 0x0
+    DelayImportDescriptorSize: 0x0
+    CLRRuntimeHeaderRVA: 0x0
+    CLRRuntimeHeaderSize: 0x0
+    ReservedRVA: 0x0
+    ReservedSize: 0x0
+  }
+}
+DOSHeader {
+  Magic: MZ
+  UsedBytesInTheLastPage: 120
+  FileSizeInPages: 1
+  NumberOfRelocationItems: 0
+  HeaderSizeInParagraphs: 4
+  MinimumExtraParagraphs: 0
+  MaximumExtraParagraphs: 0
+  InitialRelativeSS: 0
+  InitialSP: 0
+  Checksum: 0
+  InitialIP: 0
+  InitialRelativeCS: 0
+  AddressOfRelocationTable: 64
+  OverlayNumber: 0
+  OEMid: 0
+  OEMinfo: 0
+  AddressOfNewExeHeader: 120
+}
+Import {
+  Name: urlmon.dll
+  ImportLookupTableRVA: 0xA1090
+  ImportAddressTableRVA: 0xA1618
+  Symbol: URLDownloadToCacheFileW (79)
+}
+Import {
+  Name: wininet.dll
+  ImportLookupTableRVA: 0xA1098
+  ImportAddressTableRVA: 0xA1620
+  Symbol: GetUrlCacheEntryInfoW (185)
+}
+Import {
+  Name: comctl32.dll
+  ImportLookupTableRVA: 0xA10A0
+  ImportAddressTableRVA: 0xA1628
+  Symbol: ImageList_Add (39)
+  Symbol: ImageList_Create (44)
+  Symbol: ImageList_Destroy (45)
+  Symbol: ImageList_ReplaceIcon (70)
+}
+Import {
+  Name: shell32.dll
+  ImportLookupTableRVA: 0xA10B4
+  ImportAddressTableRVA: 0xA163C
+  Symbol: SHGetFolderPathW (322)
+  Symbol: ShellExecuteW (395)
+}
+Import {
+  Name: shlwapi.dll
+  ImportLookupTableRVA: 0xA10C0
+  ImportAddressTableRVA: 0xA1648
+  Symbol: PathAddBackslashW (569)
+  Symbol: PathAppendW (573)
+  Symbol: PathFindFileNameW (594)
+  Symbol: PathIsRelativeW (622)
+  Symbol: PathRemoveBackslashW (654)
+  Symbol: PathRemoveFileSpecW (660)
+  Symbol: PathStripPathW (670)
+  Symbol: PathStripToRootW (672)
+  Symbol: SHCreateStreamOnFileW (687)
+  Symbol: StrFormatByteSizeW (783)
+  Symbol: UrlIsW (844)
+}
+Import {
+  Name: cabinet.dll
+  ImportLookupTableRVA: 0xA10F0
+  ImportAddressTableRVA: 0xA1678
+  Symbol: FDICopy (22)
+  Symbol: FDICreate (20)
+  Symbol: FDIDestroy (23)
+}
+Import {
+  Name: oleaut32.dll
+  ImportLookupTableRVA: 0xA1100
+  ImportAddressTableRVA: 0xA1688
+  Symbol: DispGetParam (28)
+  Symbol: LoadRegTypeLib (162)
+  Symbol: LoadTypeLib (161)
+  Symbol: LoadTypeLibEx (183)
+  Symbol: OleLoadPicture (418)
+  Symbol: RegisterTypeLib (163)
+  Symbol: SysAllocString (2)
+  Symbol: SysAllocStringByteLen (150)
+  Symbol: SysAllocStringLen (4)
+  Symbol: SysFreeString (6)
+  Symbol: SystemTimeToVariantTime (184)
+  Symbol: UnRegisterTypeLib (186)
+  Symbol: VariantChangeType (12)
+  Symbol: VariantClear (9)
+  Symbol: VariantCopy (10)
+  Symbol: VariantCopyInd (11)
+  Symbol: VariantInit (8)
+  Symbol: VariantTimeToSystemTime (185)
+}
+Import {
+  Name: ole32.dll
+  ImportLookupTableRVA: 0xA114C
+  ImportAddressTableRVA: 0xA16D4
+  Symbol: CLSIDFromProgID (6)
+  Symbol: CLSIDFromString (8)
+  Symbol: CoCreateGuid (14)
+  Symbol: CoCreateInstance (15)
+  Symbol: CoInitialize (53)
+  Symbol: CoInitializeEx (54)
+  Symbol: CoTaskMemFree (88)
+  Symbol: CoUninitialize (91)
+  Symbol: CreateILockBytesOnHGlobal (104)
+  Symbol: CreateStreamOnHGlobal (109)
+  Symbol: StgCreateDocfile (271)
+  Symbol: StgOpenStorage (282)
+  Symbol: StgOpenStorageOnILockBytes (284)
+  Symbol: StringFromGUID2 (287)
+}
+Import {
+  Name: version.dll
+  ImportLookupTableRVA: 0xA1188
+  ImportAddressTableRVA: 0xA1710
+  Symbol: GetFileVersionInfoSizeW (7)
+  Symbol: GetFileVersionInfoW (8)
+  Symbol: VerQueryValueW (16)
+}
+Import {
+  Name: user32.dll
+  ImportLookupTableRVA: 0xA1198
+  ImportAddressTableRVA: 0xA1720
+  Symbol: AdjustWindowRect (1505)
+  Symbol: AppendMenuA (1512)
+  Symbol: CallWindowProcW (1533)
+  Symbol: CharLowerW (1548)
+  Symbol: CharUpperW (1568)
+  Symbol: CreatePopupMenu (1610)
+  Symbol: CreateWindowExW (1613)
+  Symbol: DefWindowProcW (1657)
+  Symbol: DestroyIcon (1664)
+  Symbol: DestroyMenu (1665)
+  Symbol: DestroyWindow (1666)
+  Symbol: DispatchMessageW (1674)
+  Symbol: EnableWindow (1711)
+  Symbol: EnumChildWindows (1717)
+  Symbol: GetClientRect (1774)
+  Symbol: GetDC (1788)
+  Symbol: GetFocus (1805)
+  Symbol: GetNextDlgTabItem (1856)
+  Symbol: GetParent (1858)
+  Symbol: GetPropW (1875)
+  Symbol: GetWindowLongW (1919)
+  Symbol: GetWindowRect (1924)
+  Symbol: GetWindowTextW (1930)
+  Symbol: InvalidateRect (1948)
+  Symbol: IsDialogMessageW (1963)
+  Symbol: LoadBitmapW (1987)
+  Symbol: LoadCursorW (1991)
+  Symbol: LoadIconW (1993)
+  Symbol: LoadImageW (1995)
+  Symbol: LoadStringW (2009)
+  Symbol: MapWindowPoints (2025)
+  Symbol: MessageBoxExA (2031)
+  Symbol: MessageBoxExW (2032)
+  Symbol: MessageBoxW (2037)
+  Symbol: MsgWaitForMultipleObjects (2044)
+  Symbol: MsgWaitForMultipleObjectsEx (2045)
+  Symbol: PeekMessageW (2064)
+  Symbol: PostMessageW (2069)
+  Symbol: RegisterClassW (2089)
+  Symbol: ReleaseDC (2111)
+  Symbol: RemovePropW (2115)
+  Symbol: SendMessageW (2134)
+  Symbol: SetFocus (2159)
+  Symbol: SetPropW (2186)
+  Symbol: SetWindowLongW (2212)
+  Symbol: SetWindowPos (2214)
+  Symbol: SetWindowTextW (2218)
+  Symbol: ShowWindow (2229)
+  Symbol: TrackPopupMenu (2249)
+  Symbol: TranslateMessage (2255)
+  Symbol: UnregisterClassW (2264)
+  Symbol: wsprintfA (2301)
+  Symbol: wsprintfW (2302)
+}
+Import {
+  Name: gdi32.dll
+  ImportLookupTableRVA: 0xA1270
+  ImportAddressTableRVA: 0xA17F8
+  Symbol: CreateCompatibleBitmap (1050)
+  Symbol: CreateCompatibleDC (1051)
+  Symbol: CreateFontIndirectW (1067)
+  Symbol: DeleteDC (1138)
+  Symbol: DeleteObject (1141)
+  Symbol: GetDeviceCaps (1287)
+  Symbol: GetObjectW (1331)
+  Symbol: GetStockObject (1345)
+  Symbol: GetTextMetricsW (1365)
+  Symbol: SelectObject (1470)
+  Symbol: SetBkMode (1477)
+  Symbol: SetTextColor (1514)
+  Symbol: StretchBlt (1526)
+}
+Import {
+  Name: advapi32.dll
+  ImportLookupTableRVA: 0xA12A8
+  ImportAddressTableRVA: 0xA1830
+  Symbol: ChangeServiceConfig2W (43)
+  Symbol: CloseServiceHandle (51)
+  Symbol: ControlService (54)
+  Symbol: ConvertSidToStringSidW (60)
+  Symbol: CreateProcessAsUserW (71)
+  Symbol: CreateServiceW (76)
+  Symbol: DeleteService (139)
+  Symbol: EnumDependentServicesW (154)
+  Symbol: GetServiceDisplayNameW (217)
+  Symbol: GetTokenInformation (226)
+  Symbol: GetUserNameW (237)
+  Symbol: LookupAccountNameW (266)
+  Symbol: MD5Final (331)
+  Symbol: MD5Init (332)
+  Symbol: MD5Update (333)
+  Symbol: OpenProcessToken (353)
+  Symbol: OpenSCManagerW (355)
+  Symbol: OpenServiceW (357)
+  Symbol: QueryServiceStatusEx (389)
+  Symbol: RegCloseKey (396)
+  Symbol: RegCreateKeyExW (403)
+  Symbol: RegCreateKeyW (406)
+  Symbol: RegDeleteKeyExW (409)
+  Symbol: RegDeleteKeyW (412)
+  Symbol: RegDeleteTreeW (414)
+  Symbol: RegDeleteValueW (416)
+  Symbol: RegEnumKeyExW (422)
+  Symbol: RegEnumKeyW (423)
+  Symbol: RegEnumValueW (425)
+  Symbol: RegGetValueW (429)
+  Symbol: RegOpenKeyExW (440)
+  Symbol: RegOpenKeyW (441)
+  Symbol: RegQueryInfoKeyW (445)
+  Symbol: RegQueryValueExW (451)
+  Symbol: RegSetValueExW (468)
+  Symbol: StartServiceW (514)
+}
+Import {
+  Name: rpcrt4.dll
+  ImportLookupTableRVA: 0xA133C
+  ImportAddressTableRVA: 0xA18C4
+  Symbol: I_RpcExceptionFilter (43)
+  Symbol: NdrClientCall2 (127)
+  Symbol: NdrServerCall2 (273)
+  Symbol: RpcBindingFree (340)
+  Symbol: RpcBindingFromStringBindingW (342)
+  Symbol: RpcServerRegisterIfEx (439)
+  Symbol: RpcServerUnregisterIf (441)
+  Symbol: RpcServerUseProtseqEpW (451)
+  Symbol: RpcStringBindingComposeW (484)
+  Symbol: RpcStringFreeW (488)
+}
+Import {
+  Name: sxs.dll
+  ImportLookupTableRVA: 0xA1368
+  ImportAddressTableRVA: 0xA18F0
+  Symbol: CreateAssemblyCache (1)
+}
+Import {
+  Name: imagehlp.dll
+  ImportLookupTableRVA: 0xA1370
+  ImportAddressTableRVA: 0xA18F8
+  Symbol: BindImage (1)
+}
+Import {
+  Name: mspatcha.dll
+  ImportLookupTableRVA: 0xA1378
+  ImportAddressTableRVA: 0xA1900
+  Symbol: ApplyPatchToFileW (7)
+}
+Import {
+  Name: odbccp32.dll
+  ImportLookupTableRVA: 0xA1380
+  ImportAddressTableRVA: 0xA1908
+  Symbol: SQLConfigDataSourceW (206)
+  Symbol: SQLInstallDriverExW (226)
+  Symbol: SQLInstallTranslatorExW (229)
+  Symbol: SQLRemoveDriverW (220)
+  Symbol: SQLRemoveTranslatorW (219)
+}
+Import {
+  Name: wintrust.dll
+  ImportLookupTableRVA: 0xA1398
+  ImportAddressTableRVA: 0xA1920
+  Symbol: WTHelperGetProvCertFromChain (86)
+  Symbol: WTHelperGetProvSignerFromChain (88)
+  Symbol: WinVerifyTrustEx (115)
+}
+Import {
+  Name: crypt32.dll
+  ImportLookupTableRVA: 0xA13A8
+  ImportAddressTableRVA: 0xA1930
+  Symbol: CertDuplicateCertificateContext (32)
+}
+Import {
+  Name: ucrtbase.dll
+  ImportLookupTableRVA: 0xA13B0
+  ImportAddressTableRVA: 0xA1938
+  Symbol: __acrt_iob_func (74)
+  Symbol: __stdio_common_vsprintf (158)
+  Symbol: __stdio_common_vswprintf (162)
+  Symbol: _assert (191)
+  Symbol: _strdup (1894)
+  Symbol: _wcsdup (1984)
+  Symbol: _wcsicmp (1988)
+  Symbol: _wcsnicmp (1998)
+  Symbol: _wcsupr (2022)
+  Symbol: _wtoi (2106)
+  Symbol: bsearch (2141)
+  Symbol: calloc (2155)
+  Symbol: free (2284)
+  Symbol: fwrite (2291)
+  Symbol: getenv (2294)
+  Symbol: iswdigit (2325)
+  Symbol: iswspace (2330)
+  Symbol: malloc (2367)
+  Symbol: memcmp (2379)
+  Symbol: memcpy (2380)
+  Symbol: memmove (2382)
+  Symbol: memset (2384)
+  Symbol: qsort (2409)
+  Symbol: realloc (2415)
+  Symbol: strcat (2447)
+  Symbol: strchr (2449)
+  Symbol: strcmp (2450)
+  Symbol: strcpy (2452)
+  Symbol: strcspn (2454)
+  Symbol: strlen (2458)
+  Symbol: strtol (2474)
+  Symbol: towupper (2496)
+  Symbol: wcscat (2505)
+  Symbol: wcschr (2507)
+  Symbol: wcscmp (2508)
+  Symbol: wcscpy (2510)
+  Symbol: wcslen (2514)
+  Symbol: wcsncmp (2517)
+  Symbol: wcsrchr (2522)
+  Symbol: wcsstr (2526)
+  Symbol: wcstol (2532)
+}
+Import {
+  Name: kernel32.dll
+  ImportLookupTableRVA: 0xA1458
+  ImportAddressTableRVA: 0xA19E0
+  Symbol: CancelIoEx (172)
+  Symbol: CloseHandle (184)
+  Symbol: ConnectNamedPipe (203)
+  Symbol: CopyFileW (217)
+  Symbol: CreateDirectoryW (229)
+  Symbol: CreateEventW (233)
+  Symbol: CreateFileMappingW (242)
+  Symbol: CreateFileW (243)
+  Symbol: CreateNamedPipeW (261)
+  Symbol: CreateProcessW (268)
+  Symbol: CreateThread (280)
+  Symbol: DebugBreak (299)
+  Symbol: DeleteCriticalSection (308)
+  Symbol: DeleteFileW (313)
+  Symbol: DisableThreadLibraryCalls (324)
+  Symbol: DosDateTimeToFileTime (328)
+  Symbol: DuplicateHandle (330)
+  Symbol: EnterCriticalSection (335)
+  Symbol: EnumResourceNamesW (355)
+  Symbol: ExpandEnvironmentStringsW (381)
+  Symbol: FileTimeToLocalFileTime (406)
+  Symbol: FileTimeToSystemTime (407)
+  Symbol: FindClose (416)
+  Symbol: FindFirstFileW (426)
+  Symbol: FindNextFileW (434)
+  Symbol: FindResourceExW (444)
+  Symbol: FindResourceW (445)
+  Symbol: FreeLibrary (466)
+  Symbol: GetComputerNameW (503)
+  Symbol: GetCurrentDirectoryW (549)
+  Symbol: GetDateFormatW (565)
+  Symbol: GetDiskFreeSpaceExW (573)
+  Symbol: GetDriveTypeW (580)
+  Symbol: GetEnvironmentVariableW (588)
+  Symbol: GetExitCodeProcess (590)
+  Symbol: GetExitCodeThread (591)
+  Symbol: GetFileAttributesW (599)
+  Symbol: GetFileSize (604)
+  Symbol: GetFullPathNameW (614)
+  Symbol: GetLocalTime (626)
+  Symbol: GetLogicalDriveStringsW (631)
+  Symbol: GetLogicalDrives (632)
+  Symbol: GetModuleFileNameW (641)
+  Symbol: GetModuleHandleW (645)
+  Symbol: GetNativeSystemInfo (655)
+  Symbol: GetOverlappedResult (674)
+  Symbol: GetPrivateProfileStringW (691)
+  Symbol: GetProcAddress (694)
+  Symbol: GetShortPathNameW (727)
+  Symbol: GetSystemDefaultLangID (738)
+  Symbol: GetSystemDirectoryW (743)
+  Symbol: GetSystemWow64DirectoryW (757)
+  Symbol: GetTempFileNameW (762)
+  Symbol: GetTempPathW (766)
+  Symbol: GetTickCount64 (782)
+  Symbol: GetTickCount (781)
+  Symbol: GetTimeFormatW (785)
+  Symbol: GetUserDefaultLangID (789)
+  Symbol: GetVersion (794)
+  Symbol: GetVolumeInformationW (799)
+  Symbol: GetWindowsDirectoryW (807)
+  Symbol: GlobalAlloc (813)
+  Symbol: GlobalFree (820)
+  Symbol: GlobalMemoryStatusEx (826)
+  Symbol: HeapAlloc (837)
+  Symbol: HeapFree (843)
+  Symbol: HeapReAlloc (847)
+  Symbol: IsBadStringPtrA (891)
+  Symbol: IsBadStringPtrW (892)
+  Symbol: IsValidCodePage (906)
+  Symbol: IsValidLocale (908)
+  Symbol: IsWow64Process2 (912)
+  Symbol: IsWow64Process (911)
+  Symbol: LeaveCriticalSection (955)
+  Symbol: LoadLibraryA (958)
+  Symbol: LoadLibraryExW (960)
+  Symbol: LoadLibraryW (961)
+  Symbol: LoadResource (964)
+  Symbol: LocalFileTimeToFileTime (967)
+  Symbol: LocalFree (969)
+  Symbol: LockResource (980)
+  Symbol: MapViewOfFile (992)
+  Symbol: MoveFileExW (1002)
+  Symbol: MulDiv (1008)
+  Symbol: MultiByteToWideChar (1009)
+  Symbol: RaiseException (1083)
+  Symbol: ReadFile (1097)
+  Symbol: RemoveDirectoryW (1161)
+  Symbol: RtlUnwind (1186)
+  Symbol: SearchPathW (1211)
+  Symbol: SetFileAttributesW (1277)
+  Symbol: SetFilePointer (1280)
+  Symbol: SetFileTime (1282)
+  Symbol: SizeofResource (1357)
+  Symbol: Sleep (1358)
+  Symbol: SystemTimeToFileTime (1367)
+  Symbol: TzSpecificLocalTimeToSystemTime (1390)
+  Symbol: UnmapViewOfFile (1399)
+  Symbol: WaitForMultipleObjects (1433)
+  Symbol: WaitForSingleObject (1435)
+  Symbol: WideCharToMultiByte (1455)
+  Symbol: Wow64DisableWow64FsRedirection (1457)
+  Symbol: Wow64RevertWow64FsRedirection (1461)
+  Symbol: WriteFile (1474)
+  Symbol: WritePrivateProfileStringW (1480)
+}
+Import {
+  Name: ntdll.dll
+  ImportLookupTableRVA: 0xA1600
+  ImportAddressTableRVA: 0xA1B88
+  Symbol: NtCreateSection (161)
+  Symbol: NtQuerySection (269)
+  Symbol: RtlGetVersion (649)
+  Symbol: _chkstk (1296)
+  Symbol: _vsnprintf (1344)
+}
+Export {
+  Ordinal: 5
+  Name: MsiAdvertiseProductA
+  RVA: 0x3E6C0
+}
+Export {
+  Ordinal: 6
+  Name: MsiAdvertiseProductW
+  RVA: 0x3E740
+}
+Export {
+  Ordinal: 7
+  Name: MsiCloseAllHandles
+  RVA: 0x37FB0
+}
+Export {
+  Ordinal: 8
+  Name: MsiCloseHandle
+  RVA: 0x37DC0
+}
+Export {
+  Ordinal: 9
+  Name: MsiCollectUserInfoA
+  RVA: 0x46BC0
+}
+Export {
+  Ordinal: 10
+  Name: MsiCollectUserInfoW
+  RVA: 0x46AE0
+}
+Export {
+  Ordinal: 11
+  Name: MsiConfigureFeatureA
+  RVA: 0x46C70
+}
+Export {
+  Ordinal: 12
+  Name: MsiConfigureFeatureFromDescriptorA
+  RVA: 0x1000
+}
+Export {
+  Ordinal: 13
+  Name: MsiConfigureFeatureFromDescriptorW
+  RVA: 0x1020
+}
+Export {
+  Ordinal: 14
+  Name: MsiConfigureFeatureW
+  RVA: 0x46DA0
+}
+Export {
+  Ordinal: 15
+  Name: MsiConfigureProductA
+  RVA: 0x40C40
+}
+Export {
+  Ordinal: 16
+  Name: MsiConfigureProductW
+  RVA: 0x40D00
+}
+Export {
+  Ordinal: 17
+  Name: MsiCreateRecord
+  RVA: 0x535B0
+}
+Export {
+  Ordinal: 18
+  Name: MsiDatabaseApplyTransformA
+  RVA: 0x4AB60
+}
+Export {
+  Ordinal: 19
+  Name: MsiDatabaseApplyTransformW
+  RVA: 0x4AAE0
+}
+Export {
+  Ordinal: 20
+  Name: MsiDatabaseCommit
+  RVA: 0x4AD60
+}
+Export {
+  Ordinal: 21
+  Name: MsiDatabaseExportA
+  RVA: 0x251D0
+}
+Export {
+  Ordinal: 22
+  Name: MsiDatabaseExportW
+  RVA: 0x24E40
+}
+Export {
+  Ordinal: 23
+  Name: MsiDatabaseGenerateTransformA
+  RVA: 0x4AC80
+}
+Export {
+  Ordinal: 24
+  Name: MsiDatabaseGenerateTransformW
+  RVA: 0x4ACF0
+}
+Export {
+  Ordinal: 25
+  Name: MsiDatabaseGetPrimaryKeysA
+  RVA: 0x4B170
+}
+Export {
+  Ordinal: 26
+  Name: MsiDatabaseGetPrimaryKeysW
+  RVA: 0x4B010
+}
+Export {
+  Ordinal: 27
+  Name: MsiDatabaseImportA
+  RVA: 0x24D00
+}
+Export {
+  Ordinal: 28
+  Name: MsiDatabaseImportW
+  RVA: 0x247C0
+}
+Export {
+  Ordinal: 29
+  Name: MsiDatabaseMergeA
+  RVA: 0x25390
+}
+Export {
+  Ordinal: 30
+  Name: MsiDatabaseMergeW
+  RVA: 0x25440
+}
+Export {
+  Ordinal: 31
+  Name: MsiDatabaseOpenViewA
+  RVA: 0x48DA0
+}
+Export {
+  Ordinal: 32
+  Name: MsiDatabaseOpenViewW
+  RVA: 0x49060
+}
+Export {
+  Ordinal: 33
+  Name: MsiDoActionA
+  RVA: 0x38B60
+}
+Export {
+  Ordinal: 34
+  Name: MsiDoActionW
+  RVA: 0x38E10
+}
+Export {
+  Ordinal: 35
+  Name: MsiEnableUIPreview
+  RVA: 0x27A30
+}
+Export {
+  Ordinal: 36
+  Name: MsiEnumClientsA
+  RVA: 0x5ADC0
+}
+Export {
+  Ordinal: 37
+  Name: MsiEnumClientsW
+  RVA: 0x5AEB0
+}
+Export {
+  Ordinal: 38
+  Name: MsiEnumComponentQualifiersA
+  RVA: 0x5B1A0
+}
+Export {
+  Ordinal: 39
+  Name: MsiEnumComponentQualifiersW
+  RVA: 0x5B5A0
+}
+Export {
+  Ordinal: 40
+  Name: MsiEnumComponentsA
+  RVA: 0x5A5B0
+}
+Export {
+  Ordinal: 41
+  Name: MsiEnumComponentsW
+  RVA: 0x5A680
+}
+Export {
+  Ordinal: 42
+  Name: MsiEnumFeaturesA
+  RVA: 0x5A4A0
+}
+Export {
+  Ordinal: 43
+  Name: MsiEnumFeaturesW
+  RVA: 0x59CB0
+}
+Export {
+  Ordinal: 44
+  Name: MsiEnumProductsA
+  RVA: 0x5A070
+}
+Export {
+  Ordinal: 45
+  Name: MsiEnumProductsW
+  RVA: 0x5A140
+}
+Export {
+  Ordinal: 46
+  Name: MsiEvaluateConditionA
+  RVA: 0x73FC0
+}
+Export {
+  Ordinal: 47
+  Name: MsiEvaluateConditionW
+  RVA: 0x73F00
+}
+Export {
+  Ordinal: 48
+  Name: MsiGetLastErrorRecord
+  RVA: 0x4A900
+}
+Export {
+  Ordinal: 49
+  Name: MsiGetActiveDatabase
+  RVA: 0x4F220
+}
+Export {
+  Ordinal: 50
+  Name: MsiGetComponentStateA
+  RVA: 0x3B9C0
+}
+Export {
+  Ordinal: 51
+  Name: MsiGetComponentStateW
+  RVA: 0x3BA30
+}
+Export {
+  Ordinal: 52
+  Name: MsiGetDatabaseState
+  RVA: 0x25860
+}
+Export {
+  Ordinal: 53
+  Name: MsiGetFeatureCostA
+  RVA: 0x3B100
+}
+Export {
+  Ordinal: 54
+  Name: MsiGetFeatureCostW
+  RVA: 0x3B180
+}
+Export {
+  Ordinal: 55
+  Name: MsiGetFeatureInfoA
+  RVA: 0x3B460
+}
+Export {
+  Ordinal: 56
+  Name: MsiGetFeatureInfoW
+  RVA: 0x3B620
+}
+Export {
+  Ordinal: 57
+  Name: MsiGetFeatureStateA
+  RVA: 0x3AEA0
+}
+Export {
+  Ordinal: 58
+  Name: MsiGetFeatureStateW
+  RVA: 0x3AF20
+}
+Export {
+  Ordinal: 59
+  Name: MsiGetFeatureUsageA
+  RVA: 0x45E10
+}
+Export {
+  Ordinal: 60
+  Name: MsiGetFeatureUsageW
+  RVA: 0x45DA0
+}
+Export {
+  Ordinal: 61
+  Name: MsiGetFeatureValidStatesA
+  RVA: 0x3BF00
+}
+Export {
+  Ordinal: 62
+  Name: MsiGetFeatureValidStatesW
+  RVA: 0x3BE80
+}
+Export {
+  Ordinal: 63
+  Name: MsiGetLanguage
+  RVA: 0x3BC20
+}
+Export {
+  Ordinal: 64
+  Name: MsiGetMode
+  RVA: 0x3A520
+}
+Export {
+  Ordinal: 65
+  Name: MsiGetProductCodeA
+  RVA: 0x40D20
+}
+Export {
+  Ordinal: 66
+  Name: MsiGetProductCodeW
+  RVA: 0x40E00
+}
+Export {
+  Ordinal: 67
+  Name: MsiGetProductInfoA
+  RVA: 0x41000
+}
+Export {
+  Ordinal: 68
+  Name: MsiGetProductInfoFromScriptA
+  RVA: 0x1040
+}
+Export {
+  Ordinal: 69
+  Name: MsiGetProductInfoFromScriptW
+  RVA: 0x1060
+}
+Export {
+  Ordinal: 70
+  Name: MsiGetProductInfoW
+  RVA: 0x416F0
+}
+Export {
+  Ordinal: 71
+  Name: MsiGetProductPropertyA
+  RVA: 0x44770
+}
+Export {
+  Ordinal: 72
+  Name: MsiGetProductPropertyW
+  RVA: 0x44960
+}
+Export {
+  Ordinal: 73
+  Name: MsiGetPropertyA
+  RVA: 0x4F990
+}
+Export {
+  Ordinal: 74
+  Name: MsiGetPropertyW
+  RVA: 0x4FBA0
+}
+Export {
+  Ordinal: 75
+  Name: MsiGetSourcePathA
+  RVA: 0x39CA0
+}
+Export {
+  Ordinal: 76
+  Name: MsiGetSourcePathW
+  RVA: 0x39F20
+}
+Export {
+  Ordinal: 77
+  Name: MsiGetSummaryInformationA
+  RVA: 0x65AA0
+}
+Export {
+  Ordinal: 78
+  Name: MsiGetSummaryInformationW
+  RVA: 0x65710
+}
+Export {
+  Ordinal: 79
+  Name: MsiGetTargetPathA
+  RVA: 0x39560
+}
+Export {
+  Ordinal: 80
+  Name: MsiGetTargetPathW
+  RVA: 0x39810
+}
+Export {
+  Ordinal: 81
+  Name: MsiGetUserInfoA
+  RVA: 0x469E0
+}
+Export {
+  Ordinal: 82
+  Name: MsiGetUserInfoW
+  RVA: 0x46710
+}
+Export {
+  Ordinal: 83
+  Name: MsiInstallMissingComponentA
+  RVA: 0x479C0
+}
+Export {
+  Ordinal: 84
+  Name: MsiInstallMissingComponentW
+  RVA: 0x47B20
+}
+Export {
+  Ordinal: 85
+  Name: MsiInstallMissingFileA
+  RVA: 0x1080
+}
+Export {
+  Ordinal: 86
+  Name: MsiInstallMissingFileW
+  RVA: 0x10A0
+}
+Export {
+  Ordinal: 87
+  Name: MsiInstallProductA
+  RVA: 0x3EAA0
+}
+Export {
+  Ordinal: 88
+  Name: MsiInstallProductW
+  RVA: 0x3EBD0
+}
+Export {
+  Ordinal: 89
+  Name: MsiLocateComponentA
+  RVA: 0x43E80
+}
+Export {
+  Ordinal: 90
+  Name: MsiLocateComponentW
+  RVA: 0x43F50
+}
+Export {
+  Ordinal: 91
+  Name: MsiOpenDatabaseA
+  RVA: 0x244F0
+}
+Export {
+  Ordinal: 92
+  Name: MsiOpenDatabaseW
+  RVA: 0x24450
+}
+Export {
+  Ordinal: 93
+  Name: MsiOpenPackageA
+  RVA: 0x4F1A0
+}
+Export {
+  Ordinal: 94
+  Name: MsiOpenPackageW
+  RVA: 0x4F100
+}
+Export {
+  Ordinal: 95
+  Name: MsiOpenProductA
+  RVA: 0x3E230
+}
+Export {
+  Ordinal: 96
+  Name: MsiOpenProductW
+  RVA: 0x3E540
+}
+Export {
+  Ordinal: 97
+  Name: MsiPreviewBillboardA
+  RVA: 0x280E0
+}
+Export {
+  Ordinal: 98
+  Name: MsiPreviewBillboardW
+  RVA: 0x28070
+}
+Export {
+  Ordinal: 99
+  Name: MsiPreviewDialogA
+  RVA: 0x27E40
+}
+Export {
+  Ordinal: 100
+  Name: MsiPreviewDialogW
+  RVA: 0x27B90
+}
+Export {
+  Ordinal: 101
+  Name: MsiProcessAdvertiseScriptA
+  RVA: 0x10C0
+}
+Export {
+  Ordinal: 102
+  Name: MsiProcessAdvertiseScriptW
+  RVA: 0x10E0
+}
+Export {
+  Ordinal: 103
+  Name: MsiProcessMessage
+  RVA: 0x4F300
+}
+Export {
+  Ordinal: 104
+  Name: MsiProvideComponentA
+  RVA: 0x47B90
+}
+Export {
+  Ordinal: 105
+  Name: MsiProvideComponentFromDescriptorA
+  RVA: 0x44430
+}
+Export {
+  Ordinal: 106
+  Name: MsiProvideComponentFromDescriptorW
+  RVA: 0x444A0
+}
+Export {
+  Ordinal: 107
+  Name: MsiProvideComponentW
+  RVA: 0x47E70
+}
+Export {
+  Ordinal: 108
+  Name: MsiProvideQualifiedComponentA
+  RVA: 0x466E0
+}
+Export {
+  Ordinal: 109
+  Name: MsiProvideQualifiedComponentW
+  RVA: 0x466B0
+}
+Export {
+  Ordinal: 110
+  Name: MsiQueryFeatureStateA
+  RVA: 0x45660
+}
+Export {
+  Ordinal: 111
+  Name: MsiQueryFeatureStateW
+  RVA: 0x45730
+}
+Export {
+  Ordinal: 112
+  Name: MsiQueryProductStateA
+  RVA: 0x43840
+}
+Export {
+  Ordinal: 113
+  Name: MsiQueryProductStateW
+  RVA: 0x438B0
+}
+Export {
+  Ordinal: 114
+  Name: MsiRecordDataSize
+  RVA: 0x54390
+}
+Export {
+  Ordinal: 115
+  Name: MsiRecordGetFieldCount
+  RVA: 0x53690
+}
+Export {
+  Ordinal: 116
+  Name: MsiRecordGetInteger
+  RVA: 0x53970
+}
+Export {
+  Ordinal: 117
+  Name: MsiRecordGetStringA
+  RVA: 0x54050
+}
+Export {
+  Ordinal: 118
+  Name: MsiRecordGetStringW
+  RVA: 0x542E0
+}
+Export {
+  Ordinal: 119
+  Name: MsiRecordIsNull
+  RVA: 0x53DB0
+}
+Export {
+  Ordinal: 120
+  Name: MsiRecordReadStream
+  RVA: 0x55250
+}
+Export {
+  Ordinal: 121
+  Name: MsiRecordSetInteger
+  RVA: 0x53CB0
+}
+Export {
+  Ordinal: 122
+  Name: MsiRecordSetStreamA
+  RVA: 0x54F20
+}
+Export {
+  Ordinal: 123
+  Name: MsiRecordSetStreamW
+  RVA: 0x54FE0
+}
+Export {
+  Ordinal: 124
+  Name: MsiRecordSetStringA
+  RVA: 0x544A0
+}
+Export {
+  Ordinal: 125
+  Name: MsiRecordSetStringW
+  RVA: 0x54A90
+}
+Export {
+  Ordinal: 126
+  Name: MsiReinstallFeatureA
+  RVA: 0x47300
+}
+Export {
+  Ordinal: 127
+  Name: MsiReinstallFeatureFromDescriptorA
+  RVA: 0x1100
+}
+Export {
+  Ordinal: 128
+  Name: MsiReinstallFeatureFromDescriptorW
+  RVA: 0x1120
+}
+Export {
+  Ordinal: 129
+  Name: MsiReinstallFeatureW
+  RVA: 0x3EE20
+}
+Export {
+  Ordinal: 130
+  Name: MsiReinstallProductA
+  RVA: 0x3ECD0
+}
+Export {
+  Ordinal: 131
+  Name: MsiReinstallProductW
+  RVA: 0x3EDC0
+}
+Export {
+  Ordinal: 132
+  Name: MsiSequenceA
+  RVA: 0x390B0
+}
+Export {
+  Ordinal: 133
+  Name: MsiSequenceW
+  RVA: 0x39170
+}
+Export {
+  Ordinal: 134
+  Name: MsiSetComponentStateA
+  RVA: 0x3B830
+}
+Export {
+  Ordinal: 135
+  Name: MsiSetComponentStateW
+  RVA: 0x3B8A0
+}
+Export {
+  Ordinal: 136
+  Name: MsiSetExternalUIA
+  RVA: 0x43B00
+}
+Export {
+  Ordinal: 137
+  Name: MsiSetExternalUIW
+  RVA: 0x43B80
+}
+Export {
+  Ordinal: 138
+  Name: MsiSetFeatureStateA
+  RVA: 0x3A830
+}
+Export {
+  Ordinal: 139
+  Name: MsiSetFeatureStateW
+  RVA: 0x3A8A0
+}
+Export {
+  Ordinal: 140
+  Name: MsiSetInstallLevel
+  RVA: 0x3BDA0
+}
+Export {
+  Ordinal: 141
+  Name: MsiSetInternalUI
+  RVA: 0x43A50
+}
+Export {
+  Ordinal: 142
+  Name: MsiVerifyDiskSpace
+  RVA: 0x1140
+}
+Export {
+  Ordinal: 143
+  Name: MsiSetMode
+  RVA: 0x3A720
+}
+Export {
+  Ordinal: 144
+  Name: MsiSetPropertyA
+  RVA: 0x4F420
+}
+Export {
+  Ordinal: 145
+  Name: MsiSetPropertyW
+  RVA: 0x4F500
+}
+Export {
+  Ordinal: 146
+  Name: MsiSetTargetPathA
+  RVA: 0x3A150
+}
+Export {
+  Ordinal: 147
+  Name: MsiSetTargetPathW
+  RVA: 0x3A230
+}
+Export {
+  Ordinal: 148
+  Name: MsiSummaryInfoGetPropertyA
+  RVA: 0x66200
+}
+Export {
+  Ordinal: 149
+  Name: MsiSummaryInfoGetPropertyCount
+  RVA: 0x65CF0
+}
+Export {
+  Ordinal: 150
+  Name: MsiSummaryInfoGetPropertyW
+  RVA: 0x66390
+}
+Export {
+  Ordinal: 151
+  Name: MsiSummaryInfoPersist
+  RVA: 0x67260
+}
+Export {
+  Ordinal: 152
+  Name: MsiSummaryInfoSetPropertyA
+  RVA: 0x66880
+}
+Export {
+  Ordinal: 153
+  Name: MsiSummaryInfoSetPropertyW
+  RVA: 0x66730
+}
+Export {
+  Ordinal: 154
+  Name: MsiUseFeatureA
+  RVA: 0x461D0
+}
+Export {
+  Ordinal: 155
+  Name: MsiUseFeatureW
+  RVA: 0x461B0
+}
+Export {
+  Ordinal: 156
+  Name: MsiVerifyPackageA
+  RVA: 0x44B60
+}
+Export {
+  Ordinal: 157
+  Name: MsiVerifyPackageW
+  RVA: 0x44C60
+}
+Export {
+  Ordinal: 158
+  Name: MsiViewClose
+  RVA: 0x49E00
+}
+Export {
+  Ordinal: 159
+  Name: MsiViewExecute
+  RVA: 0x49F20
+}
+Export {
+  Ordinal: 160
+  Name: MsiViewFetch
+  RVA: 0x49CA0
+}
+Export {
+  Ordinal: 161
+  Name: MsiViewGetErrorA
+  RVA: 0x4A790
+}
+Export {
+  Ordinal: 162
+  Name: MsiViewGetErrorW
+  RVA: 0x4A630
+}
+Export {
+  Ordinal: 163
+  Name: MsiViewModify
+  RVA: 0x4A480
+}
+Export {
+  Ordinal: 164
+  Name: MsiDatabaseIsTablePersistentA
+  RVA: 0x4B230
+}
+Export {
+  Ordinal: 165
+  Name: MsiDatabaseIsTablePersistentW
+  RVA: 0x4B2E0
+}
+Export {
+  Ordinal: 166
+  Name: MsiViewGetColumnInfo
+  RVA: 0x4A290
+}
+Export {
+  Ordinal: 167
+  Name: MsiRecordClearData
+  RVA: 0x53AB0
+}
+Export {
+  Ordinal: 168
+  Name: MsiEnableLogA
+  RVA: 0x42CA0
+}
+Export {
+  Ordinal: 169
+  Name: MsiEnableLogW
+  RVA: 0x42D60
+}
+Export {
+  Ordinal: 170
+  Name: MsiFormatRecordA
+  RVA: 0x37460
+}
+Export {
+  Ordinal: 171
+  Name: MsiFormatRecordW
+  RVA: 0x37250
+}
+Export {
+  Ordinal: 172
+  Name: MsiGetComponentPathA
+  RVA: 0x43F20
+}
+Export {
+  Ordinal: 173
+  Name: MsiGetComponentPathW
+  RVA: 0x43FF0
+}
+Export {
+  Ordinal: 174
+  Name: MsiApplyPatchA
+  RVA: 0x3F160
+}
+Export {
+  Ordinal: 175
+  Name: MsiApplyPatchW
+  RVA: 0x3F300
+}
+Export {
+  Ordinal: 176
+  Name: MsiAdvertiseScriptA
+  RVA: 0x47810
+}
+Export {
+  Ordinal: 177
+  Name: MsiAdvertiseScriptW
+  RVA: 0x477A0
+}
+Export {
+  Ordinal: 178
+  Name: MsiGetPatchInfoA
+  RVA: 0x42940
+}
+Export {
+  Ordinal: 179
+  Name: MsiGetPatchInfoW
+  RVA: 0x42B60
+}
+Export {
+  Ordinal: 180
+  Name: MsiEnumPatchesA
+  RVA: 0x5BD40
+}
+Export {
+  Ordinal: 181
+  Name: MsiEnumPatchesW
+  RVA: 0x5BEF0
+}
+Export {
+  Ordinal: 182
+  Name: DllGetVersion
+  RVA: 0x48910
+}
+Export {
+  Ordinal: 183
+  Name: MsiGetProductCodeFromPackageCodeA
+  RVA: 0x1160
+}
+Export {
+  Ordinal: 184
+  Name: MsiGetProductCodeFromPackageCodeW
+  RVA: 0x1180
+}
+Export {
+  Ordinal: 185
+  Name: MsiCreateTransformSummaryInfoA
+  RVA: 0x672E0
+}
+Export {
+  Ordinal: 186
+  Name: MsiCreateTransformSummaryInfoW
+  RVA: 0x67400
+}
+Export {
+  Ordinal: 187
+  Name: MsiQueryFeatureStateFromDescriptorA
+  RVA: 0x11A0
+}
+Export {
+  Ordinal: 188
+  Name: MsiQueryFeatureStateFromDescriptorW
+  RVA: 0x11C0
+}
+Export {
+  Ordinal: 189
+  Name: MsiConfigureProductExA
+  RVA: 0x40B60
+}
+Export {
+  Ordinal: 190
+  Name: MsiConfigureProductExW
+  RVA: 0x407D0
+}
+Export {
+  Ordinal: 191
+  Name: MsiInvalidateFeatureCache
+  RVA: 0x11E0
+}
+Export {
+  Ordinal: 192
+  Name: MsiUseFeatureExA
+  RVA: 0x46080
+}
+Export {
+  Ordinal: 193
+  Name: MsiUseFeatureExW
+  RVA: 0x45F90
+}
+Export {
+  Ordinal: 194
+  Name: MsiGetFileVersionA
+  RVA: 0x45820
+}
+Export {
+  Ordinal: 195
+  Name: MsiGetFileVersionW
+  RVA: 0x459D0
+}
+Export {
+  Ordinal: 196
+  Name: MsiLoadStringA
+  RVA: 0x43DE0
+}
+Export {
+  Ordinal: 197
+  Name: MsiLoadStringW
+  RVA: 0x43C00
+}
+Export {
+  Ordinal: 198
+  Name: MsiMessageBoxA
+  RVA: 0x440B0
+}
+Export {
+  Ordinal: 199
+  Name: MsiMessageBoxW
+  RVA: 0x44150
+}
+Export {
+  Ordinal: 200
+  Name: MsiDecomposeDescriptorA
+  RVA: 0x59DA0
+}
+Export {
+  Ordinal: 201
+  Name: MsiDecomposeDescriptorW
+  RVA: 0x59850
+}
+Export {
+  Ordinal: 202
+  Name: MsiProvideQualifiedComponentExA
+  RVA: 0x464D0
+}
+Export {
+  Ordinal: 203
+  Name: MsiProvideQualifiedComponentExW
+  RVA: 0x461F0
+}
+Export {
+  Ordinal: 204
+  Name: MsiEnumRelatedProductsA
+  RVA: 0x5B740
+}
+Export {
+  Ordinal: 205
+  Name: MsiEnumRelatedProductsW
+  RVA: 0x5B650
+}
+Export {
+  Ordinal: 206
+  Name: MsiSetFeatureAttributesA
+  RVA: 0x3ACD0
+}
+Export {
+  Ordinal: 207
+  Name: MsiSetFeatureAttributesW
+  RVA: 0x3AD90
+}
+Export {
+  Ordinal: 208
+  Name: MsiSourceListClearAllA
+  RVA: 0x61030
+}
+Export {
+  Ordinal: 209
+  Name: MsiSourceListClearAllW
+  RVA: 0x610A0
+}
+Export {
+  Ordinal: 210
+  Name: MsiSourceListAddSourceA
+  RVA: 0x60710
+}
+Export {
+  Ordinal: 211
+  Name: MsiSourceListAddSourceW
+  RVA: 0x60560
+}
+Export {
+  Ordinal: 212
+  Name: MsiSourceListForceResolutionA
+  RVA: 0x612F0
+}
+Export {
+  Ordinal: 213
+  Name: MsiSourceListForceResolutionW
+  RVA: 0x61360
+}
+Export {
+  Ordinal: 214
+  Name: MsiIsProductElevatedA
+  RVA: 0x478E0
+}
+Export {
+  Ordinal: 215
+  Name: MsiIsProductElevatedW
+  RVA: 0x47880
+}
+Export {
+  Ordinal: 216
+  Name: MsiGetShortcutTargetA
+  RVA: 0x47060
+}
+Export {
+  Ordinal: 217
+  Name: MsiGetShortcutTargetW
+  RVA: 0x47160
+}
+Export {
+  Ordinal: 218
+  Name: MsiGetFileHashA
+  RVA: 0x47660
+}
+Export {
+  Ordinal: 219
+  Name: MsiGetFileHashW
+  RVA: 0x475D0
+}
+Export {
+  Ordinal: 220
+  Name: MsiEnumComponentCostsA
+  RVA: 0x42E80
+}
+Export {
+  Ordinal: 221
+  Name: MsiEnumComponentCostsW
+  RVA: 0x42FE0
+}
+Export {
+  Ordinal: 222
+  Name: MsiCreateAndVerifyInstallerDirectory
+  RVA: 0x46F60
+}
+Export {
+  Ordinal: 223
+  Name: MsiGetFileSignatureInformationA
+  RVA: 0x44510
+}
+Export {
+  Ordinal: 224
+  Name: MsiGetFileSignatureInformationW
+  RVA: 0x445E0
+}
+Export {
+  Ordinal: 225
+  Name: MsiProvideAssemblyA
+  RVA: 0x44330
+}
+Export {
+  Ordinal: 226
+  Name: MsiProvideAssemblyW
+  RVA: 0x443B0
+}
+Export {
+  Ordinal: 227
+  Name: MsiAdvertiseProductExA
+  RVA: 0x3E980
+}
+Export {
+  Ordinal: 228
+  Name: MsiAdvertiseProductExW
+  RVA: 0x3EA10
+}
+Export {
+  Ordinal: 229
+  Name: MsiNotifySidChangeA
+  RVA: 0x1200
+}
+Export {
+  Ordinal: 230
+  Name: MsiNotifySidChangeW
+  RVA: 0x1220
+}
+Export {
+  Ordinal: 231
+  Name: MsiOpenPackageExA
+  RVA: 0x4F120
+}
+Export {
+  Ordinal: 232
+  Name: MsiOpenPackageExW
+  RVA: 0x4EFB0
+}
+Export {
+  Ordinal: 233
+  Name: MsiDeleteUserDataA
+  RVA: 0x1240
+}
+Export {
+  Ordinal: 234
+  Name: MsiDeleteUserDataW
+  RVA: 0x1260
+}
+Export {
+  Ordinal: 235
+  Name: Migrate10CachedPackagesA
+  RVA: 0x1280
+}
+Export {
+  Ordinal: 236
+  Name: Migrate10CachedPackagesW
+  RVA: 0x48260
+}
+Export {
+  Ordinal: 237
+  Name: MsiRemovePatchesA
+  RVA: 0x482C0
+}
+Export {
+  Ordinal: 238
+  Name: MsiRemovePatchesW
+  RVA: 0x48340
+}
+Export {
+  Ordinal: 239
+  Name: MsiApplyMultiplePatchesA
+  RVA: 0x3F680
+}
+Export {
+  Ordinal: 240
+  Name: MsiApplyMultiplePatchesW
+  RVA: 0x3F820
+}
+Export {
+  Ordinal: 241
+  Name: MsiExtractPatchXMLDataA
+  RVA: 0x12A0
+}
+Export {
+  Ordinal: 242
+  Name: MsiExtractPatchXMLDataW
+  RVA: 0x12C0
+}
+Export {
+  Ordinal: 243
+  Name: MsiGetPatchInfoExA
+  RVA: 0x42250
+}
+Export {
+  Ordinal: 244
+  Name: MsiGetPatchInfoExW
+  RVA: 0x42530
+}
+Export {
+  Ordinal: 245
+  Name: MsiEnumProductsExA
+  RVA: 0x5C0C0
+}
+Export {
+  Ordinal: 246
+  Name: MsiEnumProductsExW
+  RVA: 0x5A1B0
+}
+Export {
+  Ordinal: 247
+  Name: MsiGetProductInfoExA
+  RVA: 0x41780
+}
+Export {
+  Ordinal: 248
+  Name: MsiGetProductInfoExW
+  RVA: 0x41A30
+}
+Export {
+  Ordinal: 249
+  Name: MsiQueryComponentStateA
+  RVA: 0x43390
+}
+Export {
+  Ordinal: 250
+  Name: MsiQueryComponentStateW
+  RVA: 0x43520
+}
+Export {
+  Ordinal: 251
+  Name: MsiQueryFeatureStateExA
+  RVA: 0x45200
+}
+Export {
+  Ordinal: 252
+  Name: MsiQueryFeatureStateExW
+  RVA: 0x45360
+}
+Export {
+  Ordinal: 253
+  Name: MsiDeterminePatchSequenceA
+  RVA: 0x40370
+}
+Export {
+  Ordinal: 254
+  Name: MsiDeterminePatchSequenceW
+  RVA: 0x405C0
+}
+Export {
+  Ordinal: 255
+  Name: MsiSourceListAddSourceExA
+  RVA: 0x60830
+}
+Export {
+  Ordinal: 256
+  Name: MsiSourceListAddSourceExW
+  RVA: 0x60190
+}
+Export {
+  Ordinal: 257
+  Name: MsiSourceListClearSourceA
+  RVA: 0x611F0
+}
+Export {
+  Ordinal: 258
+  Name: MsiSourceListClearSourceW
+  RVA: 0x61270
+}
+Export {
+  Ordinal: 259
+  Name: MsiSourceListClearAllExA
+  RVA: 0x61110
+}
+Export {
+  Ordinal: 260
+  Name: MsiSourceListClearAllExW
+  RVA: 0x61180
+}
+Export {
+  Ordinal: 261
+  Name: MsiSourceListForceResolutionExA
+  RVA: 0x12E0
+}
+Export {
+  Ordinal: 262
+  Name: MsiSourceListForceResolutionExW
+  RVA: 0x1300
+}
+Export {
+  Ordinal: 263
+  Name: MsiSourceListEnumSourcesA
+  RVA: 0x5F1F0
+}
+Export {
+  Ordinal: 264
+  Name: MsiSourceListEnumSourcesW
+  RVA: 0x5F4B0
+}
+Export {
+  Ordinal: 265
+  Name: MsiSourceListGetInfoA
+  RVA: 0x5F6A0
+}
+Export {
+  Ordinal: 266
+  Name: MsiSourceListGetInfoW
+  RVA: 0x5F8B0
+}
+Export {
+  Ordinal: 267
+  Name: MsiSourceListSetInfoA
+  RVA: 0x5FC50
+}
+Export {
+  Ordinal: 268
+  Name: MsiSourceListSetInfoW
+  RVA: 0x5FDD0
+}
+Export {
+  Ordinal: 269
+  Name: MsiEnumPatchesExA
+  RVA: 0x5B830
+}
+Export {
+  Ordinal: 270
+  Name: MsiEnumPatchesExW
+  RVA: 0x5BAD0
+}
+Export {
+  Ordinal: 271
+  Name: MsiSourceListEnumMediaDisksA
+  RVA: 0x5E780
+}
+Export {
+  Ordinal: 272
+  Name: MsiSourceListEnumMediaDisksW
+  RVA: 0x5EBB0
+}
+Export {
+  Ordinal: 273
+  Name: MsiSourceListAddMediaDiskA
+  RVA: 0x60C50
+}
+Export {
+  Ordinal: 274
+  Name: MsiSourceListAddMediaDiskW
+  RVA: 0x60DD0
+}
+Export {
+  Ordinal: 275
+  Name: MsiSourceListClearMediaDiskA
+  RVA: 0x1320
+}
+Export {
+  Ordinal: 276
+  Name: MsiSourceListClearMediaDiskW
+  RVA: 0x1340
+}
+Export {
+  Ordinal: 277
+  Name: MsiDetermineApplicablePatchesA
+  RVA: 0x3F9B0
+}
+Export {
+  Ordinal: 278
+  Name: MsiDetermineApplicablePatchesW
+  RVA: 0x3FCB0
+}
+Export {
+  Ordinal: 279
+  Name: MsiMessageBoxExA
+  RVA: 0x441F0
+}
+Export {
+  Ordinal: 280
+  Name: MsiMessageBoxExW
+  RVA: 0x44290
+}
+Export {
+  Ordinal: 281
+  Name: MsiSetExternalUIRecord
+  RVA: 0x47940
+}
+Export {
+  Ordinal: 282
+  Name: MsiGetPatchFileListA
+  RVA: 0x42170
+}
+Export {
+  Ordinal: 283
+  Name: MsiGetPatchFileListW
+  RVA: 0x421E0
+}
+Export {
+  Ordinal: 284
+  Name: MsiBeginTransactionA
+  RVA: 0x48030
+}
+Export {
+  Ordinal: 285
+  Name: MsiBeginTransactionW
+  RVA: 0x48150
+}
+Export {
+  Ordinal: 286
+  Name: MsiEndTransaction
+  RVA: 0x48220
+}
+Export {
+  Ordinal: 287
+  Name: MsiJoinTransaction
+  RVA: 0x481C0
+}
+Export {
+  Ordinal: 288
+  Name: MsiSetOfflineContextW
+  RVA: 0x1360
+}
+Export {
+  Ordinal: 289
+  Name: MsiEnumComponentsExA
+  RVA: 0x5AC40
+}
+Export {
+  Ordinal: 290
+  Name: MsiEnumComponentsExW
+  RVA: 0x5A6F0
+}
+Export {
+  Ordinal: 291
+  Name: MsiEnumClientsExA
+  RVA: 0x5B070
+}
+Export {
+  Ordinal: 292
+  Name: MsiEnumClientsExW
+  RVA: 0x5B100
+}
+Export {
+  Ordinal: 293
+  Name: MsiGetComponentPathExA
+  RVA: 0x45020
+}
+Export {
+  Ordinal: 294
+  Name: MsiGetComponentPathExW
+  RVA: 0x44CD0
+}
+Export {
+  Ordinal: 295
+  Name: QueryInstanceCount
+  RVA: 0x1380
+}
+Export {
+  Ordinal: 296
+  Name: DllCanUnloadNow
+  RVA: 0x48970
+}
+Export {
+  Ordinal: 297
+  Name: DllGetClassObject
+  RVA: 0x485B0
+}
+Export {
+  Ordinal: 298
+  Name: DllRegisterServer
+  RVA: 0x75CF0
+}
+Export {
+  Ordinal: 299
+  Name: DllUnregisterServer
+  RVA: 0x75D00
+}
+Export {
+  Ordinal: 300
+  Name: __wine_msi_call_dll_function
+  RVA: 0x201B0
+}
+LoadConfig [
+  Size: 0xC0
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  MajorVersion: 0x0
+  MinorVersion: 0x0
+  GlobalFlagsClear: 0x0
+  GlobalFlagsSet: 0x0
+  CriticalSectionDefaultTimeout: 0x0
+  DeCommitFreeBlockThreshold: 0x0
+  DeCommitTotalFreeThreshold: 0x0
+  LockPrefixTable: 0x0
+  MaximumAllocationSize: 0x0
+  VirtualMemoryThreshold: 0x0
+  ProcessHeapFlags: 0x0
+  ProcessAffinityMask: 0x0
+  CSDVersion: 0x0
+  DependentLoadFlags: 0x0
+  EditList: 0x0
+  SecurityCookie: 0x0
+  SEHandlerTable: 0x0
+  SEHandlerCount: 0
+  GuardCFCheckFunction: 0x0
+  GuardCFCheckDispatch: 0x0
+  GuardCFFunctionTable: 0x0
+  GuardCFFunctionCount: 0
+  GuardFlags [ (0x0)
+  ]
+  GuardAddressTakenIatEntryTable: 0x0
+  GuardAddressTakenIatEntryCount: 0
+  GuardLongJumpTargetTable: 0x0
+  GuardLongJumpTargetCount: 0
+  DynamicValueRelocTable: 0x0
+  CHPEMetadataPointer: 0x0
+  GuardRFFailureRoutine: 0x0
+  GuardRFFailureRoutineFunctionPointer: 0x0
+  DynamicValueRelocTableOffset: 0x0
+  DynamicValueRelocTableSection: 0
+  GuardRFVerifyStackPointerFunctionPointer: 0x0
+  HotPatchTableOffset: 0x0
+  EnclaveConfigurationPointer: 0x0
+  VolatileMetadataPointer: 0x0
+  GuardEHContinuationTable: 0x0
+  GuardEHContinuationCount: 0
+]

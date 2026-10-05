@@ -124,6 +124,8 @@ jobs:
         timeout-minutes: 10
         run: python3 build/dxmt-ios/clean_build.py
       - name: Compile and link Debug app with packaging disabled
+        # Revalidate the fixed MSI startup pair and its complete source-bound
+        # receipt in the final bundle after the real Windows API reference.
         id: link
         timeout-minutes: 10
         run: |

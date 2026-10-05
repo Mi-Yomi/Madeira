@@ -95,6 +95,7 @@ def check_source(stage, sealed):
 
 def validate(root, resources, tracked):
     import verify_msi_client_integration as client
+    import verify_msi_startup_integration as startup
     root, tracked = Path(root), set(tracked)
     planner.require(RECORD in tracked, "MSI integration record must be tracked")
     record = planner.document(root, RECORD)
@@ -123,7 +124,8 @@ def validate(root, resources, tracked):
                         "app/Madeira/" + name in tracked, "MSI resource must be tracked with exact identity: " + name)
         path = planner.safe_path(root / "app/Madeira", name)
         actual = planner.identity(path)
-        expected = client.CANDIDATES[name] if replacement is not None and name in client.BINARIES else entry
+        expected = (startup.CANDIDATES[name] if replacement is not None and replacement.get("startup") is not None and name in startup.BINARIES else
+                    client.CANDIDATES[name] if replacement is not None and name in client.BINARIES else entry)
         planner.require(actual == expected and resources.get(name) == actual["sha256"],
                         "MSI resource substituted or missing: " + name)
         if name in COPIES:

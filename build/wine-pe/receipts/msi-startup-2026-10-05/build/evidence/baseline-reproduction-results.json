@@ -1,0 +1,76 @@
+[
+  {
+    "active": false,
+    "architecture": "aarch64",
+    "architecture_import_export_contract_equal": true,
+    "bitwise_matches_published": false,
+    "custom_object": {
+      "bytes": 196796,
+      "sha256": "7d4823f0e3d9464637e7b3ee562a2d51fed6cd0df29a4ec244013e9a52521c75"
+    },
+    "full_current_farm_import_resolution": true,
+    "identity": {
+      "bytes": 1572864,
+      "sha256": "b13cae2458f17bfccb2d309fd24f86a4f9b16f87109ea8c9126619ad7b410447"
+    },
+    "output": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/candidate/aarch64-windows/msi.dll",
+    "published": {
+      "bytes": 1572864,
+      "sha256": "c04b4aa74963caa1043229c8d2fbf4b4a09c94a7684107335cddb5fde2b2356a"
+    },
+    "runtime_tested": false,
+    "static_counts": {
+      "checked_export_forwarders": 0,
+      "checked_import_symbols": 327,
+      "exports": 296
+    }
+  },
+  {
+    "active": false,
+    "architecture": "arm64ec",
+    "architecture_import_export_contract_equal": true,
+    "bitwise_matches_published": false,
+    "custom_object": {
+      "bytes": 221236,
+      "sha256": "3c6b2e41c199a9480bc9d73f0e384dd29fc90b45de71ab43deec40da7c4b1634"
+    },
+    "full_current_farm_import_resolution": true,
+    "identity": {
+      "bytes": 1769472,
+      "sha256": "7cf7a6eef3dd22ee2ee1ed16ac59acf4783d00a6346a1dd28045ed4354eab028"
+    },
+    "output": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/candidate/arm64ec-windows/msi.dll",
+    "published": {
+      "bytes": 1769472,
+      "sha256": "3c69a7becb0ee31974fb7b0cf9785095b0d3d77551a87dd337257358c37924ae"
+    },
+    "runtime_tested": false,
+    "static_counts": {
+      "checked_export_forwarders": 0,
+      "checked_import_symbols": 328,
+      "exports": 296
+    }
+  },
+  {
+    "active": false,
+    "architecture": "i386",
+    "architecture_import_export_contract_equal": true,
+    "bitwise_matches_published": false,
+    "custom_object": {
+      "bytes": 158255,
+      "sha256": "bacf122ce29c8f5457bda74775d59a0bf3ada06a2985709255307cc961288f08"
+    },
+    "full_current_farm_import_resolution": false,
+    "identity": {
+      "bytes": 1208320,
+      "sha256": "c9b1bfae8fe7c8db4e84bbd74720a2c9c003f798a972ef4b0ba1e2f17091059c"
+    },
+    "output": "/workspace/scratch/94ffb2b0bb2d/madeira-msi-rebuild-inputs-20261005/candidate/i386-windows/msi.dll",
+    "published": {
+      "bytes": 1208320,
+      "sha256": "1fe600254f476fb48e9b9694f7b4e9ef7b7bdc1980358cc5d0727186d9dc2b23"
+    },
+    "resolution_limit": "Historical i386 peer farm is absent after reset; exact import contract is unchanged but fresh full resolution was not run.",
+    "runtime_tested": false
+  }
+]
