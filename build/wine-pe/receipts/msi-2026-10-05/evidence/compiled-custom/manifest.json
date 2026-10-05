@@ -1,0 +1,35 @@
+{
+  "aarch64": {
+    "source": "wine/dlls/msi/custom.c",
+    "source_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+    "bytes": 194057,
+    "sha256": "53a4a7f3d723d10d6bd84717ac328500b27b0f7ead830cbc936bd9d33fd25ed3",
+    "metadata_command": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-readobj",
+      "--file-headers",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/evidence/compiled-custom/aarch64-custom.o"
+    ]
+  },
+  "arm64ec": {
+    "source": "wine/dlls/msi/custom.c",
+    "source_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+    "bytes": 218485,
+    "sha256": "a1e19c8c05575e0a530e18a389aca4f043495753bc35ed2f7c1cdb6e03210298",
+    "metadata_command": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-readobj",
+      "--file-headers",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/evidence/compiled-custom/arm64ec-custom.o"
+    ]
+  },
+  "i386": {
+    "source": "wine/dlls/msi/custom.c",
+    "source_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+    "bytes": 155826,
+    "sha256": "c966af351a4fbcb24bd5084de65c75b97b737777376f08f03c4d0c6f487857ff",
+    "metadata_command": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/llvm-readobj",
+      "--file-headers",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/evidence/compiled-custom/i386-custom.o"
+    ]
+  }
+}

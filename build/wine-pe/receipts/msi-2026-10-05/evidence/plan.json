@@ -1,0 +1,40 @@
+{
+  "architectures": [
+    "aarch64",
+    "arm64ec",
+    "i386"
+  ],
+  "components": {
+    "aarch64": {
+      "cabinet.dll": "dlls/cabinet",
+      "msi.dll": "dlls/msi",
+      "msiexec.exe": "programs/msiexec",
+      "mspatcha.dll": "dlls/mspatcha",
+      "odbccp32.dll": "dlls/odbccp32",
+      "regsvr32.exe": "programs/regsvr32",
+      "sxs.dll": "dlls/sxs"
+    },
+    "arm64ec": {
+      "cabinet.dll": "dlls/cabinet",
+      "msi.dll": "dlls/msi",
+      "msiexec.exe": "programs/msiexec",
+      "mspatcha.dll": "dlls/mspatcha",
+      "odbccp32.dll": "dlls/odbccp32",
+      "regsvr32.exe": "programs/regsvr32",
+      "sxs.dll": "dlls/sxs"
+    },
+    "i386": {
+      "msi.dll": "dlls/msi"
+    }
+  },
+  "configured_windows_compiler": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang",
+  "jobs": 2,
+  "max_build_bytes_per_architecture": 2147483648,
+  "max_log_bytes_per_architecture": 67108864,
+  "minimum_free_disk_bytes": 8589934592,
+  "no_downloads": true,
+  "no_primary_farm_writes": true,
+  "patch_sha256": "3efc2fb4733e67f8951284d5f0384a4df4a39f284a5f30fc395840bbbc1ea4a8",
+  "runtime_tested": false,
+  "seconds_per_attempt": 2700
+}

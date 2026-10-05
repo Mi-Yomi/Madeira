@@ -1,0 +1,20 @@
+{
+  "commands": [
+    [
+      "git",
+      "apply",
+      "--check",
+      "--whitespace=error-all",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/patches/msi-combined.patch"
+    ],
+    [
+      "git",
+      "apply",
+      "--whitespace=error-all",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/patches/msi-combined.patch"
+    ]
+  ],
+  "patch_sha256": "3efc2fb4733e67f8951284d5f0384a4df4a39f284a5f30fc395840bbbc1ea4a8",
+  "custom_before_sha256": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+  "custom_after_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5"
+}

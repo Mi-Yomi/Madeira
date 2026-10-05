@@ -1,0 +1,44 @@
+{
+  "counts": {
+    "exports": 21037,
+    "forwarded_exports": 1065,
+    "import_symbols": 10177
+  },
+  "issue_count": 141,
+  "missing_export_targets": [],
+  "missing_modules": [
+    "krnl386.exe16"
+  ],
+  "output_count": 71,
+  "runtime_executed": false,
+  "static_symbol_closure_pass": false,
+  "total_stripped_bytes": 38281216,
+  "well_known_sid_ordinals": {
+    "msi.dll": {
+      "144": {
+        "chain": [
+          {
+            "module": "msi.dll",
+            "symbol": 144
+          }
+        ],
+        "ok": true,
+        "resolved_module": "msi.dll",
+        "resolved_rva": "0x4eed0",
+        "resolved_symbol": 144
+      },
+      "145": {
+        "chain": [
+          {
+            "module": "msi.dll",
+            "symbol": 145
+          }
+        ],
+        "ok": true,
+        "resolved_module": "msi.dll",
+        "resolved_rva": "0x4efb0",
+        "resolved_symbol": 145
+      }
+    }
+  }
+}

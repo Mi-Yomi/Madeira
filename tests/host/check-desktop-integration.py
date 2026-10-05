@@ -104,6 +104,10 @@ class IntegratedDesktopTests(unittest.TestCase):
         for arch in integration.planner.ARCHES:
             folder = arch + "-windows"
             shutil.copytree(ROOT / "app/Madeira" / folder, self.app / folder, dirs_exist_ok=True)
+            # This fixture intentionally tests the original twelve-DLL state.
+            # A production tree may also carry the separately sealed MSI pair.
+            for name in integration.msi.NAMES:
+                (self.app / folder / name).unlink(missing_ok=True)
         (self.app / "aarch64-windows/example.dll").unlink()
         (self.app / "arm64ec-windows/example.exe").unlink()
         self.commit()
@@ -326,20 +330,22 @@ class ReviewedSourceTests(unittest.TestCase):
             self.assertEqual(integration.planner.identity(ROOT / "app/Madeira" / destination), sealed[source])
 
     def test_farm_identities_and_residual_gaps_still_match_reviewed_build(self):
-        for arch in integration.planner.ARCHES:
-            report = integration.inventory.audit_farm(ROOT / "app/Madeira" / (arch + "-windows"),
-                                                       arch, integration.planner.NAMES)
-            original = json.loads((ROOT / integration.RECEIPT / (arch + "-inventory.json")).read_text())
-            self.assertEqual(integration.planner.identities(report["modules"]),
-                             integration.planner.identities(original["modules"]))
-            self.assertEqual(report["missing_dependencies"], original["missing_dependencies"])
-            self.assertEqual(len(report["missing_dependencies"]), 14 if arch == "aarch64" else 11)
+        extension = None
+        if any((ROOT / "app/Madeira" / name).exists() for name in integration.msi.BINARIES):
+            stage = ROOT / integration.msi.RECEIPT
+            integration.planner.seal(stage, integration.msi.REVIEWED_SEAL)
+            baselines, combined = integration.msi.checked_reports(stage)
+            extension = {"baselines": baselines, "combined": combined}
+        counts = integration.validate_farms(ROOT, ROOT / integration.RECEIPT, extension)
+        self.assertEqual(counts, integration.msi.RESIDUAL_COUNTS if extension else integration.msi.BASELINE_COUNTS)
 
     def test_existing_farm_substitution_rejected_before_parser(self):
         with tempfile.TemporaryDirectory(prefix="madeira-old-farm-") as directory:
             root = Path(directory).resolve()
             farm = root / "app/Madeira/aarch64-windows"
             shutil.copytree(ROOT / "app/Madeira/aarch64-windows", farm)
+            for name in integration.msi.NAMES:
+                (farm / name).unlink(missing_ok=True)
             target = farm / "kernel32.dll"
             original = target.read_bytes()
             target.write_bytes(b"MZ" + bytes(len(original) - 2))

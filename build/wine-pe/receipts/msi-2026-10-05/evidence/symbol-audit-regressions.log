@@ -1,0 +1,26 @@
+test_api_namespace_bounds_and_duplicate_aliases (__main__.SymbolTests.test_api_namespace_bounds_and_duplicate_aliases) ... ok
+test_api_set_alias_default_fallback_and_missing (__main__.SymbolTests.test_api_set_alias_default_fallback_and_missing) ... ok
+test_arm64ec_permits_existing_x64_but_not_overlay_x64 (__main__.SymbolTests.test_arm64ec_permits_existing_x64_but_not_overlay_x64) ... ok
+test_export_malformed_names_forwarders_counts_and_holes (__main__.SymbolTests.test_export_malformed_names_forwarders_counts_and_holes) ... ok
+test_farm_and_api_set_changes_during_llvm_fail_before_publication (__main__.SymbolTests.test_farm_and_api_set_changes_during_llvm_fail_before_publication) ... ok
+test_file_section_and_aggregate_size_bounds (__main__.SymbolTests.test_file_section_and_aggregate_size_bounds) ... ok
+test_forwarded_api_set_uses_original_importer_alias (__main__.SymbolTests.test_forwarded_api_set_uses_original_importer_alias) ... ok
+test_forwarder_chain_cycle_depth_and_api_cycle (__main__.SymbolTests.test_forwarder_chain_cycle_depth_and_api_cycle) ... ok
+test_fresh_safe_output_and_changed_input_gates (__main__.SymbolTests.test_fresh_safe_output_and_changed_input_gates) ... ok
+test_input_module_snapshot_covers_effective_farm_and_overlay (__main__.SymbolTests.test_input_module_snapshot_covers_effective_farm_and_overlay) ... ok
+test_legacy_delay_va_and_lookup_fallback (__main__.SymbolTests.test_legacy_delay_va_and_lookup_fallback) ... ok
+test_llvm_count_header_and_empty_evidence_gate (__main__.SymbolTests.test_llvm_count_header_and_empty_evidence_gate) ... ok
+test_malformed_import_and_delay_bounds (__main__.SymbolTests.test_malformed_import_and_delay_bounds) ... ok
+test_missing_evidence_architecture_paths_and_names (__main__.SymbolTests.test_missing_evidence_architecture_paths_and_names) ... ok
+test_name_ordinal_delay_forwarder_and_architectures (__main__.SymbolTests.test_name_ordinal_delay_forwarder_and_architectures) ... ok
+test_scandir_closes_before_reads_and_preserves_sorted_paths (__main__.SymbolTests.test_scandir_closes_before_reads_and_preserves_sorted_paths) ... ok
+test_scandir_errors_close_discard_partial_scan_and_keep_error_context (__main__.SymbolTests.test_scandir_errors_close_discard_partial_scan_and_keep_error_context) ... ok
+test_scandir_open_error_keeps_directory_and_cause (__main__.SymbolTests.test_scandir_open_error_keeps_directory_and_cause) ... ok
+test_scandir_overflow_consumes_limit_plus_one_and_closes (__main__.SymbolTests.test_scandir_overflow_consumes_limit_plus_one_and_closes) ... ok
+test_subprocess_timeout_output_and_error_bounds (__main__.SymbolTests.test_subprocess_timeout_output_and_error_bounds) ... ok
+test_unresolved_name_ordinal_module_and_export (__main__.SymbolTests.test_unresolved_name_ordinal_module_and_export) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.141s
+
+OK

@@ -1,0 +1,21 @@
+{
+  "all_export_forwarders_pass": false,
+  "app_resources_written": false,
+  "baseline_manifest_sha256": "ac713a0ed49e64e6fe1d2d3ad6ca604c8fccc85885fb18a4f10b46be8e9f4028",
+  "candidate_bytes": 38281216,
+  "candidate_count": 71,
+  "compiled_extension_count": 2,
+  "delay_import_symbols": 452,
+  "delay_imports_pass": true,
+  "measured_helper_count": 6,
+  "measured_helper_symbols": 701,
+  "measured_helper_unresolved": 0,
+  "normal_import_symbols": 9725,
+  "normal_imports_pass": true,
+  "remaining_missing_providers": [
+    "krnl386.exe16"
+  ],
+  "runtime_executed": false,
+  "unresolved_export_forwarders": 141,
+  "win16_added": false
+}

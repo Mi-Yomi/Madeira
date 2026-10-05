@@ -27,6 +27,7 @@ sys.path[:0] = [str(ROOT / "build/llvm-ios"), str(ROOT / "build/dxmt-ios"), str(
 import common
 import generate_shaders
 import verify_desktop_integration
+import verify_msi_integration
 
 CONVERTER = "d3d12/libmetalirconverter.dylib"
 CONVERTER_SHA256 = "073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2"
@@ -43,6 +44,7 @@ REQUIRED_NOTICES = (*GENERATED_LICENSES, "d3d12/NOTICE.txt", "d3d12/METAL-SHADER
 GRAPHICS_RECEIPTS = ("toolchains/llvm-host-build/madeira-build.json", "toolchains/llvm-ios-build/madeira-build.json",
                      "build/dxmt-ios/shader-headers/provenance.json", "build/dxmt-ios/graphics-build.json")
 LIMITATIONS = ("Existing tracked guest PE binaries reused; twelve reviewed source-built desktop DLLs integrated. "
+               "The optional reviewed MSI provider pair has no Wine/iOS runtime proof. "
                "Full-farm dependency gaps remain; 32-bit runtime missing; x86_64 VC runtime absent. "
                "No installation, device, rendering, JIT, 1C or Blender validation.")
 SCOPE = "Unsigned Debug app link and bundle validation only; no IPA created. " + LIMITATIONS
@@ -129,7 +131,8 @@ def resource_inputs():
     """Only tracked resource bytes plus the two explicitly generated licences."""
     base = ROOT / "app/Madeira"
     names = git("ls-files", "-z", "--", *["app/Madeira/" + n for n in (*RESOURCE_DIRS, *RESOURCE_FILES)],
-                verify_desktop_integration.RECORD, verify_desktop_integration.RECEIPT).split("\0")
+                verify_desktop_integration.RECORD, verify_desktop_integration.RECEIPT,
+                verify_msi_integration.RECORD, verify_msi_integration.RECEIPT).split("\0")
     expected = {name.removeprefix("app/Madeira/"): digest(ROOT / name) for name in names
                 if name.startswith("app/Madeira/")}
     for name in RESOURCE_FILES:
@@ -147,7 +150,11 @@ def resource_inputs():
         expected.update(required)
     if not set(REQUIRED_NOTICES).issubset(expected):
         raise ValueError("Required converter/licence notices missing from resource inventory")
-    pe = {name: value for name, value in expected.items() if name.endswith((".dll", ".exe"))}
+    # Use the same PE suffix set as the farm inventory, case-insensitively.
+    # Otherwise e.g. i386 MSI.DLL or a .drv enters resources while evading the
+    # unverified-runtime guard, MZ check and guest PE hash receipt below.
+    pe = {name: value for name, value in expected.items()
+          if Path(name).suffix.lower() in verify_desktop_integration.inventory.PE_SUFFIXES}
     for directory in ("aarch64-windows", "arm64ec-windows"):
         if not any(name.startswith(directory + "/") for name in pe):
             raise ValueError(f"Tracked guest PE payload missing: {directory}")
@@ -391,10 +398,16 @@ def build(native_receipt, products, intermediates, stage, *, package=False):
                        "build/wine-pe").split("\0")
     source_snapshot = {name: digest(ROOT / name) for name in source_names if name}
     evidence.update({"app_source_sha256": source_snapshot, "resources_sha256": resources,
-                     "guest_pe": {"status": "tracked-existing-plus-reviewed-source-built-desktop", "sha256": pe,
+                     "guest_pe": {"status": ("tracked-existing-plus-reviewed-desktop-and-msi"
+                                             if verify_msi_integration.BINARIES <= pe.keys()
+                                             else "tracked-existing-plus-reviewed-source-built-desktop"), "sha256": pe,
                                   "desktop_stage_seal_sha256": verify_desktop_integration.REVIEWED_SEAL,
                                   "source_built_desktop_sha256": {name: value for name, value in pe.items()
-                                                                  if name in verify_desktop_integration.DLLS}}})
+                                                                  if name in verify_desktop_integration.DLLS},
+                                  "msi_stage_seal_sha256": (verify_msi_integration.REVIEWED_SEAL
+                                      if verify_msi_integration.BINARIES <= pe.keys() else None),
+                                  "source_built_msi_sha256": {name: value for name, value in pe.items()
+                                                              if name in verify_msi_integration.BINARIES}}})
     command = build_command(products, intermediates)
     run(command)
     # Fail if any prerequisites were replaced while Xcode was running.

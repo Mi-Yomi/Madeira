@@ -1,0 +1,119 @@
+{
+  "aarch64": {
+    "outputs": {
+      "cabinet.dll": {
+        "bytes": 589824,
+        "sha256": "07ac3b1407d192019d5076baa11ab7e9dfbfba8a06641d843caa0cee86ea1ee0",
+        "architecture": "aarch64"
+      },
+      "msi.dll": {
+        "bytes": 1572864,
+        "sha256": "12bbe1e84a6ef12b6775f1e081e69e404736d9be5b118fa322d989d9f1b93221",
+        "architecture": "aarch64"
+      },
+      "msiexec.exe": {
+        "bytes": 524288,
+        "sha256": "2d4e5238d0be4d683e3490eea81ea3e09262392fc5cb95d082fd68ea545adfed",
+        "architecture": "aarch64"
+      },
+      "mspatcha.dll": {
+        "bytes": 524288,
+        "sha256": "a60218a5f34e1635c66685074c67f4b3bb1d7c32f352a4c0ba185136f09325dc",
+        "architecture": "aarch64"
+      },
+      "odbccp32.dll": {
+        "bytes": 458752,
+        "sha256": "4a2c553140b3db43f1670080b81460549bc808650a60c33157e57db4e0a9d5da",
+        "architecture": "aarch64"
+      },
+      "regsvr32.exe": {
+        "bytes": 524288,
+        "sha256": "0a9bfdd6bf351971b05e295a269546df2eb5182a5d5ffc9a0942b33911cdcfdf",
+        "architecture": "aarch64"
+      },
+      "sxs.dll": {
+        "bytes": 458752,
+        "sha256": "2d298097cc8d40f47610bf906791e752479b7ac72edfd11968fb58c579a270ee",
+        "architecture": "aarch64"
+      }
+    },
+    "counts": {
+      "checked_export_forwarders": 0,
+      "checked_import_symbols": 664,
+      "exports": 387
+    },
+    "normal_import_descriptors": 51,
+    "delay_import_descriptors": 0,
+    "combined_inventory_pe_modules": 148,
+    "remaining_dll_level_dependency_edges": 13,
+    "missing_new_symbols": 0
+  },
+  "arm64ec": {
+    "outputs": {
+      "cabinet.dll": {
+        "bytes": 720896,
+        "sha256": "35d713f638431348d0720327157571d6bc037cdd5cc6ac26332fbf4f74523784",
+        "architecture": "arm64ec"
+      },
+      "msi.dll": {
+        "bytes": 1769472,
+        "sha256": "30fca59166929f1300d7708d45d56b401e680d0318b0ce7d7ff754987177f30d",
+        "architecture": "arm64ec"
+      },
+      "msiexec.exe": {
+        "bytes": 655360,
+        "sha256": "dd46bf408250057474b4376880f3c81073477240587d0c551f54c37c99725549",
+        "architecture": "arm64ec"
+      },
+      "mspatcha.dll": {
+        "bytes": 655360,
+        "sha256": "922a4e61fcdf2807e0eee4e0951be28a923cd9d471c02e9320958cfc8f23029f",
+        "architecture": "arm64ec"
+      },
+      "odbccp32.dll": {
+        "bytes": 589824,
+        "sha256": "6ce8525c446e7bf6a43ddf317a2beaff690f13e1b0dd26178d0408675a6c74a6",
+        "architecture": "arm64ec"
+      },
+      "regsvr32.exe": {
+        "bytes": 655360,
+        "sha256": "1501d3bc5c59dabb3e15d4fa32caae10f14db88f23b045d3f055481f414cbbde",
+        "architecture": "arm64ec"
+      },
+      "sxs.dll": {
+        "bytes": 589824,
+        "sha256": "20f055955274cb2a5f8520eccdbaa7980cafea8000916bb09bcd73242da2fff2",
+        "architecture": "arm64ec"
+      }
+    },
+    "counts": {
+      "checked_export_forwarders": 0,
+      "checked_import_symbols": 666,
+      "exports": 387
+    },
+    "normal_import_descriptors": 51,
+    "delay_import_descriptors": 0,
+    "combined_inventory_pe_modules": 157,
+    "remaining_dll_level_dependency_edges": 10,
+    "missing_new_symbols": 0
+  },
+  "i386": {
+    "outputs": {
+      "msi.dll": {
+        "bytes": 1208320,
+        "sha256": "fe345c3ce9b2414d014c2eb98a8b82c53221d7eafdf2a57c7b24c06f713a7746",
+        "architecture": "i386"
+      }
+    },
+    "counts": {
+      "checked_export_forwarders": 0,
+      "checked_import_symbols": 328,
+      "exports": 296
+    },
+    "normal_import_descriptors": 22,
+    "delay_import_descriptors": 0,
+    "combined_inventory_pe_modules": 70,
+    "remaining_dll_level_dependency_edges": 1,
+    "missing_new_symbols": 0
+  }
+}

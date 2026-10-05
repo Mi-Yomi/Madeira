@@ -1,0 +1,114 @@
+{
+  "files": {
+    "aarch64-windows/cabinet.dll": {
+      "bytes": 589824,
+      "sha256": "07ac3b1407d192019d5076baa11ab7e9dfbfba8a06641d843caa0cee86ea1ee0"
+    },
+    "aarch64-windows/msi.dll": {
+      "bytes": 1572864,
+      "sha256": "12bbe1e84a6ef12b6775f1e081e69e404736d9be5b118fa322d989d9f1b93221"
+    },
+    "aarch64-windows/msiexec.exe": {
+      "bytes": 524288,
+      "sha256": "2d4e5238d0be4d683e3490eea81ea3e09262392fc5cb95d082fd68ea545adfed"
+    },
+    "aarch64-windows/mspatcha.dll": {
+      "bytes": 524288,
+      "sha256": "a60218a5f34e1635c66685074c67f4b3bb1d7c32f352a4c0ba185136f09325dc"
+    },
+    "aarch64-windows/odbccp32.dll": {
+      "bytes": 458752,
+      "sha256": "4a2c553140b3db43f1670080b81460549bc808650a60c33157e57db4e0a9d5da"
+    },
+    "aarch64-windows/regsvr32.exe": {
+      "bytes": 524288,
+      "sha256": "0a9bfdd6bf351971b05e295a269546df2eb5182a5d5ffc9a0942b33911cdcfdf"
+    },
+    "aarch64-windows/sxs.dll": {
+      "bytes": 458752,
+      "sha256": "2d298097cc8d40f47610bf906791e752479b7ac72edfd11968fb58c579a270ee"
+    },
+    "arm64ec-windows/cabinet.dll": {
+      "bytes": 720896,
+      "sha256": "35d713f638431348d0720327157571d6bc037cdd5cc6ac26332fbf4f74523784"
+    },
+    "arm64ec-windows/msi.dll": {
+      "bytes": 1769472,
+      "sha256": "30fca59166929f1300d7708d45d56b401e680d0318b0ce7d7ff754987177f30d"
+    },
+    "arm64ec-windows/msiexec.exe": {
+      "bytes": 655360,
+      "sha256": "dd46bf408250057474b4376880f3c81073477240587d0c551f54c37c99725549"
+    },
+    "arm64ec-windows/mspatcha.dll": {
+      "bytes": 655360,
+      "sha256": "922a4e61fcdf2807e0eee4e0951be28a923cd9d471c02e9320958cfc8f23029f"
+    },
+    "arm64ec-windows/odbccp32.dll": {
+      "bytes": 589824,
+      "sha256": "6ce8525c446e7bf6a43ddf317a2beaff690f13e1b0dd26178d0408675a6c74a6"
+    },
+    "arm64ec-windows/regsvr32.exe": {
+      "bytes": 655360,
+      "sha256": "1501d3bc5c59dabb3e15d4fa32caae10f14db88f23b045d3f055481f414cbbde"
+    },
+    "arm64ec-windows/sxs.dll": {
+      "bytes": 589824,
+      "sha256": "20f055955274cb2a5f8520eccdbaa7980cafea8000916bb09bcd73242da2fff2"
+    },
+    "legal/Wine-LGPL-2.1.txt": {
+      "bytes": 26434,
+      "sha256": "e237fa56668030e928551ddd60f05df5fe957f75eab874bbd017e085ed722e7c"
+    },
+    "legal/Wine-LICENSE-MADEIRA.md": {
+      "bytes": 2936,
+      "sha256": "af5e68eec8cad65700c24461185dc09936a927688753a999fa1e6bf80d4cf747"
+    },
+    "legal/Wine-MSI-INTEGRATION.md": {
+      "bytes": 3751,
+      "sha256": "19ca47846c3a58747a1c851d7b8e580cc27254a6bf724333e827d443f255edd1"
+    },
+    "legal/Wine-MSI-MODIFICATIONS.md": {
+      "bytes": 1126,
+      "sha256": "da436d484e65e9687b65bf913d7c9b226e2a9c9055ec48ac6ea5fd43990d3a6e"
+    },
+    "legal/Wine-MSI-SOURCE-REBUILD.md": {
+      "bytes": 4633,
+      "sha256": "26a0295024993951f286cbc995ce2ba649c3ba16c3699c1bc57d25f05f2f93dd"
+    },
+    "legal/Wine-MSI-custom-actions.patch": {
+      "bytes": 5378,
+      "sha256": "3efc2fb4733e67f8951284d5f0384a4df4a39f284a5f30fc395840bbbc1ea4a8"
+    },
+    "legal/Wine-MSI-toolchain-LICENSE.txt": {
+      "bytes": 15141,
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee"
+    },
+    "legal/Wine-compiler-rt-LICENSE.txt": {
+      "bytes": 4288,
+      "sha256": "09e65c6534e75ec49cdc74fa894bfe4287bfbb1002be41fcad90110e9acd0984"
+    },
+    "legal/Wine-zlib-LICENSE.txt": {
+      "bytes": 1002,
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+    },
+    "legal/Wine-zlib-header-with-notice.h": {
+      "bytes": 96829,
+      "sha256": "8a5579af72ea4f427ff00a4150f0ccb3fc5c1e4379f726e101133b1ab9fc600c"
+    }
+  },
+  "i386_activated": false,
+  "package_ready": false,
+  "patch_sha256": "3efc2fb4733e67f8951284d5f0384a4df4a39f284a5f30fc395840bbbc1ea4a8",
+  "patched_custom_c_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+  "receipt_directory": "build/wine-pe/receipts/msi-2026-10-05",
+  "recipe_reference_scope": "The sealed build recipe and patch are authoritative; no integration publication or runtime validation is claimed.",
+  "residual_dependency_counts": {
+    "aarch64": 13,
+    "arm64ec": 10
+  },
+  "runtime_tested": false,
+  "schema_version": 1,
+  "stage_seal_sha256": "3d748dc6f9fa84d386c79acdaf9b4952755719daa79f8ac161f1c07d27fee0fe",
+  "wine_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f"
+}

@@ -53,6 +53,8 @@ jobs:
           python3 tests/host/check-desktop-overlay-plan.py
           python3 tests/host/check-desktop-integration.py
           python3 -O tests/host/check-desktop-integration.py
+          python3 tests/host/check-msi-integration.py
+          python3 -O tests/host/check-msi-integration.py
       - name: Check Blender probe syntax
         run: python3 -m py_compile tests/desktop/blender_cpu_smoke.py
       - name: Check JIT pool ownership and readiness wiring

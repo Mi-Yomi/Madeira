@@ -1,0 +1,301 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/candidate/arm64ec-windows/msiexec.exe
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64EC (0xA641)
+  SectionCount: 8
+  TimeDateStamp: 2026-10-05 06:04:52 (0x6AC33E04)
+  PointerToSymbolTable: 0x90000
+  SymbolCount: 432
+  StringTableSize: 11337
+  OptionalHeaderSize: 240
+  Characteristics [ (0x22)
+    IMAGE_FILE_EXECUTABLE_IMAGE (0x2)
+    IMAGE_FILE_LARGE_ADDRESS_AWARE (0x20)
+  ]
+}
+ImageOptionalHeader {
+  Magic: 0x20B
+  MajorLinkerVersion: 14
+  MinorLinkerVersion: 0
+  SizeOfCode: 65536
+  SizeOfInitializedData: 393216
+  SizeOfUninitializedData: 0
+  AddressOfEntryPoint: 0x20000
+  BaseOfCode: 0x10000
+  ImageBase: 0x140000000
+  SectionAlignment: 65536
+  FileAlignment: 65536
+  MajorOperatingSystemVersion: 6
+  MinorOperatingSystemVersion: 0
+  MajorImageVersion: 0
+  MinorImageVersion: 0
+  MajorSubsystemVersion: 6
+  MinorSubsystemVersion: 0
+  SizeOfImage: 589824
+  SizeOfHeaders: 65536
+  CheckSum: 0x0
+  Subsystem: IMAGE_SUBSYSTEM_WINDOWS_GUI (0x2)
+  Characteristics [ (0x8160)
+    IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE (0x40)
+    IMAGE_DLL_CHARACTERISTICS_HIGH_ENTROPY_VA (0x20)
+    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT (0x100)
+    IMAGE_DLL_CHARACTERISTICS_TERMINAL_SERVER_AWARE (0x8000)
+  ]
+  SizeOfStackReserve: 1048576
+  SizeOfStackCommit: 4096
+  SizeOfHeapReserve: 1048576
+  SizeOfHeapCommit: 4096
+  NumberOfRvaAndSize: 16
+  DataDirectory {
+    ExportTableRVA: 0x0
+    ExportTableSize: 0x0
+    ImportTableRVA: 0x31D00
+    ImportTableSize: 0xB4
+    ResourceTableRVA: 0x70000
+    ResourceTableSize: 0xCB06
+    ExceptionTableRVA: 0x0
+    ExceptionTableSize: 0x0
+    CertificateTableRVA: 0x0
+    CertificateTableSize: 0x0
+    BaseRelocationTableRVA: 0x80000
+    BaseRelocationTableSize: 0x178
+    DebugRVA: 0x31C78
+    DebugSize: 0x1C
+    ArchitectureRVA: 0x0
+    ArchitectureSize: 0x0
+    GlobalPtrRVA: 0x0
+    GlobalPtrSize: 0x0
+    TLSTableRVA: 0x0
+    TLSTableSize: 0x0
+    LoadConfigTableRVA: 0x31000
+    LoadConfigTableSize: 0x140
+    BoundImportRVA: 0x0
+    BoundImportSize: 0x0
+    IATRVA: 0x30000
+    IATSize: 0x1000
+    DelayImportDescriptorRVA: 0x0
+    DelayImportDescriptorSize: 0x0
+    CLRRuntimeHeaderRVA: 0x0
+    CLRRuntimeHeaderSize: 0x0
+    ReservedRVA: 0x0
+    ReservedSize: 0x0
+  }
+}
+DOSHeader {
+  Magic: MZ
+  UsedBytesInTheLastPage: 120
+  FileSizeInPages: 1
+  NumberOfRelocationItems: 0
+  HeaderSizeInParagraphs: 4
+  MinimumExtraParagraphs: 0
+  MaximumExtraParagraphs: 0
+  InitialRelativeSS: 0
+  InitialSP: 0
+  Checksum: 0
+  InitialIP: 0
+  InitialRelativeCS: 0
+  AddressOfRelocationTable: 64
+  OverlayNumber: 0
+  OEMid: 0
+  OEMinfo: 0
+  AddressOfNewExeHeader: 120
+}
+Import {
+  Name: msi.dll
+  ImportLookupTableRVA: 0x31DB8
+  ImportAddressTableRVA: 0x30000
+  Symbol: MsiAdvertiseProductW (6)
+  Symbol: MsiApplyPatchW (175)
+  Symbol: MsiConfigureProductExW (190)
+  Symbol: MsiEnableLogW (169)
+  Symbol: MsiGetFileVersionW (195)
+  Symbol: MsiInstallProductW (88)
+  Symbol: MsiMessageBoxA (198)
+  Symbol: MsiMessageBoxW (199)
+  Symbol: MsiReinstallProductW (131)
+  Symbol: MsiSetInternalUI (141)
+  Symbol: __wine_msi_call_dll_function (300)
+}
+Import {
+  Name: ole32.dll
+  ImportLookupTableRVA: 0x31E18
+  ImportAddressTableRVA: 0x30060
+  Symbol: CLSIDFromString (8)
+  Symbol: CoInitializeEx (54)
+  Symbol: CoUninitialize (91)
+}
+Import {
+  Name: advapi32.dll
+  ImportLookupTableRVA: 0x31E38
+  ImportAddressTableRVA: 0x30080
+  Symbol: CloseServiceHandle (51)
+  Symbol: CreateServiceW (76)
+  Symbol: DeleteService (139)
+  Symbol: OpenSCManagerW (355)
+  Symbol: OpenServiceW (357)
+  Symbol: RegCloseKey (396)
+  Symbol: RegOpenKeyW (441)
+  Symbol: RegQueryValueExW (451)
+  Symbol: RegisterServiceCtrlHandlerA (474)
+  Symbol: SetServiceStatus (508)
+  Symbol: StartServiceCtrlDispatcherA (512)
+}
+Import {
+  Name: user32.dll
+  ImportLookupTableRVA: 0x31E98
+  ImportAddressTableRVA: 0x300E0
+  Symbol: LoadStringW (2014)
+}
+Import {
+  Name: comctl32.dll
+  ImportLookupTableRVA: 0x31EA8
+  ImportAddressTableRVA: 0x300F0
+  Symbol: InitCommonControls (17)
+}
+Import {
+  Name: ucrtbase.dll
+  ImportLookupTableRVA: 0x31EB8
+  ImportAddressTableRVA: 0x30100
+  Symbol: __acrt_iob_func (58)
+  Symbol: __p___argc (85)
+  Symbol: __p___argv (86)
+  Symbol: __stdio_common_vsprintf (121)
+  Symbol: __stdio_common_vswprintf (125)
+  Symbol: _configure_narrow_argv (193)
+  Symbol: _crt_atexit (205)
+  Symbol: _get_initial_narrow_environment (325)
+  Symbol: _initialize_narrow_environment (377)
+  Symbol: _initterm (380)
+  Symbol: _initterm_e (381)
+  Symbol: _set_app_type (1775)
+  Symbol: _strdup (1815)
+  Symbol: exit (2163)
+  Symbol: free (2215)
+  Symbol: fwrite (2222)
+  Symbol: getenv (2225)
+  Symbol: malloc (2300)
+  Symbol: memcpy (2313)
+  Symbol: memmove (2315)
+  Symbol: strchr (2387)
+  Symbol: strcmp (2388)
+  Symbol: strcpy (2390)
+  Symbol: strcspn (2392)
+  Symbol: strlen (2396)
+  Symbol: wcschr (2447)
+  Symbol: wcscpy (2450)
+  Symbol: wcslen (2454)
+  Symbol: wcstol (2472)
+}
+Import {
+  Name: kernel32.dll
+  ImportLookupTableRVA: 0x31FA8
+  ImportAddressTableRVA: 0x301F0
+  Symbol: CompareStringW (80)
+  Symbol: CreateEventW (111)
+  Symbol: CreateFileW (121)
+  Symbol: CreateThread (158)
+  Symbol: ExitProcess (262)
+  Symbol: FreeLibrary (333)
+  Symbol: GetCommandLineA (361)
+  Symbol: GetCommandLineW (362)
+  Symbol: GetModuleFileNameW (505)
+  Symbol: GetModuleHandleA (506)
+  Symbol: GetModuleHandleW (509)
+  Symbol: GetProcAddress (559)
+  Symbol: GetStartupInfoA (591)
+  Symbol: GetSystemDirectoryW (606)
+  Symbol: GetThreadLocale (637)
+  Symbol: GetTickCount (644)
+  Symbol: GetUserDefaultLangID (653)
+  Symbol: HeapAlloc (701)
+  Symbol: HeapReAlloc (711)
+  Symbol: IsBadStringPtrW (750)
+  Symbol: LoadLibraryExW (814)
+  Symbol: MultiByteToWideChar (854)
+  Symbol: ReadFile (939)
+  Symbol: SetEvent (1104)
+  Symbol: WaitForSingleObject (1264)
+  Symbol: WriteFile (1303)
+}
+Import {
+  Name: ntdll.dll
+  ImportLookupTableRVA: 0x32080
+  ImportAddressTableRVA: 0x302C8
+  Symbol: _vsnprintf (1326)
+}
+LoadConfig [
+  Size: 0x140
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  MajorVersion: 0x0
+  MinorVersion: 0x0
+  GlobalFlagsClear: 0x0
+  GlobalFlagsSet: 0x0
+  CriticalSectionDefaultTimeout: 0x0
+  DeCommitFreeBlockThreshold: 0x0
+  DeCommitTotalFreeThreshold: 0x0
+  LockPrefixTable: 0x0
+  MaximumAllocationSize: 0x0
+  VirtualMemoryThreshold: 0x0
+  ProcessHeapFlags: 0x0
+  ProcessAffinityMask: 0x0
+  CSDVersion: 0x0
+  DependentLoadFlags: 0x0
+  EditList: 0x0
+  SecurityCookie: 0x0
+  SEHandlerTable: 0x0
+  SEHandlerCount: 0
+  GuardCFCheckFunction: 0x140040218
+  GuardCFCheckDispatch: 0x140040220
+  GuardCFFunctionTable: 0x0
+  GuardCFFunctionCount: 0
+  GuardFlags [ (0x0)
+  ]
+  GuardAddressTakenIatEntryTable: 0x0
+  GuardAddressTakenIatEntryCount: 0
+  GuardLongJumpTargetTable: 0x0
+  GuardLongJumpTargetCount: 0
+  DynamicValueRelocTable: 0x0
+  CHPEMetadataPointer: 0x140031C04
+  GuardRFFailureRoutine: 0x0
+  GuardRFFailureRoutineFunctionPointer: 0x0
+  DynamicValueRelocTableOffset: 0x0
+  DynamicValueRelocTableSection: 0
+  GuardRFVerifyStackPointerFunctionPointer: 0x0
+  HotPatchTableOffset: 0x0
+  EnclaveConfigurationPointer: 0x0
+  VolatileMetadataPointer: 0x0
+  GuardEHContinuationTable: 0x0
+  GuardEHContinuationCount: 0
+]
+CHPEMetadata [
+  Version: 0x2
+  CodeMap [
+    0x10000 - 0x1517C  ARM64EC
+    0x16000 - 0x20010  X64
+  ]
+  CodeRangesToEntryPoints [
+    0x20000 - 0x20010 -> 0x20000
+  ]
+  RedirectionMetadata [
+    0x20000 -> 0x13C40
+  ]
+  __os_arm64x_dispatch_call_no_redirect: 0x401C0
+  __os_arm64x_dispatch_ret: 0x401D0
+  __os_arm64x_dispatch_call: 0x40050
+  __os_arm64x_dispatch_icall: 0x40048
+  __os_arm64x_dispatch_icall_cfg: 0x401B8
+  AlternateEntryPoint: 0x0
+  AuxiliaryIAT: 0x33000
+  GetX64InformationFunctionPointer: 0x401D8
+  SetX64InformationFunctionPointer: 0x401E0
+  ExtraRFETable: 0x50000
+  ExtraRFETableSize: 0x2C8
+  __os_arm64x_dispatch_fptr: 0x401C8
+  AuxiliaryIATCopy: 0x32680
+  AuxiliaryDelayloadIAT: 0x0
+  AuxiliaryDelayloadIATCopy: 0x0
+  HybridImageInfoBitfield: 0x0
+]

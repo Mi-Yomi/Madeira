@@ -1,0 +1,1522 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/candidate/arm64ec-windows/odbccp32.dll
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64EC (0xA641)
+  SectionCount: 7
+  TimeDateStamp: 2026-10-05 06:04:52 (0x6AC33E04)
+  PointerToSymbolTable: 0x80000
+  SymbolCount: 437
+  StringTableSize: 13628
+  OptionalHeaderSize: 240
+  Characteristics [ (0x2022)
+    IMAGE_FILE_DLL (0x2000)
+    IMAGE_FILE_EXECUTABLE_IMAGE (0x2)
+    IMAGE_FILE_LARGE_ADDRESS_AWARE (0x20)
+  ]
+}
+ImageOptionalHeader {
+  Magic: 0x20B
+  MajorLinkerVersion: 14
+  MinorLinkerVersion: 0
+  SizeOfCode: 65536
+  SizeOfInitializedData: 327680
+  SizeOfUninitializedData: 0
+  AddressOfEntryPoint: 0x20000
+  BaseOfCode: 0x10000
+  ImageBase: 0x180000000
+  SectionAlignment: 65536
+  FileAlignment: 65536
+  MajorOperatingSystemVersion: 6
+  MinorOperatingSystemVersion: 0
+  MajorImageVersion: 0
+  MinorImageVersion: 0
+  MajorSubsystemVersion: 6
+  MinorSubsystemVersion: 0
+  SizeOfImage: 524288
+  SizeOfHeaders: 65536
+  CheckSum: 0x0
+  Subsystem: IMAGE_SUBSYSTEM_WINDOWS_CUI (0x3)
+  Characteristics [ (0x160)
+    IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE (0x40)
+    IMAGE_DLL_CHARACTERISTICS_HIGH_ENTROPY_VA (0x20)
+    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT (0x100)
+  ]
+  SizeOfStackReserve: 1048576
+  SizeOfStackCommit: 4096
+  SizeOfHeapReserve: 1048576
+  SizeOfHeapCommit: 4096
+  NumberOfRvaAndSize: 16
+  DataDirectory {
+    ExportTableRVA: 0x32458
+    ExportTableSize: 0x9A4
+    ImportTableRVA: 0x32DFC
+    ImportTableSize: 0x64
+    ResourceTableRVA: 0x0
+    ResourceTableSize: 0x0
+    ExceptionTableRVA: 0x0
+    ExceptionTableSize: 0x0
+    CertificateTableRVA: 0x0
+    CertificateTableSize: 0x0
+    BaseRelocationTableRVA: 0x70000
+    BaseRelocationTableSize: 0x108
+    DebugRVA: 0x32128
+    DebugSize: 0x1C
+    ArchitectureRVA: 0x0
+    ArchitectureSize: 0x0
+    GlobalPtrRVA: 0x0
+    GlobalPtrSize: 0x0
+    TLSTableRVA: 0x0
+    TLSTableSize: 0x0
+    LoadConfigTableRVA: 0x31078
+    LoadConfigTableSize: 0x140
+    BoundImportRVA: 0x0
+    BoundImportSize: 0x0
+    IATRVA: 0x30000
+    IATSize: 0x1000
+    DelayImportDescriptorRVA: 0x0
+    DelayImportDescriptorSize: 0x0
+    CLRRuntimeHeaderRVA: 0x0
+    CLRRuntimeHeaderSize: 0x0
+    ReservedRVA: 0x0
+    ReservedSize: 0x0
+  }
+}
+DOSHeader {
+  Magic: MZ
+  UsedBytesInTheLastPage: 120
+  FileSizeInPages: 1
+  NumberOfRelocationItems: 0
+  HeaderSizeInParagraphs: 4
+  MinimumExtraParagraphs: 0
+  MaximumExtraParagraphs: 0
+  InitialRelativeSS: 0
+  InitialSP: 0
+  Checksum: 0
+  InitialIP: 0
+  InitialRelativeCS: 0
+  AddressOfRelocationTable: 64
+  OverlayNumber: 0
+  OEMid: 0
+  OEMinfo: 0
+  AddressOfNewExeHeader: 120
+}
+Import {
+  Name: advapi32.dll
+  ImportLookupTableRVA: 0x32E60
+  ImportAddressTableRVA: 0x30000
+  Symbol: RegCloseKey (396)
+  Symbol: RegCreateKeyW (406)
+  Symbol: RegDeleteKeyW (412)
+  Symbol: RegDeleteTreeW (414)
+  Symbol: RegDeleteValueW (416)
+  Symbol: RegEnumValueA (424)
+  Symbol: RegEnumValueW (425)
+  Symbol: RegGetValueA (428)
+  Symbol: RegGetValueW (429)
+  Symbol: RegOpenKeyExW (440)
+  Symbol: RegOpenKeyW (441)
+  Symbol: RegSetValueExA (467)
+  Symbol: RegSetValueExW (468)
+}
+Import {
+  Name: ucrtbase.dll
+  ImportLookupTableRVA: 0x32ED0
+  ImportAddressTableRVA: 0x30070
+  Symbol: __acrt_iob_func (58)
+  Symbol: __stdio_common_vsprintf (121)
+  Symbol: _assert (154)
+  Symbol: _strdup (1815)
+  Symbol: _wcsicmp (1909)
+  Symbol: calloc (2080)
+  Symbol: free (2215)
+  Symbol: fwrite (2222)
+  Symbol: getenv (2225)
+  Symbol: malloc (2300)
+  Symbol: memcpy (2313)
+  Symbol: memmove (2315)
+  Symbol: memset (2317)
+  Symbol: realloc (2349)
+  Symbol: strchr (2387)
+  Symbol: strcmp (2388)
+  Symbol: strcpy (2390)
+  Symbol: strcspn (2392)
+  Symbol: strlen (2396)
+  Symbol: strpbrk (2403)
+  Symbol: wcscat (2445)
+  Symbol: wcschr (2447)
+  Symbol: wcscpy (2450)
+  Symbol: wcslen (2454)
+  Symbol: wcspbrk (2461)
+}
+Import {
+  Name: kernel32.dll
+  ImportLookupTableRVA: 0x32FA0
+  ImportAddressTableRVA: 0x30140
+  Symbol: DisableThreadLibraryCalls (207)
+  Symbol: FreeLibrary (333)
+  Symbol: GetFileAttributesW (465)
+  Symbol: GetModuleHandleW (509)
+  Symbol: GetProcAddress (559)
+  Symbol: GetSystemDirectoryW (606)
+  Symbol: GetTickCount (644)
+  Symbol: HeapAlloc (701)
+  Symbol: HeapReAlloc (711)
+  Symbol: IsBadStringPtrA (749)
+  Symbol: IsBadStringPtrW (750)
+  Symbol: LoadLibraryExW (814)
+  Symbol: MultiByteToWideChar (854)
+  Symbol: RaiseException (925)
+  Symbol: WideCharToMultiByte (1284)
+  Symbol: lstrcmpiW (1342)
+}
+Import {
+  Name: ntdll.dll
+  ImportLookupTableRVA: 0x33028
+  ImportAddressTableRVA: 0x301C8
+  Symbol: _vsnprintf (1326)
+}
+Export {
+  Ordinal: 2
+  Name: SQLInstallDriver
+  RVA: 0x20010
+}
+Export {
+  Ordinal: 3
+  Name: SQLInstallDriverManager
+  RVA: 0x20020
+}
+Export {
+  Ordinal: 4
+  Name: SQLGetInstalledDrivers
+  RVA: 0x20030
+}
+Export {
+  Ordinal: 5
+  Name: SQLGetAvailableDrivers
+  RVA: 0x20040
+}
+Export {
+  Ordinal: 6
+  Name: SQLConfigDataSource
+  RVA: 0x20050
+}
+Export {
+  Ordinal: 7
+  Name: SQLRemoveDefaultDataSource
+  RVA: 0x20060
+}
+Export {
+  Ordinal: 8
+  Name: SQLWriteDSNToIni
+  RVA: 0x20070
+}
+Export {
+  Ordinal: 9
+  Name: SQLRemoveDSNFromIni
+  RVA: 0x20080
+}
+Export {
+  Ordinal: 10
+  Name: SQLInstallODBC
+  RVA: 0x20090
+}
+Export {
+  Ordinal: 11
+  Name: SQLManageDataSources
+  RVA: 0x200A0
+}
+Export {
+  Ordinal: 12
+  Name: SQLCreateDataSource
+  RVA: 0x200B0
+}
+Export {
+  Ordinal: 13
+  Name: SQLGetTranslator
+  RVA: 0x200C0
+}
+Export {
+  Ordinal: 14
+  Name: SQLWritePrivateProfileString
+  RVA: 0x200D0
+}
+Export {
+  Ordinal: 15
+  Name: SQLGetPrivateProfileString
+  RVA: 0x200E0
+}
+Export {
+  Ordinal: 16
+  Name: SQLValidDSN
+  RVA: 0x200F0
+}
+Export {
+  Ordinal: 17
+  Name: SQLRemoveDriverManager
+  RVA: 0x20100
+}
+Export {
+  Ordinal: 18
+  Name: SQLInstallTranslator
+  RVA: 0x20110
+}
+Export {
+  Ordinal: 19
+  Name: SQLRemoveTranslator
+  RVA: 0x20120
+}
+Export {
+  Ordinal: 20
+  Name: SQLRemoveDriver
+  RVA: 0x20130
+}
+Export {
+  Ordinal: 21
+  Name: SQLConfigDriver
+  RVA: 0x20140
+}
+Export {
+  Ordinal: 22
+  Name: SQLInstallerError
+  RVA: 0x20150
+}
+Export {
+  Ordinal: 23
+  Name: SQLPostInstallerError
+  RVA: 0x20160
+}
+Export {
+  Ordinal: 24
+  Name: SQLReadFileDSN
+  RVA: 0x20170
+}
+Export {
+  Ordinal: 25
+  Name: SQLWriteFileDSN
+  RVA: 0x20180
+}
+Export {
+  Ordinal: 26
+  Name: SQLInstallDriverEx
+  RVA: 0x20190
+}
+Export {
+  Ordinal: 27
+  Name: SQLGetConfigMode
+  RVA: 0x201A0
+}
+Export {
+  Ordinal: 28
+  Name: SQLSetConfigMode
+  RVA: 0x201B0
+}
+Export {
+  Ordinal: 29
+  Name: SQLInstallTranslatorEx
+  RVA: 0x201C0
+}
+Export {
+  Ordinal: 30
+  Name: SQLCreateDataSourceEx
+  RVA: 0x201D0
+}
+Export {
+  Ordinal: 31
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 32
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 33
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 34
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 35
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 36
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 37
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 38
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 39
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 40
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 41
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 42
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 43
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 44
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 45
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 46
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 47
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 48
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 49
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 50
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 51
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 52
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 53
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 54
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 55
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 56
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 57
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 58
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 59
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 60
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 61
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 62
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 63
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 64
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 65
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 66
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 67
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 68
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 69
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 70
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 71
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 72
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 73
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 74
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 75
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 76
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 77
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 78
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 79
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 80
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 81
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 82
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 83
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 84
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 85
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 86
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 87
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 88
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 89
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 90
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 91
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 92
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 93
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 94
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 95
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 96
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 97
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 98
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 99
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 100
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 101
+  Name: ODBCCPlApplet
+  RVA: 0x201E0
+}
+Export {
+  Ordinal: 102
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 103
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 104
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 105
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 106
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 107
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 108
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 109
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 110
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 111
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 112
+  Name: SelectTransDlg
+  RVA: 0x201F0
+}
+Export {
+  Ordinal: 113
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 114
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 115
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 116
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 117
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 118
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 119
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 120
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 121
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 122
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 123
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 124
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 125
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 126
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 127
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 128
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 129
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 130
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 131
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 132
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 133
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 134
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 135
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 136
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 137
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 138
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 139
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 140
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 141
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 142
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 143
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 144
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 145
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 146
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 147
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 148
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 149
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 150
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 151
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 152
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 153
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 154
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 155
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 156
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 157
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 158
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 159
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 160
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 161
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 162
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 163
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 164
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 165
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 166
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 167
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 168
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 169
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 170
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 171
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 172
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 173
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 174
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 175
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 176
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 177
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 178
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 179
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 180
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 181
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 182
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 183
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 184
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 185
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 186
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 187
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 188
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 189
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 190
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 191
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 192
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 193
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 194
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 195
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 196
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 197
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 198
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 199
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 200
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 201
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 202
+  Name: SQLInstallDriverW
+  RVA: 0x20200
+}
+Export {
+  Ordinal: 203
+  Name: SQLInstallDriverManagerW
+  RVA: 0x20210
+}
+Export {
+  Ordinal: 204
+  Name: SQLGetInstalledDriversW
+  RVA: 0x20220
+}
+Export {
+  Ordinal: 205
+  Name: SQLGetAvailableDriversW
+  RVA: 0x20230
+}
+Export {
+  Ordinal: 206
+  Name: SQLConfigDataSourceW
+  RVA: 0x20240
+}
+Export {
+  Ordinal: 207
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 208
+  Name: SQLWriteDSNToIniW
+  RVA: 0x20250
+}
+Export {
+  Ordinal: 209
+  Name: SQLRemoveDSNFromIniW
+  RVA: 0x20260
+}
+Export {
+  Ordinal: 210
+  Name: SQLInstallODBCW
+  RVA: 0x20270
+}
+Export {
+  Ordinal: 211
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 212
+  Name: SQLCreateDataSourceW
+  RVA: 0x20280
+}
+Export {
+  Ordinal: 213
+  Name: SQLGetTranslatorW
+  RVA: 0x20290
+}
+Export {
+  Ordinal: 214
+  Name: SQLWritePrivateProfileStringW
+  RVA: 0x202A0
+}
+Export {
+  Ordinal: 215
+  Name: SQLGetPrivateProfileStringW
+  RVA: 0x202B0
+}
+Export {
+  Ordinal: 216
+  Name: SQLValidDSNW
+  RVA: 0x202C0
+}
+Export {
+  Ordinal: 217
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 218
+  Name: SQLInstallTranslatorW
+  RVA: 0x202D0
+}
+Export {
+  Ordinal: 219
+  Name: SQLRemoveTranslatorW
+  RVA: 0x202E0
+}
+Export {
+  Ordinal: 220
+  Name: SQLRemoveDriverW
+  RVA: 0x202F0
+}
+Export {
+  Ordinal: 221
+  Name: SQLConfigDriverW
+  RVA: 0x20300
+}
+Export {
+  Ordinal: 222
+  Name: SQLInstallerErrorW
+  RVA: 0x20310
+}
+Export {
+  Ordinal: 223
+  Name: SQLPostInstallerErrorW
+  RVA: 0x20320
+}
+Export {
+  Ordinal: 224
+  Name: SQLReadFileDSNW
+  RVA: 0x20330
+}
+Export {
+  Ordinal: 225
+  Name: SQLWriteFileDSNW
+  RVA: 0x20340
+}
+Export {
+  Ordinal: 226
+  Name: SQLInstallDriverExW
+  RVA: 0x20350
+}
+Export {
+  Ordinal: 227
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 228
+  Name: 
+  RVA: 0x0
+}
+Export {
+  Ordinal: 229
+  Name: SQLInstallTranslatorExW
+  RVA: 0x20360
+}
+Export {
+  Ordinal: 230
+  Name: SQLCreateDataSourceExW
+  RVA: 0x20370
+}
+Export {
+  Ordinal: 231
+  Name: SQLLoadDriverListBox
+  RVA: 0x20380
+}
+Export {
+  Ordinal: 232
+  Name: SQLLoadDataSourcesListBox
+  RVA: 0x20390
+}
+LoadConfig [
+  Size: 0x140
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  MajorVersion: 0x0
+  MinorVersion: 0x0
+  GlobalFlagsClear: 0x0
+  GlobalFlagsSet: 0x0
+  CriticalSectionDefaultTimeout: 0x0
+  DeCommitFreeBlockThreshold: 0x0
+  DeCommitTotalFreeThreshold: 0x0
+  LockPrefixTable: 0x0
+  MaximumAllocationSize: 0x0
+  VirtualMemoryThreshold: 0x0
+  ProcessHeapFlags: 0x0
+  ProcessAffinityMask: 0x0
+  CSDVersion: 0x0
+  DependentLoadFlags: 0x0
+  EditList: 0x0
+  SecurityCookie: 0x0
+  SEHandlerTable: 0x0
+  SEHandlerCount: 0
+  GuardCFCheckFunction: 0x180040268
+  GuardCFCheckDispatch: 0x180040270
+  GuardCFFunctionTable: 0x0
+  GuardCFFunctionCount: 0
+  GuardFlags [ (0x0)
+  ]
+  GuardAddressTakenIatEntryTable: 0x0
+  GuardAddressTakenIatEntryCount: 0
+  GuardLongJumpTargetTable: 0x0
+  GuardLongJumpTargetCount: 0
+  DynamicValueRelocTable: 0x0
+  CHPEMetadataPointer: 0x1800320B4
+  GuardRFFailureRoutine: 0x0
+  GuardRFFailureRoutineFunctionPointer: 0x0
+  DynamicValueRelocTableOffset: 0x0
+  DynamicValueRelocTableSection: 0
+  GuardRFVerifyStackPointerFunctionPointer: 0x0
+  HotPatchTableOffset: 0x0
+  EnclaveConfigurationPointer: 0x0
+  VolatileMetadataPointer: 0x0
+  GuardEHContinuationTable: 0x0
+  GuardEHContinuationCount: 0
+]
+CHPEMetadata [
+  Version: 0x2
+  CodeMap [
+    0x10000 - 0x176E4  ARM64EC
+    0x18000 - 0x203A0  X64
+  ]
+  CodeRangesToEntryPoints [
+    0x20000 - 0x20010 -> 0x20000
+    0x20010 - 0x20020 -> 0x20010
+    0x20020 - 0x20030 -> 0x20020
+    0x20030 - 0x20040 -> 0x20030
+    0x20040 - 0x20050 -> 0x20040
+    0x20050 - 0x20060 -> 0x20050
+    0x20060 - 0x20070 -> 0x20060
+    0x20070 - 0x20080 -> 0x20070
+    0x20080 - 0x20090 -> 0x20080
+    0x20090 - 0x200A0 -> 0x20090
+    0x200A0 - 0x200B0 -> 0x200A0
+    0x200B0 - 0x200C0 -> 0x200B0
+    0x200C0 - 0x200D0 -> 0x200C0
+    0x200D0 - 0x200E0 -> 0x200D0
+    0x200E0 - 0x200F0 -> 0x200E0
+    0x200F0 - 0x20100 -> 0x200F0
+    0x20100 - 0x20110 -> 0x20100
+    0x20110 - 0x20120 -> 0x20110
+    0x20120 - 0x20130 -> 0x20120
+    0x20130 - 0x20140 -> 0x20130
+    0x20140 - 0x20150 -> 0x20140
+    0x20150 - 0x20160 -> 0x20150
+    0x20160 - 0x20170 -> 0x20160
+    0x20170 - 0x20180 -> 0x20170
+    0x20180 - 0x20190 -> 0x20180
+    0x20190 - 0x201A0 -> 0x20190
+    0x201A0 - 0x201B0 -> 0x201A0
+    0x201B0 - 0x201C0 -> 0x201B0
+    0x201C0 - 0x201D0 -> 0x201C0
+    0x201D0 - 0x201E0 -> 0x201D0
+    0x201E0 - 0x201F0 -> 0x201E0
+    0x201F0 - 0x20200 -> 0x201F0
+    0x20200 - 0x20210 -> 0x20200
+    0x20210 - 0x20220 -> 0x20210
+    0x20220 - 0x20230 -> 0x20220
+    0x20230 - 0x20240 -> 0x20230
+    0x20240 - 0x20250 -> 0x20240
+    0x20250 - 0x20260 -> 0x20250
+    0x20260 - 0x20270 -> 0x20260
+    0x20270 - 0x20280 -> 0x20270
+    0x20280 - 0x20290 -> 0x20280
+    0x20290 - 0x202A0 -> 0x20290
+    0x202A0 - 0x202B0 -> 0x202A0
+    0x202B0 - 0x202C0 -> 0x202B0
+    0x202C0 - 0x202D0 -> 0x202C0
+    0x202D0 - 0x202E0 -> 0x202D0
+    0x202E0 - 0x202F0 -> 0x202E0
+    0x202F0 - 0x20300 -> 0x202F0
+    0x20300 - 0x20310 -> 0x20300
+    0x20310 - 0x20320 -> 0x20310
+    0x20320 - 0x20330 -> 0x20320
+    0x20330 - 0x20340 -> 0x20330
+    0x20340 - 0x20350 -> 0x20340
+    0x20350 - 0x20360 -> 0x20350
+    0x20360 - 0x20370 -> 0x20360
+    0x20370 - 0x20380 -> 0x20370
+    0x20380 - 0x20390 -> 0x20380
+    0x20390 - 0x203A0 -> 0x20390
+  ]
+  RedirectionMetadata [
+    0x20000 -> 0x168A0
+    0x20010 -> 0x129AC
+    0x20020 -> 0x132D4
+    0x20030 -> 0x11D3C
+    0x20040 -> 0x11994
+    0x20050 -> 0x10A20
+    0x20060 -> 0x14200
+    0x20070 -> 0x15480
+    0x20080 -> 0x149A8
+    0x20090 -> 0x134F4
+    0x200A0 -> 0x13F38
+    0x200B0 -> 0x118A0
+    0x200C0 -> 0x12710
+    0x200D0 -> 0x15A88
+    0x200E0 -> 0x12260
+    0x200F0 -> 0x14FDC
+    0x20100 -> 0x145F0
+    0x20110 -> 0x13D18
+    0x20120 -> 0x14E20
+    0x20130 -> 0x144E0
+    0x20140 -> 0x114FC
+    0x20150 -> 0x13714
+    0x20160 -> 0x14008
+    0x20170 -> 0x1413C
+    0x20180 -> 0x156E0
+    0x20190 -> 0x12A7C
+    0x201A0 -> 0x11A14
+    0x201B0 -> 0x14F1C
+    0x201C0 -> 0x13AA0
+    0x201D0 -> 0x10000
+    0x201E0 -> 0x10068
+    0x201F0 -> 0x10014
+    0x20200 -> 0x127BC
+    0x20210 -> 0x1320C
+    0x20220 -> 0x11A84
+    0x20230 -> 0x11914
+    0x20240 -> 0x1014C
+    0x20250 -> 0x15090
+    0x20260 -> 0x1465C
+    0x20270 -> 0x13454
+    0x20280 -> 0x1182C
+    0x20290 -> 0x12664
+    0x202A0 -> 0x1578C
+    0x202B0 -> 0x11EE0
+    0x202C0 -> 0x148F4
+    0x202D0 -> 0x13E28
+    0x202E0 -> 0x14AF0
+    0x202F0 -> 0x14250
+    0x20300 -> 0x110CC
+    0x20310 -> 0x13594
+    0x20320 -> 0x13F98
+    0x20330 -> 0x14078
+    0x20340 -> 0x15634
+    0x20350 -> 0x1288C
+    0x20360 -> 0x13980
+    0x20370 -> 0x10028
+    0x20380 -> 0x1003C
+    0x20390 -> 0x10050
+  ]
+  __os_arm64x_dispatch_call_no_redirect: 0x40210
+  __os_arm64x_dispatch_ret: 0x40220
+  __os_arm64x_dispatch_call: 0x40040
+  __os_arm64x_dispatch_icall: 0x40038
+  __os_arm64x_dispatch_icall_cfg: 0x40208
+  AlternateEntryPoint: 0x0
+  AuxiliaryIAT: 0x34000
+  GetX64InformationFunctionPointer: 0x40228
+  SetX64InformationFunctionPointer: 0x40230
+  ExtraRFETable: 0x50000
+  ExtraRFETableSize: 0x360
+  __os_arm64x_dispatch_fptr: 0x40218
+  AuxiliaryIATCopy: 0x33388
+  AuxiliaryDelayloadIAT: 0x0
+  AuxiliaryDelayloadIATCopy: 0x0
+  HybridImageInfoBitfield: 0x0
+]

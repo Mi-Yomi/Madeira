@@ -1,0 +1,1022 @@
+{
+  "aarch64": {
+    "cabinet.dll": {
+      "before_sha256": "1a96a5b407331415ec01833c245185c400449c7dfb1bb44c37828f945d5d0581",
+      "after_sha256": "07ac3b1407d192019d5076baa11ab7e9dfbfba8a06641d843caa0cee86ea1ee0",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "msi.dll": {
+      "before_sha256": "10641e6de84670508faa5e51cf73d8569b212a8a16a2a0bbb4d825068fda8282",
+      "after_sha256": "12bbe1e84a6ef12b6775f1e081e69e404736d9be5b118fa322d989d9f1b93221",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "msiexec.exe": {
+      "before_sha256": "6a3bde3019b961cd44766203c8f402b68d22c78a1e16396fa8deb72f6074b498",
+      "after_sha256": "2d4e5238d0be4d683e3490eea81ea3e09262392fc5cb95d082fd68ea545adfed",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "mspatcha.dll": {
+      "before_sha256": "ba3f29e7e47ecd36215abe0e8607fd981344da447a5c456c6746be97c9268910",
+      "after_sha256": "a60218a5f34e1635c66685074c67f4b3bb1d7c32f352a4c0ba185136f09325dc",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "odbccp32.dll": {
+      "before_sha256": "bca79fa3e32543f8923e3310bdb110c911cd95c51dc111db5e782c6b1c2ef6aa",
+      "after_sha256": "4a2c553140b3db43f1670080b81460549bc808650a60c33157e57db4e0a9d5da",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "regsvr32.exe": {
+      "before_sha256": "e0d12381f474496fa4553adc0e1a93453289b0af2648e09aaabd87d52ad113ac",
+      "after_sha256": "0a9bfdd6bf351971b05e295a269546df2eb5182a5d5ffc9a0942b33911cdcfdf",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "sxs.dll": {
+      "before_sha256": "9374b16af4669ac3dcd579b0c57e14ada6a45946c6c0d0b60df70210a6e2bf07",
+      "after_sha256": "2d298097cc8d40f47610bf906791e752479b7ac72edfd11968fb58c579a270ee",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    }
+  },
+  "arm64ec": {
+    "cabinet.dll": {
+      "before_sha256": "85b2af3161e5267fc3b41670e6978e3859521caf4e2a29b635bb3c2b20ae5282",
+      "after_sha256": "35d713f638431348d0720327157571d6bc037cdd5cc6ac26332fbf4f74523784",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "msi.dll": {
+      "before_sha256": "fe92ae19d3d5b0502c2e0aa3e5be0aaa48658eeedf672131bc6949818600a10e",
+      "after_sha256": "30fca59166929f1300d7708d45d56b401e680d0318b0ce7d7ff754987177f30d",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "msiexec.exe": {
+      "before_sha256": "12d25a8c041164c39ab1e6c5dae530dafef80d5518403cb34a81d2a98be9fa74",
+      "after_sha256": "dd46bf408250057474b4376880f3c81073477240587d0c551f54c37c99725549",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "mspatcha.dll": {
+      "before_sha256": "0b7b257e318aed0efab11de6be56c1043d7604e68c3db371bc3149e9a069a1e5",
+      "after_sha256": "922a4e61fcdf2807e0eee4e0951be28a923cd9d471c02e9320958cfc8f23029f",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "odbccp32.dll": {
+      "before_sha256": "2ff50689746ea84b964ddd382292c434a465cec4e996ebeb6afd5c8359b72656",
+      "after_sha256": "6ce8525c446e7bf6a43ddf317a2beaff690f13e1b0dd26178d0408675a6c74a6",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "regsvr32.exe": {
+      "before_sha256": "7991dab9849e452af27bf7b425750cad83e679f4ce4b8151e9d68b39f7b35577",
+      "after_sha256": "1501d3bc5c59dabb3e15d4fa32caae10f14db88f23b045d3f055481f414cbbde",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    },
+    "sxs.dll": {
+      "before_sha256": "1c5d4c5e88d496da2c5b410cb024544965efac1877059449d2f8bb4e4ab176e0",
+      "after_sha256": "20f055955274cb2a5f8520eccdbaa7980cafea8000916bb09bcd73242da2fff2",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true
+    }
+  },
+  "i386": {
+    "msi.dll": {
+      "before_sha256": "ff501528ce6c4b3a97417e11333a871053e60d98f1ea91228d09bc3966fb4bc7",
+      "after_sha256": "fe345c3ce9b2414d014c2eb98a8b82c53221d7eafdf2a57c7b24c06f713a7746",
+      "same_export_name_ordinal_forwarder_contract": true,
+      "same_normal_delay_import_contract": true,
+      "before_imports": [
+        {
+          "module": "urlmon.dll",
+          "kind": "import",
+          "symbols": [
+            "URLDownloadToCacheFileW"
+          ]
+        },
+        {
+          "module": "wininet.dll",
+          "kind": "import",
+          "symbols": [
+            "GetUrlCacheEntryInfoW"
+          ]
+        },
+        {
+          "module": "comctl32.dll",
+          "kind": "import",
+          "symbols": [
+            "ImageList_Add",
+            "ImageList_Create",
+            "ImageList_Destroy",
+            "ImageList_ReplaceIcon"
+          ]
+        },
+        {
+          "module": "shell32.dll",
+          "kind": "import",
+          "symbols": [
+            "SHGetFolderPathW",
+            "ShellExecuteW"
+          ]
+        },
+        {
+          "module": "shlwapi.dll",
+          "kind": "import",
+          "symbols": [
+            "PathAddBackslashW",
+            "PathAppendW",
+            "PathFindFileNameW",
+            "PathIsRelativeW",
+            "PathRemoveBackslashW",
+            "PathRemoveFileSpecW",
+            "PathStripPathW",
+            "PathStripToRootW",
+            "SHCreateStreamOnFileW",
+            "StrFormatByteSizeW",
+            "UrlIsW"
+          ]
+        },
+        {
+          "module": "cabinet.dll",
+          "kind": "import",
+          "symbols": [
+            "FDICopy",
+            "FDICreate",
+            "FDIDestroy"
+          ]
+        },
+        {
+          "module": "oleaut32.dll",
+          "kind": "import",
+          "symbols": [
+            "DispGetParam",
+            "LoadRegTypeLib",
+            "LoadTypeLib",
+            "LoadTypeLibEx",
+            "OleLoadPicture",
+            "RegisterTypeLib",
+            "SysAllocString",
+            "SysAllocStringByteLen",
+            "SysAllocStringLen",
+            "SysFreeString",
+            "SystemTimeToVariantTime",
+            "UnRegisterTypeLib",
+            "VariantChangeType",
+            "VariantClear",
+            "VariantCopy",
+            "VariantCopyInd",
+            "VariantInit",
+            "VariantTimeToSystemTime"
+          ]
+        },
+        {
+          "module": "ole32.dll",
+          "kind": "import",
+          "symbols": [
+            "CLSIDFromProgID",
+            "CLSIDFromString",
+            "CoCreateGuid",
+            "CoCreateInstance",
+            "CoInitialize",
+            "CoInitializeEx",
+            "CoTaskMemFree",
+            "CoUninitialize",
+            "CreateILockBytesOnHGlobal",
+            "CreateStreamOnHGlobal",
+            "StgCreateDocfile",
+            "StgOpenStorage",
+            "StgOpenStorageOnILockBytes",
+            "StringFromGUID2"
+          ]
+        },
+        {
+          "module": "version.dll",
+          "kind": "import",
+          "symbols": [
+            "GetFileVersionInfoSizeW",
+            "GetFileVersionInfoW",
+            "VerQueryValueW"
+          ]
+        },
+        {
+          "module": "user32.dll",
+          "kind": "import",
+          "symbols": [
+            "AdjustWindowRect",
+            "AppendMenuA",
+            "CallWindowProcW",
+            "CharLowerW",
+            "CharUpperW",
+            "CreatePopupMenu",
+            "CreateWindowExW",
+            "DefWindowProcW",
+            "DestroyIcon",
+            "DestroyMenu",
+            "DestroyWindow",
+            "DispatchMessageW",
+            "EnableWindow",
+            "EnumChildWindows",
+            "GetClientRect",
+            "GetDC",
+            "GetFocus",
+            "GetNextDlgTabItem",
+            "GetParent",
+            "GetPropW",
+            "GetWindowLongW",
+            "GetWindowRect",
+            "GetWindowTextW",
+            "InvalidateRect",
+            "IsDialogMessageW",
+            "LoadBitmapW",
+            "LoadCursorW",
+            "LoadIconW",
+            "LoadImageW",
+            "LoadStringW",
+            "MapWindowPoints",
+            "MessageBoxExA",
+            "MessageBoxExW",
+            "MessageBoxW",
+            "MsgWaitForMultipleObjects",
+            "MsgWaitForMultipleObjectsEx",
+            "PeekMessageW",
+            "PostMessageW",
+            "RegisterClassW",
+            "ReleaseDC",
+            "RemovePropW",
+            "SendMessageW",
+            "SetFocus",
+            "SetPropW",
+            "SetWindowLongW",
+            "SetWindowPos",
+            "SetWindowTextW",
+            "ShowWindow",
+            "TrackPopupMenu",
+            "TranslateMessage",
+            "UnregisterClassW",
+            "wsprintfA",
+            "wsprintfW"
+          ]
+        },
+        {
+          "module": "gdi32.dll",
+          "kind": "import",
+          "symbols": [
+            "CreateCompatibleBitmap",
+            "CreateCompatibleDC",
+            "CreateFontIndirectW",
+            "DeleteDC",
+            "DeleteObject",
+            "GetDeviceCaps",
+            "GetObjectW",
+            "GetStockObject",
+            "GetTextMetricsW",
+            "SelectObject",
+            "SetBkMode",
+            "SetTextColor",
+            "StretchBlt"
+          ]
+        },
+        {
+          "module": "advapi32.dll",
+          "kind": "import",
+          "symbols": [
+            "ChangeServiceConfig2W",
+            "CloseServiceHandle",
+            "ControlService",
+            "ConvertSidToStringSidW",
+            "CreateProcessAsUserW",
+            "CreateServiceW",
+            "DeleteService",
+            "EnumDependentServicesW",
+            "GetServiceDisplayNameW",
+            "GetTokenInformation",
+            "GetUserNameW",
+            "LookupAccountNameW",
+            "MD5Final",
+            "MD5Init",
+            "MD5Update",
+            "OpenProcessToken",
+            "OpenSCManagerW",
+            "OpenServiceW",
+            "QueryServiceStatusEx",
+            "RegCloseKey",
+            "RegCreateKeyExW",
+            "RegCreateKeyW",
+            "RegDeleteKeyExW",
+            "RegDeleteKeyW",
+            "RegDeleteTreeW",
+            "RegDeleteValueW",
+            "RegEnumKeyExW",
+            "RegEnumKeyW",
+            "RegEnumValueW",
+            "RegGetValueW",
+            "RegOpenKeyExW",
+            "RegOpenKeyW",
+            "RegQueryInfoKeyW",
+            "RegQueryValueExW",
+            "RegSetValueExW",
+            "StartServiceW"
+          ]
+        },
+        {
+          "module": "rpcrt4.dll",
+          "kind": "import",
+          "symbols": [
+            "I_RpcExceptionFilter",
+            "NdrClientCall2",
+            "NdrServerCall2",
+            "RpcBindingFree",
+            "RpcBindingFromStringBindingW",
+            "RpcServerRegisterIfEx",
+            "RpcServerUnregisterIf",
+            "RpcServerUseProtseqEpW",
+            "RpcStringBindingComposeW",
+            "RpcStringFreeW"
+          ]
+        },
+        {
+          "module": "sxs.dll",
+          "kind": "import",
+          "symbols": [
+            "CreateAssemblyCache"
+          ]
+        },
+        {
+          "module": "imagehlp.dll",
+          "kind": "import",
+          "symbols": [
+            "BindImage"
+          ]
+        },
+        {
+          "module": "mspatcha.dll",
+          "kind": "import",
+          "symbols": [
+            "ApplyPatchToFileW"
+          ]
+        },
+        {
+          "module": "odbccp32.dll",
+          "kind": "import",
+          "symbols": [
+            "SQLConfigDataSourceW",
+            "SQLInstallDriverExW",
+            "SQLInstallTranslatorExW",
+            "SQLRemoveDriverW",
+            "SQLRemoveTranslatorW"
+          ]
+        },
+        {
+          "module": "wintrust.dll",
+          "kind": "import",
+          "symbols": [
+            "WTHelperGetProvCertFromChain",
+            "WTHelperGetProvSignerFromChain",
+            "WinVerifyTrustEx"
+          ]
+        },
+        {
+          "module": "crypt32.dll",
+          "kind": "import",
+          "symbols": [
+            "CertDuplicateCertificateContext"
+          ]
+        },
+        {
+          "module": "ucrtbase.dll",
+          "kind": "import",
+          "symbols": [
+            "__acrt_iob_func",
+            "__stdio_common_vsprintf",
+            "__stdio_common_vswprintf",
+            "_assert",
+            "_strdup",
+            "_wcsdup",
+            "_wcsicmp",
+            "_wcsnicmp",
+            "_wcsupr",
+            "_wtoi",
+            "bsearch",
+            "calloc",
+            "free",
+            "fwrite",
+            "getenv",
+            "iswdigit",
+            "iswspace",
+            "malloc",
+            "memcmp",
+            "memcpy",
+            "memmove",
+            "memset",
+            "qsort",
+            "realloc",
+            "strcat",
+            "strchr",
+            "strcmp",
+            "strcpy",
+            "strcspn",
+            "strlen",
+            "strtol",
+            "towupper",
+            "wcscat",
+            "wcschr",
+            "wcscmp",
+            "wcscpy",
+            "wcslen",
+            "wcsncmp",
+            "wcsrchr",
+            "wcsstr",
+            "wcstol"
+          ]
+        },
+        {
+          "module": "kernel32.dll",
+          "kind": "import",
+          "symbols": [
+            "CloseHandle",
+            "ConnectNamedPipe",
+            "CopyFileW",
+            "CreateDirectoryW",
+            "CreateFileMappingW",
+            "CreateFileW",
+            "CreateNamedPipeW",
+            "CreateProcessW",
+            "CreateThread",
+            "DebugBreak",
+            "DeleteCriticalSection",
+            "DeleteFileW",
+            "DisableThreadLibraryCalls",
+            "DosDateTimeToFileTime",
+            "DuplicateHandle",
+            "EnterCriticalSection",
+            "EnumResourceNamesW",
+            "ExpandEnvironmentStringsW",
+            "FileTimeToLocalFileTime",
+            "FileTimeToSystemTime",
+            "FindClose",
+            "FindFirstFileW",
+            "FindNextFileW",
+            "FindResourceExW",
+            "FindResourceW",
+            "FreeLibrary",
+            "GetComputerNameW",
+            "GetCurrentDirectoryW",
+            "GetDateFormatW",
+            "GetDiskFreeSpaceExW",
+            "GetDriveTypeW",
+            "GetEnvironmentVariableW",
+            "GetExitCodeProcess",
+            "GetExitCodeThread",
+            "GetFileAttributesW",
+            "GetFileSize",
+            "GetFullPathNameW",
+            "GetLocalTime",
+            "GetLogicalDriveStringsW",
+            "GetLogicalDrives",
+            "GetModuleFileNameW",
+            "GetModuleHandleW",
+            "GetNativeSystemInfo",
+            "GetPrivateProfileStringW",
+            "GetProcAddress",
+            "GetShortPathNameW",
+            "GetSystemDefaultLangID",
+            "GetSystemDirectoryW",
+            "GetSystemWow64DirectoryW",
+            "GetTempFileNameW",
+            "GetTempPathW",
+            "GetTickCount64",
+            "GetTickCount",
+            "GetTimeFormatW",
+            "GetUserDefaultLangID",
+            "GetVersion",
+            "GetVolumeInformationW",
+            "GetWindowsDirectoryW",
+            "GlobalAlloc",
+            "GlobalFree",
+            "GlobalMemoryStatusEx",
+            "HeapAlloc",
+            "HeapFree",
+            "HeapReAlloc",
+            "IsBadStringPtrA",
+            "IsBadStringPtrW",
+            "IsValidCodePage",
+            "IsValidLocale",
+            "IsWow64Process2",
+            "IsWow64Process",
+            "LeaveCriticalSection",
+            "LoadLibraryA",
+            "LoadLibraryExW",
+            "LoadLibraryW",
+            "LoadResource",
+            "LocalFileTimeToFileTime",
+            "LocalFree",
+            "LockResource",
+            "MapViewOfFile",
+            "MoveFileExW",
+            "MulDiv",
+            "MultiByteToWideChar",
+            "RaiseException",
+            "ReadFile",
+            "RemoveDirectoryW",
+            "RtlUnwind",
+            "SearchPathW",
+            "SetFileAttributesW",
+            "SetFilePointer",
+            "SetFileTime",
+            "SizeofResource",
+            "Sleep",
+            "SystemTimeToFileTime",
+            "TzSpecificLocalTimeToSystemTime",
+            "UnmapViewOfFile",
+            "WaitForSingleObject",
+            "WideCharToMultiByte",
+            "Wow64DisableWow64FsRedirection",
+            "Wow64RevertWow64FsRedirection",
+            "WriteFile",
+            "WritePrivateProfileStringW"
+          ]
+        },
+        {
+          "module": "ntdll.dll",
+          "kind": "import",
+          "symbols": [
+            "NtCreateSection",
+            "NtQuerySection",
+            "RtlGetVersion",
+            "_chkstk",
+            "_vsnprintf"
+          ]
+        }
+      ],
+      "after_imports": [
+        {
+          "module": "urlmon.dll",
+          "kind": "import",
+          "symbols": [
+            "URLDownloadToCacheFileW"
+          ]
+        },
+        {
+          "module": "wininet.dll",
+          "kind": "import",
+          "symbols": [
+            "GetUrlCacheEntryInfoW"
+          ]
+        },
+        {
+          "module": "comctl32.dll",
+          "kind": "import",
+          "symbols": [
+            "ImageList_Add",
+            "ImageList_Create",
+            "ImageList_Destroy",
+            "ImageList_ReplaceIcon"
+          ]
+        },
+        {
+          "module": "shell32.dll",
+          "kind": "import",
+          "symbols": [
+            "SHGetFolderPathW",
+            "ShellExecuteW"
+          ]
+        },
+        {
+          "module": "shlwapi.dll",
+          "kind": "import",
+          "symbols": [
+            "PathAddBackslashW",
+            "PathAppendW",
+            "PathFindFileNameW",
+            "PathIsRelativeW",
+            "PathRemoveBackslashW",
+            "PathRemoveFileSpecW",
+            "PathStripPathW",
+            "PathStripToRootW",
+            "SHCreateStreamOnFileW",
+            "StrFormatByteSizeW",
+            "UrlIsW"
+          ]
+        },
+        {
+          "module": "cabinet.dll",
+          "kind": "import",
+          "symbols": [
+            "FDICopy",
+            "FDICreate",
+            "FDIDestroy"
+          ]
+        },
+        {
+          "module": "oleaut32.dll",
+          "kind": "import",
+          "symbols": [
+            "DispGetParam",
+            "LoadRegTypeLib",
+            "LoadTypeLib",
+            "LoadTypeLibEx",
+            "OleLoadPicture",
+            "RegisterTypeLib",
+            "SysAllocString",
+            "SysAllocStringByteLen",
+            "SysAllocStringLen",
+            "SysFreeString",
+            "SystemTimeToVariantTime",
+            "UnRegisterTypeLib",
+            "VariantChangeType",
+            "VariantClear",
+            "VariantCopy",
+            "VariantCopyInd",
+            "VariantInit",
+            "VariantTimeToSystemTime"
+          ]
+        },
+        {
+          "module": "ole32.dll",
+          "kind": "import",
+          "symbols": [
+            "CLSIDFromProgID",
+            "CLSIDFromString",
+            "CoCreateGuid",
+            "CoCreateInstance",
+            "CoInitialize",
+            "CoInitializeEx",
+            "CoTaskMemFree",
+            "CoUninitialize",
+            "CreateILockBytesOnHGlobal",
+            "CreateStreamOnHGlobal",
+            "StgCreateDocfile",
+            "StgOpenStorage",
+            "StgOpenStorageOnILockBytes",
+            "StringFromGUID2"
+          ]
+        },
+        {
+          "module": "version.dll",
+          "kind": "import",
+          "symbols": [
+            "GetFileVersionInfoSizeW",
+            "GetFileVersionInfoW",
+            "VerQueryValueW"
+          ]
+        },
+        {
+          "module": "user32.dll",
+          "kind": "import",
+          "symbols": [
+            "AdjustWindowRect",
+            "AppendMenuA",
+            "CallWindowProcW",
+            "CharLowerW",
+            "CharUpperW",
+            "CreatePopupMenu",
+            "CreateWindowExW",
+            "DefWindowProcW",
+            "DestroyIcon",
+            "DestroyMenu",
+            "DestroyWindow",
+            "DispatchMessageW",
+            "EnableWindow",
+            "EnumChildWindows",
+            "GetClientRect",
+            "GetDC",
+            "GetFocus",
+            "GetNextDlgTabItem",
+            "GetParent",
+            "GetPropW",
+            "GetWindowLongW",
+            "GetWindowRect",
+            "GetWindowTextW",
+            "InvalidateRect",
+            "IsDialogMessageW",
+            "LoadBitmapW",
+            "LoadCursorW",
+            "LoadIconW",
+            "LoadImageW",
+            "LoadStringW",
+            "MapWindowPoints",
+            "MessageBoxExA",
+            "MessageBoxExW",
+            "MessageBoxW",
+            "MsgWaitForMultipleObjects",
+            "MsgWaitForMultipleObjectsEx",
+            "PeekMessageW",
+            "PostMessageW",
+            "RegisterClassW",
+            "ReleaseDC",
+            "RemovePropW",
+            "SendMessageW",
+            "SetFocus",
+            "SetPropW",
+            "SetWindowLongW",
+            "SetWindowPos",
+            "SetWindowTextW",
+            "ShowWindow",
+            "TrackPopupMenu",
+            "TranslateMessage",
+            "UnregisterClassW",
+            "wsprintfA",
+            "wsprintfW"
+          ]
+        },
+        {
+          "module": "gdi32.dll",
+          "kind": "import",
+          "symbols": [
+            "CreateCompatibleBitmap",
+            "CreateCompatibleDC",
+            "CreateFontIndirectW",
+            "DeleteDC",
+            "DeleteObject",
+            "GetDeviceCaps",
+            "GetObjectW",
+            "GetStockObject",
+            "GetTextMetricsW",
+            "SelectObject",
+            "SetBkMode",
+            "SetTextColor",
+            "StretchBlt"
+          ]
+        },
+        {
+          "module": "advapi32.dll",
+          "kind": "import",
+          "symbols": [
+            "ChangeServiceConfig2W",
+            "CloseServiceHandle",
+            "ControlService",
+            "ConvertSidToStringSidW",
+            "CreateProcessAsUserW",
+            "CreateServiceW",
+            "DeleteService",
+            "EnumDependentServicesW",
+            "GetServiceDisplayNameW",
+            "GetTokenInformation",
+            "GetUserNameW",
+            "LookupAccountNameW",
+            "MD5Final",
+            "MD5Init",
+            "MD5Update",
+            "OpenProcessToken",
+            "OpenSCManagerW",
+            "OpenServiceW",
+            "QueryServiceStatusEx",
+            "RegCloseKey",
+            "RegCreateKeyExW",
+            "RegCreateKeyW",
+            "RegDeleteKeyExW",
+            "RegDeleteKeyW",
+            "RegDeleteTreeW",
+            "RegDeleteValueW",
+            "RegEnumKeyExW",
+            "RegEnumKeyW",
+            "RegEnumValueW",
+            "RegGetValueW",
+            "RegOpenKeyExW",
+            "RegOpenKeyW",
+            "RegQueryInfoKeyW",
+            "RegQueryValueExW",
+            "RegSetValueExW",
+            "StartServiceW"
+          ]
+        },
+        {
+          "module": "rpcrt4.dll",
+          "kind": "import",
+          "symbols": [
+            "I_RpcExceptionFilter",
+            "NdrClientCall2",
+            "NdrServerCall2",
+            "RpcBindingFree",
+            "RpcBindingFromStringBindingW",
+            "RpcServerRegisterIfEx",
+            "RpcServerUnregisterIf",
+            "RpcServerUseProtseqEpW",
+            "RpcStringBindingComposeW",
+            "RpcStringFreeW"
+          ]
+        },
+        {
+          "module": "sxs.dll",
+          "kind": "import",
+          "symbols": [
+            "CreateAssemblyCache"
+          ]
+        },
+        {
+          "module": "imagehlp.dll",
+          "kind": "import",
+          "symbols": [
+            "BindImage"
+          ]
+        },
+        {
+          "module": "mspatcha.dll",
+          "kind": "import",
+          "symbols": [
+            "ApplyPatchToFileW"
+          ]
+        },
+        {
+          "module": "odbccp32.dll",
+          "kind": "import",
+          "symbols": [
+            "SQLConfigDataSourceW",
+            "SQLInstallDriverExW",
+            "SQLInstallTranslatorExW",
+            "SQLRemoveDriverW",
+            "SQLRemoveTranslatorW"
+          ]
+        },
+        {
+          "module": "wintrust.dll",
+          "kind": "import",
+          "symbols": [
+            "WTHelperGetProvCertFromChain",
+            "WTHelperGetProvSignerFromChain",
+            "WinVerifyTrustEx"
+          ]
+        },
+        {
+          "module": "crypt32.dll",
+          "kind": "import",
+          "symbols": [
+            "CertDuplicateCertificateContext"
+          ]
+        },
+        {
+          "module": "ucrtbase.dll",
+          "kind": "import",
+          "symbols": [
+            "__acrt_iob_func",
+            "__stdio_common_vsprintf",
+            "__stdio_common_vswprintf",
+            "_assert",
+            "_strdup",
+            "_wcsdup",
+            "_wcsicmp",
+            "_wcsnicmp",
+            "_wcsupr",
+            "_wtoi",
+            "bsearch",
+            "calloc",
+            "free",
+            "fwrite",
+            "getenv",
+            "iswdigit",
+            "iswspace",
+            "malloc",
+            "memcmp",
+            "memcpy",
+            "memmove",
+            "memset",
+            "qsort",
+            "realloc",
+            "strcat",
+            "strchr",
+            "strcmp",
+            "strcpy",
+            "strcspn",
+            "strlen",
+            "strtol",
+            "towupper",
+            "wcscat",
+            "wcschr",
+            "wcscmp",
+            "wcscpy",
+            "wcslen",
+            "wcsncmp",
+            "wcsrchr",
+            "wcsstr",
+            "wcstol"
+          ]
+        },
+        {
+          "module": "kernel32.dll",
+          "kind": "import",
+          "symbols": [
+            "CloseHandle",
+            "ConnectNamedPipe",
+            "CopyFileW",
+            "CreateDirectoryW",
+            "CreateFileMappingW",
+            "CreateFileW",
+            "CreateNamedPipeW",
+            "CreateProcessW",
+            "CreateThread",
+            "DebugBreak",
+            "DeleteCriticalSection",
+            "DeleteFileW",
+            "DisableThreadLibraryCalls",
+            "DosDateTimeToFileTime",
+            "DuplicateHandle",
+            "EnterCriticalSection",
+            "EnumResourceNamesW",
+            "ExpandEnvironmentStringsW",
+            "FileTimeToLocalFileTime",
+            "FileTimeToSystemTime",
+            "FindClose",
+            "FindFirstFileW",
+            "FindNextFileW",
+            "FindResourceExW",
+            "FindResourceW",
+            "FreeLibrary",
+            "GetComputerNameW",
+            "GetCurrentDirectoryW",
+            "GetDateFormatW",
+            "GetDiskFreeSpaceExW",
+            "GetDriveTypeW",
+            "GetEnvironmentVariableW",
+            "GetExitCodeProcess",
+            "GetExitCodeThread",
+            "GetFileAttributesW",
+            "GetFileSize",
+            "GetFullPathNameW",
+            "GetLocalTime",
+            "GetLogicalDriveStringsW",
+            "GetLogicalDrives",
+            "GetModuleFileNameW",
+            "GetModuleHandleW",
+            "GetNativeSystemInfo",
+            "GetPrivateProfileStringW",
+            "GetProcAddress",
+            "GetShortPathNameW",
+            "GetSystemDefaultLangID",
+            "GetSystemDirectoryW",
+            "GetSystemWow64DirectoryW",
+            "GetTempFileNameW",
+            "GetTempPathW",
+            "GetTickCount64",
+            "GetTickCount",
+            "GetTimeFormatW",
+            "GetUserDefaultLangID",
+            "GetVersion",
+            "GetVolumeInformationW",
+            "GetWindowsDirectoryW",
+            "GlobalAlloc",
+            "GlobalFree",
+            "GlobalMemoryStatusEx",
+            "HeapAlloc",
+            "HeapFree",
+            "HeapReAlloc",
+            "IsBadStringPtrA",
+            "IsBadStringPtrW",
+            "IsValidCodePage",
+            "IsValidLocale",
+            "IsWow64Process2",
+            "IsWow64Process",
+            "LeaveCriticalSection",
+            "LoadLibraryA",
+            "LoadLibraryExW",
+            "LoadLibraryW",
+            "LoadResource",
+            "LocalFileTimeToFileTime",
+            "LocalFree",
+            "LockResource",
+            "MapViewOfFile",
+            "MoveFileExW",
+            "MulDiv",
+            "MultiByteToWideChar",
+            "RaiseException",
+            "ReadFile",
+            "RemoveDirectoryW",
+            "RtlUnwind",
+            "SearchPathW",
+            "SetFileAttributesW",
+            "SetFilePointer",
+            "SetFileTime",
+            "SizeofResource",
+            "Sleep",
+            "SystemTimeToFileTime",
+            "TzSpecificLocalTimeToSystemTime",
+            "UnmapViewOfFile",
+            "WaitForSingleObject",
+            "WideCharToMultiByte",
+            "Wow64DisableWow64FsRedirection",
+            "Wow64RevertWow64FsRedirection",
+            "WriteFile",
+            "WritePrivateProfileStringW"
+          ]
+        },
+        {
+          "module": "ntdll.dll",
+          "kind": "import",
+          "symbols": [
+            "NtCreateSection",
+            "NtQuerySection",
+            "RtlGetVersion",
+            "_chkstk",
+            "_vsnprintf"
+          ]
+        }
+      ]
+    }
+  }
+}

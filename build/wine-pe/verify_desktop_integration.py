@@ -14,6 +14,7 @@ import subprocess
 
 import guest_inventory as inventory
 import plan_desktop_overlay as planner
+import verify_msi_integration as msi
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORD = "build/wine-pe/desktop-integration.json"
@@ -41,12 +42,18 @@ def wine_gitlink(root):
                     "Current Wine gitlink differs from the reviewed desktop source")
 
 
-def validate_farms(root, stage):
+def validate_farms(root, stage, msi_extension=None):
     """Rebind existing same-architecture inputs before trusting the old audit."""
     counts = {}
     for arch in planner.ARCHES:
         farm = planner.safe_path(root / "app/Madeira", arch + "-windows")
         old = planner.document(stage, arch + "-inventory.json")
+        required = planner.NAMES
+        if msi_extension is not None:
+            planner.require(msi.contract(msi_extension["baselines"][arch]) == msi.contract(old),
+                            "MSI baseline differs from the original sealed desktop inventory")
+            old = msi_extension["combined"][arch]
+            required = required | msi.NAMES
         expected = old["modules"]
         paths = {}
         for path in planner.children(farm, inventory.MAX_FARM_FILES):
@@ -63,7 +70,7 @@ def validate_farms(root, stage):
             planner.require(total <= inventory.MAX_FARM_BYTES and
                             identity == {key: expected[name][key] for key in ("bytes", "sha256")},
                             "Desktop farm bytes differ from sealed audit before PE parsing: " + name)
-        current = inventory.audit_farm(farm, arch, planner.NAMES)
+        current = inventory.audit_farm(farm, arch, required)
         planner.require(not current["errors"] and not current["missing_required"] and
                         {key: value for key, value in current.items() if key != "folder"} ==
                         {key: value for key, value in old.items() if key != "folder"},
@@ -120,14 +127,22 @@ def validate(root, resources, tracked):
             pe = inventory.PE(raw)
             planner.require(pe.architecture() == name.split("-windows/")[0],
                             "Wrong architecture in desktop integration: " + name)
-    counts = validate_farms(root, stage)
-    planner.require(counts == record.get("residual_dependency_counts") == {"aarch64": 14, "arm64ec": 11},
+    # The desktop seal and its historical baseline remain immutable. A fixed,
+    # separately sealed MSI extension must rebind every original input and gap;
+    # arbitrary additions still fail the exact combined farm inventory check.
+    extension = msi.validate(root, resources, tracked) if msi.present(root) else None
+    counts = validate_farms(root, stage, extension)
+    planner.require(record.get("residual_dependency_counts") == msi.BASELINE_COUNTS and
+                    counts == (msi.RESIDUAL_COUNTS if extension else msi.BASELINE_COUNTS),
                     "Do not silently clear pre-existing full-farm dependency gaps")
     planner.require(planner.seal(stage, REVIEWED_SEAL) == sealed,
                     "Desktop sealed evidence changed during verification")
     return {"stage_seal_sha256": REVIEWED_SEAL, "dll_count": len(DLLS),
             "evidence_files": len(stage_paths), "published_recipe_commit": commit,
-            "runtime_tested": False, "package_ready": False}
+            "runtime_tested": False, "package_ready": False,
+            "historical_dependency_counts": msi.BASELINE_COUNTS,
+            "current_dependency_counts": counts,
+            "msi": extension["summary"] if extension else None}
 
 
 def main():
@@ -136,9 +151,10 @@ def main():
     args = parser.parse_args()
     root = args.root.resolve()
     tracked = git_output(root, "ls-files", "-z", "--").split("\0")
+    required = set(COPIES) | MERGED_NOTICES | (msi.FILES if msi.present(root) else set())
     resources = {name.removeprefix("app/Madeira/"): planner.identity(root / name)["sha256"]
                  for name in tracked if name.startswith("app/Madeira/") and
-                 name.removeprefix("app/Madeira/") in set(COPIES) | MERGED_NOTICES}
+                 name.removeprefix("app/Madeira/") in required}
     print(json.dumps(validate(root, resources, tracked), indent=2, sort_keys=True))
 
 

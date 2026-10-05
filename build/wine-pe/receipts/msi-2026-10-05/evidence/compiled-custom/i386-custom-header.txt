@@ -1,0 +1,16 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/evidence/compiled-custom/i386-custom.o
+Format: COFF-i386
+Arch: i386
+AddressSize: 32bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_I386 (0x14C)
+  SectionCount: 174
+  TimeDateStamp: 2026-10-05 06:05:24 (0x6AC33E24)
+  PointerToSymbolTable: 0x20D42
+  SymbolCount: 611
+  StringTableSize: 10362
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "source_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f",
+  "baseline_sha256": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+  "combined_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5",
+  "combined_patch_sha256": "3efc2fb4733e67f8951284d5f0384a4df4a39f284a5f30fc395840bbbc1ea4a8",
+  "patch_application": [
+    {
+      "order": "action-then-server",
+      "steps": [
+        {
+          "patch": "msi-dll-action-failures.patch",
+          "before_sha256": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+          "after_sha256": "bc6ce9eaf99b1d998d778420c8ffe5d069961804d72ff56d9d3a8bd99850b8d1"
+        },
+        {
+          "patch": "msi-server-startup.patch",
+          "before_sha256": "bc6ce9eaf99b1d998d778420c8ffe5d069961804d72ff56d9d3a8bd99850b8d1",
+          "after_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5"
+        }
+      ],
+      "sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5"
+    },
+    {
+      "order": "server-then-action",
+      "steps": [
+        {
+          "patch": "msi-server-startup.patch",
+          "before_sha256": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+          "after_sha256": "d48f510f0790e782cfd0e8623f277268c1737755cb17ca8d80d04cbac24d2004"
+        },
+        {
+          "patch": "msi-dll-action-failures.patch",
+          "before_sha256": "d48f510f0790e782cfd0e8623f277268c1737755cb17ca8d80d04cbac24d2004",
+          "after_sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5"
+        }
+      ],
+      "sha256": "31c63ede3acf225cfe4d9d772a00b752e82410ebcb060f58f0bfbc9f9e2ea0c5"
+    }
+  ],
+  "changed_functions": [
+    "UINT CDECL __wine_msi_call_dll_function(",
+    "static DWORD custom_start_server(",
+    "static custom_action_info *do_msidbCustomActionTypeDll("
+  ],
+  "source_scope_verified": true,
+  "source_harness_extractions_match_individual_candidates": true,
+  "portable_tests": [
+    {
+      "harness": "action",
+      "source": "baseline",
+      "profile": "optimized",
+      "cases": 113,
+      "checks": 5344,
+      "failures": 50,
+      "expected_failures": 50
+    },
+    {
+      "harness": "action",
+      "source": "baseline",
+      "profile": "asan-ubsan",
+      "cases": 113,
+      "checks": 5344,
+      "failures": 50,
+      "expected_failures": 50
+    },
+    {
+      "harness": "action",
+      "source": "combined",
+      "profile": "optimized",
+      "cases": 113,
+      "checks": 5344,
+      "failures": 0,
+      "expected_failures": 0
+    },
+    {
+      "harness": "action",
+      "source": "combined",
+      "profile": "asan-ubsan",
+      "cases": 113,
+      "checks": 5344,
+      "failures": 0,
+      "expected_failures": 0
+    },
+    {
+      "harness": "startup",
+      "source": "baseline",
+      "profile": "optimized",
+      "cases": 52,
+      "checks": 1267,
+      "failures": 211,
+      "expected_failures": 211
+    },
+    {
+      "harness": "startup",
+      "source": "baseline",
+      "profile": "asan-ubsan",
+      "cases": 52,
+      "checks": 1267,
+      "failures": 211,
+      "expected_failures": 211
+    },
+    {
+      "harness": "startup",
+      "source": "combined",
+      "profile": "optimized",
+      "cases": 52,
+      "checks": 1231,
+      "failures": 0,
+      "expected_failures": 0
+    },
+    {
+      "harness": "startup",
+      "source": "combined",
+      "profile": "asan-ubsan",
+      "cases": 52,
+      "checks": 1231,
+      "failures": 0,
+      "expected_failures": 0
+    }
+  ],
+  "protected_inputs_before": {
+    "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/repo/wine/dlls/msi/custom.c": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/wine/dlls/msi/custom.c": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/wine/dlls/msi/msipriv.h": "c42948fc95395d687db177645048bc24b92ed2e3d1ef191f18c96ee7721199e3",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/build-aarch64/include/config.h": "4625440e716c5f92cdfa2269519ba3b7928d28d6b1e5d4460db5d0e7dc78f1eb",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/build-arm64ec/include/config.h": "4625440e716c5f92cdfa2269519ba3b7928d28d6b1e5d4460db5d0e7dc78f1eb"
+  },
+  "protected_inputs_after": {
+    "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/repo/wine/dlls/msi/custom.c": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/wine/dlls/msi/custom.c": "201da579180bccd76abbf0feb291686faa29c7940357e55a08838bde5b501c25",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/wine/dlls/msi/msipriv.h": "c42948fc95395d687db177645048bc24b92ed2e3d1ef191f18c96ee7721199e3",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/build-aarch64/include/config.h": "4625440e716c5f92cdfa2269519ba3b7928d28d6b1e5d4460db5d0e7dc78f1eb",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-msi-provider-build-20261005/build-arm64ec/include/config.h": "4625440e716c5f92cdfa2269519ba3b7928d28d6b1e5d4460db5d0e7dc78f1eb"
+  },
+  "provider_build_trees_metadata_unchanged": true,
+  "provider_build_tree_file_counts": {
+    "aarch64": 1827,
+    "arm64ec": 1783
+  },
+  "cross_compile_manifest": "test-results/cross-compile/manifest.json",
+  "object_machines_verified": [
+    "ARM64 (0xAA64)",
+    "ARM64EC (0xA641)"
+  ],
+  "runtime_tested": false,
+  "linked": false,
+  "published": false,
+  "sanitizers": {
+    "address": true,
+    "undefined": true,
+    "leak": false,
+    "leak_disabled_reason": "executor ptrace restriction; explicit resource counters remain active"
+  }
+}

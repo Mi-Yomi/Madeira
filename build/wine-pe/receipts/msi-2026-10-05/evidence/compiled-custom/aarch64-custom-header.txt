@@ -1,0 +1,16 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-msi-patched-provider-build-20261005/evidence/compiled-custom/aarch64-custom.o
+Format: COFF-ARM64
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64 (0xAA64)
+  SectionCount: 227
+  TimeDateStamp: 2026-10-05 06:04:10 (0x6AC33DDA)
+  PointerToSymbolTable: 0x29E94
+  SymbolCount: 707
+  StringTableSize: 9663
+  OptionalHeaderSize: 0
+  Characteristics [ (0x0)
+  ]
+}
