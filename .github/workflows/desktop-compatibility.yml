@@ -94,6 +94,8 @@ jobs:
         run: python3 tests/host/check-memory-overlay.py
       - name: Check compiled launch-profile validation
         run: python3 tests/host/check-launch-validation.py
+      - name: Check compiled executable paths and Unicode confinement
+        run: python3 tests/host/check-executable-paths.py
       - name: Check compiled working folders and launch diagnostics
         run: |
           python3 tests/host/check-working-directory.py

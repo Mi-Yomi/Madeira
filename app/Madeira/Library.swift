@@ -679,7 +679,9 @@ final class LibraryModel: ObservableObject {
 
     static func executable(_ relative: String) throws -> URL {
         let url = drive.appendingPathComponent(relative).resolvingSymlinksInPath().standardizedFileURL
-        guard url.path.hasPrefix(drive.path + "/"), url.pathExtension.lowercased() == "exe",
+        // Filesystem containment compares bytes, not canonically equivalent
+        // Strings or Characters formed by a slash followed by a combining mark.
+        guard url.path.utf8.starts(with: (drive.path + "/").utf8), url.pathExtension.lowercased() == "exe",
               FileManager.default.fileExists(atPath: url.path) else {
             throw LibraryError.message("Choose an executable inside drive_c.")
         }
@@ -723,7 +725,9 @@ final class LibraryModel: ObservableObject {
     }
 
     static func inspect(_ url: URL) throws -> LibraryEntry {
-        guard url.resolvingSymlinksInPath().path.hasPrefix(drive.path + "/") else {
+        let resolvedPath = url.resolvingSymlinksInPath().path
+        let prefix = (drive.path + "/").utf8
+        guard resolvedPath.utf8.starts(with: prefix) else {
             throw LibraryError.message("The executable must be inside drive_c.")
         }
         let h = try FileHandle(forReadingFrom: url); defer { try? h.close() }
@@ -736,7 +740,7 @@ final class LibraryModel: ObservableObject {
         guard pe.count == 6, Array(pe.prefix(4)) == [0x50, 0x45, 0, 0] else { throw LibraryError.message("Missing PE header.") }
         let machine = Int(pe[4]) | Int(pe[5]) << 8
         guard machine == 0x14c || machine == 0x8664 else { throw LibraryError.message("Only x86 and x64 executables are supported.") }
-        let relative = String(url.resolvingSymlinksInPath().path.dropFirst(drive.path.count + 1))
+        let relative = String(decoding: resolvedPath.utf8.dropFirst(prefix.count), as: UTF8.self)
         let name = url.deletingPathExtension().lastPathComponent.replacingOccurrences(of: "_", with: " ")
         var entry = LibraryEntry(title: name, relativePath: relative, bits: machine == 0x14c ? 32 : 64)
         entry.graphicsAPI = graphicsImports(url)
