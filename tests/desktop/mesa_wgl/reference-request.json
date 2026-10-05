@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "request": "source-built-softpipe-reference-20261005-1",
+  "request": "source-built-softpipe-reference-20261005-2",
   "mesa": "26.2.4",
   "renderer": "softpipe",
   "scope": "Microsoft Windows reference only",

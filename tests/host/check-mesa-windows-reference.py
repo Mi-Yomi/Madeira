@@ -91,6 +91,7 @@ unsupported = legacy.replace('CANARY stage=legacy', 'CANARY stage=core43').repla
 assert parse(unsupported, code=77, stage='core43')['status'] == 'unavailable'
 checks += 1
 for old, new in [('win32_error=8341', 'win32_error=8'), ('win32_error=8341', 'win32_error=0'),
+                 ('win32_error=8341', 'win32_error=203'),
                  ('PASS stage=gdi-memory', ''), ('rgb=191,64,128', 'rgb=64,128,191')]:
     reject(lambda old=old, new=new: parse(unsupported.replace(old, new), code=77, stage='core43'), old)
 reject(lambda: parse(unsupported, code=1, stage='core43'), 'wrong unavailable exit')
@@ -115,6 +116,44 @@ with tempfile.TemporaryDirectory() as directory:
     assert not (path / 'escape').exists()
 
 lock = json.loads((SOURCE / 'inputs.lock.json').read_text())
+# The source-derived ceiling is separate from generic context-error handling.
+# Altered source/configuration, wrong renderer, failed pixels, overrides and
+# cleanup failures must never be converted into capability unavailability.
+source_evidence = dict(ref.SOFTPIPE_CEILING_SOURCES)
+build_config = dict(ref.SOFTPIPE_CEILING_CONFIG)
+legacy_proof = parse(legacy)
+runtime_env = {'GALLIUM_DRIVER': 'softpipe'}
+capability = ref.source_bound_core43(source_evidence, lock, build_config, legacy_proof, runtime_env)
+assert capability['status'] == 'unavailable'
+assert capability['classification'] == 'pinned-source-capability-ceiling'
+assert capability['source_glsl_feature_ceiling'] == 400
+assert capability['required_glsl_feature_level'] == 430
+assert capability['context_creation_attempted'] is False
+assert capability['runtime_core_maximum_measured'] is False
+checks += 1
+for path in source_evidence:
+    corrupt = dict(source_evidence); corrupt[path] = '0' * 64
+    reject(lambda corrupt=corrupt: ref.source_bound_core43(corrupt, lock, build_config, legacy_proof, runtime_env), 'changed source ceiling')
+for key, value in [('gallium-drivers', ['llvmpipe']), ('llvm', 'enabled'),
+                   ('draw-use-llvm', True), ('xmlconfig', 'enabled')]:
+    corrupt = dict(build_config); corrupt[key] = value
+    reject(lambda corrupt=corrupt: ref.source_bound_core43(source_evidence, lock, corrupt, legacy_proof, runtime_env), 'changed build configuration')
+for key, value in [('status', 'failed'), ('window_backing_pixels', False),
+                   ('renderer', 'GL renderer=llvmpipe version=3.3 Mesa 26.2.4'),
+                   ('actual_legacy_version', 'LEGACY version=4.3 profile=0x2')]:
+    corrupt = dict(legacy_proof); corrupt[key] = value
+    reject(lambda corrupt=corrupt: ref.source_bound_core43(source_evidence, lock, build_config, corrupt, runtime_env), 'missing or conflicting runtime proof')
+for bad_env in [{'GALLIUM_DRIVER': 'llvmpipe'}, {'GALLIUM_DRIVER': 'softpipe', 'MESA_GLSL_VERSION_OVERRIDE': '430'}]:
+    reject(lambda bad_env=bad_env: ref.source_bound_core43(source_evidence, lock, build_config, legacy_proof, bad_env), 'renderer/capability override')
+changed_lock = json.loads(json.dumps(lock))
+changed_lock['inputs'][0]['sha256'] = '0' * 64
+reject(lambda: ref.source_bound_core43(source_evidence, changed_lock, build_config, legacy_proof, runtime_env), 'different Mesa archive')
+for failure in ['FAIL stage=detach win32_error=8', 'FAIL stage=delete-legacy win32_error=8',
+                'FAIL stage=gl-load win32_error=126']:
+    reject(lambda failure=failure: parse(legacy + '\n' + failure), 'loader/allocation/cleanup failure')
+observed_203 = unsupported.replace('UNAVAILABLE core43=context-rejected win32_error=8341',
+                                  'FAIL stage=core43-create win32_error=203\nFAIL stage=wgl win32_error=203')
+reject(lambda: parse(observed_203, code=1, stage='core43'), 'observed original error203 remains failure')
 assert lock['host_python'] == '3.12.10'
 assert len(lock['inputs']) == 9 and sum(d['size'] for d in lock['inputs']) < 260 * 1024**2
 for d in lock['inputs']:

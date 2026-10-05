@@ -173,6 +173,61 @@ def pixel_proof(rows, stage, colors, window):
         raise ValueError(f'Absent or incorrect pixel evidence: {stage}')
 
 
+# Exact regular-file evidence from the hash-verified, unchanged Mesa 26.2.4 archive.
+# sp_screen fixes both desktop GLSL ceilings at 400; st_extensions transfers
+# them into gl_constants; version.c requires GLSL >= 430 for desktop GL 4.3.
+# This bound is not a measurement of the maximum available core context.
+SOFTPIPE_CEILING_SOURCES = {
+    "src/gallium/drivers/softpipe/sp_screen.c": "6692f38f221e326d836189bc77db2f8c9c9babf75ab131a5d85d9662af60b8c7",
+    "src/mesa/state_tracker/st_extensions.c": "dbed39e3997c3fbc5e3a02c0fd6845cb43ab67f2c7972362ce20c225a24138ff",
+    "src/mesa/main/version.c": "8d3fd4701b3ec44276fcc0bbd3cafecfcb026043c01b74d9ddf018d3a116a24b"
+}
+SOFTPIPE_CEILING_CONFIG = {
+    'gallium-drivers': ['softpipe'], 'platforms': ['windows'],
+    'llvm': 'disabled', 'draw-use-llvm': False, 'opengl': True,
+    'vulkan-drivers': [], 'vulkan-layers': [], 'egl': 'disabled',
+    'glx': 'disabled', 'gles1': 'disabled', 'gles2': 'disabled',
+    'xmlconfig': 'disabled', 'glvnd': 'disabled', 'shader-cache': 'disabled',
+}
+MESA_26_2_4_ARCHIVE_SHA256 = 'bce5f7fbebb934373b86c999a064d52fb5065878dc57f287f95346648ec832e9'
+
+
+def source_bound_core43(verified_sources, lock, build_options, legacy, env):
+    """Do not infer unsupported capability from NULL/GetLastError (including 203).
+
+    This exact softpipe source/configuration cannot meet Mesa's GLSL 430 gate.
+    Mandatory runtime success/identity must already be established separately.
+    """
+    mesa = [item for item in lock['inputs'] if item['name'] == 'Mesa']
+    if (len(mesa) != 1 or mesa[0]['version'] != '26.2.4'
+            or mesa[0]['sha256'] != MESA_26_2_4_ARCHIVE_SHA256):
+        raise ValueError('Source capability classification requires exact Mesa archive')
+    if any(verified_sources.get(path) != sha for path, sha in SOFTPIPE_CEILING_SOURCES.items()):
+        raise ValueError('Source capability evidence changed or is absent')
+    if any(build_options.get(key) != value for key, value in SOFTPIPE_CEILING_CONFIG.items()):
+        raise ValueError('Source capability classification requires the verified build configuration')
+    if (env.get('GALLIUM_DRIVER') != 'softpipe'
+            or any(key.upper().startswith('MESA_') for key in env)):
+        raise ValueError('Capability override or wrong selected driver')
+    if (legacy.get('stage') != 'legacy' or legacy.get('status') != 'passed'
+            or legacy.get('window_backing_pixels') is not True
+            or not re.fullmatch(r'GL renderer=softpipe version=.+ Mesa 26\.2\.4', legacy.get('renderer', ''))):
+        raise ValueError('Source capability classification requires successful actual softpipe pixels')
+    actual = re.fullmatch(r'LEGACY version=(\d+)\.(\d+) profile=0x([0-9a-f]+)',
+                          legacy.get('actual_legacy_version', ''))
+    if not actual or not (3, 0) <= (int(actual[1]), int(actual[2])) <= (4, 0):
+        raise ValueError('Observed legacy version contradicts the pinned GLSL ceiling')
+    return {'stage': 'core43', 'status': 'unavailable',
+            'classification': 'pinned-source-capability-ceiling',
+            'reason': 'softpipe GLSL feature ceiling 400 is below Mesa GL4.3 requirement 430',
+            'context_creation_attempted': False, 'runtime_core_maximum_measured': False,
+            'source_glsl_feature_ceiling': 400, 'required_glsl_feature_level': 430,
+            'actual_legacy_version': legacy['actual_legacy_version'],
+            'source_sha256': dict(SOFTPIPE_CEILING_SOURCES),
+            'verified_build_configuration': dict(SOFTPIPE_CEILING_CONFIG),
+            'compositor_display_proven': False}
+
+
 class Run:
     def __init__(self, work):
         self.work = work
@@ -404,10 +459,13 @@ cpp_link_args = ['-static-libgcc', '-static-libstdc++', '-Wl,--no-insert-timesta
     env['PATH'] = os.pathsep.join([str(bundle), str(Path(os.environ['SystemRoot']) / 'System32'), os.environ['SystemRoot']])
     env['GALLIUM_DRIVER'] = 'softpipe'
     proof = []
-    for stage in ['gdi', 'legacy', 'core43']:
+    for stage in ['gdi', 'legacy']:
         code, output = runner.command('runtime-' + stage,
             [bundle / 'wgl-canary.exe', '--stage', stage, '--source-built-reference'], env, 45, bundle)
         proof.append(parse_proof(output, code, stage, bundle))
+    actual_options = {item['name']: item['value'] for item in json.loads(
+        (build / 'meson-info/intro-buildoptions.json').read_text())}
+    proof.append(source_bound_core43(before, lock, actual_options, proof[-1], env))
     for name, item in binaries.items():
         if digest(bundle / name) != item['sha256']:
             raise ValueError('Runtime input changed during execution')

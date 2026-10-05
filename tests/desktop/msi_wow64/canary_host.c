@@ -5,6 +5,10 @@
 #include "canary_common.h"
 #include <objbase.h>
 
+#if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1
+#include "madeira_runtime_probe.h"
+#endif
+
 _Static_assert(sizeof(void *) == 8, "the host must be 64-bit");
 _Static_assert(sizeof(MSIHANDLE) == 4, "MSI handles are opaque 32-bit values");
 static HANDLE completion;
@@ -110,6 +114,9 @@ static UINT run_session(const WCHAR *path)
         if (!result) result = MsiGetPropertyW(session, L"MADEIRA_CHILD_PID", child_text, &length);
         child = probe_parse_decimal(child_text);
         if (!result && (!child || child == GetCurrentProcessId())) result = ERROR_INSTALL_FAILURE;
+#if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1
+        if (!result) result = madeira_probe_child(child);
+#endif
         if (!result) probe_log("PASS child-pid", child);
         probe_log(result ? "FAIL positive-round" : "PASS positive-round", round);
     }
@@ -132,6 +139,12 @@ static UINT run_session(const WCHAR *path)
         probe_log(closed ? "FAIL session-close" : "PASS session-close", closed);
         if (!result) result = closed;
     }
+#if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1
+    {
+        UINT exited = madeira_probe_child_exit();
+        if (!result) result = exited;
+    }
+#endif
     if (!result && !negative) result = ERROR_INSTALL_FAILURE;
     return result;
 }
@@ -148,6 +161,9 @@ void start(void)
     if (!thread) { probe_log("FAIL watchdog-create", GetLastError()); ExitProcess(125); }
     CloseHandle(thread);
     probe_log("START parent-pid", GetCurrentProcessId());
+#if defined(MADEIRA_I386_DIAGNOSTIC) && MADEIRA_I386_DIAGNOSTIC == 1
+    result = madeira_probe_parent();
+#endif
     /* The package APIs require COM on this thread. Initialize before all MSI
      * calls, and balance S_OK/S_FALSE after the session and temporary files. */
     com = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);

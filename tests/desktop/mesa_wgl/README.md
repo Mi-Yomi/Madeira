@@ -64,8 +64,8 @@ its exact upstream v2.5.25 GPL, Flex BSD and GFDL notices in `licenses/`:
    resolution, GDI `StretchDIBits`, no delayed dependencies and no unexpected
    external runtime/backend DLL. System/API-set dependencies are classified;
    this static classification alone is not an operating-system symbol proof
-4. Run only the source-owned target canary: `gdi`, `legacy`, then optional
-   `core43`, with process-local `GALLIUM_DRIVER=softpipe`. Clear inherited
+4. Run only the source-owned target canary: `gdi` and `legacy`, with
+   process-local `GALLIUM_DRIVER=softpipe`. Clear inherited
    renderer/capability overrides. Load the application-local DLL by absolute
    path with DLL-directory/System32 dependency search, and verify both actual
    loaded module paths and the actual softpipe/Mesa version
@@ -73,21 +73,53 @@ its exact upstream v2.5.25 GPL, Flex BSD and GFDL notices in `licenses/`:
    Require both post-swap backing pixels, not `SwapBuffers` success alone.
    Verify the bundle hashes again after execution
 
-The optional core43 stage requests an actual core context, checks its numeric
-version/profile, compiles/links real GLSL 4.30 and draws/reads a triangle. It
-may report unavailable only after all mandatory earlier proof and either a
-missing context-creation extension or `ERROR_INVALID_VERSION_ARB` /
-`ERROR_INVALID_PROFILE_ARB`. Allocation, loader, rendering, cleanup and other
-context errors remain failures. No version or capability strings are forced.
-Even a real core43 pass is only a generic graphics result. Blender 5.2.2's
-additional `GL_ARB_shader_draw_parameters`, `GL_ARB_clip_control`, and at least
-12 shader-storage buffer bindings in each vertex, fragment and compute stage
-are unvalidated here; Blender itself is never downloaded or started.
+The generic `core43` canary remains available for a future capable backend. It
+requests an actual core context, checks numeric version/profile, compiles/links
+real GLSL 4.30 and draws/reads a triangle. Allocation, loader, rendering,
+cleanup and unclassified context errors remain failures, including error 203.
+
+This exact softpipe reference does not make that impossible request. After all
+mandatory runtime proof passes, it verifies three exact Mesa source hashes
+and the actual Meson configuration from `intro-buildoptions.json`:
+
+- [sp_screen.c](https://gitlab.freedesktop.org/mesa/mesa/-/blob/mesa-26.2.4/src/gallium/drivers/softpipe/sp_screen.c#L306)
+  sets both desktop GLSL feature ceilings to 400
+- [st_extensions.c](https://gitlab.freedesktop.org/mesa/mesa/-/blob/mesa-26.2.4/src/mesa/state_tracker/st_extensions.c#L1206)
+  transfers those values to the core/compatibility GL constants
+- [version.c](https://gitlab.freedesktop.org/mesa/mesa/-/blob/mesa-26.2.4/src/mesa/main/version.c#L357)
+  requires GLSL >= 430 for desktop OpenGL 4.3
+
+The receipt therefore reports core43 unavailable by pinned-source capability,
+with `context_creation_attempted=false` and `runtime_core_maximum_measured=false`.
+It records the actual successful legacy version separately. No compatibility
+context version is relabeled as a measured maximum core version. Source hash,
+archive, build configuration, actual renderer or capability override changes
+invalidate this classification. No version or extension strings are forced.
+
+The first Windows run created actual softpipe 3.3 compatibility contexts and
+passed both legacy backbuffer/window colors, then rejected the optional 4.3
+request with NULL/error 203. That error is not a trustworthy capability code:
+[st_manager.c](https://gitlab.freedesktop.org/mesa/mesa/-/blob/mesa-26.2.4/src/mesa/state_tracker/st_manager.c#L1065)
+sets `ST_CONTEXT_ERROR_BAD_VERSION`, but
+[stw_context.c](https://gitlab.freedesktop.org/mesa/mesa/-/blob/mesa-26.2.4/src/gallium/frontends/wgl/stw_context.c#L245)
+discards `ctx_err` without setting a Windows error. The
+[WGL wrapper](https://gitlab.freedesktop.org/mesa/mesa/-/blob/mesa-26.2.4/src/gallium/frontends/wgl/stw_ext_context.c#L236)
+also performs cleanup before returning NULL.
+[os_misc.c](https://gitlab.freedesktop.org/mesa/mesa/-/blob/mesa-26.2.4/src/util/os_misc.c#L218)
+uses `GetEnvironmentVariableA` without preserving last error, so a missing
+option can leave `ERROR_ENVVAR_NOT_FOUND` (203). The run did not instrument
+which internal call last wrote 203; it is not classified as unsupported.
+The original failed run remains a failed run.
+
+Even a future real core43 pass is only a generic graphics result. Blender
+5.2.2's additional `GL_ARB_shader_draw_parameters`, `GL_ARB_clip_control`, and
+at least 12 shader-storage buffer bindings in each vertex, fragment and compute
+stage are unvalidated here; Blender itself is never downloaded or started.
 
 Window GDI backing pixels are not proof of DWM/monitor/remote-desktop display,
 and are not UIKit compositor proof. A hosted runner without a usable desktop
 must fail this reference instead of silently relaxing the presentation gate.
-The exact native Windows route has not been executed during preparation.
+The first native Windows run proved GDI/legacy backing pixels; core4.3 remains unavailable for this pinned source configuration.
 Windows-host output hashes may differ from Linux-host output hashes; this
 workflow uses its own same-job outputs and makes no cross-host byte-identity
 claim.
