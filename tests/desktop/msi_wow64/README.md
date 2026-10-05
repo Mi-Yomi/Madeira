@@ -8,6 +8,13 @@ properties through the real MSI remote handle. MSI ordinals 144 and 145 are
 required in the DLL import table. A distinct child PID and 32-bit pointer size
 prove the action did not run as an in-process 64-bit substitute.
 
+The host initializes COM on its calling thread and opens the package with
+flags zero. Microsoft's restricted IGNOREMACHINESTATE handle deliberately
+forbids DLL custom actions and returns 1626, so it cannot establish this
+reference. The positive rounds run before the failing control, with valid
+inputs and cleared proof properties retained for that final control.
+See [MsiOpenPackageExW](https://learn.microsoft.com/en-us/windows/win32/api/msi/nf-msi-msiopenpackageexw).
+
 A deliberately missing entry point must return a nonzero result and produce
 none of the proof properties. A zero return alone never passes. The host
 requires both property rounds and session closure, deletes its exact temporary

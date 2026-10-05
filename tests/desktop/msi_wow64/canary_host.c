@@ -3,6 +3,7 @@
  * prefix on the target runtime. Does not install or register a product.
  * Creates its own temporary MSI/DLL, invokes type-1 actions and checks effects. */
 #include "canary_common.h"
+#include <objbase.h>
 
 _Static_assert(sizeof(void *) == 8, "the host must be 64-bit");
 _Static_assert(sizeof(MSIHANDLE) == 4, "MSI handles are opaque 32-bit values");
@@ -84,24 +85,23 @@ static UINT run_session(const WCHAR *path)
     MSIHANDLE session = 0; UINT result, negative = ERROR_INSTALL_FAILURE; DWORD length, child, round;
     WCHAR parent[11], round_text[11], child_text[11]; unsigned i;
     MsiSetInternalUI(INSTALLUILEVEL_NONE, NULL);
-    result = MsiOpenPackageExW(path, MSIOPENPACKAGEFLAGS_IGNOREMACHINESTATE, &session);
+    /* IGNOREMACHINESTATE creates a restricted handle that forbids DLL custom
+     * actions on Windows and returns ERROR_FUNCTION_NOT_CALLED (1626).
+     * Flags zero permit the explicit source-owned actions below; no standard
+     * installation, registration or system-changing action is invoked. */
+    result = MsiOpenPackageExW(path, 0, &session);
     if (result) { probe_log("FAIL open-package", result); return result; }
     probe_decimal(GetCurrentProcessId(), parent);
     result = MsiSetPropertyW(session, L"MADEIRA_PARENT_PID", parent);
     if (!result) result = MsiSetPropertyW(session, L"MADEIRA_INPUT_W", probe_unicode);
-    if (!result) result = clear_proofs(session);
-    if (!result) {
-        /* A missing export may falsely return zero in Wine. No proof must appear. */
-        negative = MsiDoActionW(session, L"MadeiraMissingExport");
-        probe_log(negative ? "PASS missing-export-rejected" : "FAIL missing-export-reported-success", negative);
-        for (i = 0; i < sizeof(proof_keys)/sizeof(proof_keys[0]); ++i)
-            if (!property_is(session, proof_keys[i], L"")) result = ERROR_INSTALL_FAILURE;
-    }
     for (round = 1; !result && round <= 2; ++round) {
         probe_decimal(round, round_text);
         result = clear_proofs(session);
         if (!result) result = MsiSetPropertyW(session, L"MADEIRA_ROUND", round_text);
-        if (!result) result = MsiDoActionW(session, L"MadeiraProbe");
+        if (!result) {
+            result = MsiDoActionW(session, L"MadeiraProbe");
+            probe_log("ACTION positive-return", result);
+        }
         if (!result && (!property_is(session, L"MADEIRA_PROOF_A", L"i386-ordinal-144") ||
                         !property_is(session, L"MADEIRA_PROOF_W", probe_unicode) ||
                         !property_is(session, L"MADEIRA_POINTER_BYTES", L"4") ||
@@ -113,28 +113,48 @@ static UINT run_session(const WCHAR *path)
         if (!result) probe_log("PASS child-pid", child);
         probe_log(result ? "FAIL positive-round" : "PASS positive-round", round);
     }
-    /* Closing the session must return. Windows may cache its MSI host afterward;
-     * this checks session close, not child-process teardown. */
-    { UINT closed = MsiCloseHandle(session); if (!result) result = closed; }
-    probe_log(result ? "FAIL session-close" : "PASS session-close", result);
-    /* Still ran the positive rounds above: separate transport/proof behavior
-     * from this required failure-propagation check. */
+    if (!result) result = clear_proofs(session);
+    if (!result) result = MsiSetPropertyW(session, L"MADEIRA_ROUND", L"1");
+    if (!result) {
+        /* Run failure last so it cannot affect the positive probes. All valid
+         * callback inputs remain set: an incorrectly resolved positive export
+         * must not pass this control by failing on a missing ROUND property. */
+        negative = MsiDoActionW(session, L"MadeiraMissingExport");
+        probe_log(negative ? "PASS missing-export-rejected" : "FAIL missing-export-reported-success", negative);
+        for (i = 0; i < sizeof(proof_keys)/sizeof(proof_keys[0]); ++i)
+            if (!property_is(session, proof_keys[i], L"")) result = ERROR_INSTALL_FAILURE;
+    }
+    /* Attribute close status to the close call, independent of any earlier
+     * action failure. Windows may cache its MSI host afterward, so this checks
+     * session close, not child-process teardown. */
+    {
+        UINT closed = MsiCloseHandle(session);
+        probe_log(closed ? "FAIL session-close" : "PASS session-close", closed);
+        if (!result) result = closed;
+    }
     if (!result && !negative) result = ERROR_INSTALL_FAILURE;
     return result;
 }
+
 void start(void)
 {
     WCHAR directory[MAX_PATH];
     static WCHAR msi_path[MAX_PATH], dll_path[MAX_PATH];
     HMODULE self; HRSRC resource; HGLOBAL loaded; HANDLE file, thread;
     DWORD bytes, written, length; const void *data; UINT result = ERROR_SUCCESS;
+    HRESULT com; BOOL com_initialized = FALSE;
     completion = CreateEventW(NULL, TRUE, FALSE, NULL);
     thread = completion ? CreateThread(NULL, 0, watchdog, NULL, 0, NULL) : NULL;
     if (!thread) { probe_log("FAIL watchdog-create", GetLastError()); ExitProcess(125); }
     CloseHandle(thread);
     probe_log("START parent-pid", GetCurrentProcessId());
+    /* The package APIs require COM on this thread. Initialize before all MSI
+     * calls, and balance S_OK/S_FALSE after the session and temporary files. */
+    com = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    if (FAILED(com)) { probe_log("FAIL com-initialize", (DWORD)com); result = ERROR_INSTALL_FAILURE; }
+    else com_initialized = TRUE;
     length = GetTempPathW(MAX_PATH, directory);
-    if (!length || length >= MAX_PATH) result = ERROR_BAD_PATHNAME;
+    if (!result && (!length || length >= MAX_PATH)) result = ERROR_BAD_PATHNAME;
     if (!result && !GetTempFileNameW(directory, L"mdm", 0, msi_path)) result = GetLastError();
     if (!result && !GetTempFileNameW(directory, L"mdd", 0, dll_path)) result = GetLastError();
     self = GetModuleHandleW(NULL);
@@ -155,6 +175,7 @@ void start(void)
     if (!result) result = run_session(msi_path);
     if (*dll_path && !DeleteFileW(dll_path) && !result) result = GetLastError();
     if (*msi_path && !DeleteFileW(msi_path) && !result) result = GetLastError();
+    if (com_initialized) CoUninitialize();
     probe_log(result ? "FAIL final" : "PASS final", result);
     SetEvent(completion);
     /* Exit zero alone is insufficient: require both rounds, the checked

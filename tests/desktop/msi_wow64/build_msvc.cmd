@@ -29,7 +29,7 @@ setlocal
 call "%PROBE_VS%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64 || exit /b 14
 cd /d "%PROBE_OUT%" || exit /b 19
 cl.exe /nologo /c /std:c11 /O1 /W4 /WX /GS- /Zl /Focanary_host.obj "%PROBE_ROOT%canary_host.c" || exit /b 15
-link.exe /nologo /nodefaultlib /machine:x64 /subsystem:console /entry:start /out:madeira-msi-canary-x86_64.exe canary_host.obj canary.res msi.lib kernel32.lib || exit /b 16
+link.exe /nologo /nodefaultlib /machine:x64 /subsystem:console /entry:start /out:madeira-msi-canary-x86_64.exe canary_host.obj canary.res msi.lib ole32.lib kernel32.lib || exit /b 16
 dumpbin.exe /nologo /headers /imports /exports madeira-msi-probe-i386.dll > canary_i386_metadata.txt || exit /b 17
 dumpbin.exe /nologo /headers /imports madeira-msi-canary-x86_64.exe > canary_host_metadata.txt || exit /b 18
 endlocal

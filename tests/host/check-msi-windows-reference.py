@@ -19,8 +19,10 @@ SPEC.loader.exec_module(GATE)
 
 GOOD = """MADEIRA-MSI-WOW64: START parent-pid 101
 MADEIRA-MSI-WOW64: PASS missing-export-rejected 1603
+MADEIRA-MSI-WOW64: ACTION positive-return 0
 MADEIRA-MSI-WOW64: PASS child-pid 202
 MADEIRA-MSI-WOW64: PASS positive-round 1
+MADEIRA-MSI-WOW64: ACTION positive-return 0
 MADEIRA-MSI-WOW64: PASS child-pid 202
 MADEIRA-MSI-WOW64: PASS positive-round 2
 MADEIRA-MSI-WOW64: PASS session-close 0
@@ -39,6 +41,7 @@ class ProofTests(unittest.TestCase):
     def test_exit_zero_and_a_final_line_are_insufficient(self):
         for output in ("", "MADEIRA-MSI-WOW64: PASS final 0\n",
                        GOOD.replace("MADEIRA-MSI-WOW64: PASS positive-round 2\n", ""),
+                       GOOD.replace("MADEIRA-MSI-WOW64: ACTION positive-return 0\n", ""),
                        GOOD.replace("MADEIRA-MSI-WOW64: PASS session-close 0\n", "")):
             with self.subTest(output=output), self.assertRaises(ValueError):
                 GATE.verify_proof(output, 0)
@@ -87,6 +90,16 @@ class ProofTests(unittest.TestCase):
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_msi_session_allows_actions_and_has_host_com_lifetime(self):
+        text = (ROOT / "tests/desktop/msi_wow64/canary_host.c").read_text()
+        self.assertIn("MsiOpenPackageExW(path, 0, &session)", text)
+        start = text.split("void start(void)", 1)[1]
+        self.assertLess(start.index("CoInitializeEx("), start.index("make_database(msi_path"))
+        self.assertIn("if (com_initialized) CoUninitialize();", start)
+        self.assertIn("probe_log(closed ?", text)
+        build = (ROOT / "tests/desktop/msi_wow64/build_msvc.cmd").read_text()
+        self.assertIn("msi.lib ole32.lib kernel32.lib", build)
+
     def test_reference_scope_is_public_bounded_and_source_owned(self):
         text = (ROOT / ".github/workflows/msi-windows-reference.yml").read_text()
         self.assertIn("runs-on: windows-2025", text)

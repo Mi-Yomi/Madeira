@@ -98,7 +98,7 @@ def verify_binaries(directory):
         raise ValueError("Unexpected delayed canary dependency")
     if {item["module"].lower() for item in ca_imports} != {"kernel32.dll", "advapi32.dll", "msi.dll"}:
         raise ValueError("Unexpected custom-action DLL dependency")
-    if {item["module"].lower() for item in host_imports} != {"kernel32.dll", "msi.dll"}:
+    if {item["module"].lower() for item in host_imports} != {"kernel32.dll", "msi.dll", "ole32.dll"}:
         raise ValueError("Unexpected host dependency")
     symbols = [(item["module"].lower(), symbol.get("name", symbol.get("ordinal")))
                for item in ca_imports for symbol in item["symbols"]]
@@ -142,6 +142,8 @@ def verify_proof(log, returncode):
         raise ValueError("Missing negative control")
     if values("PASS positive-round") != [1, 2]:
         raise ValueError("Both verified property rounds are required")
+    if values("ACTION positive-return") != [0, 0]:
+        raise ValueError("Both positive custom actions must have executed successfully")
     if values("PASS session-close") != [0] or values("PASS final") != [0]:
         raise ValueError("Session close and final proof are required")
     return {"parent_pid": parent[0], "child_pids": children,
