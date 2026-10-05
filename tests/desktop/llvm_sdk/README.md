@@ -98,7 +98,11 @@ drop archive content to force a pass.
 5. Each selected `.lib` is independently inspected as x64 COFF/bigobj code,
    with static release CRT directives. Import libraries, bitcode needing an
    unreviewed toolchain, alternate CRTs, missing CRT evidence, hidden external
-   default libraries, and linker override/suppression directives fail
+   default libraries, and linker override/suppression directives fail. The
+   pinned SDK's implicit `uuid` directive is recorded separately from the CRT
+   and accepted only when UUID also appears in the verified explicit closure.
+   LLVM's [Windows support source](https://github.com/llvm/llvm-project/blob/llvmorg-22.1.4/llvm/lib/Support/CMakeLists.txt)
+   already requires it for `FOLDERID_Profile`; this adds no new system provider
 6. The source-owned probe compiles with MSVC `/MT`, `LLVM_BUILD_STATIC`, release
    iterator ABI and matching RTTI/EH configuration, then links the exact audited
    libraries with all audited exported options. No `/FORCE`, ignored errors,

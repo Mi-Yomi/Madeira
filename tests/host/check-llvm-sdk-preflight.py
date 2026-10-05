@@ -256,6 +256,12 @@ with tempfile.TemporaryDirectory() as folder:
         coff_library(lib, directives, bigobj=bigobj)
         assert p.audit_static_library(lib)['coff_machine'] == 'x86_64'
         checks += 1
+        coff_library(lib, directives + ' /DEFAULTLIB:"UUID.lib"', bigobj=bigobj)
+        audit = p.audit_static_library(lib)
+        assert audit['implicit_system_libraries'] == ['uuid'] and 'libcmt' in audit['default_libraries']
+        checks += 1
+    coff_library(lib, ' /DEFAULTLIB:uuid ')
+    reject(lambda: p.audit_static_library(lib), 'UUID must not establish static CRT identity')
     for bad in [directives + '/DEFAULTLIB:libxml2s.lib', directives + '/DEFAULTLIB:MSVCRT',
                 directives + '/FAILIFMISMATCH:"RuntimeLibrary=MD_DynamicRelease"',
                 directives + '/LIBPATH:C:/private', directives + '/FORCE:UNRESOLVED',
@@ -287,6 +293,13 @@ graph['LLVMCore'] = ['LLVMSupport']
 systems, flags = p.validate_closure(targets, graph, options, lock)
 assert set(systems) == set(lock['system_libraries']) and set(flags) == set(lock['link_options'])
 checks += 1
+assert p.validate_closure(targets, graph, options, lock, ['uuid']) == (systems, flags)
+checks += 1
+reject(lambda: p.validate_closure(targets, graph, options, lock, ['rpcrt4']), 'unreviewed implicit system library')
+without_uuid = dict(lock, system_libraries=[name for name in lock['system_libraries'] if name != 'uuid'])
+without_uuid_graph = dict(graph, LLVMSupport=[name for name in graph['LLVMSupport'] if name != 'uuid'])
+reject(lambda: p.validate_closure(targets, without_uuid_graph, options, without_uuid, ['uuid']),
+       'implicit UUID cannot disappear from explicit graph')
 for unexpected in ['libxml2s.lib', 'LibXml2::LibXml2', 'LLVMWindowsManifest', 'zstd::libzstd_static',
                    'LLVMUnselected', 'C:/build/libxml2s.lib', '$<LINK_ONLY:psapi>',
                    '/FORCE:UNRESOLVED', '-NODEFAULTLIB:LIBCMT', '-INCLUDE:unknown', 'rpcrt4']:

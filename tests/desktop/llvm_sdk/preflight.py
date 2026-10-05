@@ -33,6 +33,10 @@ SYSTEM_DLLS = {'advapi32.dll', 'kernel32.dll', 'ntdll.dll', 'user32.dll',
                'version.dll', 'ws2_32.dll', 'ole32.dll', 'shell32.dll',
                'shlwapi.dll', 'bcrypt.dll', 'dbghelp.dll', 'psapi.dll'}
 SEEDS = [(7, 19), (0x123456789abcdef0, 211)]
+STATIC_CRT_LIBRARIES = {'libcmt', 'libcpmt', 'libvcruntime', 'libucrt', 'oldnames'}
+# UUID supplies FOLDERID_Profile in LLVM's Windows Path.inc and is already
+# required by the pinned LLVMSupport CMake closure. It is not a CRT library.
+REVIEWED_IMPLICIT_SYSTEM_LIBRARIES = {'uuid'}
 
 
 def sha(path):
@@ -227,15 +231,16 @@ def audit_static_library(path, guard=lambda: None):
             pos = start + length + (length & 1)
         require(pos == size, 'Trailing static library bytes')
     require(objects > 0 and directive_objects > 0, 'No code/CRT directive evidence in library')
-    require(defaults <= {'libcmt', 'libcpmt', 'libvcruntime', 'libucrt', 'oldnames'},
+    require(defaults <= STATIC_CRT_LIBRARIES | REVIEWED_IMPLICIT_SYSTEM_LIBRARIES,
             f'Unreviewed implicit library/CRT dependency: {sorted(defaults)}')
     require('libcmt' in defaults or runtime == {'MT_StaticRelease'}, 'Library static release CRT identity absent')
     require(runtime <= {'MT_StaticRelease'}, f'Library CRT mismatch: {sorted(runtime)}')
     return {'coff_machine': 'x86_64', 'objects': objects, 'directive_objects': directive_objects,
-            'default_libraries': sorted(defaults), 'runtime_mismatch_tags': sorted(runtime)}
+            'default_libraries': sorted(defaults), 'runtime_mismatch_tags': sorted(runtime),
+            'implicit_system_libraries': sorted(defaults - STATIC_CRT_LIBRARIES)}
 
 
-def validate_closure(targets, graph, options, lock):
+def validate_closure(targets, graph, options, lock, implicit_system_libraries=()):
     """Every library edge must be selected or an exact reviewed system library."""
     require(set(graph) == set(targets) == set(options), 'Incomplete dependency metadata')
     systems, flags = set(), set()
@@ -256,6 +261,9 @@ def validate_closure(targets, graph, options, lock):
     # Required upstream allocator/delay-load semantics must not silently vanish.
     require(set(lock['system_libraries']) <= systems, 'Expected LLVMSupport system-library closure absent')
     require(set(lock['link_options']) <= flags, 'Expected LLVMSupport linker options absent')
+    require(set(implicit_system_libraries) <= REVIEWED_IMPLICIT_SYSTEM_LIBRARIES and
+            set(implicit_system_libraries) <= systems,
+            'Implicit COFF system dependency is absent from the reviewed explicit closure')
     return sorted(systems), sorted(flags)
 
 
@@ -638,7 +646,8 @@ def run_preflight(work):
         graph[name], link_options[name] = split_exported_properties((meta / (name + '.evaluated')).read_text())
         libraries[name] = {'path': str(path), 'size': path.stat().st_size, 'sha256': sha(path),
                            'coff_crt': audit_static_library(path, runner.guard)}
-    systems, flags = validate_closure(targets, graph, link_options, lock)
+    implicit_systems = {name for row in libraries.values() for name in row['coff_crt']['implicit_system_libraries']}
+    systems, flags = validate_closure(targets, graph, link_options, lock, implicit_systems)
     for library in systems:
         matches = [Path(folder) / (library + '.lib') for folder in env['LIB'].split(';') if folder]
         matches = [p for p in matches if p.is_file()]
