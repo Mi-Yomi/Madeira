@@ -121,6 +121,32 @@ result is recorded.
 | `app/Madeira/x86_64-vcruntime/` | Microsoft Visual C++ 2015-2022 x64 runtime DLLs (concrt140, msvcp140*, vcamp140, vccorlib140, vcruntime140*), redistributable under Microsoft's terms, not under this repository's licence | extract from Microsoft's `vc_redist.x64.exe` (or copy from `C:\Windows\System32` of a licensed Windows install) into that folder | UNVERIFIED |
 | A free Apple ID; StikDebug or a pairing file plus LocalDevVPN | signing and JIT runtime requirements | see `docs/JIT.md` | n/a |
 
+## Linux host verification of the desktop PE overlay (2026-10-04)
+
+The six-DLL, uninstalled desktop overlay was source-built on Linux x86_64 using
+`build/wine-pe/build_desktop.py`, the clean Wine gitlink
+`4f5b19718f4de88ecc5cb0dc08b119497a67ba8f`, two compile jobs and a 45-minute
+external timeout per architecture. This does not require Xcode or build an IPA.
+The official host archive is
+[`llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64.tar.xz`](https://github.com/mstorsjo/llvm-mingw/releases/tag/20260421),
+SHA-256 `f8b8cce779affeab47bcaec6ce6e9e768b166094a366123ef64b2d0b389cc121`.
+Both the downloaded bytes and the official GitHub release asset digest matched.
+Use this host variant on Linux; the macOS archive above cannot execute there.
+
+Host GCC, GNU make, bison 3.0+, flex and m4 are required. The verification used
+Debian's signed package index for bison 3.8.2, flex 2.6.4 and m4 1.4.19, extracted
+privately without running system installation scripts. When bison is relocated,
+its wrapper must set both `BISON_PKGDATADIR` and `M4` to the extracted paths;
+`bison --version` alone does not prove parser generation works.
+
+The builder uses unprefixed `clang` from the selected verified toolchain so the
+pinned Wine configure retains its intended Windows/MSVC target selection.
+Setting `arm64ec_CC` to the target-prefixed MinGW wrapper instead skips that
+selection and fails in x86 inline assembly. No Wine patch or repin is needed.
+Actual per-architecture logs, tools and output hashes accompany the stage.
+See `docs/DESKTOP_OVERLAY_BUILD.md` and `build/wine-pe/README.md` for the measured
+result, source instructions, notices and remaining runtime/closure gaps.
+
 ## Native build chains (all in the repository)
 
 Run in this order after the inputs above are in place. Outputs are

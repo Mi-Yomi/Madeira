@@ -152,6 +152,8 @@ void ios_fd_cache_release(void *peb) { cleanup_step(peb, 1); }
 void ios_jit_reclaim_process(void *peb) { cleanup_step(peb, 2); }
 void ios_wow_window_release(void *peb) { cleanup_step(peb, 3); }
 void ios_exe_win_mark_ready(void *peb) { cleanup_step(peb, 4); }
+/* Clang requires the production weak declaration before our test definition. */
+void wine_launched_process_did_exit(int status) __attribute__((weak));
 void wine_launched_process_did_exit(int status) { launch_reports++; last_launch_report = status; }
 #define FALSE 0
 #define FDT_MASTER 1

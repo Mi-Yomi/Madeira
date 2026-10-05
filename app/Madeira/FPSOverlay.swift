@@ -111,16 +111,10 @@ struct FPSOverlay: View {
     /// Ring buffer of (timestamp, count) pairs, 100ms cadence, 5s window.
     @State private var samples: [(t: CFAbsoluteTime, c: UInt64)] = []
     private let bufferCapacity = 50  // 5s @ 100ms
-    /// ml606: live phys_footprint in MB, refreshed on the 250ms display tick.
-    @State private var memMB: Int = 0
+    /// Latest display-only sample. Neither value is an allocation budget.
+    @State private var memory = FPSOverlayMemorySnapshot()
 
-    /// iOS jetsams this app at EXACTLY 4096MB of phys_footprint (memory:
-    /// "Jetsam = EXACTLY 4096MB"). task_info(TASK_VM_INFO) reports the very
-    /// same counter the kernel judges us on, so this is the real number and
-    /// not an approximation from resident size.
-    private static let jetsamLimitMB = 4096
-
-    private func readFootprintMB() -> Int {
+    private func readFootprintBytes() -> UInt64? {
         var info = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<natural_t>.size)
         let kr = withUnsafeMutablePointer(to: &info) {
@@ -128,19 +122,28 @@ struct FPSOverlay: View {
                 task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
             }
         }
-        guard kr == KERN_SUCCESS else { return 0 }
-        return Int(info.phys_footprint / (1024 * 1024))
+        guard kr == KERN_SUCCESS else { return nil }
+        return info.phys_footprint
     }
 
-    /// Headroom-based, because the absolute number means nothing without the
-    /// ceiling: green >768MB free, yellow >384MB, orange >128MB, red below.
+    private func refreshMemory() {
+        // The compact layout has no memory readout.
+        guard !compact else { return }
+        // The existing bridge wraps os_proc_available_memory(). Re-query on
+        // each display tick: the system's per-app limit can change at runtime.
+        // Footprint and headroom are separate observations, not an atomic sum.
+        memory = FPSOverlayMemorySnapshot(footprintBytes: readFootprintBytes(),
+                                          availableBytes: jit_available_memory())
+    }
+
     private var memColor: Color {
-        let free = Self.jetsamLimitMB - memMB
-        if memMB == 0 { return .secondary }
-        if free > 768 { return .green }
-        if free > 384 { return .yellow }
-        if free > 128 { return .orange }
-        return .red
+        switch memory.headroomBand {
+        case .unknown: return .secondary
+        case .unavailableOrExhausted, .veryLow: return .red
+        case .low: return .orange
+        case .moderate: return .yellow
+        case .higher: return .green
+        }
     }
 
     var body: some View {
@@ -160,13 +163,19 @@ struct FPSOverlay: View {
                 .cornerRadius(6)
             } else if visible {
                 HStack(spacing: 8) {
-                    // ml606: live phys_footprint — the SAME number jetsam kills on.
-                    // ml605 died at 4080MB against a 4096MB limit with no warning
-                    // of any kind in the log, so having it on screen turns "it
-                    // vanished" into "we watched it climb".
-                    Text("\(memMB)MB")
-                        .foregroundColor(memColor)
-                        .frame(width: 56, alignment: .trailing)
+                    VStack(alignment: .trailing, spacing: 0) {
+                        Text(memory.footprintText)
+                            .foregroundColor(memory.footprintBytes == nil ? .secondary : memColor)
+                        Text(memory.availableText)
+                            .font(.system(size: 9, design: .monospaced))
+                            .foregroundColor(memColor)
+                    }
+                    .fixedSize(horizontal: true, vertical: false)
+                    .frame(minWidth: 56, alignment: .trailing)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Memory")
+                    .accessibilityValue(memory.accessibilityValue)
+                    .accessibilityHint("Available memory is advisory and can change; it does not guarantee an allocation or prevent termination.")
                     Text("|")
                         .foregroundColor(.secondary)
                     Text("Present:")
@@ -196,7 +205,7 @@ struct FPSOverlay: View {
                     .frame(width: 12, height: 12)
             }
         }
-        .onTapGesture { visible.toggle() }
+        .onTapGesture { toggleVisibility() }
         .onAppear { startTimers() }
         .onDisappear { stopTimers() }
     }
@@ -325,12 +334,21 @@ struct FPSOverlay: View {
         return .secondary
     }
 
+    private func toggleVisibility() {
+        visible.toggle()
+        if visible { startTimers() } else { stopTimers() }
+    }
+
     private func startTimers() {
         stopTimers()
+        // The hidden dot has no live readouts. Leave session pacing alone;
+        // only these two overlay timers pause until it is shown again.
+        guard visible else { return }
         let now = CFAbsoluteTimeGetCurrent()
         let c = madeira_get_present_count()
         samples = [(now, c)]
         presentCount = c
+        fps = 0
         vsyncMode = madeira_get_vsync_locked()
         ProMotionIntent.apply(mode: vsyncMode)
 
@@ -344,12 +362,11 @@ struct FPSOverlay: View {
         }
 
         // 250ms display refresh — computes adaptive-window FPS
-        memMB = readFootprintMB()
+        refreshMemory()
         displayTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { _ in
             fps = computeAdaptiveFPS()
-            // ml606: piggybacks on the existing tick, so it costs one extra
-            // task_info per 250ms and no additional SwiftUI invalidation.
-            memMB = readFootprintMB()
+            // Use the existing display tick, never the faster FPS sampler.
+            refreshMemory()
         }
     }
 
@@ -393,4 +410,69 @@ struct FPSOverlay: View {
 /// ml1137: process-wide fence-mode display state for the overlay pill.
 enum FPSOverlayFenceMode {
     static var current: Int = Int(MadeiraConfig.gameValue("fence-chain") ?? MadeiraConfig.get("fence-chain") ?? "1") ?? 1
+}
+
+// MARK: - Pure memory display policy
+
+/// Advisory physical-memory headroom, never a predicted jetsam threshold.
+/// Apple documents that os_proc_available_memory() can change with the app's
+/// memory limit, is not system-wide free RAM, and reports zero both for a
+/// non-app process and when its limit is reached/exceeded. Keep that ambiguity.
+/// https://developer.apple.com/documentation/os/os_proc_available_memory
+struct FPSOverlayMemorySnapshot: Equatable {
+    let footprintBytes: UInt64?
+    let availableBytes: UInt64?
+    private static let bytesPerMB: UInt64 = 1024 * 1024
+
+    init(footprintBytes: UInt64? = nil, availableBytes: UInt64? = nil) {
+        self.footprintBytes = footprintBytes
+        self.availableBytes = availableBytes
+    }
+
+    /// These are display hints, not OS pressure levels or safety boundaries.
+    enum HeadroomBand {
+        case unknown, unavailableOrExhausted, veryLow, low, moderate, higher
+    }
+
+    var headroomBand: HeadroomBand {
+        guard let bytes = availableBytes else { return .unknown }
+        guard bytes > 0 else { return .unavailableOrExhausted }
+        if bytes > 768 * Self.bytesPerMB { return .higher }
+        if bytes > 384 * Self.bytesPerMB { return .moderate }
+        if bytes > 128 * Self.bytesPerMB { return .low }
+        return .veryLow
+    }
+
+    var footprintText: String {
+        guard let bytes = footprintBytes else { return "?MB" }
+        return "\(bytes / Self.bytesPerMB)MB"
+    }
+
+    var availableText: String {
+        guard let bytes = availableBytes, bytes > 0 else { return "avail ?" }
+        if bytes < Self.bytesPerMB { return "avail <1MB" }
+        return "avail ~\(bytes / Self.bytesPerMB)MB"
+    }
+
+    var accessibilityValue: String {
+        let footprint: String
+        if let bytes = footprintBytes {
+            footprint = "Footprint \(bytes / Self.bytesPerMB) megabytes"
+        } else {
+            footprint = "Footprint unavailable"
+        }
+        let available: String
+        if let bytes = availableBytes {
+            if bytes == 0 {
+                available = "No available memory reported; headroom may be exhausted or unavailable"
+            } else if bytes < Self.bytesPerMB {
+                available = "Estimated available memory less than one megabyte"
+            } else {
+                available = "Estimated available memory \(bytes / Self.bytesPerMB) megabytes"
+            }
+        } else {
+            available = "Available memory unknown"
+        }
+        return "\(footprint). \(available)"
+    }
 }

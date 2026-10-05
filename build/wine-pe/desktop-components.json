@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "wine_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f",
+  "wine_repository": "https://github.com/willfaust/wine",
+  "profiles": {
+    "desktop": ["netprofm", "sensapi", "avifil32", "msvfw32", "msftedit", "riched20"],
+    "vc2012": ["msvcr110", "msvcp110"]
+  },
+  "evidence": {
+    "netprofm": "https://github.com/willfaust/Madeira/issues/189#issuecomment-5981910061",
+    "sensapi": "https://github.com/willfaust/Madeira/issues/189#issuecomment-5981910061",
+    "avifil32": "https://github.com/willfaust/Madeira/issues/189#issuecomment-5981910061",
+    "msvfw32": "https://github.com/willfaust/Madeira/issues/189#issuecomment-5981910061",
+    "msftedit": "https://github.com/willfaust/Madeira/issues/151",
+    "riched20": "https://github.com/willfaust/wine/blob/4f5b19718f4de88ecc5cb0dc08b119497a67ba8f/dlls/msftedit/Makefile.in",
+    "msvcr110": "https://github.com/willfaust/Madeira/issues/189#issuecomment-5975777529",
+    "msvcp110": "https://github.com/willfaust/Madeira/issues/189#issuecomment-5975777529"
+  }
+}

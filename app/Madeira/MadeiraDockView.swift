@@ -25,6 +25,9 @@ final class MadeiraDockModel: ObservableObject {
     @Published private(set) var installRunNext: [Int: Bool] = [:]
 
     private var watch: Task<Void, Never>?
+    /// Only the current report watcher may consume this launch's report or
+    /// remove its one-use sign-in transfer. Cancellation alone is asynchronous.
+    private var watchID: UUID?
 
     func refresh() {
         clientInstalled = MadeiraDock.clientInstalled
@@ -72,7 +75,9 @@ final class MadeiraDockModel: ObservableObject {
     /// Follows the host's report until it records a result, or the session ends
     /// without one, then removes any unconsumed sign-in transfer.
     func watchReport() {
-        watch?.cancel()
+        stopWatchingReport()
+        let id = UUID()
+        watchID = id
         let starting = "Madeira Dock is starting. Valve's client signs in and checks the license."
         let plan = DockInstallers.note
         status = plan.map { $0 + "\n" + starting } ?? starting
@@ -81,6 +86,10 @@ final class MadeiraDockModel: ObservableObject {
             var idle = 0, started = false
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 2_000_000_000)
+                // A canceled sleep resumes here too. A replaced watcher must
+                // not read a newer report, overwrite its status or clean up its
+                // handoff/account hold. All checks and side effects are on MainActor.
+                guard !Task.isCancelled, watchID == id else { return }
                 let report = MadeiraDock.pollReport()
                 // The game's one-time installs run before the host writes its first field.
                 if DockInstallers.script != nil {
@@ -115,11 +124,24 @@ final class MadeiraDockModel: ObservableObject {
                     break
                 }
             }
+            guard !Task.isCancelled, watchID == id else { return }
             MadeiraDock.cleanup()
             // The host is done with the sign-in: the app's own Steam connection may come
             // back once no session runs (SteamOwnedLibrary).
             SteamOwnedLibrary.shared.dockEnded()
+            watchID = nil
+            watch = nil
         }
+    }
+
+    /// A new launch owns cleanup before prepareDock() can suspend while
+    /// closing the account connection. Retire the old observer without
+    /// releasing that new hold or removing its handoff. The launch's existing
+    /// failure path cleans up if preparation fails before a new watcher starts.
+    func stopWatchingReport() {
+        watchID = nil
+        watch?.cancel()
+        watch = nil
     }
 }
 

@@ -4,6 +4,58 @@ import QuartzCore
 import Metal
 import os.log
 
+// MARK: - Checked Wine launch readiness
+
+/// Foundation-only so the real launch ordering can be tested without an iOS SDK.
+/// Readiness is published after init_registry() finishes its process-wide
+/// working-directory changes. A time limit cannot substitute for that publication.
+enum WineServerLaunchGate {
+    // The old two-second fast-start cutoff was not evidence of startup failure.
+    // Cold registry I/O gets a separate bound; normal starts still proceed early.
+    static let readinessTimeout: TimeInterval = 10.0
+    static let legacyStartDelay: TimeInterval = 2.0
+
+    enum Result: Equatable {
+        case started, serverStartFailed, serverStopped, timedOut, wineStartFailed
+    }
+
+    static func canStart(inFlight: Bool, serverRunning: Bool, wineRunning: Bool) -> Bool {
+        !inFlight && !serverRunning && !wineRunning
+    }
+
+    static func run(fastStart: Bool, timeout: TimeInterval = WineServerLaunchGate.readinessTimeout,
+                    startServer: () -> Bool, isRunning: () -> Bool, isReady: () -> Bool,
+                    now: () -> TimeInterval, sleep: (TimeInterval) -> Void,
+                    serverReady: (TimeInterval) -> Void, startWine: () -> Bool) -> Result {
+        guard startServer() else { return .serverStartFailed }
+        let began = now()
+        while true {
+            // The ready bit can remain set after the server has stopped.
+            guard isRunning() else { return .serverStopped }
+            let elapsed = now() - began
+            // A delayed wake must not accept readiness first observed after
+            // the deadline. Exactly at the deadline remains eligible below.
+            guard elapsed <= timeout else { return .timedOut }
+            let ready = isReady()
+            // The thread can be suspended between the first clock sample and
+            // the ready-bit load. Bound the observation itself, not an earlier
+            // sample; also avoid sleeping on a stale remaining-time estimate.
+            let observed = now() - began
+            guard observed <= timeout else { return .timedOut }
+            // The legacy switch keeps its two-second minimum delay, but still
+            // needs an actually ready server at its end, just like fast start.
+            if ready && (fastStart || observed >= legacyStartDelay) {
+                serverReady(observed)
+                return startWine() ? .started : .wineStartFailed
+            }
+            guard observed < timeout else { return .timedOut }
+            sleep(min(0.01, timeout - observed))
+        }
+    }
+}
+
+// MARK: - Window-hosted Metal layer
+
 // 2026-07-03 window-hosted Metal layer.
 //
 // The presenting CAMetalLayer must NOT be a SwiftUI-hosted view's backing
@@ -1223,6 +1275,10 @@ struct ContentView: View {
     @State private var jitStatus: JITStatus = .unknown
     /// Play without JIT: the start that waits for Enable JIT (jitReadyForLaunch).
     @State private var launchAfterJIT: (() -> Void)?
+    /// Covers pool allocation and readiness, before either native running bit is set.
+    @State private var wineLaunchInFlight = false
+    /// Reserves admission while Dock asynchronously closes the Steam connection.
+    @State private var dockLaunchInFlight = false
     @State private var entitlements: EntitlementStatus?
     @State private var debuggerAttached = isDebuggerAttached()
     @ObservedObject private var input = InputSettings.shared
@@ -1627,6 +1683,7 @@ struct ContentView: View {
                 .buttonStyle(.borderedProminent)
 
                 Button("Steam Testing") {
+                    guard canStartWineLaunch() else { return }
                     // Steam S3 first boot: virtual desktop (Steam needs a
                     // window manager) + services.exe (SCM → rpcss for Steam's
                     // COM, the chain proven in the rpcss milestone) + steam.exe
@@ -1896,6 +1953,7 @@ struct ContentView: View {
                 .tint(.green)
 
                 Button("Wine Virtual Desktop") {
+                    guard canStartWineLaunch() else { return }
                     // S3-pre R2v2: raw rpcss.exe CANNOT run standalone —
                     // its wmain unconditionally StartServiceCtrlDispatcherW's
                     // (rpcss_main.c:282), which RPCs back to the SCM; without
@@ -1943,6 +2001,7 @@ struct ContentView: View {
                 // so UE4 flags can be tried without a rebuild; the string below is
                 // the default when that file is absent.
                 Button("Stray (UE4, -dx11)") {
+                    guard canStartWineLaunch() else { return }
                     setenv("MADEIRA_EXE",
                            "C:\\Program Files\\Stray\\Hk_project\\Binaries\\Win64\\Stray-Win64-Shipping.exe", 1)
                     var args = "Hk_project -dx11 -windowed"
@@ -1973,6 +2032,7 @@ struct ContentView: View {
                 // allocator says whether that is Binned2's own bookkeeping or a
                 // genuine bad free; delete the flag to reproduce the fatal.
                 Button("Valley of the Ancient (UE5)") {
+                    guard canStartWineLaunch() else { return }
                     setenv("MADEIRA_EXE",
                            "C:\\Program Files\\Valley of the Ancient - DX12\\ValleyoftheAncient\\Binaries\\Win64\\AncientGame-Win64-Shipping.exe", 1)
                     var args = "ValleyoftheAncient -windowed -ansimalloc"
@@ -1989,6 +2049,7 @@ struct ContentView: View {
                 .tint(.mint)
 
                 Button("Thumper (standalone)") {
+                    guard canStartWineLaunch() else { return }
                     // Game lives at Documents/wine/drive_c/Program Files/Thumper/
                     // (copied into the prefix by hand during development).
                     setenv("MADEIRA_EXE",
@@ -2001,6 +2062,7 @@ struct ContentView: View {
                 .tint(.pink)
 
                 Button("x64 DX11 cube") {
+                    guard canStartWineLaunch() else { return }
                     setenv("MADEIRA_EXE", "cube-x64.exe", 1)
                     unsetenv("MADEIRA_ARGS")
                     runWineFullSequence()
@@ -2019,6 +2081,7 @@ struct ContentView: View {
                 // host window. Shaders are still matched fixtures rather than
                 // runtime-converted DXIL, which the window title states.
                 Button("D3D12 cube") {
+                    guard canStartWineLaunch() else { return }
                     setenv("MADEIRA_EXE", "d3d12-cube-x64.exe", 1)
                     unsetenv("MADEIRA_ARGS")
                     runWineFullSequence()
@@ -2027,6 +2090,7 @@ struct ContentView: View {
                 .tint(.indigo)
 
                 Button("D3D12 M2 ABI") {
+                    guard canStartWineLaunch() else { return }
                     setenv("MADEIRA_EXE", "d3d12-m2-x64.exe", 1)
                     unsetenv("MADEIRA_ARGS")
                     unsetenv("MADEIRA_DESKTOP")
@@ -2043,6 +2107,7 @@ struct ContentView: View {
                 // Each clock is checked separately so a partial failure names
                 // itself: QPC passing alone is the shared-page signature.
                 Button("x64 clock test") {
+                    guard canStartWineLaunch() else { return }
                     setenv("MADEIRA_EXE", "clocktest-x64.exe", 1)
                     unsetenv("MADEIRA_ARGS")
                     unsetenv("MADEIRA_DESKTOP")
@@ -2056,6 +2121,7 @@ struct ContentView: View {
                 // event ping-pong, contended sections). Results in the log and in
                 // C:\calltest.txt.
                 Button("x64 call cost") {
+                    guard canStartWineLaunch() else { return }
                     setenv("MADEIRA_EXE", "calltest-x64.exe", 1)
                     unsetenv("MADEIRA_ARGS")
                     unsetenv("MADEIRA_DESKTOP")
@@ -2470,7 +2536,7 @@ struct ContentView: View {
             LogStore.shared.log("[steam-start] app=\(appID) direct source=\(entry.steamProgramSource ?? "-") " +
                                 "args=\(entry.launchArguments.isEmpty ? 0 : 1) folder=\(entry.steamWorkingWindowsPath == nil ? "program" : "steam")")
         }
-        guard wine_process_is_running() == 0, wineserver_is_running() == 0, library.current == nil else {
+        guard !wineLaunchInFlight, !dockLaunchInFlight, wine_process_is_running() == 0, wineserver_is_running() == 0, library.current == nil else {
             library.error = "A session is already running."; return
         }
         // One Wine session per app run (see LibraryModel.sessionsThisRun).
@@ -2487,6 +2553,7 @@ struct ContentView: View {
 
     /// The rest of Play, with JIT on: checks the entry's launch profile and starts it.
     private func startLibraryEntry(_ entry: LibraryEntry) {
+        guard canStartWineLaunch(), library.current == nil else { return }
         do {
             if entry.desktop != true { _ = try LibraryModel.executable(entry.launchRelativePath) }
             try entry.validate()
@@ -2510,16 +2577,28 @@ struct ContentView: View {
         runWineFullSequence(profile: entry)
     }
 
+    /// Main-thread admission, including the interval before native threads exist.
+    /// Call before changing the shared launch environment, not just before Wine.
+    private func canStartWineLaunch() -> Bool {
+        let allowed = WineServerLaunchGate.canStart(inFlight: wineLaunchInFlight || dockLaunchInFlight,
+                                                   serverRunning: wineserver_is_running() != 0,
+                                                   wineRunning: wine_process_is_running() != 0)
+        if !allowed { logStore.log("[launch] a session is already starting or running", level: .error) }
+        return allowed
+    }
+
     /// Full sequence: allocate JIT pool, start wineserver, start Wine.
     /// Debugger stays attached during PE loading so mprotect_exec can use BRK
     /// to prepare code pages. Detach happens after Wine finishes + recovery.
     /// `profile` is a library entry whose launch profile applies to this run.
     private func runWineFullSequence(profile: LibraryEntry? = nil) {
+        guard canStartWineLaunch() else { return }
         guard jit_check_debugged() else {
             logStore.log("JIT not enabled. Press 'Enable JIT' first.", level: .error)
             if profile != nil { LibraryModel.shared.launchFailed() }
             return
         }
+        wineLaunchInFlight = true
         // Steam downloads wait for the session, and the app's own Steam connection closes
         // before Valve's client signs in with the same account (SteamOwnedLibrary).
         SteamOwnedLibrary.shared.sessionChanged(active: true)
@@ -2556,6 +2635,26 @@ struct ContentView: View {
         ws_log_quiet = 1
 
         DispatchQueue.global(qos: .userInitiated).async {
+            // Every exit (including pool/server failure) settles diagnostic UI.
+            // Keep admission closed until this worker and any server join end.
+            defer {
+                DispatchQueue.main.async {
+                    heartbeat.invalidate()
+                    ws_log_quiet = 0
+                    logStore.uiPaused = false
+                    wineLaunchInFlight = false
+                }
+            }
+            func failLaunch(_ reason: String?, offerJIT: Bool = false) {
+                // Queue failure cleanup BEFORE a server join, which can wait for
+                // slow registry I/O. The main thread remains free to show it.
+                DispatchQueue.main.async {
+                    heartbeat.invalidate()
+                    ws_log_quiet = 0
+                    logStore.uiPaused = false
+                    LibraryModel.shared.launchFailed(reason, offerJIT: offerJIT)
+                }
+            }
             // A library entry's launch profile (executable, arguments, x87
             // precision, frame limit).
             if let profile {
@@ -3009,10 +3108,9 @@ struct ContentView: View {
                 // the lines above this one in the log carry the detail.
                 let reason = StikJITHelper.poolFailure
                 logStore.log("  " + (reason ?? "No reason was recorded; see the pool lines above."), level: .info)
-                logStore.uiPaused = false
                 // A library session that never started returns to the library.
                 let offerJIT = reason == StikJITHelper.noDebuggerMessage
-                DispatchQueue.main.async { LibraryModel.shared.launchFailed(reason, offerJIT: offerJIT) }
+                failLaunch(reason, offerJIT: offerJIT)
                 return
             }
 
@@ -3062,26 +3160,43 @@ struct ContentView: View {
             // moment, which is safe only before Wine starts drawing.
             JITNetworkShortcut.restoreBlocking()
 
-            // Step 2: Start wineserver
-            self.startWineserver()
-            winios_phase("wineserver-up")
-
-            // Step 3: Start Wine.
-
-            // Wine starts as soon as the wineserver has finished starting up (its registry
-            // is loaded), normally within tens of milliseconds, instead of after a fixed
-            // 2 s pause. 0 restores the fixed pause.
-            if MadeiraConfig.flag("MADEIRA_FAST_SERVER_START") {
-                let waitStart = CFAbsoluteTimeGetCurrent()
-                while wineserver_is_ready() == 0, wineserver_is_running() != 0, CFAbsoluteTimeGetCurrent() - waitStart < 2.0 {
-                    Thread.sleep(forTimeInterval: 0.01)
+            // Steps 2–3: start Wine only after a successful server start and
+            // observed readiness. The old two-second timeout fell through and
+            // raced init_registry()'s process-wide working-directory changes.
+            let result = WineServerLaunchGate.run(
+                fastStart: MadeiraConfig.flag("MADEIRA_FAST_SERVER_START"),
+                startServer: {
+                    guard self.startWineserver() else { return false }
+                    winios_phase("wineserver-up")
+                    return true
+                },
+                isRunning: { wineserver_is_running() != 0 },
+                isReady: { wineserver_is_ready() != 0 },
+                now: { ProcessInfo.processInfo.systemUptime },
+                sleep: { Thread.sleep(forTimeInterval: $0) },
+                serverReady: { elapsed in
+                    logStore.log(String(format: "[launch] wineserver ready after %.0f ms", elapsed * 1000))
+                },
+                startWine: {
+                    winios_phase("wine-start")
+                    return self.startWineProcess()
+                })
+            if result != .started {
+                let reason: String
+                switch result {
+                case .serverStartFailed: reason = "The wineserver thread could not start."
+                case .serverStopped: reason = "Wineserver stopped before it was ready."
+                case .timedOut: reason = "Wineserver did not become ready within \(Int(WineServerLaunchGate.readinessTimeout)) seconds."
+                case .wineStartFailed: reason = "The Wine process could not start."
+                case .started: preconditionFailure("handled above")
                 }
-                logStore.log(String(format: "[launch] wineserver ready after %.0f ms", (CFAbsoluteTimeGetCurrent() - waitStart) * 1000))
-            } else {
-                Thread.sleep(forTimeInterval: 2.0)
+                logStore.log("[launch] \(reason) Wine launch aborted.", level: .error)
+                failLaunch(reason + " Close Madeira and reopen it before trying again.")
+                // No Wine thread was created. Join the server we started, but
+                // do not join an uncreated thread after startServer() failed.
+                if result != .serverStartFailed { wineserver_stop() }
+                return
             }
-            winios_phase("wine-start")
-            self.startWineProcess()
 
             // Step 4: Wait for Wine to finish instead of fixed timer
             // Poll wine_process_is_running() — it clears when __wine_main returns
@@ -3179,14 +3294,14 @@ struct ContentView: View {
     /// session then takes that entry's display, performance and on-screen settings.
     private func startDock(_ game: DockGame, compactPool: Bool, profile: LibraryEntry? = nil) {
         let inLibrary = library.enabled
-        guard jitReadyForLaunch(inLibrary: inLibrary, entry: profile?.id,
-                                then: { startDock(game, compactPool: compactPool, profile: profile) }) else { return }
-        guard cloudClear(game.id, name: game.name, retry: { startDock(game, compactPool: compactPool, profile: profile) }) else { return }
-        guard wine_process_is_running() == 0, wineserver_is_running() == 0, !inLibrary || library.current == nil else {
+        guard !wineLaunchInFlight, !dockLaunchInFlight, wine_process_is_running() == 0, wineserver_is_running() == 0, !inLibrary || library.current == nil else {
             logStore.log("[madeira-dock] a session already ran in this app run; restart Madeira first", level: .error)
             if inLibrary { library.error = "A session is already running." }
             return
         }
+        guard jitReadyForLaunch(inLibrary: inLibrary, entry: profile?.id,
+                                then: { startDock(game, compactPool: compactPool, profile: profile) }) else { return }
+        guard cloudClear(game.id, name: game.name, retry: { startDock(game, compactPool: compactPool, profile: profile) }) else { return }
         if inLibrary, LibraryModel.sessionsThisRun > 0, MadeiraConfig.flag("MADEIRA_ONE_SESSION_PER_RUN") {
             LogStore.shared.log("[session-once] Dock launch held: \(LibraryModel.sessionsThisRun) session(s) already ran in this app run")
             library.restartNotice = LibraryModel.restartMessage
@@ -3208,11 +3323,16 @@ struct ContentView: View {
         // (library, playtime, downloads) logs off and its socket closes before the sign-in
         // is handed to Valve's client, and it stays off until the Dock session has ended
         // (SteamOwnedLibrary.prepareDock / dockEnded, SteamConnectionGate).
+        dockLaunchInFlight = true
+        // An old failed attempt may still be awaiting its report timeout.
+        // It must not release this attempt's account hold during preparation.
+        MadeiraDockModel.shared.stopWatchingReport()
         Task { @MainActor in
+            defer { dockLaunchInFlight = false }
             await SteamOwnedLibrary.shared.prepareDock()
             do {
                 // The launch state may have changed while the connection closed.
-                guard StikJITHelper.ready, wine_process_is_running() == 0, wineserver_is_running() == 0,
+                guard !wineLaunchInFlight, StikJITHelper.ready, wine_process_is_running() == 0, wineserver_is_running() == 0,
                       !inLibrary || library.current == nil else {
                     throw DockError.message("The launch state changed. Enable JIT and try again.")
                 }
@@ -3268,6 +3388,9 @@ struct ContentView: View {
                 if let profile { library.begin(profile, dock: game) }
                 else { library.begin(.dockSession(title: game.name, width: width, height: height), remember: false, dock: game) }
             }
+            // No suspension between releasing Dock's reservation and the full
+            // sequence acquiring its own. Other starts remain excluded throughout.
+            dockLaunchInFlight = false
             runWineFullSequence(profile: profile)
         }
     }
@@ -3328,7 +3451,7 @@ struct ContentView: View {
         return true
     }
 
-    private func startWineserver() {
+    private func startWineserver() -> Bool {
         logStore.log("Starting wineserver...")
 
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -3342,14 +3465,15 @@ struct ContentView: View {
         } else {
             logStore.log("Failed to start wineserver (error: \(result))", level: .error)
         }
+        return result == 0
     }
 
-    private func startWineProcess() {
+    private func startWineProcess() -> Bool {
         logStore.log("Starting Wine process...")
 
-        if wineserver_is_running() == 0 {
-            logStore.log("Wineserver not running! Start it first.", level: .error)
-            return
+        guard wineserver_is_running() != 0, wineserver_is_ready() != 0 else {
+            logStore.log("Wineserver is not running and ready; Wine launch aborted.", level: .error)
+            return false
         }
 
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -3362,6 +3486,7 @@ struct ContentView: View {
         } else {
             logStore.log("Failed to start Wine process (error: \(result))", level: .error)
         }
+        return result == 0
     }
 
     private func testDualMapping() {
