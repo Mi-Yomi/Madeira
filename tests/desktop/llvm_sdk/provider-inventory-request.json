@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "request": "llvm-msvc-provider-inventory-20261005-2",
+  "request": "llvm-msvc-provider-inventory-20261005-3",
   "requirements_sha256": "ca3d87755f5fdbb30bf3b9af4000e2064a028eda1d5cdf9bb316aa2cf3a90a0d",
   "scope": "Read-only preinstalled x64 MSVC, Windows SDK, ATL and DIA provider inventory",
   "maximum_job_minutes": 10,

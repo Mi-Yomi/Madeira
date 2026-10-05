@@ -70,3 +70,64 @@ no artifact/cache upload. A missing final receipt means incomplete inventory.
 Run `python tests/host/check-llvm-provider-inventory.py` for inert parser, path,
 requirement and failure tests. These tests do not establish real installed
 provider availability, runtime compatibility or a successful Windows link.
+
+## Final read-only member-evidence pass (request 3)
+
+The second run collected 18 providers but stopped before the first libcmt and
+oldnames object. The error did not contain the actual failing header. It also
+found mixed contents inside diaguids.lib: an MD-tagged stdafx.obj, executable
+guidstr.obj, and data-only dia2_i.obj. This archive-wide union does not prove an
+actual mixed-CRT link: normal archive member selection matters.
+
+The new diagnostic pass preserves every existing rejection and adds no provider
+or linker-option approval. It reads all DIA members and only the first object
+that blocked each CRT archive. The latter is explicitly a prefix diagnosis,
+not a completed libcmt/oldnames audit. It prints raw header bytes, member/archive
+hashes and offsets before interpreting anything. Machine-zero, sectionless
+metadata can be inspected for weak aliases, but stays architecture-neutral and
+unreviewed; it is never relabeled x64 or accepted by the existing provider gate.
+
+DIA evidence includes section ownership, defined/undefined/common/absolute
+symbols, storage classes, raw auxiliary records, weak-alias targets, COMDAT
+selection/association, relocations and modern CodeView LF_PRECOMP/LF_ENDPRECOMP
+records. Unknown formats/signatures remain explicit/incomplete. The required
+consumer references were independently established in the pinned LLVM
+DIASession.cpp.obj: NoRegCoCreate, CLSID_DiaSource and IID_IDiaDataSource. A
+GUID-data-only binding is not justified while the helper reference is retained.
+
+The selected, hash-recorded preinstalled dumpbin is invoked only as a reader:
+/HEADERS, /SYMBOLS, /DIRECTIVES and /RELOCATIONS, plus /LINKERMEMBER for DIA. No
+compiler/linker runs. For CRT header diagnosis, the first member is copied
+byte-for-byte into the fresh work root and inspected; the original provider is
+never modified, and the copy is never linked or executed. This is diagnostic
+extraction, not a substitute provider or a new binding policy.
+
+Bounds remain the same for the workflow and aggregate evidence. Additional
+limits are 8 MiB per diagnostic object, 64 DIA members, 100,000 symbols and
+relocations per object, bounded symbol/string/auxiliary references, 45 seconds
+per native-reader command and the existing 8 MiB command-log cap. Unsupported
+extended relocations or malformed evidence stop that interpretation explicitly.
+All detailed records keep provider_approved and actual_link_selection_proven
+false. A bounded raw header/native-reader result may explain a rejection; it
+cannot turn that rejection into an ABI/JIT result.
+
+This is the final static-format pass for the current experiment window. Review
+whether the helper/GUID owners reach stdafx through external/PCH symbols,
+/INCLUDE roots, aliases or COMDAT associations. If evidence remains insufficient,
+stop static retries and either reject this prebuilt route for the current window
+or obtain separate authorization for a tiny compile/link-only probe. Such a
+probe would force exactly the three verified symbols through source-owned
+references, use /MT and /WX with ordinary defaults and the unchanged DIA archive,
+and record /VERBOSE:LIB member selection and a map. It would not execute, download
+the LLVM SDK, establish the complete 70-library closure, or authorize runtime.
+No /WHOLEARCHIVE, /NODEFAULTLIB, /FORCE, fake GUIDs, stripped objects or altered
+vendor semantics are part of this proposal.
+
+Microsoft references:
+
+- [Normal archive selection](https://learn.microsoft.com/en-us/cpp/build/reference/wholearchive-include-all-library-object-files)
+- [PCH reference injection](https://learn.microsoft.com/en-us/cpp/build/reference/yl-inject-pch-reference-for-debug-library)
+- [COFF format and neutral machine value](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format)
+- [Archive member index](https://learn.microsoft.com/en-us/cpp/build/reference/linkermember)
+- [Symbol ownership](https://learn.microsoft.com/en-us/cpp/build/reference/symbols)
+- [Link-member tracing](https://learn.microsoft.com/en-us/cpp/build/reference/verbose-print-progress-messages)

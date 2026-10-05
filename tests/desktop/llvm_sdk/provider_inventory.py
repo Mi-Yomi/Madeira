@@ -427,7 +427,7 @@ def inventory(work):
             'provider_roots': {k: str(v) for k, v in roots.items()}, 'original_lib_search': env['LIB'],
             'sdk_selected_libraries': requirements['selected_libraries_link_order'],
             'sdk_abi_jit_verified': False, 'provider_closure_approved': False})
-        records, findings, missing_optional = {}, [], set()
+        records, findings, missing_optional, provider_paths = {}, [], set(), {}
         total_bytes = 0
         for name, role in sorted(requirements['provider_roles'].items()):
             try:
@@ -442,8 +442,11 @@ def inventory(work):
                 recorder.emit('PROVIDER_REJECTED', issue)
                 continue
             try:
-                total_bytes += path.stat().st_size
+                provider_size = path.stat().st_size
+                require(provider_size <= MAX_PROVIDER, 'Per-provider size cap before diagnostic eligibility')
+                total_bytes += provider_size
                 require(total_bytes <= MAX_PROVIDER_BYTES, '1-GiB aggregate provider-byte cap exceeded')
+                provider_paths[name] = path
                 row = scan_library(path, lambda obj, n=name: recorder.emit('PROVIDER_OBJECT', {'provider': n, **obj}), runner.guard)
                 row.update(name=name, path=str(path), role=role, link_approved=False)
                 records[name] = row
@@ -459,6 +462,19 @@ def inventory(work):
                 if dependency in requirements['provider_roles'] and dependency not in records:
                     findings.append({'kind': 'unresolved_known_provider_edge', 'provider': name,
                                      'dependency': dependency, 'status': 'rejected'})
+        detail_spec = importlib.util.spec_from_file_location('provider_member_evidence', HERE / 'provider_member_evidence.py')
+        detail = importlib.util.module_from_spec(detail_spec)
+        detail_spec.loader.exec_module(detail)
+        for provider in ['diaguids', 'libcmt', 'oldnames']:
+            if provider not in provider_paths:
+                continue  # Existing missing-provider finding already rejects this inventory.
+            try:
+                if detail.collect(provider, provider_paths[provider], runner, tools['dumpbin'], env, recorder):
+                    findings.append({'kind': 'member_evidence_incomplete', 'provider': provider,
+                                     'status': 'rejected-incomplete-no-selection-proof'})
+            except (ValueError, OSError, UnicodeError, struct.error) as exc:
+                findings.append({'kind': 'member_evidence_incomplete', 'provider': provider,
+                                 'reason': str(exc), 'status': 'rejected-incomplete-no-selection-proof'})
         recorder.emit('PROVIDER_DIA_MAPPING', {'raw_edge': requirements['external_dia_edge'],
             'resolved_provider': records.get('diaguids', {}).get('path'),
             'resolved_sha256': records.get('diaguids', {}).get('sha256'),
@@ -471,7 +487,7 @@ def inventory(work):
             recorder.emit('PROVIDER_FINDING', issue)
         runner.guard(True)
         incomplete = any(x['kind'] in {'provider_missing_or_unsafe', 'provider_parse_or_resource_failure',
-                                    'dia_runtime_identity_unresolved'} for x in findings)
+                                    'dia_runtime_identity_unresolved', 'member_evidence_incomplete'} for x in findings)
         result = {'status': 'incomplete-rejected' if incomplete else
                   'inventory-recorded-with-rejections' if findings else 'inventory-recorded-awaiting-review',
             'collection_complete': not incomplete,

@@ -320,3 +320,7 @@ for forbidden in ['upload-artifact@', 'actions/cache@', 'setup-python@', 'prefli
 check('contents: read' in workflow and 'persist-credentials: false' in workflow, 'Read-only workflow checkout')
 print(f'PASS: {checks} inert provider inventory requirement, COFF/import, path, CRT, directive and resource controls')
 print('NOT RUN: installed Windows providers, SDK download, compile/link/JIT, Mesa, Madeira/FEX/ARM64EC/iOS, signing or IPA')
+
+# The same bounded host stage also exercises the read-only member-evidence reader.
+import runpy
+runpy.run_path(str(ROOT / "tests/host/check-llvm-member-evidence.py"), run_name="__main__")
