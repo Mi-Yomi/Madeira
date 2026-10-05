@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "request": "source-built-softpipe-reference-20261005-1",
+  "mesa": "26.2.4",
+  "renderer": "softpipe",
+  "scope": "Microsoft Windows reference only",
+  "required": ["gdi-pixels", "legacy-wgl-pixels", "application-local-dll-identity"],
+  "optional": ["actual-core43-shader-pixels-or-explicitly-unavailable"]
+}

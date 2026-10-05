@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "host_python": "3.12.10",
+  "source_date_epoch": 1790865593,
+  "inputs": [
+    {
+      "name": "Mesa",
+      "version": "26.2.4",
+      "kind": "source",
+      "filename": "mesa-26.2.4.tar.xz",
+      "url": "https://archive.mesa3d.org/mesa-26.2.4.tar.xz",
+      "size": 68613948,
+      "sha256": "bce5f7fbebb934373b86c999a064d52fb5065878dc57f287f95346648ec832e9",
+      "metadata_url": "https://docs.mesa3d.org/relnotes/26.2.4.html"
+    },
+    {
+      "name": "LLVM-MinGW",
+      "version": "20260421",
+      "kind": "toolchain",
+      "filename": "llvm-mingw-20260421-ucrt-x86_64.zip",
+      "url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260421/llvm-mingw-20260421-ucrt-x86_64.zip",
+      "size": 187127002,
+      "sha256": "0c47b9fc1043b68a8d7e8e022b878f11306ed35beacf858864b36b096a0acd95",
+      "metadata_url": "https://api.github.com/repos/mstorsjo/llvm-mingw/releases/assets/401855829"
+    },
+    {
+      "name": "WinFlexBison",
+      "version": "2.5.25",
+      "kind": "parser-tools",
+      "filename": "win_flex_bison-2.5.25.zip",
+      "url": "https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip",
+      "size": 1083989,
+      "sha256": "8d324b62be33604b2c45ad1dd34ab93d722534448f55a16ca7292de32b6ac135",
+      "metadata_url": "https://api.github.com/repos/lexxmark/winflexbison/releases/tags/v2.5.25",
+      "hash_provenance": "SHA-256 computed from the exact official release asset; older asset metadata has no digest"
+    },
+    {
+      "name": "meson",
+      "version": "1.9.1",
+      "kind": "wheel",
+      "filename": "meson-1.9.1-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/9c/07/b48592d325cb86682829f05216e4efb2dc881762b8f1bafb48b57442307a/meson-1.9.1-py3-none-any.whl",
+      "size": 1030356,
+      "sha256": "f824ab770c041a202f532f69e114c971918ed2daff7ea56583d80642564598d0",
+      "metadata_url": "https://pypi.org/pypi/meson/1.9.1/json"
+    },
+    {
+      "name": "ninja",
+      "version": "1.13.0",
+      "kind": "wheel",
+      "filename": "ninja-1.13.0-py3-none-win_amd64.whl",
+      "url": "https://files.pythonhosted.org/packages/29/45/c0adfbfb0b5895aa18cec400c535b4f7ff3e52536e0403602fc1a23f7de9/ninja-1.13.0-py3-none-win_amd64.whl",
+      "size": 309975,
+      "sha256": "fb8ee8719f8af47fed145cced4a85f0755dd55d45b2bddaf7431fa89803c5f3e",
+      "metadata_url": "https://pypi.org/pypi/ninja/1.13.0/json"
+    },
+    {
+      "name": "Mako",
+      "version": "1.3.10",
+      "kind": "wheel",
+      "filename": "mako-1.3.10-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/87/fb/99f81ac72ae23375f22b7afdb7642aba97c00a713c217124420147681a2f/mako-1.3.10-py3-none-any.whl",
+      "size": 78509,
+      "sha256": "baef24a52fc4fc514a0887ac600f9f1cff3d82c61d4d700a1fa84d597b88db59",
+      "metadata_url": "https://pypi.org/pypi/Mako/1.3.10/json"
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.2",
+      "kind": "wheel",
+      "filename": "MarkupSafe-3.0.2-cp312-cp312-win_amd64.whl",
+      "url": "https://files.pythonhosted.org/packages/c1/80/a61f99dc3a936413c3ee4e1eecac96c0da5ed07ad56fd975f1a9da5bc630/MarkupSafe-3.0.2-cp312-cp312-win_amd64.whl",
+      "size": 15601,
+      "sha256": "8e06879fc22a25ca47312fbe7c8264eb0b662f6db27cb2d3bbbc74b1df4b9b87",
+      "metadata_url": "https://pypi.org/pypi/MarkupSafe/3.0.2/json"
+    },
+    {
+      "name": "packaging",
+      "version": "25.0",
+      "kind": "wheel",
+      "filename": "packaging-25.0-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/20/12/38679034af332785aac8774540895e234f4d07f7545804097de4b666afd8/packaging-25.0-py3-none-any.whl",
+      "size": 66469,
+      "sha256": "29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484",
+      "metadata_url": "https://pypi.org/pypi/packaging/25.0/json"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.2",
+      "kind": "wheel",
+      "filename": "PyYAML-6.0.2-cp312-cp312-win_amd64.whl",
+      "url": "https://files.pythonhosted.org/packages/0c/e8/4f648c598b17c3d06e8753d7d13d57542b30d56e6c2dedf9c331ae56312e/PyYAML-6.0.2-cp312-cp312-win_amd64.whl",
+      "size": 156338,
+      "sha256": "7e7401d0de89a9a855c839bc697c079a4af81cf878373abd7dc625847d25cbd8",
+      "metadata_url": "https://pypi.org/pypi/PyYAML/6.0.2/json"
+    }
+  ]
+}

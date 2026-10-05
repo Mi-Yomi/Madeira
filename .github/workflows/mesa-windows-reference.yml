@@ -1,0 +1,42 @@
+name: Source-built Mesa Windows reference
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - .github/workflows/mesa-windows-reference.yml
+      - tests/desktop/mesa_wgl/reference-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mesa-windows-reference-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reference:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    # Standard public runner. No larger/paid runner, cache or upload action.
+    runs-on: windows-2025
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Check proof parsing and workflow bounds
+        timeout-minutes: 1
+        run: python tests/host/check-mesa-windows-reference.py
+      - name: Build exact official softpipe sources and run the source-owned canary
+        timeout-minutes: 23
+        run: python tests/desktop/mesa_wgl/windows_reference.py --work-root "$env:RUNNER_TEMP/mesa-wgl-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Report scope
+        if: always()
+        run: |
+          Write-Output "Microsoft Windows reference only; GDI and actual legacy WGL pixels are mandatory."
+          Write-Output "Core 4.3 requires actual context, shader and pixel proof, or is reported unavailable."
+          Write-Output "No Madeira/iOS/Blender result; no installation, proprietary input, secrets, signing, IPA, cache or artifact upload."
