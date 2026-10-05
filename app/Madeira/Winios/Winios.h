@@ -57,6 +57,12 @@ typedef struct {
     unsigned short flags;   /* 0, WINIOS_TEXT_SHIFT or WINIOS_TEXT_UNICODE */
 } winios_text_key;
 int winios_post_text(const winios_text_key *keys, unsigned int count);
+/* Explicit literal insertion: Unicode-only; rejects atomically while any
+ * accepted app key remains down at the FIFO tail. All app producers share
+ * this state. This query never reads the system clipboard or enters Wine. */
+int winios_text_keys_held(void);
+int winios_post_literal_text(const winios_text_key *keys, unsigned int count);
+
 
 /* S2 desktop compositor placement. Called by the Swift presentation
  * placeholder (MetalBackedView) with its bounds in UIWindow coords —

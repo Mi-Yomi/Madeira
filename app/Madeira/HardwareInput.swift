@@ -563,6 +563,9 @@ final class HardwareInput: ObservableObject {
     /// (MetalBackedView's UIKeyInput) receives the same presses from UIKit, so
     /// it stands aside while this is true instead of typing every key twice.
     var handlesTyping: Bool { Self.enabled && keyboardConnected }
+    /// Explicit text insertion waits for raw keys to be released. Include
+    /// physical keys blocked by focus as well as those already sent to Wine.
+    var hasHeldKeys: Bool { !keys.physical.isEmpty || !keysPosted.down.isEmpty }
 
     // MARK: focus (main thread)
 

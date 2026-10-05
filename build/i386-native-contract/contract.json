@@ -1,0 +1,147 @@
+{
+  "schema": 1,
+  "wine_source_revision": "4f5b19718f4de88ecc5cb0dc08b119497a67ba8f",
+  "source_sha256": {
+    ".github/ci/native-artifacts.py": "23e61932d94e3309f8b71f403c9f25a7a9d6e1dfad6a235b0816a661331015b8",
+    "build/ntdll-unix/build.sh": "7418b8a45ecebb95dcb97df6aba79dca5ba82a57426b6c725d10352fdf0e59c4",
+    "build/win32u-unix/build.sh": "d372861de2067968764d45b3c7e3b2609eef69d37d212f935ef3039273798c60",
+    "build/ntdll-unix/virtual_ios.c": "482190dd223f16002cfed80ee9d7934aeb8b9c2a9e7a53e696c01016a1508af4",
+    "build/ntdll-unix/process_ios.c": "c2eabbf7e6037491eff744e6c3527f4b0dfe42b0827bf8fb587bca7a0e7b9c08",
+    "build/ntdll-unix/loader_ios.c": "4e4f544495d597aa955204fc15a394e92a9e9cc53f03ede704641ca6b30ae5f0",
+    "build/ntdll-unix/server_ios.c": "91a5361121c171f520e0acd5e2588cbdd5341f86db36d8088335c210bda869ec",
+    "build/ntdll-unix/nsi_unixlib_ios.c": "72a87f0f4fe687d0a311649f93220642c6ee98de4126818c50199cc3cab412c5",
+    "build/ntdll-unix/nsi_network_ios.c": "056ed7201869d946b0e2e5e923b94f8d5334a28943e84f38171fb30bea7836da",
+    "build/ntdll-unix/ios_wow.h": "b24bf54fd96085414e4e526a9689f123e3b6abb9dbc17cc6e1a263f606873e2b",
+    "build/win32u-unix/syscall_ios.c": "2a035f1e351eed7b0f849d216b2f202f8066a99afa9f11e6e0d74896d52f6d5a",
+    "app/Madeira/FEXBridge.mm": "271812d4adf38b766a17d25fa83fdb9b4fa73fdb57ce66db11d426854e15ffff",
+    "build/fex-ios/source-repairs.json": "e96b2afe2a2919e8a879f9ce7660c8c1b5916b5f8650cf4ddff037ba1eede0a9",
+    "wine/include/winternl.h": "75b8298f5106fd3e562ce375cb541f0627d017f6f8e162bd15f19966c0c1a14a",
+    "wine/include/wine/unixlib.h": "65ac030b475cc95f80ff5fa03d7aa73ff7d6e443a92ab27e2c94858c440a3863",
+    "wine/include/wine/nsi.h": "d4ba16f609553d2a71349b1ff3a0e52d7db2f3f218f03a4730fdb8fc507846ee",
+    "wine/dlls/nsi/nsi.c": "e54671bfb493fbb4bfdd3c844e0311593b75c15f8167c18b755251b15feebd6c",
+    "wine/dlls/ntdll/unix/syscall.c": "e68ad4360fc7f56d3cb258c13f16426dfa21f1ce288346d98699dbf7d288ef68",
+    "wine/dlls/win32u/syscall.c": "06ab69d2edecd2d1d7647cac4c9ded21405880c58188982fde59e7571e5a0148"
+  },
+  "nsi_layouts": {
+    "nsi_enumerate_all_ex": {
+      "size": 112,
+      "align": 8,
+      "fields": {
+        "unknown": 0,
+        "module": 16,
+        "table": 24,
+        "first_arg": 32,
+        "second_arg": 36,
+        "key_data": 40,
+        "key_size": 48,
+        "rw_data": 56,
+        "rw_size": 64,
+        "dynamic_data": 72,
+        "dynamic_size": 80,
+        "static_data": 88,
+        "static_size": 96,
+        "count": 104
+      }
+    },
+    "nsi_enumerate_all_ex32": {
+      "size": 60,
+      "align": 4,
+      "fields": {
+        "unknown": 0,
+        "module": 8,
+        "table": 12,
+        "first_arg": 16,
+        "second_arg": 20,
+        "key_data": 24,
+        "key_size": 28,
+        "rw_data": 32,
+        "rw_size": 36,
+        "dynamic_data": 40,
+        "dynamic_size": 44,
+        "static_data": 48,
+        "static_size": 52,
+        "count": 56
+      }
+    },
+    "nsi_get_all_parameters_ex": {
+      "size": 104,
+      "align": 8,
+      "fields": {
+        "unknown": 0,
+        "module": 16,
+        "table": 24,
+        "first_arg": 32,
+        "unknown2": 36,
+        "key": 40,
+        "key_size": 48,
+        "rw_data": 56,
+        "rw_size": 64,
+        "dynamic_data": 72,
+        "dynamic_size": 80,
+        "static_data": 88,
+        "static_size": 96
+      }
+    },
+    "nsi_get_all_parameters_ex32": {
+      "size": 56,
+      "align": 4,
+      "fields": {
+        "unknown": 0,
+        "module": 8,
+        "table": 12,
+        "first_arg": 16,
+        "unknown2": 20,
+        "key": 24,
+        "key_size": 28,
+        "rw_data": 32,
+        "rw_size": 36,
+        "dynamic_data": 40,
+        "dynamic_size": 44,
+        "static_data": 48,
+        "static_size": 52
+      }
+    },
+    "nsi_get_parameter_ex": {
+      "size": 80,
+      "align": 8,
+      "fields": {
+        "unknown": 0,
+        "module": 16,
+        "table": 24,
+        "first_arg": 32,
+        "unknown2": 36,
+        "key": 40,
+        "key_size": 48,
+        "param_type": 56,
+        "data": 64,
+        "data_size": 72,
+        "data_offset": 76
+      }
+    },
+    "nsi_get_parameter_ex32": {
+      "size": 48,
+      "align": 4,
+      "fields": {
+        "unknown": 0,
+        "module": 8,
+        "table": 12,
+        "first_arg": 16,
+        "unknown2": 20,
+        "key": 24,
+        "key_size": 28,
+        "param_type": 32,
+        "data": 36,
+        "data_size": 40,
+        "data_offset": 44
+      }
+    }
+  },
+  "limits": [
+    "This is a bounded source/capture/archive/link contract, not a full native ABI or runtime certification.",
+    "Only the two three-slot NSI Unix arrays and six NSI argument layouts are checked. Other Unix backends and syscall argument arrays remain separate prerequisites.",
+    "Class 1010 and win32u slot 1 are bound to reviewed source and compiled reference edges. Their runtime selection and registration are not observed by this tool.",
+    "Native FEXCore link evidence covers the FEXBridge host probe. PE xtajit WoW64 execution, guest-window behavior and JIT availability require separate device evidence.",
+    "Compilation records and the native receipt must come from the same trusted fresh CI job. These local JSON files are not authenticated attestations.",
+    "No app build, IPA, signing, guest execution, source-farm activation or deployment is performed."
+  ]
+}

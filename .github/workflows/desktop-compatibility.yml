@@ -30,6 +30,7 @@ jobs:
           python3 tests/host/check-gl-absent.py
           python3 tests/host/check-unixlib-binder.py
           python3 tests/host/check-window-visibility.py
+          CFLAGS='-fsanitize=undefined -fno-sanitize-recover=all' python3 tests/host/check-max-track-size.py
       - name: Check native-bootstrap failure handling and artifact validation
         run: |
           python3 tests/host/check-native-bootstrap-scripts.py
@@ -106,3 +107,5 @@ jobs:
           python3 tests/host/check-steam-games.py
       - name: Check compiled Unicode encoding and queue
         run: python3 tests/host/check-unicode-input.py
+      - name: Check explicit single-line clipboard insertion
+        run: python3 tests/host/check-clipboard-text.py

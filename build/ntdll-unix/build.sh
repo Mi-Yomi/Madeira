@@ -20,7 +20,21 @@ compile_one() {
     local name=$2
     echo -n "  $name... "
 
-    if xcrun -sdk iphoneos clang \
+    # Diagnostic capture is opt-in; the ordinary command and its arguments stay intact.
+    local -a compiler=(xcrun -sdk iphoneos clang)
+    if [ -n "${MADEIRA_NATIVE_CONTRACT_CAPTURE_DIR:-}" ]; then
+        case "$name" in
+            virtual|process|loader|server|syscall|nsi_unixlib_ios|nsi_network_ios)
+                local real_clang
+                real_clang="$(xcrun --sdk iphoneos --find clang)" || return 1
+                compiler=(python3 "$REPO_ROOT/build/i386-native-contract/capture.py"
+                    --root "$REPO_ROOT"
+                    --record "$MADEIRA_NATIVE_CONTRACT_CAPTURE_DIR/ntdll-$name.o.json"
+                    --source "$src" --output "$OBJ_DIR/$name.o" -- "$real_clang")
+                ;;
+        esac
+    fi
+    if "${compiler[@]}" \
         -arch arm64 -isysroot "$SDK" -miphoneos-version-min=17.0 \
         -O2 -fPIC -fvisibility=hidden -fno-stack-protector -fno-strict-aliasing \
         -Wno-implicit-function-declaration -Wno-int-conversion \

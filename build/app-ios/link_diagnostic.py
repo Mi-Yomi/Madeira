@@ -29,16 +29,59 @@ EXPECTED_REQUEST = {
     "desktop_dll_count": 12,
     "desktop_stage_seal_sha256": "a0f56fd773375a2c2cc2bd76d01db0fbf28973ca1d7bf36a7dd6dbd6c9a02023",
     "ipa_creation": False, "runner": "xcode-27", "max_minutes": 45,
-    "max_compile_jobs": 2,
+    "max_compile_jobs": 2, "native_archive_contract": False,
 }
 
 
 def request():
     data = gate.document(REQUEST)
-    # Strict JSON equality also rejects bool/int substitutions and extra knobs.
-    if json.dumps(data, sort_keys=True) != json.dumps(EXPECTED_REQUEST, sort_keys=True):
+    # One explicit boolean opt-in; every other scope/resource knob stays fixed.
+    enabled = data.get("native_archive_contract") if isinstance(data, dict) else None
+    expected = dict(EXPECTED_REQUEST, native_archive_contract=enabled)
+    if type(enabled) is not bool or json.dumps(data, sort_keys=True) != json.dumps(expected, sort_keys=True):
         raise ValueError("Link-only diagnostic request differs from the reviewed fixed scope")
     return gate.digest(REQUEST)
+
+
+def native(native_log_dir, native_artifact_dir):
+    """Run the existing fresh native stage, then optionally inspect its archives.
+
+    This first integration deliberately provides no bridge/final-link inputs.
+    The normal app link remains a later stage with its own independent receipt.
+    """
+    request_hash = request()
+    enabled = gate.document(REQUEST)["native_archive_contract"]
+    native_log_dir, native_artifact_dir = map(lambda p: Path(p).resolve(),
+                                            (native_log_dir, native_artifact_dir))
+    contract_dir = native_log_dir / "i386-native-contract"
+    captures = contract_dir / "captures"
+    environment = dict(os.environ, NATIVE_LOG_DIR=str(native_log_dir),
+                       NATIVE_ARTIFACT_DIR=str(native_artifact_dir))
+    # An inherited variable cannot override the explicit diagnostic request.
+    environment.pop("MADEIRA_NATIVE_CONTRACT_CAPTURE_DIR", None)
+    if enabled:
+        contract_dir.mkdir(parents=True, exist_ok=False)
+        captures.mkdir()
+        environment["MADEIRA_NATIVE_CONTRACT_CAPTURE_DIR"] = str(captures)
+    subprocess.run(["bash", ".github/ci/native-bootstrap.sh"], cwd=ROOT,
+                   env=environment, check=True)
+    if enabled:
+        receipt = contract_dir / "archive-contract.json"
+        # native-bootstrap returns only after its existing 20-archive gate.
+        # Source, real objects, SDK and compiler still belong to this same job.
+        subprocess.run([sys.executable, "build/i386-native-contract/check.py",
+                        "--root", str(ROOT), "--native-receipt", str(native_artifact_dir / "provenance.json"),
+                        "--captures", str(captures), "--output", str(receipt)],
+                       cwd=ROOT, env=environment, check=True)
+        result = gate.document(receipt)
+        if (result.get("status") != "bounded_archive_contract_passed" or
+                result.get("final_link") is not None or result.get("runtime") != "not_run" or
+                result.get("application_support") != "not_established" or len(result.get("captures", {})) != 8):
+            raise ValueError("Native archive checker did not produce the bounded eight-object receipt")
+        print(json.dumps({"native_archive_contract": "passed", "request_sha256": request_hash,
+                          "archive_receipt_sha256": gate.digest(receipt), "captured_objects": 8,
+                          "final_link": None, "runtime": "not_run", "application_support": "not_established"},
+                         sort_keys=True))
 
 
 def outputs(products, intermediates, diagnostics):
@@ -180,6 +223,9 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("request", allow_abbrev=False)
+    native_command = commands.add_parser("native", allow_abbrev=False)
+    native_command.add_argument("--native-log-dir", required=True, type=Path)
+    native_command.add_argument("--native-artifact-dir", required=True, type=Path)
     for name in ("build", "scan", "verify"):
         command = commands.add_parser(name, allow_abbrev=False)
         if name == "build":
@@ -190,6 +236,8 @@ def main(argv=None):
     try:
         if args.command == "request":
             print(json.dumps({"request_sha256": request(), "scope": EXPECTED_REQUEST["scope"]}))
+        elif args.command == "native":
+            native(args.native_log_dir, args.native_artifact_dir)
         elif args.command == "build":
             build(args.native_receipt, args.products, args.intermediates, args.diagnostics)
         elif args.command == "verify":

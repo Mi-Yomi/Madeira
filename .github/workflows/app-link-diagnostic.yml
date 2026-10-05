@@ -35,6 +35,7 @@ jobs:
           python3 tests/host/check-desktop-integration.py
           python3 tests/host/check-desktop-overlay-plan.py
           python3 tests/host/check-app-link-diagnostic.py
+          python3 tests/host/check-i386-native-capture-wiring.py
           python3 tests/host/check-app-link-workflow.py
           python3 tests/host/check-app-bootstrap.py
           python3 tests/host/check-app-workflow.py
@@ -78,6 +79,7 @@ jobs:
           python3 tests/host/check-desktop-integration.py
           python3 tests/host/check-desktop-overlay-plan.py
           python3 tests/host/check-app-link-diagnostic.py
+          python3 tests/host/check-i386-native-capture-wiring.py
           python3 tests/host/check-app-link-workflow.py
           python3 tests/host/check-app-bootstrap.py
           python3 tests/host/check-app-workflow.py
@@ -85,11 +87,21 @@ jobs:
           python3 tests/host/check-fex-source-repairs.py
           python3 tests/host/check-fex-snapshot-link.py
           python3 tests/host/check-crypto-link-tables.py
+      - name: Exercise native contract fixtures with installed Apple tools
+        timeout-minutes: 2
+        run: |
+          CLANG="$(xcrun --sdk iphoneos --find clang)" \
+          LLVM_AR="$(xcrun --find ar)" \
+          LD64_LLD="$(xcrun --find ld)" \
+            python3 tests/host/check-i386-native-contract.py -v
       - name: Build and validate native dependencies first
         timeout-minutes: 35
         # Reuses the approved official Metal installer and its fail-closed gate.
         # All subsequent stages stay in this fresh checkout, with no restore.
-        run: bash .github/ci/native-bootstrap.sh
+        run: |
+          python3 build/app-ios/link_diagnostic.py native \
+            --native-log-dir "$NATIVE_LOG_DIR" \
+            --native-artifact-dir "$NATIVE_ARTIFACT_DIR"
       - name: Fetch pinned LLVM and preflight every Metal source
         timeout-minutes: 5
         run: |

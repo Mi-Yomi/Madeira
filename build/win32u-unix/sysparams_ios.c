@@ -26,6 +26,7 @@
 
 #include <pthread.h>
 #include <assert.h>
+#include <limits.h>
 #include <unistd.h>  /* iOS-Madeira: dprintf for BADMODE diagnostic */
 #include <stdio.h>
 
@@ -7565,8 +7566,17 @@ int get_system_metrics( int index )
     case SM_CYMIN:        return 38;
     case SM_CXMINTRACK:   return 132;
     case SM_CYMINTRACK:   return 38;
-    case SM_CXMAXTRACK:   return 1920;
-    case SM_CYMAXTRACK:   return 1080;
+    /* Follow the current virtual screen plus frame allowance, preserving
+     * the old minimums. Adapted from willfaust/Madeira commit bf0d037ea1eb
+     * (spitefulowl); clamp before adding because session sizes are not capped. */
+    case SM_CXMAXTRACK:
+    case SM_CYMAXTRACK:
+    {
+        int sw, sh;
+        ios_screen_size( &sw, &sh );
+        return index == SM_CXMAXTRACK ? max( 1920, min( sw, INT_MAX - 16 ) + 16 ) :
+                                       max( 1080, min( sh, INT_MAX - 16 ) + 16 );
+    }
     /* screen-size metrics follow MADEIRA_SCREEN_W/H (defaults keep the
      * legacy 1024x768 for the games path where the env is unset).
      * Explorer's taskbar positions itself from SM_C{X,Y}SCREEN — the

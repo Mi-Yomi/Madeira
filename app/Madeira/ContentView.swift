@@ -1166,7 +1166,7 @@ extension MetalBackedView: UIKeyInput {
         }
     }
 
-    private static func rejected(_ reason: String, from view: UIView) {
+    static func rejected(_ reason: String, from view: UIView) {
         // Never log the entered text: a 1C field can contain private data.
         LogStore.shared.log("[software-text] insertion rejected: \(reason)")
         UINotificationFeedbackGenerator().notificationOccurred(.warning)
@@ -1177,6 +1177,50 @@ extension MetalBackedView: UIKeyInput {
         let alert = UIAlertController(title: "Text was not entered", message: reason, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         presenter.present(alert, animated: true)
+    }
+}
+
+// A deliberately narrow, explicit iOS -> Windows text insertion. This is not
+// a Windows clipboard bridge: it does not replace CF_UNICODETEXT or send Ctrl+V.
+// Only the accessory button supplies readText; visibility/availability checks
+// never read UIPasteboard. Do not cache, persist or log the returned text.
+@MainActor enum ClipboardTextInput {
+    enum Outcome: Equatable {
+        case inserted, cancelled, unavailable, tooLong, notSingleLine, queueBusy
+
+        var reason: String? {
+            switch self {
+            case .inserted: return nil
+            case .cancelled: return "The input target changed or a key is held. Select the field, release all keys, and try again."
+            case .unavailable: return "No text was available. Copy plain text and allow the iOS paste request if it appears."
+            case .tooLong: return "Text is too long. Use at most \(WINIOS_TEXT_MAX_UNITS) UTF-16 units."
+            case .notSingleLine: return "Use one line of text without tabs or control characters."
+            case .queueBusy: return "The input queue is busy or a key is held. Release all keys, wait for the app to respond, then try again."
+            }
+        }
+    }
+
+    static func insert(readText: () -> String?, isCurrent: () -> Bool,
+                       submit: ([winios_text_key]) -> Bool) -> Outcome {
+        guard isCurrent() else { return .cancelled }
+        // A normal user-initiated pasteboard read may show iOS's permission
+        // prompt. Recheck the exact input/session after that read returns.
+        let text = readText()
+        guard isCurrent() else { return .cancelled }
+        guard let text, !text.isEmpty else { return .unavailable }
+        let limit = Int(WINIOS_TEXT_MAX_UNITS)
+        guard text.utf16.prefix(limit + 1).count <= limit else { return .tooLong }
+        var keys: [winios_text_key] = []
+        for unit in text.utf16 {
+            // No Enter, Tab, Escape, backspace or multiline field navigation.
+            guard unit >= 0x20, !(0x7f...0x9f).contains(unit),
+                  unit != 0x2028, unit != 0x2029 else { return .notSingleLine }
+            // Even ASCII is literal text, never a virtual-key shortcut or a
+            // US-keyboard layout conversion. UTF-16 pairs remain in one batch.
+            keys.append(winios_text_key(value: unit, flags: UInt16(WINIOS_TEXT_UNICODE)))
+        }
+        guard isCurrent() else { return .cancelled }
+        return submit(keys) ? .inserted : .queueBusy
     }
 }
 

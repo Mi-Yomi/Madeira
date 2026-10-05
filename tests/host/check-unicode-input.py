@@ -35,6 +35,7 @@ def function(source, name):
 api = header[header.index('#define WINIOS_TEXT_MAX_UNITS'):header.index('/* S2 desktop compositor placement.')]
 queue = native[native.index('#define WINIOS_RING_SIZE'):native.index('/* end winios_reset_input */')]
 unicode_driver = function(driver, 'void winios_drv_post_unicode(')
+post_key = function(native, 'void winios_post_key(')
 
 # Verify the actual callback route, frontend use, and downstream Wine contract.
 assert 'winios_reset_input();' in function(native, 'void winios_session_reset(')
@@ -100,11 +101,23 @@ harness = r'''
 struct event { int kind; unsigned short value; unsigned int flags; };
 static struct event events[WINIOS_TEST_CAPACITY];
 static unsigned int event_count;
-static int recursion_check, capacity_check;
+static int recursion_check, capacity_check, literal_check;
+static unsigned char delivered_keys[256];
 static _Atomic int pause_first, dispatch_paused, resume_dispatch, reset_started, reset_done;
 static void record(int kind, unsigned short value, unsigned int flags) {
     assert(event_count < WINIOS_TEST_CAPACITY);
     events[event_count++] = (struct event){kind, value, flags};
+    if (kind == 1) {
+        unsigned int key = value;
+        if (key == 0x10) key = 0xa0;
+        else if (key == 0x11) key = 0xa2;
+        else if (key == 0x12) key = 0xa4;
+        assert(key < 256);
+        delivered_keys[key] = !(flags & KEYEVENTF_KEYUP);
+    }
+    if (kind == 2 && literal_check) {
+        for (unsigned int i = 0; i < sizeof(delivered_keys); ++i) assert(!delivered_keys[i]);
+    }
     if (atomic_exchange(&pause_first, 0)) {
         atomic_store(&dispatch_paused, 1);
         while (!atomic_load(&resume_dispatch)) sched_yield();
@@ -290,6 +303,83 @@ int main(void) {
     assert(event_count == WINIOS_INPUT_DRAIN_BUDGET * 2);
     clean();
 
+    /* All app key producers converge on this actual public function. A getter
+     * is advisory only; admission must recheck atomically after a late key. */
+    memset(delivered_keys, 0, sizeof(delivered_keys));
+    keys[0] = (winios_text_key){0x41, WINIOS_TEXT_UNICODE};
+    assert(!winios_text_keys_held());
+    winios_post_key(0x12, 1); /* touch/controller Alt after UI checked */
+    assert(winios_text_keys_held() && !winios_post_literal_text(keys, 1));
+    winios_post_key(0x12, 1); /* duplicate down is not a refcount */
+    winios_post_key(0xa4, 0); /* same left Alt, alternate spelling */
+    assert(!winios_text_keys_held());
+    assert(winios_post_literal_text(keys, 1)); /* release need not be drained yet */
+    winios_post_key(0x12, 1); /* accepted after text: must stay behind it */
+    assert(winios_text_keys_held() && !winios_post_literal_text(keys, 1));
+    literal_check = 1;
+    drain_all();
+    literal_check = 0;
+    assert(event_count == 6);
+    expect(0, 1, 0x12, 0); expect(1, 1, 0x12, 0); expect(2, 1, 0xa4, 2);
+    expect(3, 2, 0x41, 4); expect(4, 2, 0x41, 6); expect(5, 1, 0x12, 0);
+    winios_post_key(0x12, 0); drain_all(); clean();
+    keys[0].flags = 0;
+    assert(!winios_post_literal_text(keys, 1)); /* never admit a VK shortcut */
+    assert(winios_post_text(keys, 1)); /* normal typing API is unchanged */
+    drain_all(); clean(); keys[0].flags = WINIOS_TEXT_UNICODE;
+
+    /* Every VK is bounded; generic modifiers share their left-side identity. */
+    for (unsigned int key = 1; key < 256; ++key) {
+        winios_post_key(key, 1);
+        assert(winios_text_keys_held() && !winios_post_literal_text(keys, 1));
+        winios_post_key(key, 0);
+        assert(!winios_text_keys_held() && winios_post_literal_text(keys, 1));
+        winios_reset_input(); clean();
+    }
+    for (int key = 0x10; key <= 0x12; ++key) {
+        winios_post_key(key, 1); winios_post_key(0xa0 + 2 * (key - 0x10), 0);
+        assert(!winios_text_keys_held());
+        winios_reset_input(); clean();
+    }
+    winios_post_key(-1, 1); winios_post_key(0, 1); winios_post_key(256, 1);
+    winios_post_key(0x112, 1); /* must not truncate to Alt in Wine */
+    assert(!winios_text_keys_held()); clean();
+
+    /* Ring saturation cannot invent a down or forget a dropped release. */
+    for (unsigned int i = 0; i < WINIOS_RING_SIZE - 1; ++i)
+        winios_q_push_ev(WINIOS_EV_MOUSE, 0, 0, 1, 0);
+    winios_post_key(0x12, 1); /* dropped */
+    assert(!winios_text_keys_held()); drain_all(); clean();
+    winios_post_key(0x12, 1);
+    for (unsigned int i = 0; i < WINIOS_RING_SIZE - 2; ++i)
+        winios_q_push_ev(WINIOS_EV_MOUSE, 0, 0, 1, 0);
+    winios_post_key(0x12, 0); /* dropped */
+    assert(winios_text_keys_held()); drain_all();
+    assert(!winios_post_literal_text(keys, 1));
+    winios_post_key(0x12, 0); assert(winios_post_literal_text(keys, 1));
+    literal_check = 1; drain_all(); literal_check = 0; clean();
+    winios_post_key(0x12, 1); winios_reset_input();
+    assert(!winios_text_keys_held()); clean();
+
+    /* Pause a real pump inside the batch while a different producer presses
+     * Alt. The remaining 4095 records must stay ahead of the new key event. */
+    memset(delivered_keys, 0, sizeof(delivered_keys));
+    for (unsigned int i = 0; i < WINIOS_TEXT_MAX_UNITS; ++i)
+        keys[i] = (winios_text_key){0x0410, WINIOS_TEXT_UNICODE};
+    assert(winios_post_literal_text(keys, WINIOS_TEXT_MAX_UNITS));
+    atomic_store(&dispatch_paused, 0); atomic_store(&resume_dispatch, 0);
+    atomic_store(&pause_first, 1); literal_check = 1;
+    assert(!pthread_create(&pump, NULL, pump_once, NULL));
+    while (!atomic_load(&dispatch_paused)) sched_yield();
+    winios_post_key(0x12, 1);
+    assert(winios_text_keys_held() && !winios_post_literal_text(keys, 1));
+    atomic_store(&resume_dispatch, 1); assert(!pthread_join(pump, NULL));
+    drain_all(); literal_check = 0;
+    assert(event_count == WINIOS_TEXT_MAX_UNITS * 2 + 1);
+    expect(WINIOS_TEXT_MAX_UNITS * 2, 1, 0x12, 0);
+    winios_post_key(0x12, 0); drain_all(); clean();
+    puts("PASS: atomic literal admission, all-producer key ledger, alias/range checks, saturation and mid-batch Alt ordering");
+
     /* Parallel producers and pumps must never interleave a down/up pair. */
     pthread_t producers[3], consumers[2];
     for (uintptr_t i = 0; i < 3; ++i) assert(!pthread_create(&producers[i], NULL, produce, (void *)(0x0410+i)));
@@ -315,7 +405,7 @@ int main(void) {
 with tempfile.TemporaryDirectory(prefix='madeira-unicode-') as tmp:
     tmp = Path(tmp)
     cfile, exe = tmp / 'text.c', tmp / 'text'
-    cfile.write_text('\n'.join((prefix, api, unicode_driver, queue, harness)))
+    cfile.write_text('\n'.join((prefix, api, unicode_driver, queue, post_key, harness)))
     cmd = [os.environ.get('CC', 'cc'), '-std=c11', '-D_DEFAULT_SOURCE', '-Wall', '-Wextra', '-Werror', '-pthread']
     cmd += shlex.split(os.environ.get('CFLAGS', ''))
     subprocess.run(cmd + [str(cfile), '-o', str(exe)], check=True)

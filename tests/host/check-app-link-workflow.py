@@ -43,7 +43,7 @@ class WorkflowTests(unittest.TestCase):
         steps = ["python3 build/app-ios/link_diagnostic.py request", "python3 build/wine-pe/verify_desktop_integration.py",
                  "python3 tests/host/check-desktop-integration.py", "python3 tests/host/check-app-link-diagnostic.py",
                  "python3 tests/host/check-app-link-workflow.py", "python3 tests/host/check-app-bootstrap.py",
-                 "run: bash .github/ci/native-bootstrap.sh", "bash build/llvm-ios/build.sh fetch",
+                 "python3 build/app-ios/link_diagnostic.py native", "bash build/llvm-ios/build.sh fetch",
                  "bash build/dxmt-ios/generate-shaders.sh preflight", "bash build/llvm-ios/build.sh host",
                  "bash build/dxmt-ios/generate-shaders.sh\n", "run: bash build/llvm-ios/build.sh ios",
                  "run: python3 build/dxmt-ios/clean_build.py", "python3 build/app-ios/link_diagnostic.py build"]

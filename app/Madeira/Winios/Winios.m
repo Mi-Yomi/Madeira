@@ -680,6 +680,9 @@ static struct {
     unsigned int head;       /* producer cursor (Swift side) */
     unsigned int tail;       /* consumer cursor (Wine drain) */
     unsigned int text_units; /* includes batches currently being drained */
+    /* Key state at the accepted FIFO tail, including every app producer.
+     * Unlike a UI visibility flag, a dropped key-up must keep this blocked. */
+    unsigned char key_down[256];
     pthread_mutex_t lock;
 } g_input_q = { .lock = PTHREAD_MUTEX_INITIALIZER };
 static pthread_mutex_t g_input_drain_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -690,16 +693,41 @@ static void winios_q_push_ev(unsigned int type, int x, int y, unsigned int flags
     if (next != g_input_q.tail) {
         g_input_q.buf[g_input_q.head] = (winios_input_event_t){type, x, y, flags, data, NULL};
         g_input_q.head = next;
+        if (type == WINIOS_EV_KEY && x > 0 && x < 256) {
+            unsigned int key = (unsigned int)x;
+            /* Wine maps generic Shift/Ctrl/Alt to their left-side key. */
+            if (key == 0x10) key = 0xa0;
+            else if (key == 0x11) key = 0xa2;
+            else if (key == 0x12) key = 0xa4;
+            g_input_q.key_down[key] = !(flags & KEYEVENTF_KEYUP);
+        }
     }
     /* If buffer is full we drop the new event by simply not advancing —
      * better than blocking the UI thread on a Wine event drain. */
     pthread_mutex_unlock(&g_input_q.lock);
 }
 
-int winios_post_text(const winios_text_key *keys, unsigned int count) {
+/* g_input_q.lock must be held. A queued release is sufficient: all earlier
+ * events finish before a subsequently admitted text batch can be drained. */
+static int winios_text_keys_held_locked(void) {
+    for (unsigned int i = 0; i < sizeof(g_input_q.key_down); ++i)
+        if (g_input_q.key_down[i]) return 1;
+    return 0;
+}
+
+int winios_text_keys_held(void) {
+    pthread_mutex_lock(&g_input_q.lock);
+    int held = winios_text_keys_held_locked();
+    pthread_mutex_unlock(&g_input_q.lock);
+    return held;
+}
+
+static int winios_post_text_internal(const winios_text_key *keys, unsigned int count,
+                                     int literal) {
     if (!count) return 1;
     if (!keys || count > WINIOS_TEXT_MAX_UNITS) return 0;
     for (unsigned int i = 0; i < count; ++i) {
+        if (literal && keys[i].flags != WINIOS_TEXT_UNICODE) return 0;
         if (keys[i].flags != WINIOS_TEXT_UNICODE &&
             (keys[i].flags != 0 && keys[i].flags != WINIOS_TEXT_SHIFT)) return 0;
         if (keys[i].flags != WINIOS_TEXT_UNICODE &&
@@ -707,7 +735,8 @@ int winios_post_text(const winios_text_key *keys, unsigned int count) {
     }
     pthread_mutex_lock(&g_input_q.lock);
     unsigned int next = (g_input_q.head + 1) % WINIOS_RING_SIZE;
-    if (next == g_input_q.tail || count > WINIOS_TEXT_MAX_UNITS - g_input_q.text_units) {
+    if (next == g_input_q.tail || count > WINIOS_TEXT_MAX_UNITS - g_input_q.text_units ||
+        (literal && winios_text_keys_held_locked())) {
         pthread_mutex_unlock(&g_input_q.lock);
         return 0;
     }
@@ -722,6 +751,14 @@ int winios_post_text(const winios_text_key *keys, unsigned int count) {
     g_input_q.head = next;
     pthread_mutex_unlock(&g_input_q.lock);
     return 1;
+}
+
+int winios_post_text(const winios_text_key *keys, unsigned int count) {
+    return winios_post_text_internal(keys, count, 0);
+}
+
+int winios_post_literal_text(const winios_text_key *keys, unsigned int count) {
+    return winios_post_text_internal(keys, count, 1);
 }
 
 /* A software insertion occupies one ring slot, so saturation cannot leave a
@@ -788,6 +825,7 @@ static void winios_reset_input(void) {
         g_input_q.tail = (g_input_q.tail + 1) % WINIOS_RING_SIZE;
     }
     g_input_q.text_units = 0;
+    memset(g_input_q.key_down, 0, sizeof(g_input_q.key_down));
     pthread_mutex_unlock(&g_input_q.lock);
     pthread_mutex_unlock(&g_input_drain_lock);
 }
@@ -818,6 +856,9 @@ void winios_post_touch_up(int x, int y) {
 /* Key press bridge. vk = Windows virtual-key code, down = 1 for press,
  * 0 for release. Queued like mouse events; drained in pProcessEvents. */
 void winios_post_key(int vk, int down) {
+    /* A Windows virtual key is one byte; never let an invalid saved mapping
+     * truncate into a different key downstream or escape the held-key ledger. */
+    if (vk <= 0 || vk > 0xff) return;
     winios_q_push_ev(WINIOS_EV_KEY, vk, 0, down ? 0 : KEYEVENTF_KEYUP, 0);
 }
 

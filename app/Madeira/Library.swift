@@ -3714,6 +3714,7 @@ final class LibraryKeyInput: UIView, UIKeyInput {
     var hasText: Bool { true }
     override var canBecomeFirstResponder: Bool { true }
     private var held = Set<Int32>()
+    private var clipboardReadInFlight = false
     var keyboardType: UIKeyboardType { get { .default } set {} }
     var autocorrectionType: UITextAutocorrectionType { get { .no } set {} }
     var autocapitalizationType: UITextAutocapitalizationType { get { .none } set {} }
@@ -3738,10 +3739,38 @@ final class LibraryKeyInput: UIView, UIKeyInput {
             }, for: .touchUpInside)
             row.addArrangedSubview(button)
         }
+        let paste = UIButton(type: .system); paste.configuration = .tinted()
+        paste.setTitle("Type clipboard text", for: .normal)
+        paste.accessibilityHint = "Types one line of copied text into the selected Windows field"
+        paste.addAction(UIAction { [weak self] _ in self?.typeClipboardText() }, for: .touchUpInside)
+        row.addArrangedSubview(paste)
         scroll.addSubview(row); row.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([row.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor, constant: 8), row.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor, constant: -8), row.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 4), row.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -4), row.heightAnchor.constraint(equalToConstant: 44)])
         return scroll
     }
+    private func typeClipboardText() {
+        guard !clipboardReadInFlight, let targetWindow = window,
+              let session = LibraryModel.shared.current else { return }
+        clipboardReadInFlight = true
+        defer { clipboardReadInFlight = false }
+        let outcome = ClipboardTextInput.insert(readText: { UIPasteboard.general.string }, isCurrent: {
+            // A recreated keyboard for the same library entry is still a
+            // different target. Never let an old permission request reach it.
+            LibraryKeyboard.input === self && LibraryKeyboard.window === targetWindow
+                && self.window === targetWindow && self.isFirstResponder && targetWindow.isKeyWindow
+                && targetWindow.windowScene?.activationState == .foregroundActive
+                && targetWindow.rootViewController?.presentedViewController == nil
+                && UIApplication.shared.applicationState == .active
+                && LibraryModel.shared.current == session && !LibraryModel.shared.menu
+                && wine_process_is_running() != 0
+                && self.held.isEmpty && !HardwareInput.shared.hasHeldKeys && winios_text_keys_held() == 0
+        }, submit: { keys in
+            // The native queue takes its own bounded copy before returning.
+            keys.withUnsafeBufferPointer { winios_post_literal_text($0.baseAddress, UInt32($0.count)) != 0 }
+        })
+        if let reason = outcome.reason { SoftwareTextInput.rejected(reason, from: self) }
+    }
+
     private func press(_ vk: Int32) { winios_post_key(vk, 1); winios_post_key(vk, 0) }
     func insertText(_ text: String) {
         SoftwareTextInput.insert(text, from: self, shiftHeld: held.contains(0x10))

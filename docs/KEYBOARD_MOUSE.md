@@ -70,6 +70,28 @@ warning and when a device disconnects.
 Not detected: a menu that is neither presented as a view controller nor takes
 first responder. Upstream's developer layout has none.
 
+## Type a line from the iOS clipboard
+
+In a running library session, select the Windows text field, open Madeira's
+keyboard, and scroll its accessory row to **Type clipboard text**. This reads
+the iOS clipboard only when tapped. Respond to the normal iOS paste permission
+prompt if one appears. A denied or empty read inserts nothing.
+
+This action types one line as literal Unicode text. It accepts at most 4096
+UTF-16 units (an emoji can use two), rejects tabs, line breaks and control
+characters, and rejects the whole insertion if the input queue is full. Release
+all hardware, touch/controller-mapped keys and the accessory's Ctrl/Shift/Alt
+toggles before using it. A key that arrives during the pasteboard read also
+blocks admission. Text is neither logged nor saved by this action. A changed session, dismissed or
+replaced keyboard, or lost foreground focus cancels the read's insertion.
+
+This is a narrow input convenience for fields such as 1C names and paths. It
+leaves Wine's internal clipboard alone and does not implement Ctrl+V from iOS,
+copying Windows selections to iOS, rich text, spreadsheets, images or files.
+Windows programs receive normal Unicode character input, so their per-character
+validation still applies. Keep the intended field selected until entry finishes.
+Actual iOS permission behavior and 1C field handling require device testing.
+
 ## Mouse and trackpad
 
 Two paths carry the mouse; whichever delivers a delta first wins and is logged:
