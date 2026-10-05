@@ -11,7 +11,9 @@ permissions:
 jobs:
   portable-launch:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # The full integration suite reached ten minutes before the final Unicode
+    # check; retain every normal/optimized check with bounded completion room.
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
