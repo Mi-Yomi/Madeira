@@ -55,6 +55,8 @@ jobs:
           python3 -O tests/host/check-desktop-integration.py
           python3 tests/host/check-msi-integration.py
           python3 -O tests/host/check-msi-integration.py
+          python3 tests/host/check-loader-integration.py
+          python3 -O tests/host/check-loader-integration.py
           python3 tests/host/check-msi-windows-reference.py
           python3 tests/host/check-msi-madeira-reference.py
           python3 tests/host/check-mesa-windows-reference.py

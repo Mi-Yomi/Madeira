@@ -1,0 +1,22 @@
+{
+  "aarch64": {
+    "activeds_ordinal_3": "ADsGetObject",
+    "avicap_required_exports": [
+      "capCreateCaptureWindowA",
+      "capCreateCaptureWindowW",
+      "capGetDriverDescriptionA",
+      "capGetDriverDescriptionW"
+    ],
+    "passed": true
+  },
+  "arm64ec": {
+    "activeds_ordinal_3": "ADsGetObject",
+    "avicap_required_exports": [
+      "capCreateCaptureWindowA",
+      "capCreateCaptureWindowW",
+      "capGetDriverDescriptionA",
+      "capGetDriverDescriptionW"
+    ],
+    "passed": true
+  }
+}

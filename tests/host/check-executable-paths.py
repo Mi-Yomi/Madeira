@@ -92,6 +92,24 @@ def pe(machine=0x8664):
     return data
 
 
+def same_result(got, want):
+    if got.keys() != want.keys():
+        return False
+    if 'path' not in want:
+        return got == want
+    # Foundation may report /var where Python reports /private/var on macOS.
+    # Resolve only real absolute filesystem paths; all other fields stay exact.
+    if any(got[key] != value for key, value in want.items() if key != 'path'):
+        return False
+    actual, expected = Path(got['path']), Path(want['path'])
+    if not actual.is_absolute() or not expected.is_absolute():
+        return False
+    try:
+        return actual.resolve(strict=True) == expected.resolve(strict=True)
+    except (OSError, RuntimeError):
+        return False
+
+
 with tempfile.TemporaryDirectory(prefix='madeira-executable-paths-') as directory:
     temp = Path(directory).resolve()
     main, executable = temp / 'main.swift', temp / 'check'
@@ -204,11 +222,25 @@ with tempfile.TemporaryDirectory(prefix='madeira-executable-paths-') as director
                             capture_output=True, check=True).stdout
     actual = json.loads(output)
     failures = []
+    control = dict(path=str(target), relative='Программы/1С_Предприятие.exe',
+                   title='1С Предприятие', bits=64)
+    controls = [('same file through alias', dict(control, path=str(drive_root / 'inside.exe')), True),
+                ('different file', dict(control, path=str(drive_root / 'plain_x86.exe')), False),
+                ('different root', dict(control, path=str(outside / 'outside.exe')), False),
+                ('missing file', dict(control, path=str(drive_root / 'missing.exe')), False),
+                ('relative path', dict(control, path=target.name), False),
+                ('changed relative spelling', dict(control, relative='Программы/1C_Предприятие.exe'), False),
+                ('changed title', dict(control, title='different'), False),
+                ('changed bitness', dict(control, bits=32), False)]
+    for name, got, matches in controls:
+        if same_result(got, control) != matches:
+            failures.append('path comparison control: ' + name)
     if len(actual) != len(expected):
         failures.append(f'result count: {len(actual)} != {len(expected)}')
     for got, want in zip(actual, expected):
-        if got != want:
+        if not same_result(got, want):
             failures.append(f'{want["name"]}:\n  expected {want!r}\n  received {got!r}')
     if failures:
         raise SystemExit('FAIL: ' + '\n'.join(failures))
     print(f'PASS: {len(fixtures)} compiled production executable-path, Unicode, PE and symlink cases')
+    print(f'PASS: {len(controls)} strict filesystem-alias and exact-metadata comparison controls')

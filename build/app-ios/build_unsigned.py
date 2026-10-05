@@ -28,6 +28,7 @@ import common
 import generate_shaders
 import verify_desktop_integration
 import verify_msi_integration
+import verify_loader_integration
 
 CONVERTER = "d3d12/libmetalirconverter.dylib"
 CONVERTER_SHA256 = "073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2"
@@ -132,7 +133,8 @@ def resource_inputs():
     base = ROOT / "app/Madeira"
     names = git("ls-files", "-z", "--", *["app/Madeira/" + n for n in (*RESOURCE_DIRS, *RESOURCE_FILES)],
                 verify_desktop_integration.RECORD, verify_desktop_integration.RECEIPT,
-                verify_msi_integration.RECORD, verify_msi_integration.RECEIPT).split("\0")
+                verify_msi_integration.RECORD, verify_msi_integration.RECEIPT,
+                verify_loader_integration.RECORD, verify_loader_integration.RECEIPT).split("\0")
     expected = {name.removeprefix("app/Madeira/"): digest(ROOT / name) for name in names
                 if name.startswith("app/Madeira/")}
     for name in RESOURCE_FILES:
@@ -168,6 +170,25 @@ def resource_inputs():
         raise ValueError("This gate requires an empty x86_64-vcruntime placeholder")
     verify_desktop_integration.validate(ROOT, expected, names)
     return expected, pe
+
+
+def guest_pe_evidence(pe):
+    """One exact receipt contract shared with the unsigned link diagnostic."""
+    has_msi = verify_msi_integration.BINARIES <= pe.keys()
+    has_loader = verify_loader_integration.BINARIES <= pe.keys()
+    return {"status": ("tracked-existing-plus-reviewed-desktop-msi-and-loader" if has_loader else
+                       "tracked-existing-plus-reviewed-desktop-and-msi" if has_msi else
+                       "tracked-existing-plus-reviewed-source-built-desktop"),
+            "sha256": pe,
+            "desktop_stage_seal_sha256": verify_desktop_integration.REVIEWED_SEAL,
+            "source_built_desktop_sha256": {name: value for name, value in pe.items()
+                                             if name in verify_desktop_integration.DLLS},
+            "msi_stage_seal_sha256": verify_msi_integration.REVIEWED_SEAL if has_msi else None,
+            "source_built_msi_sha256": {name: value for name, value in pe.items()
+                                         if name in verify_msi_integration.BINARIES},
+            "loader_stage_seal_sha256": verify_loader_integration.REVIEWED_SEAL if has_loader else None,
+            "source_built_loader_sha256": {name: value for name, value in pe.items()
+                                            if name in verify_loader_integration.BINARIES}}
 
 
 def verify_archives(native, actual, expected):
@@ -398,16 +419,7 @@ def build(native_receipt, products, intermediates, stage, *, package=False):
                        "build/wine-pe").split("\0")
     source_snapshot = {name: digest(ROOT / name) for name in source_names if name}
     evidence.update({"app_source_sha256": source_snapshot, "resources_sha256": resources,
-                     "guest_pe": {"status": ("tracked-existing-plus-reviewed-desktop-and-msi"
-                                             if verify_msi_integration.BINARIES <= pe.keys()
-                                             else "tracked-existing-plus-reviewed-source-built-desktop"), "sha256": pe,
-                                  "desktop_stage_seal_sha256": verify_desktop_integration.REVIEWED_SEAL,
-                                  "source_built_desktop_sha256": {name: value for name, value in pe.items()
-                                                                  if name in verify_desktop_integration.DLLS},
-                                  "msi_stage_seal_sha256": (verify_msi_integration.REVIEWED_SEAL
-                                      if verify_msi_integration.BINARIES <= pe.keys() else None),
-                                  "source_built_msi_sha256": {name: value for name, value in pe.items()
-                                                              if name in verify_msi_integration.BINARIES}}})
+                     "guest_pe": guest_pe_evidence(pe)})
     command = build_command(products, intermediates)
     run(command)
     # Fail if any prerequisites were replaced while Xcode was running.

@@ -72,6 +72,8 @@ class MsiIntegrationTests(unittest.TestCase):
         for arch in desktop.planner.ARCHES:
             folder = arch + "-windows"
             shutil.copytree(ROOT / "app/Madeira" / folder, self.app / folder, dirs_exist_ok=True)
+            for name in desktop.loader.NAMES:
+                (self.app / folder / name).unlink(missing_ok=True)
         (self.app / "aarch64-windows/example.dll").unlink()
         (self.app / "arm64ec-windows/example.exe").unlink()
         self.commit()
@@ -278,9 +280,11 @@ class MsiIntegrationTests(unittest.TestCase):
         for arch in desktop.planner.ARCHES:
             farm = target / "app/Madeira" / (arch + "-windows")
             shutil.copytree(ROOT / "app/Madeira" / (arch + "-windows"), farm)
-            for name in msi.NAMES:
+            for name in msi.NAMES | desktop.loader.NAMES:
                 (farm / name).unlink(missing_ok=True)
         shutil.copytree(ROOT / "app/Madeira/legal", target / "app/Madeira/legal")
+        for name in (desktop.loader.INTEGRATION_NOTICE, "legal/Wine-loader-SOURCE-REBUILD.md"):
+            (target / "app/Madeira" / name).unlink(missing_ok=True)
         for name in msi.REQUIRED_NOTICES:
             if name not in desktop.REQUIRED_NOTICES:
                 (target / "app/Madeira" / name).unlink(missing_ok=True)

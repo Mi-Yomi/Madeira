@@ -1,0 +1,102 @@
+[
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/wine/configure",
+      "--enable-archs=aarch64",
+      "--without-x",
+      "--without-vulkan",
+      "--without-freetype",
+      "--without-gnutls",
+      "--without-gstreamer",
+      "--disable-tests"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-aarch64",
+    "elapsed_seconds": 13.132,
+    "exit_code": 0,
+    "work_bytes": 442547423
+  },
+  {
+    "argv": [
+      "/usr/bin/make",
+      "-j2",
+      "dlls/avicap32/aarch64-windows/avicap32.dll",
+      "dlls/activeds/aarch64-windows/activeds.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-aarch64",
+    "elapsed_seconds": 11.509,
+    "exit_code": 0,
+    "work_bytes": 462862688
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-strip",
+      "--strip-debug",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/aarch64-windows/avicap32.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-aarch64",
+    "elapsed_seconds": 0.174,
+    "exit_code": 0,
+    "work_bytes": 463322222
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-strip",
+      "--strip-debug",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/aarch64-windows/activeds.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-aarch64",
+    "elapsed_seconds": 0.173,
+    "exit_code": 0,
+    "work_bytes": 463978363
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/wine/configure",
+      "--enable-archs=arm64ec",
+      "--without-x",
+      "--without-vulkan",
+      "--without-freetype",
+      "--without-gnutls",
+      "--without-gstreamer",
+      "--disable-tests"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-arm64ec",
+    "elapsed_seconds": 14.855,
+    "exit_code": 0,
+    "work_bytes": 519754557
+  },
+  {
+    "argv": [
+      "/usr/bin/make",
+      "-j2",
+      "dlls/avicap32/arm64ec-windows/avicap32.dll",
+      "dlls/activeds/arm64ec-windows/activeds.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-arm64ec",
+    "elapsed_seconds": 11.093,
+    "exit_code": 0,
+    "work_bytes": 540675821
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-strip",
+      "--strip-debug",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/arm64ec-windows/avicap32.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-arm64ec",
+    "elapsed_seconds": 0.237,
+    "exit_code": 0,
+    "work_bytes": 541266427
+  },
+  {
+    "argv": [
+      "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-strip",
+      "--strip-debug",
+      "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/arm64ec-windows/activeds.dll"
+    ],
+    "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/build-arm64ec",
+    "elapsed_seconds": 0.221,
+    "exit_code": 0,
+    "work_bytes": 542119176
+  }
+]

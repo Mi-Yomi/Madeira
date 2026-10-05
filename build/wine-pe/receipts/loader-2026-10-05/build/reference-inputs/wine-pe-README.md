@@ -1,9 +1,5 @@
 # Guest DLL inventory and the desktop overlay
 
-The fixed AVICAP32/ACTIVEDS extension, after the reviewed desktop/MSI additions,
-is documented in [LOADER_PROVIDER_INTEGRATION.md](../../docs/LOADER_PROVIDER_INTEGRATION.md).
-It preserves both earlier seals and adds no i386 runtime or core replacement.
-
 This directory keeps guest PE checks separate from native iOS builds. No command
 below packages an IPA, signs, uploads, changes a prefix, or downloads DLLs.
 Presence and static imports are **not** evidence that an installer, launcher,

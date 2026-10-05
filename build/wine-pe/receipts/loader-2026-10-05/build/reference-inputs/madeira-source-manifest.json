@@ -1,0 +1,37 @@
+[
+  {
+    "name": "madeira-Library.swift",
+    "url": "https://raw.githubusercontent.com/Mi-Yomi/Madeira/142ca1e4851d644cec3519feaa5c9110194c8c7f/app/Madeira/Library.swift",
+    "bytes": 215954,
+    "sha256": "3cd06fc4b4315f0e9cb9ca44afab28acc1fae818370bd7cc55401178ead8e703",
+    "local_matches_published": true
+  },
+  {
+    "name": "madeira-WineProcessBridge.m",
+    "url": "https://raw.githubusercontent.com/Mi-Yomi/Madeira/142ca1e4851d644cec3519feaa5c9110194c8c7f/app/Madeira/WineProcessBridge.m",
+    "bytes": 105505,
+    "sha256": "10ab99b04c2ebdbf12be06bbc7d45a47ab33852250d3d19a49f92b3d1e81a183",
+    "local_matches_published": true
+  },
+  {
+    "name": "madeira-loader_ios.c",
+    "url": "https://raw.githubusercontent.com/Mi-Yomi/Madeira/142ca1e4851d644cec3519feaa5c9110194c8c7f/build/ntdll-unix/loader_ios.c",
+    "bytes": 156489,
+    "sha256": "4e4f544495d597aa955204fc15a394e92a9e9cc53f03ede704641ca6b30ae5f0",
+    "local_matches_published": true
+  },
+  {
+    "name": "madeira-virtual_ios.c",
+    "url": "https://raw.githubusercontent.com/Mi-Yomi/Madeira/142ca1e4851d644cec3519feaa5c9110194c8c7f/build/ntdll-unix/virtual_ios.c",
+    "bytes": 1225582,
+    "sha256": "482190dd223f16002cfed80ee9d7934aeb8b9c2a9e7a53e696c01016a1508af4",
+    "local_matches_published": true
+  },
+  {
+    "name": "madeira-signal_arm64_ios.c",
+    "url": "https://raw.githubusercontent.com/Mi-Yomi/Madeira/142ca1e4851d644cec3519feaa5c9110194c8c7f/build/ntdll-unix/signal_arm64_ios.c",
+    "bytes": 828761,
+    "sha256": "0005192e1d3a1e629860d6740ac5ef536d804ead4189985f70c20c8f184b54b0",
+    "local_matches_published": true
+  }
+]

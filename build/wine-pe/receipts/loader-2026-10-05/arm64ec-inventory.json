@@ -1,0 +1,5448 @@
+{
+  "arch": "arm64ec",
+  "architectures": {
+    "arm64ec": 140,
+    "x86_64": 19
+  },
+  "errors": [],
+  "folder": "/workspace/scratch/94ffb2b0bb2d/madeira-loader-integration-20261005/review-tree/app/Madeira/arm64ec-windows",
+  "missing_dependencies": [
+    {
+      "dependency": "cryptsp.dll",
+      "kind": "delay",
+      "module": "advapi32.dll",
+      "reason": "absent/invalid module",
+      "target": "cryptsp.dll"
+    },
+    {
+      "dependency": "cryptsp.dll",
+      "kind": "forwarder",
+      "module": "advapi32.dll",
+      "reason": "absent/invalid module",
+      "target": "cryptsp.dll"
+    },
+    {
+      "dependency": "bluetoothapis.dll",
+      "kind": "import",
+      "module": "bthprops.cpl",
+      "reason": "absent/invalid module",
+      "target": "bluetoothapis.dll"
+    },
+    {
+      "dependency": "evr.dll",
+      "kind": "delay",
+      "module": "mf.dll",
+      "reason": "absent/invalid module",
+      "target": "evr.dll"
+    },
+    {
+      "dependency": "glu32.dll",
+      "kind": "delay",
+      "module": "opengl32.dll",
+      "reason": "absent/invalid module",
+      "target": "glu32.dll"
+    },
+    {
+      "dependency": "sspicli.dll",
+      "kind": "forwarder",
+      "module": "secur32.dll",
+      "reason": "absent/invalid module",
+      "target": "sspicli.dll"
+    },
+    {
+      "dependency": "gdiplus.dll",
+      "kind": "delay",
+      "module": "shell32.dll",
+      "reason": "absent/invalid module",
+      "target": "gdiplus.dll"
+    },
+    {
+      "dependency": "shdocvw.dll",
+      "kind": "delay",
+      "module": "shell32.dll",
+      "reason": "absent/invalid module",
+      "target": "shdocvw.dll"
+    },
+    {
+      "dependency": "mlang.dll",
+      "kind": "delay",
+      "module": "shlwapi.dll",
+      "reason": "absent/invalid module",
+      "target": "mlang.dll"
+    },
+    {
+      "dependency": "advpack.dll",
+      "kind": "delay",
+      "module": "urlmon.dll",
+      "reason": "absent/invalid module",
+      "target": "advpack.dll"
+    }
+  ],
+  "missing_required": [],
+  "module_count": 159,
+  "modules": {
+    "activeds.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "407bd4949ae12bf22861d96695a4047af63ff1081364eaebaf623702eafcacad"
+    },
+    "advapi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "cryptbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "cryptsp.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "cryptsp.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "msvcrt.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "sechost.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "userenv.dll"
+        }
+      ],
+      "sha256": "32e159efd039c92c7463623f0c44b5a219c875ba4bbee4ff087445bbcbc771a5"
+    },
+    "apisetschema.dll": {
+      "architecture": "x86_64",
+      "bytes": 196608,
+      "dependencies": [],
+      "sha256": "515f37514dd996b39deb86393ea5fd0c93bcf411e7d591351cc448d6221334b4"
+    },
+    "authz.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "df31c347f529db644a339945110c08e482b75a09989d0033d235633548e303df"
+    },
+    "avicap32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "f9e500425444a9cb82cb76def929d5591308b68b7d8b4d61b85367616a966ffd"
+    },
+    "avifil32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "msacm32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "msvfw32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "winmm.dll"
+        }
+      ],
+      "sha256": "b85a6da0a3e483ab00470b9492131e5838cd5540ac4632ceddc94947c3acec61"
+    },
+    "avrt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "86a1b52e109792d10b5612ebbc8a1f3a8c2a194122acdeedd4b245ba20489fa5"
+    },
+    "bcrypt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "c6e31f73b0b72003b9354f66717300a7f9775fbdb988fa28ce5030abdd0acfd6"
+    },
+    "bcryptprimitives.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "297145c00faac915bef0e4a4a20883d95d29cdf72bd49fed4c50dc67af4ad6df"
+    },
+    "bthprops.cpl": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "bluetoothapis.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "5c0765a0974c88534658b14e756de61b3d088d168bb20a84740fcd25c9203551"
+    },
+    "cabinet.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "35d713f638431348d0720327157571d6bc037cdd5cc6ac26332fbf4f74523784"
+    },
+    "calltest-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 114176,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "e13479da89a56f5b1de8c78ead1ad4248454d233284b9d9e2def717080592d1c"
+    },
+    "cfgmgr32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "sechost.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "b8fb19f9a2d18dae28b6d7ec5c01114de83d36e54ff94b94bcd55ff1afc5937c"
+    },
+    "child-test-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24064,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "c991f7fcebac95403464cce111d8cb6a86b79f4263fc6eb0eb963030c5bdbc45"
+    },
+    "clocktest-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 95232,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "1a3e20a534b90aab9022340d001a15ac66aa0804f07647f62d4ef2db49498707"
+    },
+    "combase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "72049d5466ce937e497fa2211dd2c4fbba3059c6d4867a0b6e0ccc738e9f3dfd"
+    },
+    "comctl32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1966080,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "winmm.dll"
+        }
+      ],
+      "sha256": "75144256725cf5a0d4113bd163c293509acfa00cdabb918d002c23a6246058d6"
+    },
+    "comdlg32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1703936,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "winspool.drv"
+        }
+      ],
+      "sha256": "3ea952a5c012feb8fc81858b428605c2160a84ee5d7184d639e3cdac7b4697be"
+    },
+    "coml2.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "1a749e7b68ab686c5dfa66910fe8505b3604136ee94bda8441a9bbdf01958588"
+    },
+    "compstui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "bf75adf4226fe7312f5e7a4614445a4b00cac43680b11f93e6942bce19212200"
+    },
+    "concrt140.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "8d387264ed267b1ff7fdf3c8c6aa5208794c33eb614de99d0554f56ce5f1c3ff"
+    },
+    "credui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "25b935a9d6bdebb38f4195de60f9f3c1221b0fe227ae1b65a4031b9f2e8b8fcc"
+    },
+    "crypt32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1441792,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "bcrypt.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "cryptnet.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "19e197ac0f8099b5cbed47767e83051e42662c9382406dc73ad18933887fa56e"
+    },
+    "cryptbase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "03136f29944e4eb3ec5f971e4a77ded6bb0d6acbff42be314e1240476b5ed0b2"
+    },
+    "cryptnet.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "wininet.dll"
+        }
+      ],
+      "sha256": "84efb8ad970f58ff55887a55c7746f114a51e4edbb913bd08e4de90db0ea39aa"
+    },
+    "cryptui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1769472,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comdlg32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "urlmon.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "wintrust.dll"
+        }
+      ],
+      "sha256": "3aa2ee08944667da04ce8ca14ac6cac2f3d2e7ee95a98cfb6abdb9865bb1c0cf"
+    },
+    "cube-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 399360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-filesystem-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "d3d11.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "9baa939624cfcbf4c0ba1b977090ebe5447389d90cc4c9ce1e8b0fe1e694788f"
+    },
+    "d3d10core.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1413120,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-time-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "d3d11.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "sha256": "1737c875f559fe9babe998f899aa00be87d4753d9f2d8661c0977be2551b6872"
+    },
+    "d3d11.dll": {
+      "architecture": "arm64ec",
+      "bytes": 5488640,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-time-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-utility-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "dxgi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "winemetal.dll"
+        }
+      ],
+      "sha256": "7db110074bc23104b1d2bb5bae6e31a06a98bfde2df69638375d7102fa6dce01"
+    },
+    "d3d12-cube-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 141824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "21d007206f5fade953a4bfb157bc2a80a4cc9ef8beefdd8fc706e5af7217974c"
+    },
+    "d3d12-m2-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 171008,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "56c151249e5464b6ccdd4685e4b67b03c7f7309dd968598b196182835f456e47"
+    },
+    "d3d12-vfetch-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 174080,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "abb56293753ed07610efc97d926fbf8a3e47f39b6ee3454ab3b4e76ae509de31"
+    },
+    "d3d12.dll": {
+      "architecture": "arm64ec",
+      "bytes": 446976,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-utility-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "winemetal.dll"
+        }
+      ],
+      "sha256": "2ccef6097da008542f414e690d41ad60993f2c520fab9c82431f36b1dc5d6b56"
+    },
+    "d3d12core.dll": {
+      "architecture": "arm64ec",
+      "bytes": 92672,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "d3d12.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "161adfcdce53825cf30ce09b3f34dabd65fb664b9febf40494ea998e78404a73"
+    },
+    "d3d9.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "wined3d.dll"
+        }
+      ],
+      "sha256": "d68baea13ee751c15de02131c173a17ac4a865bec0e562230d46e23498eebe56"
+    },
+    "d3dcompiler_43.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "wined3d.dll"
+        }
+      ],
+      "sha256": "7eb0c94e27750b9e7d48cb3ed288c35bae2195bbe6816c850e38f086b100d6ec"
+    },
+    "d3dcompiler_47.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "wined3d.dll"
+        }
+      ],
+      "sha256": "c39bf49c65db2e906c0c36c0117241259a852da803e4fb5f20125b59a58959ee"
+    },
+    "d3dx9_43.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "d3dcompiler_43.dll"
+        },
+        {
+          "kind": "import",
+          "name": "d3dxof.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "windowscodecs.dll"
+        }
+      ],
+      "sha256": "ce820aef3fb115af69b34bbb1034f27bfc5bcbf675fd5240dc798caca6a74ea9"
+    },
+    "d3dxof.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "bbfcd48df654834047523c632c7082a9b6cf21c9f77fc6572dcfd6407b490fbe"
+    },
+    "dbghelp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "118452e378af9d2cd2d39a8ed42f7987ca074eab1454a1838f06b4689291b2f2"
+    },
+    "dcomp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "91962ec125661219ed372a6b65d1982fc021396f9b17f64e6386b62b6797f314"
+    },
+    "dhcpcsvc.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "delay",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "855768474a1d9a38870ae69f29f0791a7d3cd0119f42b6b7a708da65468038f0"
+    },
+    "dinput.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "hid.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "62ecebb498b1e5fa1277eeaee093b7df13e3305d47fbb1fd6ae12d131a461216"
+    },
+    "dinput8.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "hid.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "c21a948fc485fda78ade9c8d69d10882c0ea7e5e2d77b19f06059c168468d394"
+    },
+    "dnsapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "netapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "30113e2019c5c89984980eadbf36f76ff3923300a46384d4394bd6beda10e74a"
+    },
+    "dsound.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1048576,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "bb8563b8394a60c1421a292e8db084b8d9b49f9311f99bc50bd712f629dc8288"
+    },
+    "dwmapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "16bac20e5a72f3ca1c33af2beccfc2a685ac9bed16c833a76be11febabd1fbd5"
+    },
+    "dwrite.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1114112,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "694ae12d5ae3047c371e0a4d03b3cc49bbfa68667910d2988183f37cf0bce9e9"
+    },
+    "dxchkmsaa-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 23552,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "8468a0c112d44cad40d9d8167e9bdab9b48e071644efca9bac89c5e3a7b14ed3"
+    },
+    "dxgi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1744896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-time-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "winemetal.dll"
+        }
+      ],
+      "sha256": "2480b206a472e0981719e7547d38fc6e009019d542a263a5400759327e49ae50"
+    },
+    "esent.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "de304dcf78d959b885b0810b45b1acc196f237b5d44d810d31f93a4e57ff08ca"
+    },
+    "fib-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 22528,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "9da6dec6cae7091b7e522964f8334ac33b69c93e12fd7bca6d17665caab480dd"
+    },
+    "fib2-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24064,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "60f4dba490101a59c023ad84dbafb92c888fa1ef016bd78d0cb1ded27a08fd84"
+    },
+    "fib3-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24064,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "8f49f7127bb4f6d23b03bd7502846bc698bd8242bc7bb0ebe84fc27c36eb1dbb"
+    },
+    "fileio-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24576,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "53ef1a9b4b4df0f220ea0f02ad811fc1b8829d38de43b78182702a12b8857fd5"
+    },
+    "fontsub.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "0535a2c1f686e8a28f9be1d76c30949a1f3a8e15cfee0383280decf068f92e3b"
+    },
+    "fpconf-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 108032,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "72a38beb22c53fc7b4e4edf12511c972465a15a507063cae2ae2ab09b41f654f"
+    },
+    "gdi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "win32u.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "winspool.drv"
+        }
+      ],
+      "sha256": "65323fac4aa40df2887b8b6a8b86612798625283ece437b4e30391274f406b44"
+    },
+    "heap-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24576,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "cb920e91164adf68bec2a15335599096997606c648c3d577b2c3e56c2e52d66b"
+    },
+    "hello-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 21504,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "138e0add7216a28d27137da2b8a743d56fade24a92ad1c68f358f67b72e710ef"
+    },
+    "hid.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "244bc1642d59cb959b68d955c3f7d4bb70d250f43920d4ea4d47463df09bfba5"
+    },
+    "imagehlp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "delay",
+          "name": "dbghelp.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "be6bd23768c0666837dfa2b2ec14a77cbb2cf8ce7d9682ef1387ca524b210b0c"
+    },
+    "imm32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "00504479205a7a5ffacf7ca748e7433e754e3d6d6ccf077b46fa92328fc18c92"
+    },
+    "iphlpapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "dnsapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "nsi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "62c28717ac0af2a32b3e31c6d1f48fe5a1b2689b248ac1c72f310322992d6168"
+    },
+    "jsproxy.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "92ff891d45ad0affe8e42fdb24043efbe27aa3f09d6dfc76ed15c4d0135158e0"
+    },
+    "kernel32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "sha256": "91ff5ec8cf5b72ef081f93ee7f16069be15101c9f39b6c3d65b5445e10f5c69b"
+    },
+    "kernelbase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 3473408,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "sha256": "ee8bf461cf881b0b04a22696fa8f6397f1eb877dfb52944c2cbec4d25987f718"
+    },
+    "ktmw32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 524288,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "sha256": "b47e66bd302d1183b15f55072816f6f5c34c9e67f930c0011dc2208c76641953"
+    },
+    "madeira_d3d12.dll": {
+      "architecture": "arm64ec",
+      "bytes": 446976,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-utility-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "winemetal.dll"
+        }
+      ],
+      "sha256": "2ccef6097da008542f414e690d41ad60993f2c520fab9c82431f36b1dc5d6b56"
+    },
+    "mf.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1245184,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "evr.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "mfplat.dll"
+        },
+        {
+          "kind": "import",
+          "name": "mfplat.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "urlmon.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "0111cf91c927ddb02b675a9a83f4fbfd189f1bf286175222ee74faa490ef6e6f"
+    },
+    "mfplat.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1114112,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "bcrypt.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "propsys.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "rtworkq.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rtworkq.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "f7d50d39c7d18981a833d1afbc5189a5c13d5e207584a169f73d155ee8ec593b"
+    },
+    "mfreadwrite.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "mf.dll"
+        },
+        {
+          "kind": "import",
+          "name": "mfplat.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "ffb135568399ae9139901a44496eff33f8fa3b3b3487cc601c4bd060fd20446a"
+    },
+    "mmdevapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "version.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "winmm.dll"
+        }
+      ],
+      "sha256": "ae618e1440aea62e534088e16364be833c44c8b3430f595a8b23ec64383e492e"
+    },
+    "mpr.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "3b73f5dd421d6e5b9da87cc9254bb6805e0e547287179747d651a87a5e9abe7f"
+    },
+    "msacm32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "winmm.dll"
+        }
+      ],
+      "sha256": "91c356bdba74a855f8d0c1b91bfb584fbcd6e049dfa49a237ed3fde7ff7d6b86"
+    },
+    "mscoree.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "dbghelp.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "5f8015931f86faf98d911abd9e0e5d89cc6ac529a36699a40ce29dac31b5aede"
+    },
+    "msdmo.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "b26fd261b29582cf4fe1efcc3691cc550d6e04586238aab8e0c98b7755053184"
+    },
+    "msftedit.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "riched20.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "b70a16b31c0159b78657337087ab41b802efec3f663666fcb7f996a3cbbe31aa"
+    },
+    "msi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1769472,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "cabinet.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "imagehlp.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "mspatcha.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "odbccp32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "sxs.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "urlmon.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "version.dll"
+        },
+        {
+          "kind": "import",
+          "name": "wininet.dll"
+        },
+        {
+          "kind": "import",
+          "name": "wintrust.dll"
+        }
+      ],
+      "sha256": "30fca59166929f1300d7708d45d56b401e680d0318b0ce7d7ff754987177f30d"
+    },
+    "msiexec.exe": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "msi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "dd46bf408250057474b4376880f3c81073477240587d0c551f54c37c99725549"
+    },
+    "msimg32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "9ca133a9dad7307f8109ff703cae6eb671e74ffea1252aff4149c43cb4dd74e9"
+    },
+    "mspatcha.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "922a4e61fcdf2807e0eee4e0951be28a923cd9d471c02e9320958cfc8f23029f"
+    },
+    "msvcp140.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1638400,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "msvcrt.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "vcruntime140.dll"
+        }
+      ],
+      "sha256": "397a52a8d1a43dac87528bb58ff7670e5352ce87946997efe3f536f9120f76fb"
+    },
+    "msvcp140_1.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "bf5298079ca2cb814892122af85ea129da1e398453d9da139042baede24f05f7"
+    },
+    "msvcp140_2.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "c71724c22058be9108e38b257449c27b38279a02d5771b293eea3e05b4ce4bfe"
+    },
+    "msvcp140_atomic_wait.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "msvcp140.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "d7804d55678b8406bc5d1042d557a4d5cd735b60c9fd1a58770f10fb633b3383"
+    },
+    "msvcp140_codecvt_ids.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "8c2c7d2dbe384b9fc14cff0514118ca4de944f81396f398c24c85747695b3e4c"
+    },
+    "msvcr120.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1507328,
+      "dependencies": [
+        {
+          "kind": "delay",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "174abb8745390b0c9a8dc0bd8f0b08928893b4d0c588b25f7418b27d5d7b2c9c"
+    },
+    "msvcrt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "dependencies": [
+        {
+          "kind": "delay",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "9ce3cced117bbfe0ef09d3286311beaa90f0d1cb4ba02c5f3eedd78a94a4ea6c"
+    },
+    "msvfw32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "winmm.dll"
+        }
+      ],
+      "sha256": "f82e512e7c1c7da31684c9ec52d199644b4bd1abb61cf8321b3acb4856c94af7"
+    },
+    "mswsock.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ws2_32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "7d71de1a1241a515816bd7fac3959fb0f3a9ff2a466afb2a3ff64c4db7790397"
+    },
+    "ncrypt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "bcrypt.dll"
+        },
+        {
+          "kind": "import",
+          "name": "bcrypt.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "0076ea96be6afc8e3858d4166956e3f67370428d48ef3461b0903d974b77b3a9"
+    },
+    "netapi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "dnsapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "netutils.dll"
+        },
+        {
+          "kind": "import",
+          "name": "netutils.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "80273a7a95a16e6afbfcd3cf489857d8d0d4e7c881c67b9ffbf07f971a736008"
+    },
+    "netprofm.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "6a91904e27a7a417ca52fea7d1b9133996c506518f1c76efccb888ab172b9e98"
+    },
+    "netutils.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "091fd65f4efa7be8ed9bca346fb0e3dfab9499229a4a2b0327bf67126461c3eb"
+    },
+    "normaliz.dll": {
+      "architecture": "x86_64",
+      "bytes": 196608,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "69c9822a6a3d9a9b56ae7cdc099096c967970da90d82d855448e4608e0be9c2e"
+    },
+    "nsi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "7dd1ab58d21f1de6e46c737d4da4aa6fd3683c3b9e52baa0bd80ab629cebb372"
+    },
+    "ntdll.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1572864,
+      "dependencies": [],
+      "sha256": "59c1523792cef4f5d4cbffdd62d8c7d9682be8c718fb7d65db2dcf711e3f7e51"
+    },
+    "odbccp32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "6ce8525c446e7bf6a43ddf317a2beaff690f13e1b0dd26178d0408675a6c74a6"
+    },
+    "ole32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1572864,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "combase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "combase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "coml2.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "fdd3d63d6d372184f3a28f772ec5750905af5dde18e90f719cf9a2d4a653db41"
+    },
+    "oleacc.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "f54fc7254b69dde26d93db5d9cadf13695df31c4830501d43c06f40488444cda"
+    },
+    "oleaut32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1441792,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "urlmon.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "windowscodecs.dll"
+        }
+      ],
+      "sha256": "3788c68276059ec643dd737a049018766636b94be3928309cc7103bb6f12bd7e"
+    },
+    "opengl32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 2162688,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "glu32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "2f27e0deb7095edbf22f03f54d9b29350dadf27e71f7e6bb6936a94a1effd1f1"
+    },
+    "pdh.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "b53f74d376ede510060e2cbd4626ddbb5916e092d0f3ae44b2ccf67fb99d3954"
+    },
+    "powrprof.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "9c436d75c7915ab054f6d500e86e8f345faffef921689a3329cc90553965b1e0"
+    },
+    "proc-test-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 23552,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "608efb5194b36e92ba1843db34ef13fbb17ab2431e393f9241df65ac95fb9264"
+    },
+    "propsys.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "38c13ec792211bb6d0e1b0a51711394c2f4fcb0706771c1ebfa67b76290fdfaa"
+    },
+    "psapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "218c29a62c19b6303c2cbd73864b9f4750bd19fb624352ff8d6a3f9dc1f15f07"
+    },
+    "regsvr32.exe": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "1501d3bc5c59dabb3e15d4fa32caae10f14db88f23b045d3f055481f414cbbde"
+    },
+    "riched20.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "imm32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "c8d2fabd0ece3c1da085b898f07d493b948bcfc2fde938994b333b5fa6320007"
+    },
+    "rpcrt4.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1376256,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "secur32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "wininet.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "61e6c00c55ab2db22ad6b21cdd6f8f451be7fd331503a00fccbfb0ef204a7f51"
+    },
+    "rsaenh.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "e4287b29e820545ffe1992a03241a42a9a4aef25989eeada2ff4054563e086f9"
+    },
+    "rtworkq.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "86a01c8f9256820bb28bbcc50e4307bb42d9e78efd0ffa5feb376a4a088be0d5"
+    },
+    "schannel.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "secur32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "2c9adaa9ee2e66cc1ddc45aad648ec5402947df2cf34c9240dfdfb0076b40d56"
+    },
+    "sechost.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "f59eb33942ec8c1ed7789f5e6b033253a7f26b9082e09af4d5d0b9c53a04c101"
+    },
+    "secur32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "sspicli.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "100ad928c020bde3e035f40098ba723ab27996ed5312353029f052d5d2709ffe"
+    },
+    "sensapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "722d81ef8042e77890273630e2fe327d1a83d658f29821ed6813b04849c6a17c"
+    },
+    "setupapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "cabinet.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "cfgmgr32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "cfgmgr32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "comdlg32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "wintrust.dll"
+        }
+      ],
+      "sha256": "29b16e61ac1f05b64c8a418a49f90ce3e41ba378d349f0e5b153998aa5b5cc5a"
+    },
+    "shcore.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "5e3bf4c0849511404724298859f307ffa0563698cb3e43be543995ed0c55bfb0"
+    },
+    "shell32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 10485760,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "comctl32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "comdlg32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "gdiplus.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "shcore.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "shdocvw.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "version.dll"
+        }
+      ],
+      "sha256": "e276b6a0b3385d539de5774d23b0bc5ff291b6b08f74688831d03a8befcc6d56"
+    },
+    "shlwapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "comdlg32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "mlang.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "mpr.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "shcore.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shcore.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "urlmon.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "userenv.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "wininet.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "winmm.dll"
+        }
+      ],
+      "sha256": "6adccab4629eea00f14fb56867ab84323549f9349b393ca23af73dcb4b5e7e57"
+    },
+    "sxs.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "20f055955274cb2a5f8520eccdbaa7980cafea8000916bb09bcd73242da2fff2"
+    },
+    "tftrace-x64.dll": {
+      "architecture": "x86_64",
+      "bytes": 8704,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "2f5b818d150df9655ae9d02960bf0232db3e088fe8c15f3337e4e88d32c3331c"
+    },
+    "ucrtbase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1507328,
+      "dependencies": [
+        {
+          "kind": "delay",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "f43f7110434978853c83ba4d66a6d8d718b8ecd544eae2b4063767675eb83e59"
+    },
+    "uiautomationcore.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleacc.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "d11acf821ad544ec0febee96eba5da7cef8ec55deb9755d8d94a46be9d14db4c"
+    },
+    "urlmon.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "advpack.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "propsys.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "wininet.dll"
+        }
+      ],
+      "sha256": "38bf751167a307c13b1018dd58af3f0d34d8e6572d83551af57adfd0063f3691"
+    },
+    "user32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 2621440,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "combase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "imm32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "sechost.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "a5d21cb52c40c093d35f096573dde0f46672613e4c922874ce8b826ad485a367"
+    },
+    "userenv.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "ec2532257d223548cb5c24e1b3b77ecbae5d7eafbe9d6f06ecadc79b073f5ba3"
+    },
+    "uxtheme.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "msimg32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "43c46712fb244699b78963499e50a1278e2d6f844e897706a44e9fdd5e0bc80e"
+    },
+    "vcruntime140.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "d82ce214480316ad43837ab69cf9ffff9b7b198f099155fce8c4a45eea8f5061"
+    },
+    "vcruntime140_1.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "vcruntime140.dll"
+        }
+      ],
+      "sha256": "6820da2f875d256d8c54f5210a08a970c99988241bc1717a0f8e53dc702e135b"
+    },
+    "version.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernelbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "ac4fea715649d4bd30e72f2010d70c5d1f537adb5d1732d62bbaa2ba6aed0135"
+    },
+    "wevtapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "f19d9e6fd5dedd98e3cbb082ad7a93611a48a1df4e2e639fea100fe7293ed6b2"
+    },
+    "win32u.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "sha256": "6b353c0fa44e0ae62b86e5f191b27af6b5babdbc35bc789d4971ebc25bab02fe"
+    },
+    "windows.gaming.input.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "combase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "dinput8.dll"
+        },
+        {
+          "kind": "import",
+          "name": "hid.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "89254a786ed05f19e8db49459cca40a84ab7cb4f1a3b2249811d06edb8abfcc4"
+    },
+    "windows.ui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "combase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "0e94738e37c64f9d3cc63569efd6711170b6bd8bc8b679630613aec75eb53834"
+    },
+    "windowscodecs.dll": {
+      "architecture": "arm64ec",
+      "bytes": 7536640,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "propsys.dll"
+        },
+        {
+          "kind": "import",
+          "name": "rpcrt4.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "71b0957794a33833b0583d368f72731f18dbee9542f39be1cf235e1339f81029"
+    },
+    "wined3d.dll": {
+      "architecture": "arm64ec",
+      "bytes": 3670016,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "opengl32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "ae50a4aec37e19759d0a719e18621ac4e75a689979bf0a985bb3049ea90edba6"
+    },
+    "wineios.drv": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        }
+      ],
+      "sha256": "e6d18018579f0fc0631dc1af464744908bc3430f0a26a4ffd338183dc435a83e"
+    },
+    "winemetal.dll": {
+      "architecture": "arm64ec",
+      "bytes": 188416,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "sha256": "20a9e486bd97bae599177890d280060e3e27478ca6d697fde68493233f2de8f0"
+    },
+    "winhttp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "dhcpcsvc.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "jsproxy.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "secur32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "286f0c3dd9c5af07369d4c65ea86fb1791248e06253c34809bc2928c242acae2"
+    },
+    "wininet.dll": {
+      "architecture": "arm64ec",
+      "bytes": 2359296,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "cryptui.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "dhcpcsvc.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "mpr.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "secur32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shell32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "shlwapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "51a2a9641e68d0b1d957e2799e5aaf66fd3f9ebd68557f73aa3b8671babdfff0"
+    },
+    "winmm.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "dinput8.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "msacm32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "7df6bb3f17f930e644bb83db38caf859fc8ea0b50564fe00ca5635edca13a7e5"
+    },
+    "winspool.drv": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "compstui.dll"
+        },
+        {
+          "kind": "import",
+          "name": "gdi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "049b6e4338b7ad9f4c0bb4f449854fc9ae45ea43946ed383803abc710b4b902f"
+    },
+    "wintrust.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "crypt32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "cryptui.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "imagehlp.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "4c2968297ceea45ec8f2942ef4047856ca8e0b8302be79431fdfc2a69952a4f4"
+    },
+    "winusb.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "92978c4add4d73e4ecaa8e4b936d4e2ce900e58ebcd70e910ad8e27b8b473ff0"
+    },
+    "wlanapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "321e8fc6c23cce47c1b7c9c1e86106bbfec89d7615505ddb72c802f1e4b07513"
+    },
+    "wldap32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "netapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "secur32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "e7c828dd6311f40cec350be98ef03d7ef9f600fc7bdd52444f5e46eb597631a8"
+    },
+    "ws2_32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "dependencies": [
+        {
+          "kind": "delay",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "dnsapi.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "delay",
+          "name": "user32.dll"
+        }
+      ],
+      "sha256": "0d92b310a2c9726fc56aedc506c049ab43280bd7ec3e2a44dc8b023707858590"
+    },
+    "wsock32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "iphlpapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "mswsock.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "forwarder",
+          "name": "ws2_32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ws2_32.dll"
+        }
+      ],
+      "sha256": "cf02b612750d423a37c956144742dc821a28833eaa6af6865244053a496ca9d6"
+    },
+    "wtsapi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "72d899ac274e47f5cda2005cf00a2d90ad84914173429a911fda64520a6b65b6"
+    },
+    "x3daudio1_7.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "5ad443f73df42f4ccdc9478ebcb0f838b69efa067ba6c64e2dcfc9093923bc57"
+    },
+    "xapofx1_5.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "5e37c4ea9d1a6860eb0e7fce3de00d17d05413c1c5656f9c36e4427e4f0a7483"
+    },
+    "xinput1_1.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "hid.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "7bbae3fa9fb5a6e35d50f9fddb7b8c1601121969ea2881bd05174cff39fe9e45"
+    },
+    "xinput1_2.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "hid.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "ef13ea0f9347dac29b170bf3a1882f97fb05f9e685001d19839d8a43f885b024"
+    },
+    "xinput1_3.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "hid.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "99277bc130a1977cea216a59bf2171d3b733b2f2445d44695edf69a1367ae00a"
+    },
+    "xinput1_4.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "advapi32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "hid.dll"
+        },
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "setupapi.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        },
+        {
+          "kind": "import",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "win32u.dll"
+        }
+      ],
+      "sha256": "e52c2c6c6e9cb54808400c9006125adc4d8bfdc44c27bf1a0ea1d32939b0e2c6"
+    },
+    "xinput9_1_0.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ucrtbase.dll"
+        }
+      ],
+      "sha256": "1d2342de650f7b422d3e1d94ceca23dc0195e74c06efc60f28f906c6a43a5700"
+    },
+    "xtajit64.dll": {
+      "architecture": "arm64ec",
+      "bytes": 5435392,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-filesystem-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-time-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "sha256": "38b68f69909aea0dae3ce88934936275e9415accf22fc0823568eda244962b07"
+    }
+  }
+}

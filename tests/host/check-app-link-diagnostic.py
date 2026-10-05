@@ -29,7 +29,7 @@ put = fixtures.put
 
 class LinkTests(unittest.TestCase):
     @contextlib.contextmanager
-    def fixture(self, failure=False):
+    def fixture(self, failure=False, extension="desktop"):
         with tempfile.TemporaryDirectory() as temporary, contextlib.ExitStack() as stack:
             base = Path(temporary).resolve()
             root = base / "source"
@@ -38,6 +38,12 @@ class LinkTests(unittest.TestCase):
             resources, framework, converter = fixtures.fixture(seed)
             for name in link.gate.verify_desktop_integration.DLLS:
                 resources[name] = link.gate.digest(put(seed / name, b"MZ reviewed desktop fixture"))
+            if extension in ("msi", "loader"):
+                for name in link.gate.verify_msi_integration.BINARIES:
+                    resources[name] = link.gate.digest(put(seed / name, b"MZ reviewed MSI fixture"))
+            if extension == "loader":
+                for name in link.gate.verify_loader_integration.BINARIES:
+                    resources[name] = link.gate.digest(put(seed / name, b"MZ reviewed loader fixture"))
             put(root / "app/Madeira/source.c")
             put(root / link.gate.FRAMEWORK_SOURCE, (seed / "Frameworks/StikJIT.framework/StikJIT").read_bytes())
             native = put(base / "native/provenance.json", b"native fixture")
@@ -109,6 +115,42 @@ class LinkTests(unittest.TestCase):
             self.assertEqual(link.scan(products, objects, diagnostics)["ipa_files"], 0)
             with self.assertRaises(ValueError):
                 link.verify(products, objects, diagnostics)
+
+    def test_legacy_msi_and_loader_receipts_use_exact_resource_contracts(self):
+        statuses = {"desktop": "tracked-existing-plus-reviewed-source-built-desktop",
+                    "msi": "tracked-existing-plus-reviewed-desktop-and-msi",
+                    "loader": "tracked-existing-plus-reviewed-desktop-msi-and-loader"}
+        for extension, status in statuses.items():
+            with self.subTest(extension=extension), self.fixture(extension=extension) as args:
+                native, products, objects, diagnostics, *_ = args
+                result = link.build(native, products, objects, diagnostics)
+                self.assertEqual(link.verify(products, objects, diagnostics), result)
+                guest = json.loads((diagnostics / "provenance.json").read_text())["guest_pe"]
+                self.assertEqual(guest["status"], status)
+                self.assertEqual(len(guest["source_built_desktop_sha256"]), 12)
+                self.assertEqual(len(guest["source_built_msi_sha256"]), 0 if extension == "desktop" else 14)
+                self.assertEqual(len(guest["source_built_loader_sha256"]), 4 if extension == "loader" else 0)
+
+    def test_extension_seals_hashes_status_and_final_resources_are_rechecked(self):
+        for field in ("status", "msi_stage_seal_sha256", "loader_stage_seal_sha256",
+                      "source_built_msi_sha256", "source_built_loader_sha256", "sha256"):
+            with self.subTest(field=field), self.fixture(extension="loader") as args:
+                native, products, objects, diagnostics, *_ = args
+                link.build(native, products, objects, diagnostics)
+                path = diagnostics / "provenance.json"; data = json.loads(path.read_text())
+                if isinstance(data["guest_pe"][field], dict):
+                    data["guest_pe"][field].pop(next(iter(data["guest_pe"][field])))
+                else:
+                    data["guest_pe"][field] = "unreviewed"
+                path.write_text(json.dumps(data))
+                with self.assertRaisesRegex(ValueError, "resource contract"):
+                    link.verify(products, objects, diagnostics)
+        with self.fixture(extension="loader") as args:
+            native, products, objects, diagnostics, *_ = args
+            link.build(native, products, objects, diagnostics)
+            with mock.patch.object(link.gate, "resource_inputs", side_effect=ValueError("source resource changed")):
+                with self.assertRaisesRegex(ValueError, "source resource changed"):
+                    link.verify(products, objects, diagnostics)
 
     def test_runtime_guard_blocks_unexpected_commands_and_zip_entry(self):
         for bad in (["ditto", "-c", "-k"], ["zip", "bad.ipa"], ["codesign", "app"],

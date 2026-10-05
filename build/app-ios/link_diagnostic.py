@@ -101,11 +101,14 @@ def app_receipt(products, intermediates, diagnostics):
         raise ValueError("App receipt does not prove this checkout's unsigned link-only build")
     guest = record.get("guest_pe", {})
     desktop = guest.get("source_built_desktop_sha256", {})
-    if (guest.get("status") != "tracked-existing-plus-reviewed-source-built-desktop" or
+    # Re-run the complete source resource gate, including exact optional MSI
+    # and loader receipts. A changed status string alone cannot grant support.
+    _, pe = gate.resource_inputs()
+    if (guest != gate.guest_pe_evidence(pe) or
             guest.get("desktop_stage_seal_sha256") != EXPECTED_REQUEST["desktop_stage_seal_sha256"] or
             set(desktop) != gate.verify_desktop_integration.DLLS or len(desktop) != 12):
-        raise ValueError("App receipt lacks the twelve reviewed desktop DLLs")
-    gate.hashes_match(desktop, products / "Debug-iphoneos/Madeira.app")
+        raise ValueError("App receipt differs from the reviewed desktop/MSI/loader resource contract")
+    gate.hashes_match(pe, products / "Debug-iphoneos/Madeira.app")
     # Independently bind the final check to every app file, not just a status bit.
     actual = gate.tree_files(products / "Debug-iphoneos/Madeira.app")
     if not actual or actual != record.get("app", {}).get("files_sha256"):

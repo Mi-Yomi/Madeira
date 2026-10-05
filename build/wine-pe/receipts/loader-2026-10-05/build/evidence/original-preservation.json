@@ -1,0 +1,10 @@
+{
+  "aarch64": {
+    "module_count": 141,
+    "preserved": true
+  },
+  "arm64ec": {
+    "module_count": 150,
+    "preserved": true
+  }
+}

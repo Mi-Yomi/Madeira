@@ -1,0 +1,12 @@
+PREFLIGHT PASS
+RUN /workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/wine/configure --enable-archs=aarch64 --without-x --without-vulkan --without-freetype --without-gnutls --without-gstreamer --disable-tests
+RUN /usr/bin/make -j2 dlls/avicap32/aarch64-windows/avicap32.dll dlls/activeds/aarch64-windows/activeds.dll
+RUN /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-strip --strip-debug /workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/aarch64-windows/avicap32.dll
+RUN /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-strip --strip-debug /workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/aarch64-windows/activeds.dll
+aarch64 STATIC AUDIT PASS {"checked_import_symbols": 86, "checked_export_forwarders": 0, "exports": 32}
+RUN /workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/wine/configure --enable-archs=arm64ec --without-x --without-vulkan --without-freetype --without-gnutls --without-gstreamer --disable-tests
+RUN /usr/bin/make -j2 dlls/avicap32/arm64ec-windows/avicap32.dll dlls/activeds/arm64ec-windows/activeds.dll
+RUN /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-strip --strip-debug /workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/arm64ec-windows/avicap32.dll
+RUN /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-strip --strip-debug /workspace/scratch/94ffb2b0bb2d/madeira-loader-provider-build-20261005/candidate/arm64ec-windows/activeds.dll
+arm64ec STATIC AUDIT PASS {"checked_import_symbols": 86, "checked_export_forwarders": 0, "exports": 32}
+BUILD AND STATIC AUDIT COMPLETE

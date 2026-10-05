@@ -1,0 +1,6 @@
+[unixlib] avicap32.dll (module (nil)) -> 64-bit table (0x1000)
+[unixlib] avicap32.dll (module (nil)) has no unix side on this port: no 64-bit unix call table — failing the load rather than binding the wow64 table to a 64-bit caller
+PASS: 24 A/W unavailable-backend calls return FALSE, leave output buffers unchanged, and never copy uninitialized device fields
+PASS: production generic table initializes with failure; production ARM64 zero-handle guard precedes table dereference (static source check)
+PASS: every branch keeps upstream's 64-bit table and offers its own 32-bit table (winemetal included); no 64-bit table reaches a 32-bit caller; the mapped-file fallback is 32-bit only
+PASS: PE32 and PE32+ images are named from their own export directory; 64-bit callers get the 64-bit table, 32-bit callers without a wow64 table are refused

@@ -106,7 +106,7 @@ class IntegratedDesktopTests(unittest.TestCase):
             shutil.copytree(ROOT / "app/Madeira" / folder, self.app / folder, dirs_exist_ok=True)
             # This fixture intentionally tests the original twelve-DLL state.
             # A production tree may also carry the separately sealed MSI pair.
-            for name in integration.msi.NAMES:
+            for name in integration.msi.NAMES | integration.loader.NAMES:
                 (self.app / folder / name).unlink(missing_ok=True)
         (self.app / "aarch64-windows/example.dll").unlink()
         (self.app / "arm64ec-windows/example.exe").unlink()
@@ -336,7 +336,12 @@ class ReviewedSourceTests(unittest.TestCase):
             integration.planner.seal(stage, integration.msi.REVIEWED_SEAL)
             baselines, combined = integration.msi.checked_reports(stage)
             extension = {"baselines": baselines, "combined": combined}
-        counts = integration.validate_farms(ROOT, ROOT / integration.RECEIPT, extension)
+        loader_extension = None
+        if integration.loader.present(ROOT):
+            stage = ROOT / integration.loader.RECEIPT
+            integration.planner.seal(stage, integration.loader.REVIEWED_SEAL)
+            loader_extension = integration.loader.checked_reports(stage)
+        counts = integration.validate_farms(ROOT, ROOT / integration.RECEIPT, extension, loader_extension)
         self.assertEqual(counts, integration.msi.RESIDUAL_COUNTS if extension else integration.msi.BASELINE_COUNTS)
 
     def test_existing_farm_substitution_rejected_before_parser(self):
@@ -344,7 +349,7 @@ class ReviewedSourceTests(unittest.TestCase):
             root = Path(directory).resolve()
             farm = root / "app/Madeira/aarch64-windows"
             shutil.copytree(ROOT / "app/Madeira/aarch64-windows", farm)
-            for name in integration.msi.NAMES:
+            for name in integration.msi.NAMES | integration.loader.NAMES:
                 (farm / name).unlink(missing_ok=True)
             target = farm / "kernel32.dll"
             original = target.read_bytes()

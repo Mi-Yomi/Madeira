@@ -1,0 +1,19 @@
+{
+  "architectures": [
+    "aarch64",
+    "arm64ec"
+  ],
+  "components": {
+    "activeds.dll": "dlls/activeds",
+    "avicap32.dll": "dlls/avicap32"
+  },
+  "configured_windows_compiler": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang",
+  "jobs": 2,
+  "max_log_bytes_per_architecture": 67108864,
+  "max_total_work_bytes": 2147483648,
+  "minimum_free_disk_bytes": 8589934592,
+  "no_downloads": true,
+  "no_primary_farm_writes": true,
+  "runtime_tested": false,
+  "seconds_whole_attempt": 2700
+}
