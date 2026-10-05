@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: MIT
+# Evaluate the exact hash-verified SDK exports in a real MSVC C++ context.
+# Do not include LLVMConfig.cmake: its global find_package calls are not a
+# description of the selected component closure. No targets/dependencies are
+# invented to satisfy missing libraries. No SDK CMake text is rewritten.
+cmake_minimum_required(VERSION 3.25)
+project(MadeiraLLVMDependencyInspection LANGUAGES CXX)
+if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+  message(FATAL_ERROR "Expected preinstalled x64 MSVC")
+endif()
+if(NOT CMAKE_MSVC_RUNTIME_LIBRARY STREQUAL "MultiThreaded")
+  message(FATAL_ERROR "Expected release /MT")
+endif()
+include("@SDK@/lib/cmake/llvm/LLVMExports.cmake")
+file(STRINGS "@TARGETS@" selected_targets)
+add_executable(closure_context EXCLUDE_FROM_ALL "@PROBE@")
+set_target_properties(closure_context PROPERTIES LINKER_LANGUAGE CXX)
+foreach(t IN LISTS selected_targets)
+  if(NOT TARGET "${t}")
+    message(FATAL_ERROR "Selected library has no exact imported target: ${t}")
+  endif()
+  get_target_property(kind "${t}" TYPE)
+  get_target_property(imported "${t}" IMPORTED)
+  get_target_property(configs "${t}" IMPORTED_CONFIGURATIONS)
+  if(NOT kind STREQUAL "STATIC_LIBRARY" OR NOT imported)
+    message(FATAL_ERROR "Selected target is not an imported static library: ${t}")
+  endif()
+  file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/metadata/${t}.location"
+       CONTENT "$<TARGET_FILE:${t}>\n" TARGET closure_context)
+  get_target_property(raw_deps "${t}" INTERFACE_LINK_LIBRARIES)
+  get_target_property(raw_options "${t}" INTERFACE_LINK_OPTIONS)
+  if(raw_deps STREQUAL "raw_deps-NOTFOUND")
+    set(raw_deps "")
+  endif()
+  if(raw_options STREQUAL "raw_options-NOTFOUND")
+    set(raw_options "")
+  endif()
+  # LINK_LANGUAGE and LINK_ONLY require an actual link-property evaluation.
+  # TARGET_GENEX_EVAL alone cannot supply that DAG context. Transport the exact
+  # unmodified interface strings through a separate source-owned LINK_OPTIONS
+  # property, with an explicit boundary. This target is never built or linked.
+  add_executable("inspect_${t}" EXCLUDE_FROM_ALL "@PROBE@")
+  set_target_properties("inspect_${t}" PROPERTIES LINKER_LANGUAGE CXX
+    LINK_OPTIONS "${raw_deps};MADEIRA_EXPORT_OPTIONS_BOUNDARY;${raw_options}")
+  file(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/metadata/${t}.evaluated"
+       CONTENT "$<TARGET_PROPERTY:inspect_${t},LINK_OPTIONS>\n" TARGET "inspect_${t}")
+  # Link graph validation is part of CMake generation, but this target is never
+  # built. Python independently closes this graph before a separate cl/link.
+  target_link_libraries(closure_context PRIVATE "${t}")
+endforeach()
+file(WRITE "${CMAKE_BINARY_DIR}/compiler.txt"
+  "${CMAKE_CXX_COMPILER_ID}\n${CMAKE_CXX_COMPILER_VERSION}\n${CMAKE_CXX_COMPILER}\n${CMAKE_MSVC_RUNTIME_LIBRARY}\n${CMAKE_GENERATOR}\n")

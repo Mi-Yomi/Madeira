@@ -1,0 +1,41 @@
+name: Official LLVM SDK Windows preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - .github/workflows/llvm-sdk-windows-preflight.yml
+      - tests/desktop/llvm_sdk/preflight-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: llvm-sdk-windows-preflight-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    runs-on: windows-2025
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Exercise portable preflight failure controls
+        timeout-minutes: 1
+        run: python tests/host/check-llvm-sdk-preflight.py
+      - name: Inspect official SDK and test native Windows C++ ABI and MCJIT
+        timeout-minutes: 42
+        run: python tests/desktop/llvm_sdk/preflight.py --work-root "$env:RUNNER_TEMP/llvm-sdk-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Report experiment boundary
+        if: always()
+        run: |
+          Write-Output "Official LLVM SDK + preinstalled MSVC/Windows SDK, /MT x64 Windows reference only."
+          Write-Output "No Mesa build, Wine/FEX/ARM64EC/iOS/Blender execution or iPhone performance result."
+          Write-Output "No system installation, fallback, private input, credential, artifact upload, cache, signing or IPA."
