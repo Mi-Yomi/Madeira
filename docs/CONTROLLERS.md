@@ -37,6 +37,22 @@ connected identity. UIKit handles independent fingers and cancellation, so
 releasing one of two controls mapped to the same button leaves the other held.
 The pinch recognizer is enabled only during editing.
 
+Once the touch pad has connected, the Session menu (including opening the
+software keyboard) and control editor keep that identity connected with neutral
+input. Late touches are ignored while gameplay controls are suppressed; closing
+the menu accepts fresh input without an XInput disconnect/reconnect. This does
+not connect a pad early while the game is loading. Actually hiding or removing
+all controller mappings still disconnects it, unless the session reservation
+described below is enabled.
+
+The keyboard button closes the Session menu, so touch input is accepted again
+while the keyboard is visible. Overlay disappearance and leaving a portrait
+session still remove the touch mappings; only temporary menu/editor suppression
+retains them. The opt-in reservation remains process-lifetime, as before.
+The connection/input split is adapted from TheHadesc's
+[upstream PR #204](https://github.com/willfaust/Madeira/pull/204), commit
+`ba87d06fe416f7579a1d9534e0a3ccb6968f7de1`.
+
 Touch and physical buttons combine; triggers use the larger value. A physical
 stick outside its standard XInput dead zone takes priority over touch on that
 stick. Otherwise a deflected touch stick takes priority; resting touch preserves
@@ -333,7 +349,15 @@ The first compiles production snapshot/query code and checks packets, ranges,
 slots, invalid queries, disconnect/reconnect and concurrent readers/writers.
 The second compiles production touch state and checks independent button holds,
 layout/lifecycle clearing, analogue ranges, duplicate sticks and physical/touch
-arbitration, and the session slot reservation. The third compiles the
+arbitration, and the session slot reservation. It also extracts the production
+overlay selection and bridge configuration/touch/lifecycle methods into a host
+harness with a deterministic pending queue. That checks repeated inhibited
+startup, menu/editor cycles, held buttons/triggers/both sticks, remapping,
+hide/disappear/portrait teardown, fresh state after process restart, and both
+XInput disable flags in separate processes. The harness records touch-state
+snapshots; it does not substitute for UIKit or the native XInput publisher.
+Use `--emit-swift /path/to/main.swift` to inspect the harness without compiling
+or running it. The third compiles the
 production layout store with the controller actions: the built-in layout on
 phone, tablet and portrait-reported screens (complete, supported mappings,
 inside the safe area and clamps, no overlaps, top bar clear), built-ins
@@ -356,6 +380,10 @@ merge, rebuild the paired components and test:
 - Mixed physical/touch holds; releasing either source must preserve the other.
 - Hold then hide, edit, remap, remove, rotate, background or interrupt the app;
   no input should remain stuck, and fresh touches should work afterward.
+- Repeat Session menu/keyboard open and dismiss at least three times with
+  simultaneous button/stick holds, including on portrait sessions. The guest
+  must retain its controller through menu/editor suppression; ending a portrait
+  session must remove an unreserved touch source even if the layout is unchanged.
 - Both rollback flags, saved layouts, and existing keyboard/mouse controls.
 - Layouts: by default nothing is applied to a user with or without a controls
   file; the built-in loads from the menu (the overlay's button, and in a library

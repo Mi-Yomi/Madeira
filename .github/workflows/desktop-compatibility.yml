@@ -93,6 +93,8 @@ jobs:
           persist-credentials: false
       - name: Check compiled mouse-wheel routing
         run: python3 tests/host/check-mouse-wheel.py
+      - name: Check compiled touch-controller lifetime
+        run: python3 tests/host/check-touch-gamepad.py
       - name: Check one-shot JIT placeholder release and quiet readiness
         run: python3 tests/host/check-jit-pool-release.py
       - name: Check compiled JIT alias retry order
