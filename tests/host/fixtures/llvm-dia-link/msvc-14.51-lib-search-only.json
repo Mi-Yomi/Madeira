@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "run_url": "https://github.com/Mi-Yomi/Madeira/actions/runs/37472598696",
+  "job_id": 112299683328,
+  "source_commit": "6de5764fee56797f7da778adf46f72f57777955d",
+  "scope": "Successful native link with insufficient selected-member trace; rejected diagnostic, not a pass",
+  "text_normalization": "Exact log text records joined with LF and one final LF; not original CRLF file bytes",
+  "full_log_bytes": 4633346,
+  "full_log_sha256": "1c1c48f32a4a2fa2c2d7402080d7159b9733439f57823e511eb51787260a1309",
+  "link_command": {
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\link.exe",
+      "@D:\\a\\_temp\\llvm-dia-link-37472598696-1\\dia-link.rsp"
+    ],
+    "exit": 0,
+    "log_sha256": "1bdc2208f8c58e9c2e7f7e0ac499c1523dd8316b9f39f5a429eda1fc0be8a2fa",
+    "seconds": 0.218,
+    "stage": "dia-link"
+  },
+  "files": {
+    "msvc-14.51-lib-search-only.log": {
+      "size": 5281,
+      "sha256": "693dc17caa72c73af838f7c10a39cdc42a4522a840f3a73bd196929fce331767",
+      "lines": 66,
+      "record_kind": "DIA_LINK_LINE"
+    },
+    "msvc-14.51-source-probe.map": {
+      "size": 227806,
+      "sha256": "cc25e4bde5ed634c2b144afb3b2c333fae607094cf6b4b8e40c4806da133abca",
+      "lines": 1976,
+      "record_kind": "DIA_MAP_LINE"
+    }
+  },
+  "providers": {
+    "advapi32": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\AdvAPI32.Lib",
+      "sha256": "ecafe89a632a35b183c2129d2d8612b31a4d43a9cda78c4b2e3bc6b130ae3c6f",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "atls": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\atlmfc\\lib\\x64\\atls.lib",
+      "sha256": "439523ae116b28afa6bf652b20e4d5079c63c38a45297c70ba7b5c934217fa75",
+      "role": {
+        "kind": "static_code",
+        "required": true,
+        "root": "atl"
+      }
+    },
+    "delayimp": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\delayimp.lib",
+      "sha256": "ce6671047abb001e1545c09df57ff966065944f96c634c0309d3a49d9e40553e",
+      "role": {
+        "kind": "static_code",
+        "required": true,
+        "root": "msvc"
+      }
+    },
+    "diaguids": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\DIA SDK\\lib\\amd64\\diaguids.lib",
+      "sha256": "567e2badf17f3f7d5976d127659e0b038af8c39afd22c3c53afd21e25300b42b",
+      "role": {
+        "kind": "guid_data",
+        "required": true,
+        "root": "dia"
+      }
+    },
+    "kernel32": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\kernel32.Lib",
+      "sha256": "341c7d56125a03b458e4d5093e4c79b33123ccfdfd610fe236937b8e6f3134bb",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "libcmt": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\libcmt.lib",
+      "sha256": "d4cc4c224455825dec1669f9ad6a9872a4f5b37ed1daae1fd0b9044d7650d908",
+      "role": {
+        "kind": "static_code",
+        "required": true,
+        "root": "msvc"
+      }
+    },
+    "libconcrt": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\libconcrt.lib",
+      "sha256": "5663040e4415d3cbff67ad8af26b0e68c57ffd769db118ab32ecd509ec12291e",
+      "role": {
+        "kind": "static_code",
+        "reason": "Inventory candidate for the MSVC static concurrency runtime; only a discovered edge makes it required. No claim that LLVM directly defaults it.",
+        "required": false,
+        "root": "msvc"
+      }
+    },
+    "libcpmt": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\libcpmt.lib",
+      "sha256": "96f3a2e1113ae8884f459e679a38a35cab542013229a9e6106f58382a6fb47c8",
+      "role": {
+        "kind": "static_code",
+        "required": true,
+        "root": "msvc"
+      }
+    },
+    "libucrt": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x64\\libucrt.lib",
+      "sha256": "ea2ffa5d9b1ebc3fa76f34c364471750db8951b341dbccbc1bef628ef1a20e39",
+      "role": {
+        "kind": "static_code",
+        "required": true,
+        "root": "windows_ucrt"
+      }
+    },
+    "libvcruntime": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\libvcruntime.lib",
+      "sha256": "f0a898588ecb26fe4c7530b2495a6fe5e768856309a33391702a3cbcb72b0589",
+      "role": {
+        "kind": "static_code",
+        "required": true,
+        "root": "msvc"
+      }
+    },
+    "ntdll": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\ntdll.lib",
+      "sha256": "a373f724ef6d8ea11a8b03de653ac1b4f111522f59a1f4b787ec9d93f31fe7c1",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "oldnames": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\oldnames.lib",
+      "sha256": "67653ba64d59a33964a811d950c9d424f7afacba8e613af60138f64fe10c2679",
+      "role": {
+        "kind": "static_code",
+        "required": true,
+        "root": "msvc"
+      }
+    },
+    "ole32": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\Ole32.Lib",
+      "sha256": "f7b6d1e4a2f2a16c6a78ed821c8aa7f0b488112bb4da778285086e4588ca197a",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "oleaut32": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\OleAut32.Lib",
+      "sha256": "ccb86049288e4816e34b572f0d63a6b2c40d91777b092bb77ae639aa8e887ae5",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "psapi": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\psapi.lib",
+      "sha256": "45ef99080ea8b49ec3ab396442d7b9ec39c1289445bf0197135f8922b1b4d973",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "shell32": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\shell32.lib",
+      "sha256": "83b3d1b2c80f0f83a859470ae52d4ca2b582b9236c4d3ab99405a2178257fdff",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "shlwapi": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\ShLwApi.Lib",
+      "sha256": "d2c39baa1c2658e022a82410f283e89b8ef94b8ac0bf64f3532a954b0d8598d3",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "user32": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\User32.Lib",
+      "sha256": "f45759349ad08b848bdd4eee39cd9b428b2a7ae63a09889c09a197fe7b01421d",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "uuid": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\Uuid.Lib",
+      "sha256": "29558f81492e99d7de1b921b6eb8f21d74c96474e18653465aff10fcb01c2626",
+      "role": {
+        "kind": "guid_data",
+        "required": true,
+        "root": "windows_um"
+      }
+    },
+    "ws2_32": {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\WS2_32.Lib",
+      "sha256": "41d9a07c62d7738185e1af6c7ad14bf9d1a541ff902bc9f299350c0ef482e582",
+      "role": {
+        "kind": "os_import",
+        "required": true,
+        "root": "windows_um"
+      }
+    }
+  },
+  "compiled": true,
+  "linked": true,
+  "runtime_tested": false,
+  "diagnostic_status": "incomplete-rejected",
+  "reason": "No actual loaded-member records in link trace"
+}

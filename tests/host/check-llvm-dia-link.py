@@ -117,6 +117,29 @@ map_text = '\n'.join(' 0001:00001000 ' + name + ' 0000000140001000 f diaguids:' 
 result = m.verify_selection(trace, map_text, providers, objects, details)
 check({x['member'] for x in result['dia_members']} == expected, 'Trace/map/real symbol ownership agree')
 check(all(x['sha256'] for x in result['dia_members']), 'Selected DIA hashes retained')
+# Revision 3 produced a real successful link but no extracted-member trace.
+# Keep that exact captured counterexample rejected even with a valid native map.
+trace_provenance = json.loads((FIXTURES / 'msvc-14.51-lib-search-only.json').read_text())
+native_text = {}
+for name, identity in trace_provenance['files'].items():
+    data = (FIXTURES / name).read_bytes()
+    check(len(data) == identity['size'] and hashlib.sha256(data).hexdigest() == identity['sha256'],
+          'Captured native trace/map byte identity')
+    native_text[identity['record_kind']] = data.decode('utf-8')
+native_trace, native_map = native_text['DIA_LINK_LINE'], native_text['DIA_MAP_LINE']
+check(len(native_trace.splitlines()) == 66 and not any(line.strip().startswith('Loaded ') for line in native_trace.splitlines()),
+      'Actual /VERBOSE:LIB trace contains no loaded-member evidence')
+check(m.map_owners(native_map) == {name: row['member'].replace('\\', '/').rsplit('/', 1)[-1]
+                                 for name, row in owners.items()}, 'Existing map parser reads the actual native DIA owners')
+for validate in [lambda: m.parse_link_selection(native_trace, trace_provenance['providers']),
+                 lambda: m.verify_selection(native_trace, native_map, trace_provenance['providers'], {}, [])]:
+    try:
+        validate()
+    except ValueError as exc:
+        check(str(exc) == 'No actual loaded-member records in link trace',
+              'Native searched-library trace cannot substitute for member extraction proof')
+    else:
+        raise AssertionError('Real native map incorrectly bypassed missing selected-member evidence')
 for name in m.REQUIRED:
     reject(lambda n=name: m.verify_selection(trace, map_text.replace(n, 'missing_symbol'), providers, objects, details),
            'Required map definition omitted')
@@ -250,7 +273,7 @@ def exercise(compile_exit=0, link_exit=0, corrupt_provider=False, source_default
             check([x[0] for x in calls] == ['dia-compile', 'dia-link'], 'No generated executable invocation')
             check('/MT' in calls[0][1] and '/WX' in calls[0][1] and calls[0][3] == 60 and calls[1][3] == 90, 'Bounded one-compiler one-linker commands')
             response = (temp / 'work/dia-link.rsp').read_text()
-            check('/VERBOSE:LIB' in response and '/MAP:' in response and '/WX' in response and
+            check(response.count('"/VERBOSE"\n') == 1 and '/VERBOSE:' not in response and '/MAP:' in response and '/WX' in response and
                   not any(x in response for x in ['/NODEFAULTLIB', '/FORCE', '/WHOLEARCHIVE', '/INCLUDE', '/DEBUG']), 'Ordinary release link semantics')
         if not compile_exit:
             captured_bytes = [json.loads(x.partition(' ')[2]) for x in output.getvalue().splitlines()

@@ -74,7 +74,7 @@ Success requires all of the following:
    contradictory CRT tags
 2. Successful `/WX` link with unchanged defaults and no FORCE, NODEFAULTLIB,
    WHOLEARCHIVE, IGNORE, LIBPATH or warning suppression in selected directives
-3. Exact DIA archive identity in `/VERBOSE:LIB` searched/loaded records,
+3. Exact DIA archive identity in full `/VERBOSE` searched/loaded records,
    agreeing with actual symbol definitions and `/MAP` ownership for all three
    references; only their exact owning DIA members may be selected
 4. Selected static members have no MD/debug CRT defaults/tags; selecting
@@ -125,6 +125,19 @@ explicit link input. It remains separate from the static CRT family. Missing
 `libcmt`, any other source default, dynamic/debug CRTs and linker suppression
 remain rejected. The actual object and full provenance are regression fixtures;
 their acceptance is not a native link or complete LLVM dependency result.
+
+Revision 3 ([run 37472598696](https://github.com/Mi-Yomi/Madeira/actions/runs/37472598696))
+compiled and linked successfully with MSVC 14.51, then correctly rejected the
+missing member-selection evidence. Its `/VERBOSE:LIB` output contained only
+66 library-search/status lines and no `Loaded` records. The map identified the
+three expected DIA symbol owners, but could not establish the complete set of
+extracted members. The next diagnostic requests full `/VERBOSE`, which Microsoft
+documents as detailed linker output; `:LIB` documents only searched libraries.
+This changes logging only. All release/link flags, inputs, resource limits,
+selection/CRT/import gates and the no-execution boundary remain unchanged.
+The exact captured trace and map are regression fixtures: they must continue
+to reject without member extraction evidence. Full `/VERBOSE` output is not yet
+verified; absent or unsupported member evidence will still reject explicitly.
 
 ## Neutral COFF collection correction
 

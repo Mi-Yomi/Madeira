@@ -352,7 +352,7 @@ def diagnostic(work):
             'required_symbols': [x for x in evidence['symbols'] if x['name'] in REQUIRED],
             'required_relocations': [x for x in evidence['relocations'] if x['symbol_name'] in REQUIRED]})
         require_release_crt(directives, True)
-        args = ['/NOLOGO', '/MACHINE:X64', '/INCREMENTAL:NO', '/WX', '/VERBOSE:LIB',
+        args = ['/NOLOGO', '/MACHINE:X64', '/INCREMENTAL:NO', '/WX', '/VERBOSE',
                 '/MAP:' + str(mapfile), '/OUT:' + str(exe), str(obj)]
         args += [providers[name]['path'] for name in ['diaguids', 'uuid', 'advapi32', 'kernel32']]
         require(all(not any(c in x for c in '\0"\r\n') for x in args), 'Unsafe linker response argument')

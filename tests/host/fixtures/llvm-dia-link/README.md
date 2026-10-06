@@ -29,3 +29,11 @@ actual Windows CRLF checkout from canonical LF bytes. The object was never
 linked or run. It demonstrates the two `uuid.lib` pragmas plus `LIBCMT`/`OLDNAMES`
 defaults; mutations verify that unrelated libraries and dynamic CRT substitutions
 remain rejected. This fixture is distinct from the upstream LLVM object above.
+
+`msvc-14.51-lib-search-only.log` and `msvc-14.51-source-probe.map` contain the
+actual captured output from the successful native link in run 37472598696.
+Their companion `msvc-14.51-lib-search-only.json` records the source, tool,
+provider and log identities and LF text reconstruction. The 66-line trace has
+no `Loaded` records, while the map gives the three expected DIA owners. Tests
+require this real pair to remain rejected as incomplete member-selection proof.
+They do not invent a successful full-verbose transcript.
