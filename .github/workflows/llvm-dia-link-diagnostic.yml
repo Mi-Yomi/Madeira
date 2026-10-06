@@ -33,6 +33,10 @@ jobs:
           python tests/host/check-llvm-member-evidence.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python tests/host/check-llvm-dia-link.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tests/host/check-llvm-archive-index.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tests/host/check-llvm-static-selection.py
           exit $LASTEXITCODE
       - name: Inventory providers and link the three DIA references without execution
         timeout-minutes: 8

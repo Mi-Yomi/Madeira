@@ -139,6 +139,13 @@ The exact captured trace and map are regression fixtures: they must continue
 to reject without member extraction evidence. Full `/VERBOSE` output is not yet
 verified; absent or unsupported member evidence will still reject explicitly.
 
+Full verbose revision 4 now records the expected DIA members, but remains
+rejected because two UCRT objects share `libm_error.obj`. The
+[static-member index proof](STATIC_SELECTION.md) defines the exact symbol/index,
+candidate-definition and native-reader evidence required to resolve that
+ambiguity. It covers the complete loaded trace and preserves every acceptance
+gate; the existing output cannot establish the winning offset retrospectively.
+
 ## Neutral COFF collection correction
 
 The previous inventory stopped at `libcmt`/`oldnames` members with machine 0,

@@ -19,3 +19,4 @@ app/Madeira/legal/FEX-guest/** -text -whitespace
 # Exact captured LLVM object/license and Windows provider evidence fixtures.
 tests/host/fixtures/llvm-dia-link/** -text -whitespace
 tests/host/fixtures/llvm-providers/** -text -whitespace
+tests/host/fixtures/llvm-archive-index/** -text -whitespace

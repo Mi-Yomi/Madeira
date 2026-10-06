@@ -111,7 +111,9 @@ md = next(row for row in details if row['member'].endswith('stdafx.obj'))
 reject(lambda: m.require_release_crt(md), 'Actual captured MD stdafx directives')
 # These trace/map strings are synthetic format contracts, never a claimed Windows link.
 trace = 'Searching ' + providers['diaguids']['path'] + ':\n' + ''.join(
-    '  Loaded diaguids.lib(' + row['member'] + ')\n' for row in details if row['member'] in expected)
+    '  Found ' + next(name for name, owner in sorted(owners.items()) if owner['member'] == row['member']) +
+    '\n    Referenced in source.obj\n  Loaded diaguids.lib(' + row['member'] + ')\n'
+    for row in details if row['member'] in expected)
 map_text = '\n'.join(' 0001:00001000 ' + name + ' 0000000140001000 f diaguids:' +
                      row['member'].replace('\\', '/').rsplit('/', 1)[-1] for name, row in sorted(owners.items()))
 result = m.verify_selection(trace, map_text, providers, objects, details)
@@ -171,7 +173,9 @@ providers2, objects2 = copy.deepcopy(providers), copy.deepcopy(objects)
 providers2['kernel32'] = {'path': 'C:\\SDK\\Lib\\um\\x64\\kernel32.lib', 'role': {'kind': 'os_import'}}
 objects2['kernel32'] = [{'member': 'KERNEL32.dll', 'machine': '0x8664', 'kind': 'short_import',
                         'import_symbol': name, 'imported_module': 'kernel32.dll'} for name in ['Sleep', 'GetLastError']]
-trace2 = trace + 'Searching C:\\SDK\\Lib\\um\\x64\\kernel32.lib:\n' + ' Loaded kernel32.lib(KERNEL32.dll)\n' * 2
+trace2 = trace + 'Searching C:\\SDK\\Lib\\um\\x64\\kernel32.lib:\n' + ''.join(
+    ' Found ' + name + '\n Referenced in source.obj\n Loaded kernel32.lib(KERNEL32.dll)\n'
+    for name in ['Sleep', 'GetLastError'])
 r = m.verify_selection(trace2, map_text, providers2, objects2, details)
 imports = [x for x in r['loaded_members'] if x['provider'] == 'kernel32']
 check(len(imports) == 2 and all(x['candidate_count'] == 2 and not x['exact_import_member_selection_proven'] for x in imports),
@@ -234,6 +238,8 @@ def exercise(compile_exit=0, link_exit=0, corrupt_provider=False, source_default
                 return_value=(evidence, {
                 'default_libraries': ['libcmt'] if source_defaults is None else source_defaults, 'mismatch_tags': {}})))
             stack.enter_context(patch.object(m, 'verify_selection', return_value=result))
+            stack.enter_context(patch.object(m, 'parse_link_selection', return_value=[]))
+            stack.enter_context(patch.object(m.static_proof, 'collect', return_value={}))
             stack.enter_context(patch.object(m.p, 'audit_pe', return_value={'sha256': 'b' * 64, 'imports': []}))
             output = stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
             code = m.diagnostic(temp / 'work')

@@ -1,0 +1,14 @@
+{
+  "provenance": "RECONSTRUCTED source-owned COFF archive index fixture; never vendor bytes or executable code",
+  "objects": [
+    {"member": "first/path/shared.obj", "payload_hex": "6486000000000000000000000000000000000000"},
+    {"member": "second/path/shared.obj", "payload_hex": "648600000000000000000000000000000000000000"},
+    {"member": "third/path/last.obj", "payload_hex": "6486000000000000000000000000000000000000"}
+  ],
+  "symbols": [
+    {"name": "zeta", "object": 0},
+    {"name": "alpha", "object": 1},
+    {"name": "beta2", "object": 1},
+    {"name": "gamma", "object": 2}
+  ]
+}

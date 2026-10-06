@@ -1,0 +1,251 @@
+
+Dump of file C:\Program Files\Microsoft Visual Studio\18\Enterprise\DIA SDK\lib\amd64\diaguids.lib
+
+File Type: LIBRARY
+
+Archive member name at 8: /               
+FFFFFFFFFFFFFFFF time/date
+         uid
+         gid
+       0 mode
+     B32 size
+correct header end
+
+    99 public symbols
+
+     176A ??$_Digit_pairs@D@std@@3U?$_Digit_pair_table@D@1@B
+     176A ??$_Digit_pairs@_W@std@@3U?$_Digit_pair_table@_W@1@B
+     176A _Avx2WmemEnabledWeakValue
+     176A __@@_PchSym_@00@UzUPdlipUBUhUrmgvinvwrzgvUkwyUwrzCUwrztfrwhUwrztfrwhOexckilqUlyqiUznwGEUhgwzucOlyq@diaguids
+   21C5D2 ??$IID_PPV_ARGS_Helper@UIClassFactory@@@@YAPEAPEAXPEAPEAUIClassFactory@@@Z
+   21C5D2 ??_C@_0BC@JDLGBILA@DllGetClassObject@
+   21C5D2 ??_C@_1CA@COADJJGE@?$AA?2?$AAI?$AAn?$AAp?$AAr?$AAo?$AAc?$AAS?$AAe?$AAr?$AAv?$AAe?$AAr?$AA3?$AA2@
+   21C5D2 ??_C@_1O@FHBGLCIO@?$AAC?$AAL?$AAS?$AAI?$AAD?$AA?2@
+   21C5D2 ?NoOleCoCreate@@YAJAEBU_GUID@@0PEAPEAX@Z
+   21C5D2 ?NoRegCoCreate@@YAJPEB_WAEBU_GUID@@1PEAPEAX@Z
+   21C5D2 HRESULT_FROM_WIN32
+   21C5D2 _GUID_00000001_0000_0000_c000_000000000046
+   22C272 CLSID_DiaSource
+   22C272 CLSID_DiaSourceAlt
+   22C272 CLSID_DiaStackWalker
+   22C272 IID_IDiaAddressMap
+   22C272 IID_IDiaDataSource
+   22C272 IID_IDiaDataSource10
+   22C272 IID_IDiaDataSource11Internal
+   22C272 IID_IDiaDataSource2
+   22C272 IID_IDiaDataSource3
+   22C272 IID_IDiaDataSource4
+   22C272 IID_IDiaDataSource5
+   22C272 IID_IDiaDataSource6
+   22C272 IID_IDiaDataSource7
+   22C272 IID_IDiaDataSource8
+   22C272 IID_IDiaDataSource9
+   22C272 IID_IDiaDataSourceEx
+   22C272 IID_IDiaDataSourceEx2
+   22C272 IID_IDiaEnumDebugStreamData
+   22C272 IID_IDiaEnumDebugStreams
+   22C272 IID_IDiaEnumFrameData
+   22C272 IID_IDiaEnumInjectedSources
+   22C272 IID_IDiaEnumInputAssemblyFiles
+   22C272 IID_IDiaEnumLineNumbers
+   22C272 IID_IDiaEnumNamedStreams
+   22C272 IID_IDiaEnumSectionContribs
+   22C272 IID_IDiaEnumSegments
+   22C272 IID_IDiaEnumSourceFiles
+   22C272 IID_IDiaEnumSourceLink
+   22C272 IID_IDiaEnumSourceLink2
+   22C272 IID_IDiaEnumStackFrames
+   22C272 IID_IDiaEnumSymbols
+   22C272 IID_IDiaEnumSymbolsByAddr
+   22C272 IID_IDiaEnumSymbolsByAddr2
+   22C272 IID_IDiaEnumTables
+   22C272 IID_IDiaEnumXfgTypeHashes
+   22C272 IID_IDiaFrameData
+   22C272 IID_IDiaImageData
+   22C272 IID_IDiaInjectedSource
+   22C272 IID_IDiaInputAssemblyFile
+   22C272 IID_IDiaLineNumber
+   22C272 IID_IDiaLoadCallback
+   22C272 IID_IDiaLoadCallback2
+   22C272 IID_IDiaPropertyStorage
+   22C272 IID_IDiaReadExeAtOffsetCallback
+   22C272 IID_IDiaReadExeAtRVACallback
+   22C272 IID_IDiaSectionContrib
+   22C272 IID_IDiaSegment
+   22C272 IID_IDiaSession
+   22C272 IID_IDiaSession10
+   22C272 IID_IDiaSession11
+   22C272 IID_IDiaSession12
+   22C272 IID_IDiaSession13
+   22C272 IID_IDiaSession2
+   22C272 IID_IDiaSession3
+   22C272 IID_IDiaSession4
+   22C272 IID_IDiaSession5
+   22C272 IID_IDiaSession6
+   22C272 IID_IDiaSession7
+   22C272 IID_IDiaSession8
+   22C272 IID_IDiaSession9
+   22C272 IID_IDiaSessionEx
+   22C272 IID_IDiaSourceFile
+   22C272 IID_IDiaStackFrame
+   22C272 IID_IDiaStackWalkFrame
+   22C272 IID_IDiaStackWalkHelper
+   22C272 IID_IDiaStackWalkHelper2
+   22C272 IID_IDiaStackWalkHelper3
+   22C272 IID_IDiaStackWalker
+   22C272 IID_IDiaStackWalker2
+   22C272 IID_IDiaSymbol
+   22C272 IID_IDiaSymbol10
+   22C272 IID_IDiaSymbol11
+   22C272 IID_IDiaSymbol12
+   22C272 IID_IDiaSymbol2
+   22C272 IID_IDiaSymbol3
+   22C272 IID_IDiaSymbol4
+   22C272 IID_IDiaSymbol5
+   22C272 IID_IDiaSymbol6
+   22C272 IID_IDiaSymbol7
+   22C272 IID_IDiaSymbol8
+   22C272 IID_IDiaSymbol9
+   22C272 IID_IDiaTable
+   22C272 IID_IDiaXfgTypeHash
+   22C272 IID_IDynamicDeoptimizationData
+   22C272 IID_IDynamicDeoptimizationData2
+   22C272 IID_IDynamicDeoptimizationData3
+   22C272 LIBID_Dia2Lib
+
+Archive member name at B76: /               
+FFFFFFFFFFFFFFFF time/date
+         uid
+         gid
+       0 mode
+     A7C size
+correct header end
+
+    3 offsets
+
+        1     176A
+        2   21C5D2
+        3   22C272
+
+    99 public symbols
+
+        2 ??$IID_PPV_ARGS_Helper@UIClassFactory@@@@YAPEAPEAXPEAPEAUIClassFactory@@@Z
+        1 ??$_Digit_pairs@D@std@@3U?$_Digit_pair_table@D@1@B
+        1 ??$_Digit_pairs@_W@std@@3U?$_Digit_pair_table@_W@1@B
+        2 ??_C@_0BC@JDLGBILA@DllGetClassObject@
+        2 ??_C@_1CA@COADJJGE@?$AA?2?$AAI?$AAn?$AAp?$AAr?$AAo?$AAc?$AAS?$AAe?$AAr?$AAv?$AAe?$AAr?$AA3?$AA2@
+        2 ??_C@_1O@FHBGLCIO@?$AAC?$AAL?$AAS?$AAI?$AAD?$AA?2@
+        2 ?NoOleCoCreate@@YAJAEBU_GUID@@0PEAPEAX@Z
+        2 ?NoRegCoCreate@@YAJPEB_WAEBU_GUID@@1PEAPEAX@Z
+        3 CLSID_DiaSource
+        3 CLSID_DiaSourceAlt
+        3 CLSID_DiaStackWalker
+        2 HRESULT_FROM_WIN32
+        3 IID_IDiaAddressMap
+        3 IID_IDiaDataSource
+        3 IID_IDiaDataSource10
+        3 IID_IDiaDataSource11Internal
+        3 IID_IDiaDataSource2
+        3 IID_IDiaDataSource3
+        3 IID_IDiaDataSource4
+        3 IID_IDiaDataSource5
+        3 IID_IDiaDataSource6
+        3 IID_IDiaDataSource7
+        3 IID_IDiaDataSource8
+        3 IID_IDiaDataSource9
+        3 IID_IDiaDataSourceEx
+        3 IID_IDiaDataSourceEx2
+        3 IID_IDiaEnumDebugStreamData
+        3 IID_IDiaEnumDebugStreams
+        3 IID_IDiaEnumFrameData
+        3 IID_IDiaEnumInjectedSources
+        3 IID_IDiaEnumInputAssemblyFiles
+        3 IID_IDiaEnumLineNumbers
+        3 IID_IDiaEnumNamedStreams
+        3 IID_IDiaEnumSectionContribs
+        3 IID_IDiaEnumSegments
+        3 IID_IDiaEnumSourceFiles
+        3 IID_IDiaEnumSourceLink
+        3 IID_IDiaEnumSourceLink2
+        3 IID_IDiaEnumStackFrames
+        3 IID_IDiaEnumSymbols
+        3 IID_IDiaEnumSymbolsByAddr
+        3 IID_IDiaEnumSymbolsByAddr2
+        3 IID_IDiaEnumTables
+        3 IID_IDiaEnumXfgTypeHashes
+        3 IID_IDiaFrameData
+        3 IID_IDiaImageData
+        3 IID_IDiaInjectedSource
+        3 IID_IDiaInputAssemblyFile
+        3 IID_IDiaLineNumber
+        3 IID_IDiaLoadCallback
+        3 IID_IDiaLoadCallback2
+        3 IID_IDiaPropertyStorage
+        3 IID_IDiaReadExeAtOffsetCallback
+        3 IID_IDiaReadExeAtRVACallback
+        3 IID_IDiaSectionContrib
+        3 IID_IDiaSegment
+        3 IID_IDiaSession
+        3 IID_IDiaSession10
+        3 IID_IDiaSession11
+        3 IID_IDiaSession12
+        3 IID_IDiaSession13
+        3 IID_IDiaSession2
+        3 IID_IDiaSession3
+        3 IID_IDiaSession4
+        3 IID_IDiaSession5
+        3 IID_IDiaSession6
+        3 IID_IDiaSession7
+        3 IID_IDiaSession8
+        3 IID_IDiaSession9
+        3 IID_IDiaSessionEx
+        3 IID_IDiaSourceFile
+        3 IID_IDiaStackFrame
+        3 IID_IDiaStackWalkFrame
+        3 IID_IDiaStackWalkHelper
+        3 IID_IDiaStackWalkHelper2
+        3 IID_IDiaStackWalkHelper3
+        3 IID_IDiaStackWalker
+        3 IID_IDiaStackWalker2
+        3 IID_IDiaSymbol
+        3 IID_IDiaSymbol10
+        3 IID_IDiaSymbol11
+        3 IID_IDiaSymbol12
+        3 IID_IDiaSymbol2
+        3 IID_IDiaSymbol3
+        3 IID_IDiaSymbol4
+        3 IID_IDiaSymbol5
+        3 IID_IDiaSymbol6
+        3 IID_IDiaSymbol7
+        3 IID_IDiaSymbol8
+        3 IID_IDiaSymbol9
+        3 IID_IDiaTable
+        3 IID_IDiaXfgTypeHash
+        3 IID_IDynamicDeoptimizationData
+        3 IID_IDynamicDeoptimizationData2
+        3 IID_IDynamicDeoptimizationData3
+        3 LIBID_Dia2Lib
+        1 _Avx2WmemEnabledWeakValue
+        2 _GUID_00000001_0000_0000_c000_000000000046
+        1 __@@_PchSym_@00@UzUPdlipUBUhUrmgvinvwrzgvUkwyUwrzCUwrztfrwhUwrztfrwhOexckilqUlyqiUznwGEUhgwzucOlyq@diaguids
+
+Archive member name at 162E: //              
+FFFFFFFFFFFFFFFF time/date
+         uid
+         gid
+       0 mode
+     100 size
+correct header end
+
+  Summary
+
+           8 .bss
+         6C8 .chks64
+      1B86FC .debug$P
+       7333C .debug$S
+        9C28 .debug$T
+         269 .drectve
+          30 .pdata
+         850 .rdata
+         5A5 .text$mn
+          50 .xdata

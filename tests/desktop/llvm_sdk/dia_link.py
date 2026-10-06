@@ -20,6 +20,7 @@ ROOT = HERE.parents[2]
 sys.path.insert(0, str(HERE))
 import provider_inventory as inv
 import provider_member_evidence as member
+import static_member_proof as static_proof
 p = inv.p
 require, sha = p.require, p.sha
 MIB = 1024 ** 2
@@ -125,6 +126,7 @@ def parse_link_selection(text, providers):
     bypath = {winpath(row['path']): name for name, row in providers.items()}
     require(len(bypath) == len(providers), 'Provider paths are ambiguous')
     loaded, searched, current = [], set(), None
+    pending, references = None, []
     for line in text.splitlines():
         stripped = line.strip()
         search = re.fullmatch(r'Searching (.+\.lib):', stripped, re.I)
@@ -133,8 +135,18 @@ def parse_link_selection(text, providers):
             require(key in bypath, 'Link searched an unrecorded provider: ' + search[1])
             current = bypath[key]
             searched.add(current)
+            require(pending is None, 'Found symbol lacks a matching load before next library search')
         elif stripped.startswith('Searching ') and '.lib' in stripped.lower():
             raise ValueError('Unrecognized provider-search trace')
+        if stripped.startswith('Found '):
+            require(pending is None, 'Nested/unmatched Found symbol in link trace')
+            raw = stripped[6:]
+            require(current is not None, 'Found symbol lacks a verified current provider')
+            pending = (raw, static_proof.found_symbol(raw, providers[current]['role']['kind'] == 'os_import'))
+            references = []
+        if stripped.startswith('Referenced in '):
+            require(pending is not None and len(references) < 4096, 'Orphan/excessive symbol referrer evidence')
+            references.append(stripped[14:])
         if stripped.startswith('Loaded '):
             match = re.fullmatch(r'Loaded (.+\.lib)\((.+)\)', stripped, re.I)
             require(match is not None, 'Unrecognized loaded-member record')
@@ -149,21 +161,20 @@ def parse_link_selection(text, providers):
                         'Loaded provider basename lacks an exact matching search path')
                 name = current
             require(name in searched, 'Loaded provider lacks recorded exact search evidence')
-            entry = {'provider': name, 'member': object_name}
+            require(name == current, 'Loaded provider disagrees with its Found symbol context')
+            require(pending is not None, 'Loaded member lacks its Found symbol context')
+            entry = {'load_id': len(loaded), 'provider': name, 'member': object_name,
+                     'raw_found': pending[0], 'found_symbol': pending[1], 'referenced_in': references}
             require(len(loaded) < 10000, 'Excessive loaded-member evidence')
             loaded.append(entry)
+            pending, references = None, []
+    require(pending is None, 'Trailing Found symbol lacks a loaded member')
     require(loaded, 'No actual loaded-member records in link trace')
     return loaded
 
 
 def select_member(rows, value):
-    key = winpath(value)
-    exact = [row for row in rows if winpath(row['member']) == key]
-    if exact:
-        require(len(exact) == 1, 'Duplicate exact member identity')
-        return exact[0]
-    require(PureWindowsPath(value).name == value, 'Unmatched full archive member path')
-    matches = [row for row in rows if winpath(PureWindowsPath(row['member']).name) == key]
+    matches = static_proof.candidates(rows, value)
     require(len(matches) == 1, 'Absent or ambiguous member basename')
     return matches[0]
 
@@ -188,7 +199,7 @@ def map_owners(text):
     return found
 
 
-def verify_selection(trace, map_text, providers, objects, dia_details):
+def verify_selection(trace, map_text, providers, objects, dia_details, static_proofs=None):
     loaded = parse_link_selection(trace, providers)
     selected = []
     for item in loaded:
@@ -211,9 +222,15 @@ def verify_selection(trace, map_text, providers, objects, dia_details):
                              'member_identity': 'ambiguous-within-verified-import-archive',
                              'exact_import_member_selection_proven': False})
             continue
-        row = select_member(objects[item['provider']], item['member'])
+        candidates = static_proof.candidates(objects[item['provider']], item['member'])
+        if len(candidates) > 1:
+            proof = (static_proofs or {}).get(item['load_id'])
+            require(proof is not None, 'Ambiguous static member lacks symbol-index proof')
+            row = static_proof.validate_binding(proof, item, candidates, providers[item['provider']])
+        else:
+            row = select_member(objects[item['provider']], item['member'])
         require_release_crt(row)
-        require(not any(x.get('provider') == item['provider'] and x.get('member') == row['member'] for x in selected),
+        require(not any(x.get('provider') == item['provider'] and x.get('archive_header_offset') == row['archive_header_offset'] for x in selected),
                 'Duplicate static-code member selection')
         selected.append({'provider': item['provider'], 'member': row['member'],
                          'archive_header_offset': row['archive_header_offset'], 'size': row['size']})
@@ -372,7 +389,9 @@ def diagnostic(work):
                     'Provider changed during diagnostic: ' + name)
         require(sha(source) == source_hash, 'Diagnostic source changed during compile/link')
         require(code == 0, 'Diagnostic link failed; trace retained')
-        selection = verify_selection(trace, map_text, providers, objects, details)
+        loaded = parse_link_selection(trace, providers)
+        static_proofs = static_proof.collect(loaded, providers, objects, runner, tools, env, recorder)
+        selection = verify_selection(trace, map_text, providers, objects, details, static_proofs)
         recorder.emit('DIA_SELECTION', selection)
         pe = p.audit_pe(exe)
         recorder.emit('DIA_PE', pe)
