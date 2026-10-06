@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "source": "https://github.com/llvm/llvm-project/releases/tag/llvmorg-22.1.4",
+  "archive": "clang+llvm-22.1.4-x86_64-pc-windows-msvc.tar.xz",
+  "archive_sha256": "ed775bdaea7087c6c1aeac9498352cfcd8610d92dc4fe9eda9aecb15ce712a2c",
+  "library_sha256": "ccfe7b5753307aa62633ab2b0b843f604863bdc7c1cf604bb9a0eab2a0aebad1",
+  "member": "lib/DebugInfo/PDB/CMakeFiles/LLVMDebugInfoPDB.dir/DIA/DIASession.cpp.obj",
+  "archive_header_offset": 2965506,
+  "size": 74813,
+  "member_sha256": "6a36ac648ae330ca3de33af3e0a51621a7b09c31d6ea5ddb7a85e96ec4f7de83",
+  "fixture": "llvm-diasession.coff",
+  "scope": "Exact upstream MSVC object, parser fixture only; never linked or executed",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "full_license_source": "Existing verified official llvm-mingw LLVM license text, app/Madeira/legal/FEX-guest/licenses/llvm-mingw/LICENSE.TXT",
+  "license_sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee"
+}

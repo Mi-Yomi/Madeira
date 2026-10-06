@@ -1,0 +1,54 @@
+{
+  "provenance": {
+    "description": "Reconstructed format witness, not genuine compiler output. Captured raw header and symbol expectations are preserved; unretained debug payload is zero-filled and symbol/auxiliary/string bytes are constructed.",
+    "captured_evidence": "neutral-crt-captured-evidence.json",
+    "provider": "oldnames",
+    "captured_object_sha256": "d15ad7bd1fb18f8c58c6f63395d39321d402dbfbb9c190e2d4133a06dc60a4c7",
+    "original_object_bytes_retained": false
+  },
+  "reconstructed_sha256": "cd71678ce076cc5145442945548903b1b1c2dc971fa1f5e5ded65b8f59de6edd",
+  "object_hex": "000001000ab629ed8c01000005000000000000002e646562756724530000000000000000500100003c0000000000000000000000000000004000104200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040636f6d702e6964898bfd00ffff0000030040666561742e303011000000ffff000003000000000004000000000000000000000002000000000013000000000000000000000069010200000003000000000000000000000000001f0000005f5f696d705f5f7574696d653332005f5f696d705f7574696d6500",
+  "expected_symbols": [
+    {
+      "name": "@comp.id",
+      "value": 16616329,
+      "section": -1,
+      "storage_class": 3,
+      "auxiliary_count": 0
+    },
+    {
+      "name": "@feat.00",
+      "value": 17,
+      "section": -1,
+      "storage_class": 3,
+      "auxiliary_count": 0
+    },
+    {
+      "name": "__imp__utime32",
+      "value": 0,
+      "section": 0,
+      "storage_class": 2,
+      "auxiliary_count": 0
+    },
+    {
+      "name": "__imp_utime",
+      "value": 0,
+      "section": 0,
+      "storage_class": 105,
+      "auxiliary_count": 1
+    }
+  ],
+  "expected_alias": {
+    "name": "__imp_utime",
+    "target_name": "__imp__utime32",
+    "target_index": 2,
+    "search_mode": 3
+  },
+  "expected_debug": {
+    "name": ".debug$S",
+    "size": 336,
+    "raw_offset": 60,
+    "characteristics": "0x42100040",
+    "relocation_count": 0
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "source_run": "https://github.com/Mi-Yomi/Madeira/actions/runs/37311092068",
+  "source_commit": "ea03d4881c10c1bdf57ec7932b27edaa89b00d55",
+  "source_evidence_sha256": "f7bd6b97bc9e02384334f4ae6ca778364c2f561fc663973802176da8914afdaa",
+  "scope": "Captured provider headers, directives and definitions; not a native link result",
+  "provider": {
+    "default_libraries": [
+      "legacy_stdio_wide_specifiers",
+      "msvcprt",
+      "uuid"
+    ],
+    "imported_modules": [],
+    "link_approved": false,
+    "machine": "x86_64",
+    "member_types": {
+      "coff": 3,
+      "directive_objects": 3,
+      "executable_objects": 1,
+      "full_import_objects": 0
+    },
+    "members": 3,
+    "mismatch_tags": {
+      "RuntimeLibrary": [
+        "MD_DynamicRelease"
+      ],
+      "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+        "0"
+      ],
+      "_ITERATOR_DEBUG_LEVEL": [
+        "0"
+      ],
+      "_MSC_VER": [
+        "1900"
+      ],
+      "annotate_optional": [
+        "0"
+      ],
+      "annotate_string": [
+        "0"
+      ],
+      "annotate_vector": [
+        "0"
+      ]
+    },
+    "name": "diaguids",
+    "other_directives_unreviewed": [
+      "/alternatename:_Avx2WmemEnabled=_Avx2WmemEnabledWeakValue",
+      "/include:__PLEASE_LINK_WITH_legacy_stdio_wide_specifiers.lib"
+    ],
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\DIA SDK\\lib\\amd64\\diaguids.lib",
+    "role": {
+      "kind": "guid_data",
+      "required": true,
+      "root": "dia"
+    },
+    "sha256": "567e2badf17f3f7d5976d127659e0b038af8c39afd22c3c53afd21e25300b42b",
+    "size": 2353918
+  },
+  "members": [
+    {
+      "member": "D:\\a\\_work\\1\\s\\Intermediate\\PDB\\dia2\\diaguids\\diaguids.vcxproj\\objr\\amd64\\stdafx.obj",
+      "archive_header_offset": 5994,
+      "size": 2207275,
+      "sha256": "2a09ba920ca4dd5740deab209e3169ee989a9235a636bc8b3cfe2dbf95d56501",
+      "default_libraries": [
+        "legacy_stdio_wide_specifiers",
+        "msvcprt",
+        "uuid"
+      ],
+      "mismatch_tags": {
+        "RuntimeLibrary": [
+          "MD_DynamicRelease"
+        ],
+        "_CRT_STDIO_ISO_WIDE_SPECIFIERS": [
+          "0"
+        ],
+        "_ITERATOR_DEBUG_LEVEL": [
+          "0"
+        ],
+        "_MSC_VER": [
+          "1900"
+        ],
+        "annotate_optional": [
+          "0"
+        ],
+        "annotate_string": [
+          "0"
+        ],
+        "annotate_vector": [
+          "0"
+        ]
+      },
+      "other_directives_unreviewed": [
+        "/include:__PLEASE_LINK_WITH_legacy_stdio_wide_specifiers.lib",
+        "/alternatename:_Avx2WmemEnabled=_Avx2WmemEnabledWeakValue"
+      ],
+      "directive_kinds": {
+        "defaultlib": 4,
+        "include": 1,
+        "failifmismatch": 7,
+        "alternatename": 1
+      },
+      "strong_definitions": [
+        "__@@_PchSym_@00@UzUPdlipUBUhUrmgvinvwrzgvUkwyUwrzCUwrztfrwhUwrztfrwhOexckilqUlyqiUznwGEUhgwzucOlyq@diaguids",
+        "??$_Digit_pairs@D@std@@3U?$_Digit_pair_table@D@1@B",
+        "??$_Digit_pairs@_W@std@@3U?$_Digit_pair_table@_W@1@B",
+        "_Avx2WmemEnabledWeakValue"
+      ]
+    },
+    {
+      "member": "D:\\a\\_work\\1\\s\\Intermediate\\PDB\\dia2\\diaguids\\diaguids.vcxproj\\objr\\amd64\\guidstr.obj",
+      "archive_header_offset": 2213330,
+      "size": 64611,
+      "sha256": "2ddfa4f23f04fc830d84b8d16c0f09acbfba37debd5fb8b67bf9d53675fe0fd7",
+      "default_libraries": [
+        "uuid"
+      ],
+      "mismatch_tags": {},
+      "other_directives_unreviewed": [],
+      "directive_kinds": {
+        "defaultlib": 2
+      },
+      "strong_definitions": [
+        "HRESULT_FROM_WIN32",
+        "?NoRegCoCreate@@YAJPEB_WAEBU_GUID@@1PEAPEAX@Z",
+        "??$IID_PPV_ARGS_Helper@UIClassFactory@@@@YAPEAPEAXPEAPEAUIClassFactory@@@Z",
+        "?NoOleCoCreate@@YAJAEBU_GUID@@0PEAPEAX@Z",
+        "_GUID_00000001_0000_0000_c000_000000000046",
+        "??_C@_0BC@JDLGBILA@DllGetClassObject@",
+        "??_C@_1O@FHBGLCIO@?$AAC?$AAL?$AAS?$AAI?$AAD?$AA?2@",
+        "??_C@_1CA@COADJJGE@?$AA?2?$AAI?$AAn?$AAp?$AAr?$AAo?$AAc?$AAS?$AAe?$AAr?$AAv?$AAe?$AAr?$AA3?$AA2@"
+      ]
+    },
+    {
+      "member": "D:\\a\\_work\\1\\s\\Intermediate\\PDB\\dia2\\diaguids\\diaguids.vcxproj\\objr\\amd64\\dia2_i.obj",
+      "archive_header_offset": 2278002,
+      "size": 75855,
+      "sha256": "11c5c4e9bd4623e0126810f21592483c82d5dcc0b0870e341f3e7315200418ff",
+      "default_libraries": [
+        "uuid"
+      ],
+      "mismatch_tags": {},
+      "other_directives_unreviewed": [],
+      "directive_kinds": {
+        "defaultlib": 2
+      },
+      "strong_definitions": [
+        "IID_IDiaLoadCallback",
+        "IID_IDiaLoadCallback2",
+        "IID_IDiaReadExeAtOffsetCallback",
+        "IID_IDiaReadExeAtRVACallback",
+        "IID_IDiaDataSource",
+        "IID_IDiaDataSourceEx",
+        "IID_IDiaDataSourceEx2",
+        "IID_IDiaEnumSymbols",
+        "IID_IDiaEnumSymbolsByAddr",
+        "IID_IDiaEnumSymbolsByAddr2",
+        "IID_IDiaEnumSourceFiles",
+        "IID_IDiaEnumInputAssemblyFiles",
+        "IID_IDiaEnumLineNumbers",
+        "IID_IDiaEnumInjectedSources",
+        "IID_IDiaEnumSegments",
+        "IID_IDiaEnumSectionContribs",
+        "IID_IDiaEnumFrameData",
+        "IID_IDiaEnumDebugStreamData",
+        "IID_IDiaEnumDebugStreams",
+        "IID_IDiaAddressMap",
+        "IID_IDiaSession",
+        "IID_IDiaSessionEx",
+        "IID_IDiaSymbol",
+        "IID_IDiaSymbol2",
+        "IID_IDiaSymbol3",
+        "IID_IDiaSymbol4",
+        "IID_IDiaSymbol5",
+        "IID_IDiaSymbol6",
+        "IID_IDiaSymbol7",
+        "IID_IDiaSymbol8",
+        "IID_IDiaSymbol9",
+        "IID_IDiaSymbol10",
+        "IID_IDiaSymbol11",
+        "IID_IDiaSymbol12",
+        "IID_IDiaSourceFile",
+        "IID_IDiaInputAssemblyFile",
+        "IID_IDiaLineNumber",
+        "IID_IDiaSectionContrib",
+        "IID_IDiaSegment",
+        "IID_IDiaInjectedSource",
+        "IID_IDiaStackWalkFrame",
+        "IID_IDiaFrameData",
+        "IID_IDiaImageData",
+        "IID_IDiaTable",
+        "IID_IDiaEnumTables",
+        "IID_IDiaEnumSourceLink",
+        "IID_IDiaEnumSourceLink2",
+        "LIBID_Dia2Lib",
+        "CLSID_DiaSource",
+        "CLSID_DiaSourceAlt",
+        "CLSID_DiaStackWalker",
+        "IID_IDiaPropertyStorage",
+        "IID_IDiaStackFrame",
+        "IID_IDiaEnumStackFrames",
+        "IID_IDiaStackWalkHelper",
+        "IID_IDiaStackWalker",
+        "IID_IDiaStackWalkHelper2",
+        "IID_IDiaStackWalkHelper3",
+        "IID_IDiaStackWalker2",
+        "IID_IDiaEnumNamedStreams",
+        "IID_IDiaDataSource2",
+        "IID_IDiaDataSource3",
+        "IID_IDiaDataSource4",
+        "IID_IDiaDataSource5",
+        "IID_IDiaDataSource6",
+        "IID_IDiaDataSource7",
+        "IID_IDiaDataSource8",
+        "IID_IDiaDataSource9",
+        "IID_IDiaDataSource10",
+        "IID_IDynamicDeoptimizationData",
+        "IID_IDynamicDeoptimizationData2",
+        "IID_IDynamicDeoptimizationData3",
+        "IID_IDiaDataSource11Internal",
+        "IID_IDiaSession2",
+        "IID_IDiaSession3",
+        "IID_IDiaSession4",
+        "IID_IDiaSession5",
+        "IID_IDiaSession6",
+        "IID_IDiaSession7",
+        "IID_IDiaSession8",
+        "IID_IDiaSession9",
+        "IID_IDiaSession10",
+        "IID_IDiaSession11",
+        "IID_IDiaSession12",
+        "IID_IDiaXfgTypeHash",
+        "IID_IDiaEnumXfgTypeHashes",
+        "IID_IDiaSession13"
+      ]
+    }
+  ]
+}

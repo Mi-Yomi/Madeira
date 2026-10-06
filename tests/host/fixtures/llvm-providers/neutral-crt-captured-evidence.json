@@ -1,0 +1,810 @@
+{
+  "provenance": {
+    "description": "Captured Windows native-reader/header evidence; original CRT object bytes were not retained.",
+    "source_file": "llvm-provider-member-evidence-run3.json",
+    "source_sha256": "f7bd6b97bc9e02384334f4ae6ca778364c2f561fc663973802176da8914afdaa",
+    "captured_date": "2026-10-05"
+  },
+  "providers": {
+    "libcmt": [
+      {
+        "kind": "PROVIDER_MEMBER_SCOPE",
+        "data": {
+          "actual_link_selection_proven": false,
+          "archive_sha256": "d4cc4c224455825dec1669f9ad6a9872a4f5b37ed1daae1fd0b9044d7650d908",
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\libcmt.lib",
+          "provider": "libcmt",
+          "provider_approved": false,
+          "scope": "first-CRT-object-only",
+          "size": 6610744
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_RAW_HEADER",
+        "data": {
+          "archive_header_offset": 190580,
+          "machine_raw": "0x0000",
+          "member": "D:\\a\\_work\\1\\s\\Intermediate\\vctools\\crt_bld\\amd64\\st_obj\\almap\\mbcat.obj",
+          "provider": "libcmt",
+          "raw_header_hex": "000001003675d3cf6001000005000000000000002e646562756724530000000000000000240100003c000000000000000000000000000000",
+          "section_count_raw": 1,
+          "sha256": "82c6b24fc8283989d7818c21d4db76810276562afc924eb80cfebd62e162432a",
+          "size": 446,
+          "status": "unreviewed-diagnostic-only"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_HEADER",
+        "data": {
+          "archive_header_offset": 190580,
+          "kind": "coff",
+          "machine": "0x0000",
+          "member": "D:\\a\\_work\\1\\s\\Intermediate\\vctools\\crt_bld\\amd64\\st_obj\\almap\\mbcat.obj",
+          "optional_header_size": 0,
+          "provider": "libcmt",
+          "provider_approved": false,
+          "raw_header_hex": "000001003675d3cf6001000005000000000000002e646562756724530000000000000000240100003c000000000000000000000000000000",
+          "section_count": 1,
+          "sha256": "82c6b24fc8283989d7818c21d4db76810276562afc924eb80cfebd62e162432a",
+          "size": 446,
+          "status": "rejected-unreviewed-architecture",
+          "symbol_count": 5,
+          "symbol_pointer": 352
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_READER",
+        "data": {
+          "exit": 0,
+          "path": "D:\\a\\_temp\\llvm-provider-inventory-37311092068-1\\member-evidence\\libcmt.first-member.obj",
+          "provider": "libcmt",
+          "provider_approved": false,
+          "stage": "detail",
+          "switches": [
+            "/headers",
+            "/symbols",
+            "/directives",
+            "/relocations"
+          ],
+          "text_sha256": "2c6c400a5928c2c8dd86efd0a635e0df28e1f62a1c06ee67f8f90289618464f0"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "Dump of file D:\\a\\_temp\\llvm-provider-inventory-37311092068-1\\member-evidence\\libcmt.first-member.obj"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "File Type: COFF OBJECT"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "FILE HEADER VALUES"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "               0 machine (Unknown)"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "               1 number of sections"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "        CFD37536 time date stamp"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "             160 file pointer to symbol table"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "               5 number of symbols"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "               0 size of optional header"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "               0 characteristics"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "SECTION HEADER #1"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ".debug$S name"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "       0 physical address"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "       0 virtual address"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "     124 size of raw data"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "      3C file pointer to raw data (0000003C to 0000015F)"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "       0 file pointer to relocation table"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "       0 file pointer to line numbers"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "       0 number of relocations"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "       0 number of line numbers"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "42100040 flags"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "         Initialized Data"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "         Discardable"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "         1 byte align"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "         Read Only"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "COFF SYMBOL TABLE"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "000 00FD8B89 ABS    notype       Static       | @comp.id"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "001 00000011 ABS    notype       Static       | @feat.00"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "002 00000000 UNDEF  notype       External     | strcat"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "003 00000000 UNDEF  notype       WeakExternal | _mbscat"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "    Default index        2 Alias record"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "String Table Size = 0x0 bytes"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "  Summary"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "libcmt",
+          "stage": "detail",
+          "text": "         124 .debug$S"
+        }
+      }
+    ],
+    "oldnames": [
+      {
+        "kind": "PROVIDER_MEMBER_SCOPE",
+        "data": {
+          "actual_link_selection_proven": false,
+          "archive_sha256": "67653ba64d59a33964a811d950c9d424f7afacba8e613af60138f64fe10c2679",
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\lib\\x64\\oldnames.lib",
+          "provider": "oldnames",
+          "provider_approved": false,
+          "scope": "first-CRT-object-only",
+          "size": 157422
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_RAW_HEADER",
+        "data": {
+          "archive_header_offset": 29660,
+          "machine_raw": "0x0000",
+          "member": "D:\\a\\_work\\1\\s\\Intermediate\\crt\\helperlibs\\oldnames\\oldnames.vcxproj\\objr\\amd64\\oldnames\\utime.obi",
+          "provider": "oldnames",
+          "raw_header_hex": "000001000ab629ed8c01000005000000000000002e646562756724530000000000000000500100003c000000000000000000000000000000",
+          "section_count_raw": 1,
+          "sha256": "d15ad7bd1fb18f8c58c6f63395d39321d402dbfbb9c190e2d4133a06dc60a4c7",
+          "size": 517,
+          "status": "unreviewed-diagnostic-only"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_HEADER",
+        "data": {
+          "archive_header_offset": 29660,
+          "kind": "coff",
+          "machine": "0x0000",
+          "member": "D:\\a\\_work\\1\\s\\Intermediate\\crt\\helperlibs\\oldnames\\oldnames.vcxproj\\objr\\amd64\\oldnames\\utime.obi",
+          "optional_header_size": 0,
+          "provider": "oldnames",
+          "provider_approved": false,
+          "raw_header_hex": "000001000ab629ed8c01000005000000000000002e646562756724530000000000000000500100003c000000000000000000000000000000",
+          "section_count": 1,
+          "sha256": "d15ad7bd1fb18f8c58c6f63395d39321d402dbfbb9c190e2d4133a06dc60a4c7",
+          "size": 517,
+          "status": "rejected-unreviewed-architecture",
+          "symbol_count": 5,
+          "symbol_pointer": 396
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_READER",
+        "data": {
+          "exit": 0,
+          "path": "D:\\a\\_temp\\llvm-provider-inventory-37311092068-1\\member-evidence\\oldnames.first-member.obj",
+          "provider": "oldnames",
+          "provider_approved": false,
+          "stage": "detail",
+          "switches": [
+            "/headers",
+            "/symbols",
+            "/directives",
+            "/relocations"
+          ],
+          "text_sha256": "cef34e152d36d0b8883369159a28d4295cc68e13b7cbf8a0ffc8a51d917e8ba9"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "Dump of file D:\\a\\_temp\\llvm-provider-inventory-37311092068-1\\member-evidence\\oldnames.first-member.obj"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "File Type: COFF OBJECT"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "FILE HEADER VALUES"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "               0 machine (Unknown)"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "               1 number of sections"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "        ED29B60A time date stamp"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "             18C file pointer to symbol table"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "               5 number of symbols"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "               0 size of optional header"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "               0 characteristics"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "SECTION HEADER #1"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ".debug$S name"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "       0 physical address"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "       0 virtual address"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "     150 size of raw data"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "      3C file pointer to raw data (0000003C to 0000018B)"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "       0 file pointer to relocation table"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "       0 file pointer to line numbers"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "       0 number of relocations"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "       0 number of line numbers"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "42100040 flags"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "         Initialized Data"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "         Discardable"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "         1 byte align"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "         Read Only"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "COFF SYMBOL TABLE"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "000 00FD8B89 ABS    notype       Static       | @comp.id"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "001 00000011 ABS    notype       Static       | @feat.00"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "002 00000000 UNDEF  notype       External     | __imp__utime32"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "003 00000000 UNDEF  notype       WeakExternal | __imp_utime"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "    Default index        2 Alias record"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "String Table Size = 0x1F bytes"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "  Summary"
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": ""
+        }
+      },
+      {
+        "kind": "PROVIDER_MEMBER_NATIVE_LINE",
+        "data": {
+          "provider": "oldnames",
+          "stage": "detail",
+          "text": "         150 .debug$S"
+        }
+      }
+    ]
+  }
+}

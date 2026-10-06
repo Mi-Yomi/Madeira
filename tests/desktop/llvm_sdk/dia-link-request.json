@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "request": "llvm-dia-member-link-20261006-1",
+  "scope": "Preinstalled MSVC x64 release /MT DIA archive member selection only",
+  "maximum_job_minutes": 10,
+  "maximum_compile_jobs": 1,
+  "maximum_link_jobs": 1,
+  "sdk_download": false,
+  "compilation": true,
+  "linking": true,
+  "runtime_execution": false,
+  "jit": false,
+  "installations": false,
+  "system_mutation": false,
+  "artifact_upload": false,
+  "cache": false,
+  "signing_or_ipa": false
+}

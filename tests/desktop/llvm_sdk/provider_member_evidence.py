@@ -10,6 +10,8 @@ MAX_OBJECT = 8 * MIB
 MAX_ARCHIVE = 256 * MIB
 MAX_SYMBOLS = 100000
 MAX_RELOCS = 100000
+MAX_NEUTRAL_DEBUG = 64 * 1024
+MAX_NEUTRAL_OBJECT = 20 + 40 + MAX_NEUTRAL_DEBUG + 5 * 18 + 16 * 1024
 DIA_SYMBOLS = {'?NoRegCoCreate@@YAJPEB_WAEBU_GUID@@1PEAPEAX@Z', 'CLSID_DiaSource', 'IID_IDiaDataSource'}
 
 
@@ -57,6 +59,54 @@ def codeview_pch(data):
     return {'status': 'type-records-structurally-read', 'type_records': count, 'pch_records': result}
 
 
+def neutral_layout(data, sections, pointer, count):
+    """Only the observed regular-COFF debug/weak-alias layout, never code/data.
+
+    IMAGE_FILE_MACHINE_UNKNOWN (0) can denote architecture-neutral COFF; it
+    does not establish x64 identity. The optional .debug$S payload is retained
+    as opaque, discardable debug bytes, not interpreted as executable content.
+    """
+    require(len(data) <= MAX_NEUTRAL_OBJECT and sections in {0, 1} and count in {3, 5},
+            'Unreviewed/unbounded neutral COFF layout')
+    require(struct.unpack_from('<H', data, 18)[0] == 0, 'Unreviewed neutral COFF characteristics')
+    if sections:
+        require(len(data) >= 60 and count == 5, 'Truncated/unreviewed neutral debug metadata')
+        section = data[20:60]
+        size, offset, reloc, lines, reloc_count, line_count, flags = struct.unpack_from('<IIIIHHI', section, 16)
+        require(section[:8] == b'.debug$S' and section[8:16] == b'\0' * 8 and
+                flags == 0x42100040 and not any((reloc, lines, reloc_count, line_count)),
+                'Neutral section is not exact read-only discardable debug metadata')
+        require(0 < size <= MAX_NEUTRAL_DEBUG and offset == 60 and pointer == offset + size,
+                'Unbounded/overlapping neutral debug bytes')
+    else:
+        require(pointer == 20, 'Unreviewed neutral section-free layout')
+    end = pointer + count * 18
+    require(end + 4 <= len(data), 'Truncated neutral symbol/string table')
+    size = struct.unpack_from('<I', data, end)[0]
+    require(4 <= size <= 16 * 1024 and end + size == len(data),
+            'Unbounded/truncated/trailing neutral string table')
+
+
+def neutral_symbols(symbols, sections):
+    """One undefined target and alias, with only the captured local tag names."""
+    aliases = [row for row in symbols if row['storage_class'] == 105]
+    targets = [row for row in symbols if row['storage_class'] == 2]
+    tags = [row for row in symbols if row['storage_class'] == 3]
+    require(len(aliases) == len(targets) == 1 and len(symbols) == 2 + len(tags) and
+            len({row['name'] for row in symbols}) == len(symbols), 'Unreviewed neutral symbol set')
+    require(all(row['section'] == 0 and row['value'] == 0 and row['type'] == '0x0000'
+                for row in aliases + targets) and targets[0]['auxiliary_count'] == 0,
+            'Neutral alias/target is not an undefined untyped external')
+    alias = aliases[0]['weak_alias']
+    require(alias['search_mode'] == 3 and alias['target_index'] == targets[0]['index'],
+            'Neutral weak external is not an alias to the undefined target')
+    names = {row['name'] for row in tags}
+    allowed_tags = ({'@comp.id', '@feat.00'},) if sections else (set(), {'@comp.id', '@feat.00'})
+    require(names in allowed_tags, 'Unreviewed neutral absolute metadata tags')
+    require(all(row['section'] == -1 and row['type'] == '0x0000' and row['auxiliary_count'] == 0
+                for row in tags), 'Neutral metadata is not local absolute untyped tags')
+
+
 def coff_evidence(data, guard=lambda: None):
     require(20 <= len(data) <= MAX_OBJECT, 'Object evidence size cap/header failure')
     header = {'size': len(data), 'sha256': sha_bytes(data), 'raw_header_hex': data[:56].hex(),
@@ -76,9 +126,11 @@ def coff_evidence(data, guard=lambda: None):
         require(optional == 0, 'Object has unexpected optional header')
         start, width, kind = 20, 18, 'coff'
     header.update(kind=kind, section_count=sections, symbol_pointer=pointer, symbol_count=count)
-    neutral = machine == 0 and sections == 0 and kind == 'coff'
+    neutral = machine == 0 and kind == 'coff'
     if machine != 0x8664 and not neutral:
         return {'header': dict(header, status='rejected-unreviewed-architecture'), 'sections': [], 'symbols': [], 'relocations': []}
+    if neutral:
+        neutral_layout(data, sections, pointer, count)
     require(sections <= 200000 and start + 40 * sections <= len(data), 'Unbounded/truncated section table')
     require(count <= MAX_SYMBOLS and (pointer or count == 0), 'Unbounded/missing symbol table')
     strings = b''
@@ -187,9 +239,9 @@ def coff_evidence(data, guard=lambda: None):
             relocations.append({'section': section, 'offset': address, 'type': f'0x{rtype:04x}',
                                 'symbol_index': symbol, 'symbol_name': byindex[symbol]['name']})
     if neutral:
-        valid_aliases = bool(symbols) and any('weak_alias' in row for row in symbols) and all(
-            row['section'] == 0 and row['value'] == 0 and row['storage_class'] in {2, 105} for row in symbols)
-        header['status'] = 'neutral-weak-alias-observed-unreviewed' if valid_aliases else 'neutral-metadata-unreviewed'
+        neutral_symbols(symbols, sections)
+        header['status'] = 'neutral-debug-weak-alias-observed-unreviewed' if sections else 'neutral-weak-alias-observed-unreviewed'
+        header['architecture'] = 'neutral'
     else:
         header['status'] = 'x64-coff-structure-observed-unreviewed'
     return {'header': header, 'sections': section_rows, 'symbols': symbols, 'relocations': relocations}

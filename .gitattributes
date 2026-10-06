@@ -16,3 +16,6 @@ tests/host/fixtures/fex-pe/** -text -whitespace
 # Exact FEX replacement evidence and supplemental bundled notice bytes.
 build/wine-pe/receipts/fex-2026-10-06/** -text -whitespace
 app/Madeira/legal/FEX-guest/** -text -whitespace
+# Exact captured LLVM object/license and Windows provider evidence fixtures.
+tests/host/fixtures/llvm-dia-link/** -text -whitespace
+tests/host/fixtures/llvm-providers/** -text -whitespace

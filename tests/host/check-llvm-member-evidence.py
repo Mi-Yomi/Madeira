@@ -3,6 +3,7 @@
 """Inert external-symbol, weak-alias, COMDAT, relocation and diagnostic-only controls."""
 import importlib.util
 from pathlib import Path
+import re
 import struct
 import tempfile
 from unittest.mock import patch
@@ -11,6 +12,9 @@ ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location('member_evidence', ROOT / 'tests/desktop/llvm_sdk/provider_member_evidence.py')
 e = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(e)
+fixture_spec = importlib.util.spec_from_file_location('neutral_cases', ROOT / 'tests/host/fixtures/llvm-providers/neutral_cases.py')
+neutral_cases = importlib.util.module_from_spec(fixture_spec)
+fixture_spec.loader.exec_module(neutral_cases)
 checks = 0
 
 
@@ -103,8 +107,50 @@ for wrong in [symbol('alias', section=-1, storage=105, aux=[weak_aux()]),
 for machine in [0x14c, 0xa641, 0x1234]:
     r = e.coff_evidence(object_bytes([symbol('foo')], machine=machine))
     check(r['header']['status'] == 'rejected-unreviewed-architecture' and not r['symbols'], 'Unknown/wrong architecture remains rejected')
-r = e.coff_evidence(object_bytes([symbol('foo')], [('.text', b'\0' * 8, 0x60000020, [])], machine=0))
-check(r['header']['status'] == 'rejected-unreviewed-architecture', 'Machine-neutral code is not allowed')
+r = e.coff_evidence(object_bytes([symbol('foo')], machine=0, big=True))
+check(r['header']['status'] == 'rejected-unreviewed-architecture' and not r['symbols'], 'Neutral bigobj is not the reviewed regular format')
+data = b'Sleep\0KERNEL32.dll\0'
+r = e.coff_evidence(struct.pack('<HHHHIIHH', 0, 0xffff, 0, 0, 0, len(data), 0, 4) + data)
+check(r['header']['status'] == 'unreviewed-anonymous-or-import-format' and not r['symbols'], 'Neutral short import remains unreviewed')
+reject(lambda: e.coff_evidence(object_bytes([symbol('target')], machine=0)), 'Unknown section-free neutral metadata is rejected')
+reject(lambda: e.coff_evidence(object_bytes([symbol('foo')], [('.text', b'\0' * 8, 0x60000020, [])], machine=0)),
+       'Machine-neutral code is not allowed')
+
+for provider, obj, witness, records in neutral_cases.fixtures():
+    captured = next(row['data'] for row in records if row['kind'] == 'PROVIDER_MEMBER_RAW_HEADER')
+    native = next(row['data'] for row in records if row['kind'] == 'PROVIDER_MEMBER_NATIVE_READER')
+    lines = [row['data']['text'] for row in records if row['kind'] == 'PROVIDER_MEMBER_NATIVE_LINE']
+    check(e.sha_bytes(('\n'.join(lines) + '\n').encode()) == native['text_sha256'] and native['exit'] == 0,
+          provider + ' captured native-reader lines retain their source digest')
+    check(witness['provenance']['original_object_bytes_retained'] is False and
+          'not genuine compiler output' in witness['provenance']['description'], 'Reconstruction is explicitly labeled')
+    check(obj[:56].hex() == captured['raw_header_hex'] and len(obj) == captured['size'], 'Captured header/size retained')
+    check(e.sha_bytes(obj) == witness['reconstructed_sha256'] and e.sha_bytes(obj) != captured['sha256'],
+          'Constructed bytes have their own identity, never the captured CRT digest')
+    r = e.coff_evidence(obj)
+    check(r['header']['status'] == 'neutral-debug-weak-alias-observed-unreviewed' and
+          r['header']['machine'] == '0x0000' and r['header']['architecture'] == 'neutral' and
+          r['header']['provider_approved'] is False, 'Captured debug/alias shape stays neutral and unapproved')
+    check(len(r['sections']) == 1 and all(r['sections'][0][key] == value for key, value in witness['expected_debug'].items()) and
+          not r['relocations'], 'Exact captured read-only debug layout')
+    check([{key: row[key] for key in expected} for row, expected in zip(r['symbols'], witness['expected_symbols'])] ==
+          witness['expected_symbols'] and len(r['symbols']) == 4, 'Captured symbol values/classes retained')
+    alias = next(row for row in r['symbols'] if row['storage_class'] == 105)
+    check(dict(name=alias['name'], **alias['weak_alias']) == witness['expected_alias'], 'Captured alias mapping retained')
+    native_symbols = []
+    for line in lines:
+        match = re.fullmatch(r'[0-9A-F]+ ([0-9A-F]+) (ABS|UNDEF)\s+notype\s+(Static|External|WeakExternal)\s+\| (.+)', line)
+        if match:
+            value, section, storage, name = match.groups()
+            native_symbols.append({'name': name, 'value': int(value, 16), 'section': -1 if section == 'ABS' else 0,
+                                   'storage_class': {'Static': 3, 'External': 2, 'WeakExternal': 105}[storage],
+                                   'auxiliary_count': int(storage == 'WeakExternal')})
+    check(native_symbols == witness['expected_symbols'] and any('42100040 flags' in line for line in lines) and
+          any('Default index        2 Alias record' in line for line in lines), 'Witness expectations agree with native-reader evidence')
+    for label, bad in neutral_cases.malformed(obj):
+        reject(lambda bad=bad: e.coff_evidence(bad), provider + ': ' + label)
+    reject(lambda: e.coff_evidence(obj, lambda: (_ for _ in ()).throw(ValueError('deadline'))),
+           'Neutral parsing preserves deadline guard')
 
 for big in [False, True]:
     width = 20 if big else 18

@@ -20,6 +20,9 @@ SOURCE = ROOT / 'tests/desktop/llvm_sdk'
 spec = importlib.util.spec_from_file_location('provider_inventory', SOURCE / 'provider_inventory.py')
 m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)
+fixture_spec = importlib.util.spec_from_file_location('neutral_cases', ROOT / 'tests/host/fixtures/llvm-providers/neutral_cases.py')
+neutral_cases = importlib.util.module_from_spec(fixture_spec)
+fixture_spec.loader.exec_module(neutral_cases)
 checks = 0
 
 
@@ -180,6 +183,31 @@ with tempfile.TemporaryDirectory() as td:
     root = Path(td)
     lib = root / 'fixture.lib'
     base = '/DEFAULTLIB:libcmt.lib /FAILIFMISMATCH:"RuntimeLibrary=MT_StaticRelease"'
+    for provider, obj, witness, _ in neutral_cases.fixtures():
+        summary, rows = scan_bytes(lib, archive([('neutral.obj/', obj)]))
+        check(summary['machine'] == 'neutral' and summary['provider_approved'] is False and
+              summary['member_types'] == {'neutral_coff': 1}, 'Metadata-only archive is not relabeled x64/approved')
+        check(rows[0]['machine'] == '0x0000' and rows[0]['provider_approved'] is False and
+              rows[0]['neutral_evidence']['symbols'][-1]['weak_alias']['target_name'] == witness['expected_alias']['target_name'],
+              'Neutral inventory preserves exact symbol evidence')
+        summary, rows = scan_bytes(lib, archive([('neutral.obj/', obj), ('after.obj/', coff(base))]))
+        check(summary['members'] == 2 and len(rows) == 2 and rows[1]['member'] == 'after.obj' and
+              rows[1]['machine'] == '0x8664' and summary['machine'] == 'mixed-x86_64-and-neutral',
+              'Full inventory continues after neutral metadata and retains both machine identities')
+        check(summary['default_libraries'] == ['libcmt'] and summary['mismatch_tags']['RuntimeLibrary'] == ['MT_StaticRelease'],
+              'Later member directives/CRT evidence cannot be hidden by neutral metadata')
+        incompatible = '/FAILIFMISMATCH:"RuntimeLibrary=MD_DynamicRelease"'
+        summary, rows = scan_bytes(lib, archive([('neutral.obj/', obj), ('badcrt.obj/', coff(incompatible))]))
+        check(any(x['kind'] == 'non_mt_runtime_tag' for x in
+                  m.provider_findings(provider, {'kind': 'static_code'}, summary, requirements['provider_roles'])),
+              'Later incompatible CRT retains fail-closed rejection')
+        reject(lambda: scan_bytes(lib, archive([('neutral.obj/', obj), ('wrong.obj/', coff(base, machine=0x14c))])),
+               'Later wrong architecture remains rejected')
+        for label, bad in neutral_cases.malformed(obj):
+            reject(lambda bad=bad: scan_bytes(lib, archive([('bad.obj/', bad), ('after.obj/', coff(base))])),
+                   provider + ' neutral inventory: ' + label)
+        with patch.object(m.detail, 'MAX_NEUTRAL_OBJECT', len(obj) - 1):
+            reject(lambda: scan_bytes(lib, archive([('neutral.obj/', obj)])), 'Neutral cap precedes whole-member read')
     for big in [False, True]:
         for long in [False, True]:
             summary, rows = scan_bytes(lib, archive([('probe.obj/', coff(base, bigobj=big, long_section=long))]))
@@ -213,6 +241,7 @@ with tempfile.TemporaryDirectory() as td:
     invalid = [b'', b'!<thin>\n', valid[:-1], valid + b'x', archive([('bad.obj/', b'BC\xc0\xde' + b'\0' * 56)]),
                archive([('bad.obj/', coff(base, machine=0x14c))]), archive([('bad.obj/', coff(base, machine=0xa641))]),
                archive([('bad.obj/', short_import(machine=0x14c))]), archive([('bad.obj/', short_import(flags=3))]),
+               archive([('bad.obj/', short_import(machine=0))]), archive([('bad.obj/', coff(base, machine=0, bigobj=True))]),
                archive([('bad.obj/', short_import(flags=0x100))]), archive([('bad.obj/', short_import(flags=20))]),
                archive([('bad.obj/', short_import(module='../evil.dll'))]), archive([('bad.obj/', short_import(module='evil.exe'))]),
                archive([('bad.obj/', short_import(symbol='line\nbreak'))]), archive([('bad.obj/', short_import(flags=16))]),

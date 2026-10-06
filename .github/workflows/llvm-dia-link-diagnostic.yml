@@ -1,0 +1,45 @@
+name: LLVM DIA member link diagnostic
+
+on:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - tests/desktop/llvm_sdk/dia-link-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: llvm-dia-link-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dia-link:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps' && github.event_name == 'push'
+    runs-on: windows-2025
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Exercise inert member and link-evidence controls
+        timeout-minutes: 1
+        run: |
+          python tests/host/check-llvm-provider-inventory.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tests/host/check-llvm-member-evidence.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tests/host/check-llvm-dia-link.py
+          exit $LASTEXITCODE
+      - name: Inventory providers and link the three DIA references without execution
+        timeout-minutes: 8
+        run: python tests/desktop/llvm_sdk/dia_link.py --work-root "$env:RUNNER_TEMP/llvm-dia-link-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Report diagnostic boundary
+        if: always()
+        run: |
+          Write-Output "One source-owned /MT compile/link; the generated executable is never run."
+          Write-Output "No LLVM download, JIT, Mesa, Blender, Wine/FEX/iOS or performance result."
+          Write-Output "Provider observations remain unapproved; no install, cache, artifact upload, signing or IPA."

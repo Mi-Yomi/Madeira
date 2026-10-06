@@ -1,0 +1,54 @@
+{
+  "provenance": {
+    "description": "Reconstructed format witness, not genuine compiler output. Captured raw header and symbol expectations are preserved; unretained debug payload is zero-filled and symbol/auxiliary/string bytes are constructed.",
+    "captured_evidence": "neutral-crt-captured-evidence.json",
+    "provider": "libcmt",
+    "captured_object_sha256": "82c6b24fc8283989d7818c21d4db76810276562afc924eb80cfebd62e162432a",
+    "original_object_bytes_retained": false
+  },
+  "reconstructed_sha256": "fa9b54c0c462e11a2dfe3a6d7531e5a2bf9ad93fc4262200ab205ae5cca6d766",
+  "object_hex": "000001003675d3cf6001000005000000000000002e646562756724530000000000000000240100003c000000000000000000000000000000400010420000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040636f6d702e6964898bfd00ffff0000030040666561742e303011000000ffff000003007374726361740000000000000000000002005f6d6273636174000000000000000000690102000000030000000000000000000000000004000000",
+  "expected_symbols": [
+    {
+      "name": "@comp.id",
+      "value": 16616329,
+      "section": -1,
+      "storage_class": 3,
+      "auxiliary_count": 0
+    },
+    {
+      "name": "@feat.00",
+      "value": 17,
+      "section": -1,
+      "storage_class": 3,
+      "auxiliary_count": 0
+    },
+    {
+      "name": "strcat",
+      "value": 0,
+      "section": 0,
+      "storage_class": 2,
+      "auxiliary_count": 0
+    },
+    {
+      "name": "_mbscat",
+      "value": 0,
+      "section": 0,
+      "storage_class": 105,
+      "auxiliary_count": 1
+    }
+  ],
+  "expected_alias": {
+    "name": "_mbscat",
+    "target_name": "strcat",
+    "target_index": 2,
+    "search_mode": 3
+  },
+  "expected_debug": {
+    "name": ".debug$S",
+    "size": 292,
+    "raw_offset": 60,
+    "characteristics": "0x42100040",
+    "relocation_count": 0
+  }
+}

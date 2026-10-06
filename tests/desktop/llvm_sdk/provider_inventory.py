@@ -20,6 +20,9 @@ ROOT = HERE.parents[2]
 spec = importlib.util.spec_from_file_location('sdk_preflight', HERE / 'preflight.py')
 p = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(p)
+detail_spec = importlib.util.spec_from_file_location('provider_member_evidence', HERE / 'provider_member_evidence.py')
+detail = importlib.util.module_from_spec(detail_spec)
+detail_spec.loader.exec_module(detail)
 require, sha = p.require, p.sha
 MIB = 1024 ** 2
 MAX_PROVIDER = 256 * MIB
@@ -183,7 +186,19 @@ def scan_library(path, emit=lambda record: None, guard=lambda: None):
                 require(len(head) >= 20, 'Short COFF member')
                 require(not head.startswith((b'BC\xc0\xde', b'\xde\xc0\x17\x0b')), 'Unreviewed bitcode provider')
                 row = {'member': name, 'archive_header_offset': pos, 'size': length, 'machine': '0x8664'}
-                if head[:4] == b'\0\0\xff\xff' and struct.unpack_from('<H', head, 4)[0] == 0:
+                if head[:2] == b'\0\0' and head[:4] != b'\0\0\xff\xff':
+                    require(length <= detail.MAX_NEUTRAL_OBJECT, 'Neutral member size cap')
+                    stream.seek(start)
+                    evidence = detail.coff_evidence(stream.read(length), guard)
+                    require(evidence['header']['status'] in {'neutral-weak-alias-observed-unreviewed',
+                            'neutral-debug-weak-alias-observed-unreviewed'}, 'Unreviewed neutral member')
+                    row.update(kind='neutral_coff', machine='0x0000', architecture='neutral', provider_approved=False,
+                               section_count=evidence['header']['section_count'], executable_sections=0,
+                               import_sections=[], imported_modules=[], raw_directives=[], default_libraries=[],
+                               mismatch_tags={}, other_directives_unreviewed=[], directive_kinds={},
+                               neutral_evidence=evidence)
+                    counts['neutral_coff'] += 1
+                elif head[:4] == b'\0\0\xff\xff' and struct.unpack_from('<H', head, 4)[0] == 0:
                     machine = struct.unpack_from('<H', head, 6)[0]
                     data_size, ordinal, flags = struct.unpack_from('<IHH', head, 12)
                     require(machine == 0x8664 and 0 < data_size <= MIB and 20 + data_size == length,
@@ -285,7 +300,9 @@ def scan_library(path, emit=lambda record: None, guard=lambda: None):
             pos = start + length + (length & 1)
         require(pos == size and members > 0, 'Trailing bytes/empty provider archive')
     require(path.stat().st_size == size and sha(path) == digest, 'Provider changed during inspection')
-    return {'size': size, 'sha256': digest, 'machine': 'x86_64', 'members': members, 'member_types': dict(counts),
+    machine = ('neutral' if counts['neutral_coff'] == members else 'mixed-x86_64-and-neutral') if counts['neutral_coff'] else 'x86_64'
+    return {'size': size, 'sha256': digest, 'machine': machine, 'provider_approved': False,
+            'members': members, 'member_types': dict(counts),
             'default_libraries': sorted(defaults), 'mismatch_tags': {k: sorted(v) for k, v in sorted(mismatches.items())},
             'other_directives_unreviewed': sorted(others), 'imported_modules': sorted(modules)}
 
@@ -462,9 +479,6 @@ def inventory(work):
                 if dependency in requirements['provider_roles'] and dependency not in records:
                     findings.append({'kind': 'unresolved_known_provider_edge', 'provider': name,
                                      'dependency': dependency, 'status': 'rejected'})
-        detail_spec = importlib.util.spec_from_file_location('provider_member_evidence', HERE / 'provider_member_evidence.py')
-        detail = importlib.util.module_from_spec(detail_spec)
-        detail_spec.loader.exec_module(detail)
         for provider in ['diaguids', 'libcmt', 'oldnames']:
             if provider not in provider_paths:
                 continue  # Existing missing-provider finding already rejects this inventory.
