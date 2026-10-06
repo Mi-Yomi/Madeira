@@ -33,6 +33,7 @@ jobs:
           python3 build/app-ios/link_diagnostic.py request
           python3 tests/host/check-i386-native-capture-wiring.py
           python3 build/wine-pe/verify_desktop_integration.py
+          python3 tests/host/check-startup-report.py
           python3 tests/host/check-desktop-integration.py
           python3 tests/host/check-desktop-overlay-plan.py
           python3 tests/host/check-app-link-diagnostic.py
@@ -44,7 +45,6 @@ jobs:
           python3 tests/host/check-fex-source-repairs.py
           python3 tests/host/check-fex-snapshot-link.py
           python3 tests/host/check-crypto-link-tables.py
-          python3 tests/host/check-startup-report.py
   app-link-diagnostic:
     name: iOS app link diagnostic (no IPA)
     needs: portable-validation
@@ -80,6 +80,7 @@ jobs:
           python3 build/app-ios/link_diagnostic.py request
           python3 tests/host/check-i386-native-capture-wiring.py
           python3 build/wine-pe/verify_desktop_integration.py
+          python3 tests/host/check-startup-report.py
           python3 tests/host/check-desktop-integration.py
           python3 tests/host/check-desktop-overlay-plan.py
           python3 tests/host/check-app-link-diagnostic.py
@@ -90,7 +91,6 @@ jobs:
           python3 tests/host/check-fex-source-repairs.py
           python3 tests/host/check-fex-snapshot-link.py
           python3 tests/host/check-crypto-link-tables.py
-          python3 tests/host/check-startup-report.py
       - name: Check compiled startup status guidance before the native build
         timeout-minutes: 2
         run: |

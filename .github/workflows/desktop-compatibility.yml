@@ -102,6 +102,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+      - name: Check compiled startup journal on Darwin
+        run: python3 tests/host/check-startup-report.py
       - name: Check compiled mouse-wheel routing
         run: python3 tests/host/check-mouse-wheel.py
       - name: Check compiled touch-controller lifetime

@@ -51,6 +51,8 @@ assert capture.index('madeira_startup_note_exit(') < capture.index('__atomic_sto
 harness = r'''
 #define _POSIX_C_SOURCE 200809L
 #define _DEFAULT_SOURCE 1
+/* Feature selection must precede every system header, as in production. */
+#define _DARWIN_C_SOURCE 1
 #include <assert.h>
 #include <errno.h>
 #include <stdatomic.h>
@@ -163,6 +165,11 @@ with tempfile.TemporaryDirectory(prefix='madeira-startup-report-') as temp:
     docs = temp / 'private-user-password=SECRET-project-path'
     docs.mkdir()
     src = temp / 'main.c'; exe = temp / 'check'
+    # Compile the production translation unit on its own too: the embedded
+    # harness must not conceal a missing declaration in its real header order.
+    subprocess.run([os.environ.get('CC', 'cc'), '-std=c11', '-Wall', '-Wextra', '-Werror', '-pthread',
+                    *shlex.split(os.environ.get('CFLAGS', '')), '-c', str(APP / 'StartupDiagnostics.c'),
+                    '-o', str(temp / 'StartupDiagnostics.o')], check=True)
     src.write_text(harness)
     subprocess.run([os.environ.get('CC', 'cc'), '-std=c11', '-Wall', '-Wextra', '-Werror', '-pthread',
                     *shlex.split(os.environ.get('CFLAGS', '')), '-I', str(APP), str(src), '-o', str(exe)], check=True)
