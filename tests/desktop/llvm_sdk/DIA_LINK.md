@@ -94,6 +94,25 @@ when later auditing fails. Only `minimal-dia-mt-link-selection-observed` is a
 successful diagnostic status; `provider_closure_approved`, `sdk_abi_jit_verified`,
 `runtime_tested`, `jit_executed` and `madeira_abi_or_runtime_verified` stay false.
 
+`DIA_COMPILED_OBJECT_BYTES` preserves the actual source-owned compiled probe
+before semantic parsing/CRT gates. It records size, SHA-256, source hash and
+base64 bytes, with an explicit 128 KiB object cap. The maximum encoded record
+is below 176 KiB, within the existing 256 KiB per-record and 32 MiB aggregate
+evidence caps; no original provider object or dependency binary is embedded.
+An oversized object rejects explicitly, without truncation. The captured probe
+is not executed, and malformed/unsupported bytes remain rejected by the same
+semantic gates. This provides a real compiler fixture after the ephemeral job.
+
+`DIA_COMPILED_OBJECT` is then emitted before evaluating the source CRT gate, with
+the object identity, parsed defaults/tags, decoded directive text and exact
+section hashes, and the
+three symbol/relocation records. Its `crt_gate_status: not-yet-evaluated` is
+explicit: evidence collection is not acceptance. A source-default rejection
+therefore leaves its deciding evidence in the log while still stopping before
+linking. The decoded directive strings represent NUL bytes as spaces; exact
+original bytes remain in `DIA_COMPILED_OBJECT_BYTES`. This instrumentation does
+not add any accepted source default.
+
 ## Neutral COFF collection correction
 
 The previous inventory stopped at `libcmt`/`oldnames` members with machine 0,

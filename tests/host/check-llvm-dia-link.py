@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 """Captured compiler/member evidence and inert adversarial link-evidence controls."""
 import contextlib
+import base64
 import copy
 import hashlib
 import importlib.util
@@ -128,7 +129,7 @@ for mutation in [{'imported_module': 'msvcrt.dll'}, {'executable_sections': 1}, 
 
 # Exercise the whole orchestration with inert command substitutes. No compiler,
 # linker or executable is started; this checks stage ordering and terminal receipts.
-def exercise(compile_exit=0, link_exit=0, corrupt_provider=False):
+def exercise(compile_exit=0, link_exit=0, corrupt_provider=False, source_defaults=None, object_parse_error=False):
     with tempfile.TemporaryDirectory() as directory:
         temp = Path(directory)
         event = temp / 'event.json'
@@ -173,7 +174,10 @@ def exercise(compile_exit=0, link_exit=0, corrupt_provider=False):
             stack.enter_context(patch.object(m.p, 'tool_environment', return_value=({'cl': 'verified-cl.exe', 'link': 'verified-link.exe'}, {}, {})))
             stack.enter_context(patch.object(m, 'collect_providers', return_value=(roots, native, objects, [])))
             stack.enter_context(patch.object(m, 'dia_members', return_value=details))
-            stack.enter_context(patch.object(m, 'object_evidence', return_value=(evidence, {'default_libraries': ['libcmt'], 'mismatch_tags': {}})))
+            stack.enter_context(patch.object(m, 'object_evidence',
+                side_effect=ValueError('inert semantic rejection') if object_parse_error else None,
+                return_value=(evidence, {
+                'default_libraries': ['libcmt'] if source_defaults is None else source_defaults, 'mismatch_tags': {}})))
             stack.enter_context(patch.object(m, 'verify_selection', return_value=result))
             stack.enter_context(patch.object(m.p, 'audit_pe', return_value={'sha256': 'b' * 64, 'imports': []}))
             output = stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
@@ -185,6 +189,27 @@ def exercise(compile_exit=0, link_exit=0, corrupt_provider=False):
               'provider_closure_approved', 'sdk_abi_jit_verified', 'madeira_abi_or_runtime_verified']), 'No widened acceptance claim')
         if compile_exit:
             check(code == 2 and len(calls) == 1 and not receipt['compiled'] and not receipt['linked'], 'Compile failure stops before link')
+        elif object_parse_error:
+            check(code == 2 and len(calls) == 1 and receipt['compiled'] and not receipt['linked'],
+                  'Semantic object failure stops before linking')
+            check('DIA_COMPILED_OBJECT_BYTES ' in output.getvalue() and
+                  'DIA_COMPILED_OBJECT ' not in output.getvalue(), 'Raw object retained before semantic parsing fails')
+        elif source_defaults is not None:
+            check(code == 2 and len(calls) == 1 and receipt['compiled'] and not receipt['linked'],
+                  'Unreviewed source defaults still stop before link')
+            check(receipt['reason'] == 'Source object does not establish its ordinary release /MT defaults',
+                  'Original source-default rejection remains unchanged')
+            compiled = [json.loads(x.partition(' ')[2]) for x in output.getvalue().splitlines()
+                        if x.startswith('DIA_COMPILED_OBJECT ')]
+            check(len(compiled) == 1 and compiled[0]['directives']['default_libraries'] == source_defaults,
+                  'Rejected source defaults are durably emitted')
+            check(compiled[0]['header']['sha256'] == provenance['member_sha256'] and
+                  compiled[0]['crt_gate_status'] == 'not-yet-evaluated', 'Evidence identity does not imply CRT acceptance')
+            check(compiled[0]['raw_directive_sections'] == [{key: section[key] for key in
+                  ['index', 'raw_directives', 'raw_sha256', 'size']} for section in evidence['sections']
+                  if 'raw_directives' in section], 'Exact raw directive evidence retained alongside parsed fields')
+            check(output.getvalue().index('DIA_COMPILED_OBJECT ') < output.getvalue().index('DIA_LINK_DIAGNOSTIC '),
+                  'Actual object evidence precedes the terminal rejection')
         elif link_exit or corrupt_provider:
             check(code == 2 and receipt['compiled'] and receipt['linked'] is (link_exit == 0), 'Link/audit failure is truthful')
             check('DIA_LINK_LINE ' in output.getvalue(), 'Failed link retains trace')
@@ -195,8 +220,34 @@ def exercise(compile_exit=0, link_exit=0, corrupt_provider=False):
             response = (temp / 'work/dia-link.rsp').read_text()
             check('/VERBOSE:LIB' in response and '/MAP:' in response and '/WX' in response and
                   not any(x in response for x in ['/NODEFAULTLIB', '/FORCE', '/WHOLEARCHIVE', '/INCLUDE', '/DEBUG']), 'Ordinary release link semantics')
-for args in [{}, {'compile_exit': 1}, {'link_exit': 1}, {'corrupt_provider': True}]:
+        if not compile_exit:
+            captured_bytes = [json.loads(x.partition(' ')[2]) for x in output.getvalue().splitlines()
+                              if x.startswith('DIA_COMPILED_OBJECT_BYTES ')]
+            check(len(captured_bytes) == 1 and base64.b64decode(captured_bytes[0]['data_b64'], validate=True) == real,
+                  'Exact source-object bytes survive the temporary runner')
+            check(captured_bytes[0]['size'] == len(real) and captured_bytes[0]['sha256'] == provenance['member_sha256'] and
+                  captured_bytes[0]['semantic_gates'] == 'not-yet-evaluated', 'Encoded evidence carries identity without acceptance')
+for args in [{}, {'compile_exit': 1}, {'link_exit': 1}, {'corrupt_provider': True},
+             {'source_defaults': ['libcmt', 'oldnames', 'uuid']}, {'source_defaults': ['oldnames']},
+             {'object_parse_error': True}]:
     exercise(**args)
+
+with tempfile.TemporaryDirectory() as directory:
+    obj = Path(directory) / 'source.obj'
+    records = []
+    recorder = types.SimpleNamespace(emit=lambda kind, value: records.append((kind, value)))
+    for size in [0, m.MAX_CAPTURED_OBJECT + 1]:
+        obj.write_bytes(b'X' * size)
+        reject(lambda: m.capture_source_object(obj, 'a' * 64, recorder), 'Empty/oversized object is never partially encoded')
+        check(not records, 'Rejected evidence has no misleading partial-byte record')
+    boundary = b'X' * m.MAX_CAPTURED_OBJECT
+    obj.write_bytes(boundary)
+    check(m.capture_source_object(obj, 'a' * 64, recorder) == boundary, 'Explicit source-object evidence boundary')
+    kind, record = records[0]
+    check(len((kind + ' ' + json.dumps(record, sort_keys=True, separators=(',', ':')) + '\n').encode()) < m.inv.MAX_MEMBER_RECORD,
+          'Worst-case base64 record fits existing 256 KiB per-record cap')
+    check(base64.b64decode(record['data_b64'], validate=True) == boundary and record['source_sha256'] == 'a' * 64,
+          'Boundary bytes and source provenance retained exactly')
 
 workflow = (ROOT / '.github/workflows/llvm-dia-link-diagnostic.yml').read_text()
 check('\n  push:' in workflow and 'workflow_dispatch:' not in workflow and

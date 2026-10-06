@@ -3,6 +3,7 @@
 """Bounded native Windows DIA member-selection diagnostic. Never run its output."""
 from __future__ import annotations
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -22,6 +23,7 @@ import provider_member_evidence as member
 p = inv.p
 require, sha = p.require, p.sha
 MIB = 1024 ** 2
+MAX_CAPTURED_OBJECT = 128 * 1024
 REQUIRED = frozenset(member.DIA_SYMBOLS)
 FORBIDDEN_CRT = {'msvcrt', 'msvcrtd', 'msvcprt', 'msvcprtd', 'libcmtd', 'libcpmtd',
                  'vcruntime', 'vcruntimed', 'ucrt', 'ucrtd', 'libvcruntimed', 'libucrtd'}
@@ -78,6 +80,21 @@ def object_evidence(data):
             'Required source-object symbol identity is ambiguous')
     directives = inv.parse_directives(' '.join(x.get('raw_directives', '') for x in evidence['sections']))
     return evidence, directives
+
+
+def capture_source_object(path, source_hash, recorder):
+    require(path.is_file() and not path.is_symlink() and 0 < path.stat().st_size <= MAX_CAPTURED_OBJECT,
+            'Missing/empty/oversized source-object evidence (128 KiB cap)')
+    with path.open('rb') as stream:
+        data = stream.read(MAX_CAPTURED_OBJECT + 1)
+    require(0 < len(data) <= MAX_CAPTURED_OBJECT and path.stat().st_size == len(data),
+            'Source-object evidence changed or exceeded the 128 KiB cap')
+    recorder.emit('DIA_COMPILED_OBJECT_BYTES', {
+        'scope': 'source-owned diagnostic object only; never linked or executed by evidence collection',
+        'semantic_gates': 'not-yet-evaluated', 'encoding': 'base64', 'size': len(data),
+        'sha256': hashlib.sha256(data).hexdigest(), 'source_sha256': source_hash,
+        'data_b64': base64.b64encode(data).decode('ascii')})
+    return data
 
 
 def require_release_crt(row, require_default=False):
@@ -321,12 +338,17 @@ def diagnostic(work):
         emit_text(recorder, 'DIA_COMPILER_LINE', output)
         require(code == 0, 'Diagnostic source compilation failed')
         result['compiled'] = True
-        require(obj.is_file() and obj.stat().st_size <= member.MAX_OBJECT, 'Missing/oversized compiled source object')
-        evidence, directives = object_evidence(obj.read_bytes())
-        require_release_crt(directives, True)
+        object_bytes = capture_source_object(obj, source_hash, recorder)
+        evidence, directives = object_evidence(object_bytes)
         recorder.emit('DIA_COMPILED_OBJECT', {'header': evidence['header'], 'directives': directives,
+            'crt_gate_status': 'not-yet-evaluated',
+            'raw_directive_text_format': 'ASCII with NUL bytes represented as spaces; exact bytes in DIA_COMPILED_OBJECT_BYTES',
+            'raw_directive_sections': [{key: section[key] for key in
+                                       ['index', 'raw_directives', 'raw_sha256', 'size']}
+                                      for section in evidence['sections'] if 'raw_directives' in section],
             'required_symbols': [x for x in evidence['symbols'] if x['name'] in REQUIRED],
             'required_relocations': [x for x in evidence['relocations'] if x['symbol_name'] in REQUIRED]})
+        require_release_crt(directives, True)
         args = ['/NOLOGO', '/MACHINE:X64', '/INCREMENTAL:NO', '/WX', '/VERBOSE:LIB',
                 '/MAP:' + str(mapfile), '/OUT:' + str(exe), str(obj)]
         args += [providers[name]['path'] for name in ['diaguids', 'uuid', 'advapi32', 'kernel32']]
