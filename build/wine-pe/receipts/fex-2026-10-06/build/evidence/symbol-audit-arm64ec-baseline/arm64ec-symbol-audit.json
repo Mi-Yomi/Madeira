@@ -1,0 +1,5275 @@
+{
+  "architecture": "arm64ec",
+  "counts": {
+    "checked_export_forwarders": 0,
+    "checked_import_symbols": 211,
+    "exports": 30
+  },
+  "farm": "/workspace/scratch/94ffb2b0bb2d/madeira-graphics-bootstrap/app/Madeira/arm64ec-windows",
+  "input_modules": {
+    "activeds.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "sha256": "407bd4949ae12bf22861d96695a4047af63ff1081364eaebaf623702eafcacad"
+    },
+    "advapi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "sha256": "32e159efd039c92c7463623f0c44b5a219c875ba4bbee4ff087445bbcbc771a5"
+    },
+    "apisetschema.dll": {
+      "architecture": "x86_64",
+      "bytes": 196608,
+      "sha256": "515f37514dd996b39deb86393ea5fd0c93bcf411e7d591351cc448d6221334b4"
+    },
+    "authz.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "df31c347f529db644a339945110c08e482b75a09989d0033d235633548e303df"
+    },
+    "avicap32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "f9e500425444a9cb82cb76def929d5591308b68b7d8b4d61b85367616a966ffd"
+    },
+    "avifil32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "sha256": "b85a6da0a3e483ab00470b9492131e5838cd5540ac4632ceddc94947c3acec61"
+    },
+    "avrt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "86a1b52e109792d10b5612ebbc8a1f3a8c2a194122acdeedd4b245ba20489fa5"
+    },
+    "bcrypt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "c6e31f73b0b72003b9354f66717300a7f9775fbdb988fa28ce5030abdd0acfd6"
+    },
+    "bcryptprimitives.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "297145c00faac915bef0e4a4a20883d95d29cdf72bd49fed4c50dc67af4ad6df"
+    },
+    "bthprops.cpl": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "sha256": "5c0765a0974c88534658b14e756de61b3d088d168bb20a84740fcd25c9203551"
+    },
+    "cabinet.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "35d713f638431348d0720327157571d6bc037cdd5cc6ac26332fbf4f74523784"
+    },
+    "calltest-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 114176,
+      "sha256": "e13479da89a56f5b1de8c78ead1ad4248454d233284b9d9e2def717080592d1c"
+    },
+    "cfgmgr32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "b8fb19f9a2d18dae28b6d7ec5c01114de83d36e54ff94b94bcd55ff1afc5937c"
+    },
+    "child-test-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24064,
+      "sha256": "c991f7fcebac95403464cce111d8cb6a86b79f4263fc6eb0eb963030c5bdbc45"
+    },
+    "clocktest-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 95232,
+      "sha256": "1a3e20a534b90aab9022340d001a15ac66aa0804f07647f62d4ef2db49498707"
+    },
+    "combase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "sha256": "72049d5466ce937e497fa2211dd2c4fbba3059c6d4867a0b6e0ccc738e9f3dfd"
+    },
+    "comctl32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1966080,
+      "sha256": "75144256725cf5a0d4113bd163c293509acfa00cdabb918d002c23a6246058d6"
+    },
+    "comdlg32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1703936,
+      "sha256": "3ea952a5c012feb8fc81858b428605c2160a84ee5d7184d639e3cdac7b4697be"
+    },
+    "coml2.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "1a749e7b68ab686c5dfa66910fe8505b3604136ee94bda8441a9bbdf01958588"
+    },
+    "compstui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "bf75adf4226fe7312f5e7a4614445a4b00cac43680b11f93e6942bce19212200"
+    },
+    "concrt140.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "8d387264ed267b1ff7fdf3c8c6aa5208794c33eb614de99d0554f56ce5f1c3ff"
+    },
+    "credui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "25b935a9d6bdebb38f4195de60f9f3c1221b0fe227ae1b65a4031b9f2e8b8fcc"
+    },
+    "crypt32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1441792,
+      "sha256": "19e197ac0f8099b5cbed47767e83051e42662c9382406dc73ad18933887fa56e"
+    },
+    "cryptbase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "03136f29944e4eb3ec5f971e4a77ded6bb0d6acbff42be314e1240476b5ed0b2"
+    },
+    "cryptnet.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "sha256": "84efb8ad970f58ff55887a55c7746f114a51e4edbb913bd08e4de90db0ea39aa"
+    },
+    "cryptui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1769472,
+      "sha256": "3aa2ee08944667da04ce8ca14ac6cac2f3d2e7ee95a98cfb6abdb9865bb1c0cf"
+    },
+    "cube-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 399360,
+      "sha256": "9baa939624cfcbf4c0ba1b977090ebe5447389d90cc4c9ce1e8b0fe1e694788f"
+    },
+    "d3d10core.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1413120,
+      "sha256": "1737c875f559fe9babe998f899aa00be87d4753d9f2d8661c0977be2551b6872"
+    },
+    "d3d11.dll": {
+      "architecture": "arm64ec",
+      "bytes": 5488640,
+      "sha256": "7db110074bc23104b1d2bb5bae6e31a06a98bfde2df69638375d7102fa6dce01"
+    },
+    "d3d12-cube-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 141824,
+      "sha256": "21d007206f5fade953a4bfb157bc2a80a4cc9ef8beefdd8fc706e5af7217974c"
+    },
+    "d3d12-m2-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 171008,
+      "sha256": "56c151249e5464b6ccdd4685e4b67b03c7f7309dd968598b196182835f456e47"
+    },
+    "d3d12-vfetch-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 174080,
+      "sha256": "abb56293753ed07610efc97d926fbf8a3e47f39b6ee3454ab3b4e76ae509de31"
+    },
+    "d3d12.dll": {
+      "architecture": "arm64ec",
+      "bytes": 446976,
+      "sha256": "2ccef6097da008542f414e690d41ad60993f2c520fab9c82431f36b1dc5d6b56"
+    },
+    "d3d12core.dll": {
+      "architecture": "arm64ec",
+      "bytes": 92672,
+      "sha256": "161adfcdce53825cf30ce09b3f34dabd65fb664b9febf40494ea998e78404a73"
+    },
+    "d3d9.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "d68baea13ee751c15de02131c173a17ac4a865bec0e562230d46e23498eebe56"
+    },
+    "d3dcompiler_43.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "7eb0c94e27750b9e7d48cb3ed288c35bae2195bbe6816c850e38f086b100d6ec"
+    },
+    "d3dcompiler_47.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "c39bf49c65db2e906c0c36c0117241259a852da803e4fb5f20125b59a58959ee"
+    },
+    "d3dx9_43.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "sha256": "ce820aef3fb115af69b34bbb1034f27bfc5bcbf675fd5240dc798caca6a74ea9"
+    },
+    "d3dxof.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "bbfcd48df654834047523c632c7082a9b6cf21c9f77fc6572dcfd6407b490fbe"
+    },
+    "dbghelp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "sha256": "118452e378af9d2cd2d39a8ed42f7987ca074eab1454a1838f06b4689291b2f2"
+    },
+    "dcomp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "91962ec125661219ed372a6b65d1982fc021396f9b17f64e6386b62b6797f314"
+    },
+    "dhcpcsvc.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "855768474a1d9a38870ae69f29f0791a7d3cd0119f42b6b7a708da65468038f0"
+    },
+    "dinput.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "62ecebb498b1e5fa1277eeaee093b7df13e3305d47fbb1fd6ae12d131a461216"
+    },
+    "dinput8.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "c21a948fc485fda78ade9c8d69d10882c0ea7e5e2d77b19f06059c168468d394"
+    },
+    "dnsapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "30113e2019c5c89984980eadbf36f76ff3923300a46384d4394bd6beda10e74a"
+    },
+    "dsound.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1048576,
+      "sha256": "bb8563b8394a60c1421a292e8db084b8d9b49f9311f99bc50bd712f629dc8288"
+    },
+    "dwmapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "16bac20e5a72f3ca1c33af2beccfc2a685ac9bed16c833a76be11febabd1fbd5"
+    },
+    "dwrite.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1114112,
+      "sha256": "694ae12d5ae3047c371e0a4d03b3cc49bbfa68667910d2988183f37cf0bce9e9"
+    },
+    "dxchkmsaa-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 23552,
+      "sha256": "8468a0c112d44cad40d9d8167e9bdab9b48e071644efca9bac89c5e3a7b14ed3"
+    },
+    "dxgi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1744896,
+      "sha256": "2480b206a472e0981719e7547d38fc6e009019d542a263a5400759327e49ae50"
+    },
+    "esent.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "de304dcf78d959b885b0810b45b1acc196f237b5d44d810d31f93a4e57ff08ca"
+    },
+    "fib-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 22528,
+      "sha256": "9da6dec6cae7091b7e522964f8334ac33b69c93e12fd7bca6d17665caab480dd"
+    },
+    "fib2-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24064,
+      "sha256": "60f4dba490101a59c023ad84dbafb92c888fa1ef016bd78d0cb1ded27a08fd84"
+    },
+    "fib3-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24064,
+      "sha256": "8f49f7127bb4f6d23b03bd7502846bc698bd8242bc7bb0ebe84fc27c36eb1dbb"
+    },
+    "fileio-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24576,
+      "sha256": "53ef1a9b4b4df0f220ea0f02ad811fc1b8829d38de43b78182702a12b8857fd5"
+    },
+    "fontsub.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "0535a2c1f686e8a28f9be1d76c30949a1f3a8e15cfee0383280decf068f92e3b"
+    },
+    "fpconf-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 108032,
+      "sha256": "72a38beb22c53fc7b4e4edf12511c972465a15a507063cae2ae2ab09b41f654f"
+    },
+    "gdi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "sha256": "65323fac4aa40df2887b8b6a8b86612798625283ece437b4e30391274f406b44"
+    },
+    "heap-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 24576,
+      "sha256": "cb920e91164adf68bec2a15335599096997606c648c3d577b2c3e56c2e52d66b"
+    },
+    "hello-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 21504,
+      "sha256": "138e0add7216a28d27137da2b8a743d56fade24a92ad1c68f358f67b72e710ef"
+    },
+    "hid.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "244bc1642d59cb959b68d955c3f7d4bb70d250f43920d4ea4d47463df09bfba5"
+    },
+    "imagehlp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "be6bd23768c0666837dfa2b2ec14a77cbb2cf8ce7d9682ef1387ca524b210b0c"
+    },
+    "imm32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "00504479205a7a5ffacf7ca748e7433e754e3d6d6ccf077b46fa92328fc18c92"
+    },
+    "iphlpapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "sha256": "62c28717ac0af2a32b3e31c6d1f48fe5a1b2689b248ac1c72f310322992d6168"
+    },
+    "jsproxy.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "92ff891d45ad0affe8e42fdb24043efbe27aa3f09d6dfc76ed15c4d0135158e0"
+    },
+    "kernel32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "sha256": "91ff5ec8cf5b72ef081f93ee7f16069be15101c9f39b6c3d65b5445e10f5c69b"
+    },
+    "kernelbase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 3473408,
+      "sha256": "ee8bf461cf881b0b04a22696fa8f6397f1eb877dfb52944c2cbec4d25987f718"
+    },
+    "ktmw32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 524288,
+      "sha256": "b47e66bd302d1183b15f55072816f6f5c34c9e67f930c0011dc2208c76641953"
+    },
+    "madeira_d3d12.dll": {
+      "architecture": "arm64ec",
+      "bytes": 446976,
+      "sha256": "2ccef6097da008542f414e690d41ad60993f2c520fab9c82431f36b1dc5d6b56"
+    },
+    "mf.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1245184,
+      "sha256": "0111cf91c927ddb02b675a9a83f4fbfd189f1bf286175222ee74faa490ef6e6f"
+    },
+    "mfplat.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1114112,
+      "sha256": "f7d50d39c7d18981a833d1afbc5189a5c13d5e207584a169f73d155ee8ec593b"
+    },
+    "mfreadwrite.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "sha256": "ffb135568399ae9139901a44496eff33f8fa3b3b3487cc601c4bd060fd20446a"
+    },
+    "mmdevapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "ae618e1440aea62e534088e16364be833c44c8b3430f595a8b23ec64383e492e"
+    },
+    "mpr.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "3b73f5dd421d6e5b9da87cc9254bb6805e0e547287179747d651a87a5e9abe7f"
+    },
+    "msacm32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "91c356bdba74a855f8d0c1b91bfb584fbcd6e049dfa49a237ed3fde7ff7d6b86"
+    },
+    "mscoree.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "5f8015931f86faf98d911abd9e0e5d89cc6ac529a36699a40ce29dac31b5aede"
+    },
+    "msdmo.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "b26fd261b29582cf4fe1efcc3691cc550d6e04586238aab8e0c98b7755053184"
+    },
+    "msftedit.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "b70a16b31c0159b78657337087ab41b802efec3f663666fcb7f996a3cbbe31aa"
+    },
+    "msi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1769472,
+      "sha256": "6b611ac3a9c9b1200314397ab033e03ce1a5d9e93f6be3337a935ca33f124a9f"
+    },
+    "msiexec.exe": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "dd46bf408250057474b4376880f3c81073477240587d0c551f54c37c99725549"
+    },
+    "msimg32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "9ca133a9dad7307f8109ff703cae6eb671e74ffea1252aff4149c43cb4dd74e9"
+    },
+    "mspatcha.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "922a4e61fcdf2807e0eee4e0951be28a923cd9d471c02e9320958cfc8f23029f"
+    },
+    "msvcp140.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1638400,
+      "sha256": "397a52a8d1a43dac87528bb58ff7670e5352ce87946997efe3f536f9120f76fb"
+    },
+    "msvcp140_1.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "bf5298079ca2cb814892122af85ea129da1e398453d9da139042baede24f05f7"
+    },
+    "msvcp140_2.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "c71724c22058be9108e38b257449c27b38279a02d5771b293eea3e05b4ce4bfe"
+    },
+    "msvcp140_atomic_wait.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "d7804d55678b8406bc5d1042d557a4d5cd735b60c9fd1a58770f10fb633b3383"
+    },
+    "msvcp140_codecvt_ids.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "8c2c7d2dbe384b9fc14cff0514118ca4de944f81396f398c24c85747695b3e4c"
+    },
+    "msvcr120.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1507328,
+      "sha256": "174abb8745390b0c9a8dc0bd8f0b08928893b4d0c588b25f7418b27d5d7b2c9c"
+    },
+    "msvcrt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "sha256": "9ce3cced117bbfe0ef09d3286311beaa90f0d1cb4ba02c5f3eedd78a94a4ea6c"
+    },
+    "msvfw32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "f82e512e7c1c7da31684c9ec52d199644b4bd1abb61cf8321b3acb4856c94af7"
+    },
+    "mswsock.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "7d71de1a1241a515816bd7fac3959fb0f3a9ff2a466afb2a3ff64c4db7790397"
+    },
+    "ncrypt.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "0076ea96be6afc8e3858d4166956e3f67370428d48ef3461b0903d974b77b3a9"
+    },
+    "netapi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "80273a7a95a16e6afbfcd3cf489857d8d0d4e7c881c67b9ffbf07f971a736008"
+    },
+    "netprofm.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "6a91904e27a7a417ca52fea7d1b9133996c506518f1c76efccb888ab172b9e98"
+    },
+    "netutils.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "091fd65f4efa7be8ed9bca346fb0e3dfab9499229a4a2b0327bf67126461c3eb"
+    },
+    "normaliz.dll": {
+      "architecture": "x86_64",
+      "bytes": 196608,
+      "sha256": "69c9822a6a3d9a9b56ae7cdc099096c967970da90d82d855448e4608e0be9c2e"
+    },
+    "nsi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "7dd1ab58d21f1de6e46c737d4da4aa6fd3683c3b9e52baa0bd80ab629cebb372"
+    },
+    "ntdll.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1572864,
+      "sha256": "59c1523792cef4f5d4cbffdd62d8c7d9682be8c718fb7d65db2dcf711e3f7e51"
+    },
+    "odbccp32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "6ce8525c446e7bf6a43ddf317a2beaff690f13e1b0dd26178d0408675a6c74a6"
+    },
+    "ole32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1572864,
+      "sha256": "fdd3d63d6d372184f3a28f772ec5750905af5dde18e90f719cf9a2d4a653db41"
+    },
+    "oleacc.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "f54fc7254b69dde26d93db5d9cadf13695df31c4830501d43c06f40488444cda"
+    },
+    "oleaut32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1441792,
+      "sha256": "3788c68276059ec643dd737a049018766636b94be3928309cc7103bb6f12bd7e"
+    },
+    "opengl32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 2162688,
+      "sha256": "2f27e0deb7095edbf22f03f54d9b29350dadf27e71f7e6bb6936a94a1effd1f1"
+    },
+    "pdh.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "b53f74d376ede510060e2cbd4626ddbb5916e092d0f3ae44b2ccf67fb99d3954"
+    },
+    "powrprof.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "9c436d75c7915ab054f6d500e86e8f345faffef921689a3329cc90553965b1e0"
+    },
+    "proc-test-x64.exe": {
+      "architecture": "x86_64",
+      "bytes": 23552,
+      "sha256": "608efb5194b36e92ba1843db34ef13fbb17ab2431e393f9241df65ac95fb9264"
+    },
+    "propsys.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "sha256": "38c13ec792211bb6d0e1b0a51711394c2f4fcb0706771c1ebfa67b76290fdfaa"
+    },
+    "psapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "218c29a62c19b6303c2cbd73864b9f4750bd19fb624352ff8d6a3f9dc1f15f07"
+    },
+    "regsvr32.exe": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "1501d3bc5c59dabb3e15d4fa32caae10f14db88f23b045d3f055481f414cbbde"
+    },
+    "riched20.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "sha256": "c8d2fabd0ece3c1da085b898f07d493b948bcfc2fde938994b333b5fa6320007"
+    },
+    "rpcrt4.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1376256,
+      "sha256": "61e6c00c55ab2db22ad6b21cdd6f8f451be7fd331503a00fccbfb0ef204a7f51"
+    },
+    "rsaenh.dll": {
+      "architecture": "arm64ec",
+      "bytes": 851968,
+      "sha256": "e4287b29e820545ffe1992a03241a42a9a4aef25989eeada2ff4054563e086f9"
+    },
+    "rtworkq.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "86a01c8f9256820bb28bbcc50e4307bb42d9e78efd0ffa5feb376a4a088be0d5"
+    },
+    "schannel.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "2c9adaa9ee2e66cc1ddc45aad648ec5402947df2cf34c9240dfdfb0076b40d56"
+    },
+    "sechost.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "f59eb33942ec8c1ed7789f5e6b033253a7f26b9082e09af4d5d0b9c53a04c101"
+    },
+    "secur32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "100ad928c020bde3e035f40098ba723ab27996ed5312353029f052d5d2709ffe"
+    },
+    "sensapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "722d81ef8042e77890273630e2fe327d1a83d658f29821ed6813b04849c6a17c"
+    },
+    "setupapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "sha256": "29b16e61ac1f05b64c8a418a49f90ce3e41ba378d349f0e5b153998aa5b5cc5a"
+    },
+    "shcore.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "5e3bf4c0849511404724298859f307ffa0563698cb3e43be543995ed0c55bfb0"
+    },
+    "shell32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 10485760,
+      "sha256": "e276b6a0b3385d539de5774d23b0bc5ff291b6b08f74688831d03a8befcc6d56"
+    },
+    "shlwapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "sha256": "6adccab4629eea00f14fb56867ab84323549f9349b393ca23af73dcb4b5e7e57"
+    },
+    "sxs.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "20f055955274cb2a5f8520eccdbaa7980cafea8000916bb09bcd73242da2fff2"
+    },
+    "tftrace-x64.dll": {
+      "architecture": "x86_64",
+      "bytes": 8704,
+      "sha256": "2f5b818d150df9655ae9d02960bf0232db3e088fe8c15f3337e4e88d32c3331c"
+    },
+    "ucrtbase.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1507328,
+      "sha256": "f43f7110434978853c83ba4d66a6d8d718b8ecd544eae2b4063767675eb83e59"
+    },
+    "uiautomationcore.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1179648,
+      "sha256": "d11acf821ad544ec0febee96eba5da7cef8ec55deb9755d8d94a46be9d14db4c"
+    },
+    "urlmon.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "sha256": "38bf751167a307c13b1018dd58af3f0d34d8e6572d83551af57adfd0063f3691"
+    },
+    "user32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 2621440,
+      "sha256": "a5d21cb52c40c093d35f096573dde0f46672613e4c922874ce8b826ad485a367"
+    },
+    "userenv.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "ec2532257d223548cb5c24e1b3b77ecbae5d7eafbe9d6f06ecadc79b073f5ba3"
+    },
+    "uxtheme.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "43c46712fb244699b78963499e50a1278e2d6f844e897706a44e9fdd5e0bc80e"
+    },
+    "vcruntime140.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "d82ce214480316ad43837ab69cf9ffff9b7b198f099155fce8c4a45eea8f5061"
+    },
+    "vcruntime140_1.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "6820da2f875d256d8c54f5210a08a970c99988241bc1717a0f8e53dc702e135b"
+    },
+    "version.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "ac4fea715649d4bd30e72f2010d70c5d1f537adb5d1732d62bbaa2ba6aed0135"
+    },
+    "wevtapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "f19d9e6fd5dedd98e3cbb082ad7a93611a48a1df4e2e639fea100fe7293ed6b2"
+    },
+    "win32u.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "sha256": "6b353c0fa44e0ae62b86e5f191b27af6b5babdbc35bc789d4971ebc25bab02fe"
+    },
+    "windows.gaming.input.dll": {
+      "architecture": "arm64ec",
+      "bytes": 786432,
+      "sha256": "89254a786ed05f19e8db49459cca40a84ab7cb4f1a3b2249811d06edb8abfcc4"
+    },
+    "windows.ui.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "0e94738e37c64f9d3cc63569efd6711170b6bd8bc8b679630613aec75eb53834"
+    },
+    "windowscodecs.dll": {
+      "architecture": "arm64ec",
+      "bytes": 7536640,
+      "sha256": "71b0957794a33833b0583d368f72731f18dbee9542f39be1cf235e1339f81029"
+    },
+    "wined3d.dll": {
+      "architecture": "arm64ec",
+      "bytes": 3670016,
+      "sha256": "ae50a4aec37e19759d0a719e18621ac4e75a689979bf0a985bb3049ea90edba6"
+    },
+    "wineios.drv": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "sha256": "e6d18018579f0fc0631dc1af464744908bc3430f0a26a4ffd338183dc435a83e"
+    },
+    "winemetal.dll": {
+      "architecture": "arm64ec",
+      "bytes": 188416,
+      "sha256": "20a9e486bd97bae599177890d280060e3e27478ca6d697fde68493233f2de8f0"
+    },
+    "winhttp.dll": {
+      "architecture": "arm64ec",
+      "bytes": 917504,
+      "sha256": "286f0c3dd9c5af07369d4c65ea86fb1791248e06253c34809bc2928c242acae2"
+    },
+    "wininet.dll": {
+      "architecture": "arm64ec",
+      "bytes": 2359296,
+      "sha256": "51a2a9641e68d0b1d957e2799e5aaf66fd3f9ebd68557f73aa3b8671babdfff0"
+    },
+    "winmm.dll": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "sha256": "7df6bb3f17f930e644bb83db38caf859fc8ea0b50564fe00ca5635edca13a7e5"
+    },
+    "winspool.drv": {
+      "architecture": "arm64ec",
+      "bytes": 1310720,
+      "sha256": "049b6e4338b7ad9f4c0bb4f449854fc9ae45ea43946ed383803abc710b4b902f"
+    },
+    "wintrust.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "4c2968297ceea45ec8f2942ef4047856ca8e0b8302be79431fdfc2a69952a4f4"
+    },
+    "winusb.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "92978c4add4d73e4ecaa8e4b936d4e2ce900e58ebcd70e910ad8e27b8b473ff0"
+    },
+    "wlanapi.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "321e8fc6c23cce47c1b7c9c1e86106bbfec89d7615505ddb72c802f1e4b07513"
+    },
+    "wldap32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 983040,
+      "sha256": "e7c828dd6311f40cec350be98ef03d7ef9f600fc7bdd52444f5e46eb597631a8"
+    },
+    "ws2_32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 720896,
+      "sha256": "0d92b310a2c9726fc56aedc506c049ab43280bd7ec3e2a44dc8b023707858590"
+    },
+    "wsock32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "cf02b612750d423a37c956144742dc821a28833eaa6af6865244053a496ca9d6"
+    },
+    "wtsapi32.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "72d899ac274e47f5cda2005cf00a2d90ad84914173429a911fda64520a6b65b6"
+    },
+    "x3daudio1_7.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "5ad443f73df42f4ccdc9478ebcb0f838b69efa067ba6c64e2dcfc9093923bc57"
+    },
+    "xapofx1_5.dll": {
+      "architecture": "arm64ec",
+      "bytes": 589824,
+      "sha256": "5e37c4ea9d1a6860eb0e7fce3de00d17d05413c1c5656f9c36e4427e4f0a7483"
+    },
+    "xinput1_1.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "7bbae3fa9fb5a6e35d50f9fddb7b8c1601121969ea2881bd05174cff39fe9e45"
+    },
+    "xinput1_2.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "ef13ea0f9347dac29b170bf3a1882f97fb05f9e685001d19839d8a43f885b024"
+    },
+    "xinput1_3.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "99277bc130a1977cea216a59bf2171d3b733b2f2445d44695edf69a1367ae00a"
+    },
+    "xinput1_4.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "e52c2c6c6e9cb54808400c9006125adc4d8bfdc44c27bf1a0ea1d32939b0e2c6"
+    },
+    "xinput9_1_0.dll": {
+      "architecture": "arm64ec",
+      "bytes": 655360,
+      "sha256": "1d2342de650f7b422d3e1d94ceca23dc0195e74c06efc60f28f906c6a43a5700"
+    },
+    "xtajit64.dll": {
+      "architecture": "arm64ec",
+      "bytes": 5410816,
+      "sha256": "c32578766cd125bb6a53539b11006d9f66948f92f3614d5c05e2755974e623ce"
+    }
+  },
+  "issues": [],
+  "limits": [
+    "Static symbol names/ordinals and forwarders only; no execution or ABI/calling-convention proof",
+    "Does not recursively validate every import of existing farm DLLs, dynamic LoadLibrary/GetProcAddress, COM activation or SxS",
+    "Export presence does not establish implementation quality or application compatibility"
+  ],
+  "modules": {
+    "xtajit64.dll": {
+      "architecture": "arm64ec",
+      "bytes": 5410816,
+      "dependencies": [
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-filesystem-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-multibyte-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "api-ms-win-crt-time-l1-1-0.dll"
+        },
+        {
+          "kind": "import",
+          "name": "ntdll.dll"
+        }
+      ],
+      "exports": [
+        {
+          "names": [
+            "BTCpu64FlushInstructionCache"
+          ],
+          "ordinal": 1,
+          "rva": "0x204010"
+        },
+        {
+          "names": [
+            "BTCpu64IosAddAliasMapping"
+          ],
+          "ordinal": 2,
+          "rva": "0x204020"
+        },
+        {
+          "names": [
+            "BTCpu64IosReleaseThreadHolds"
+          ],
+          "ordinal": 3,
+          "rva": "0x204050"
+        },
+        {
+          "names": [
+            "BTCpu64IosRipFromHostPC"
+          ],
+          "ordinal": 4,
+          "rva": "0x204030"
+        },
+        {
+          "names": [
+            "BTCpu64IosSetMonoBridge"
+          ],
+          "ordinal": 5,
+          "rva": "0x204040"
+        },
+        {
+          "names": [
+            "BTCpu64IsProcessorFeaturePresent"
+          ],
+          "ordinal": 6,
+          "rva": "0x204060"
+        },
+        {
+          "names": [
+            "BTCpu64NotifyMemoryDirty"
+          ],
+          "ordinal": 7,
+          "rva": "0x204070"
+        },
+        {
+          "names": [
+            "BTCpu64NotifyReadFile"
+          ],
+          "ordinal": 8,
+          "rva": "0x204080"
+        },
+        {
+          "names": [
+            "BeginSimulation"
+          ],
+          "ordinal": 9,
+          "rva": "0x1105e4"
+        },
+        {
+          "names": [
+            "DispatchJump"
+          ],
+          "ordinal": 10,
+          "rva": "0x110440"
+        },
+        {
+          "names": [
+            "ExitToX64"
+          ],
+          "ordinal": 11,
+          "rva": "0x110478"
+        },
+        {
+          "names": [
+            "FlushInstructionCacheHeavy"
+          ],
+          "ordinal": 12,
+          "rva": "0x204090"
+        },
+        {
+          "names": [
+            "IosXpFex"
+          ],
+          "ordinal": 13,
+          "rva": "0x3b5d80"
+        },
+        {
+          "names": [
+            "NotifyImageMap"
+          ],
+          "ordinal": 14,
+          "rva": "0x2040a0"
+        },
+        {
+          "names": [
+            "NotifyMapViewOfSection"
+          ],
+          "ordinal": 15,
+          "rva": "0x2040b0"
+        },
+        {
+          "names": [
+            "NotifyMemoryAlloc"
+          ],
+          "ordinal": 16,
+          "rva": "0x2040c0"
+        },
+        {
+          "names": [
+            "NotifyMemoryFree"
+          ],
+          "ordinal": 17,
+          "rva": "0x2040d0"
+        },
+        {
+          "names": [
+            "NotifyMemoryProtect"
+          ],
+          "ordinal": 18,
+          "rva": "0x2040e0"
+        },
+        {
+          "names": [
+            "NotifyUnmapViewOfSection"
+          ],
+          "ordinal": 19,
+          "rva": "0x2040f0"
+        },
+        {
+          "names": [
+            "ProcessInit"
+          ],
+          "ordinal": 20,
+          "rva": "0x204100"
+        },
+        {
+          "names": [
+            "ProcessTerm"
+          ],
+          "ordinal": 21,
+          "rva": "0x204110"
+        },
+        {
+          "names": [
+            "ResetToConsistentState"
+          ],
+          "ordinal": 22,
+          "rva": "0x204120"
+        },
+        {
+          "names": [
+            "RetToEntryThunk"
+          ],
+          "ordinal": 23,
+          "rva": "0x110448"
+        },
+        {
+          "names": [
+            "ThreadInit"
+          ],
+          "ordinal": 24,
+          "rva": "0x204130"
+        },
+        {
+          "names": [
+            "ThreadTerm"
+          ],
+          "ordinal": 25,
+          "rva": "0x204140"
+        },
+        {
+          "names": [
+            "UpdateProcessorInformation"
+          ],
+          "ordinal": 26,
+          "rva": "0x204150"
+        },
+        {
+          "names": [
+            "ios_fex_band_base"
+          ],
+          "ordinal": 27,
+          "rva": "0x3c21f0"
+        },
+        {
+          "names": [
+            "ios_fex_band_end"
+          ],
+          "ordinal": 28,
+          "rva": "0x3c21f8"
+        },
+        {
+          "names": [
+            "ios_va_log"
+          ],
+          "ordinal": 29,
+          "rva": "0x3c1190"
+        },
+        {
+          "names": [
+            "ios_va_log_len"
+          ],
+          "ordinal": 30,
+          "rva": "0x3c21c8"
+        }
+      ],
+      "imports": [
+        {
+          "kind": "import",
+          "module": "ntdll.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "LdrGetDllFullName"
+            },
+            {
+              "hint": 0,
+              "name": "LdrGetDllHandle"
+            },
+            {
+              "hint": 0,
+              "name": "LdrGetProcedureAddress"
+            },
+            {
+              "hint": 0,
+              "name": "NtAllocateVirtualMemory"
+            },
+            {
+              "hint": 0,
+              "name": "NtAllocateVirtualMemoryEx"
+            },
+            {
+              "hint": 0,
+              "name": "NtClose"
+            },
+            {
+              "hint": 0,
+              "name": "NtCreateFile"
+            },
+            {
+              "hint": 0,
+              "name": "NtCreateSection"
+            },
+            {
+              "hint": 0,
+              "name": "NtDelayExecution"
+            },
+            {
+              "hint": 0,
+              "name": "NtDuplicateObject"
+            },
+            {
+              "hint": 0,
+              "name": "NtFlushInstructionCache"
+            },
+            {
+              "hint": 0,
+              "name": "NtFreeVirtualMemory"
+            },
+            {
+              "hint": 0,
+              "name": "NtGetContextThread"
+            },
+            {
+              "hint": 0,
+              "name": "NtGetCurrentProcessorNumber"
+            },
+            {
+              "hint": 0,
+              "name": "NtMapViewOfSection"
+            },
+            {
+              "hint": 0,
+              "name": "NtOpenFile"
+            },
+            {
+              "hint": 0,
+              "name": "NtOpenKeyEx"
+            },
+            {
+              "hint": 0,
+              "name": "NtProtectVirtualMemory"
+            },
+            {
+              "hint": 0,
+              "name": "NtQueryDirectoryFile"
+            },
+            {
+              "hint": 0,
+              "name": "NtQueryInformationFile"
+            },
+            {
+              "hint": 0,
+              "name": "NtQueryInformationThread"
+            },
+            {
+              "hint": 0,
+              "name": "NtQueryObject"
+            },
+            {
+              "hint": 0,
+              "name": "NtQuerySystemInformation"
+            },
+            {
+              "hint": 0,
+              "name": "NtQuerySystemTime"
+            },
+            {
+              "hint": 0,
+              "name": "NtQueryValueKey"
+            },
+            {
+              "hint": 0,
+              "name": "NtQueryVirtualMemory"
+            },
+            {
+              "hint": 0,
+              "name": "NtReadFile"
+            },
+            {
+              "hint": 0,
+              "name": "NtSetInformationFile"
+            },
+            {
+              "hint": 0,
+              "name": "NtSetInformationThread"
+            },
+            {
+              "hint": 0,
+              "name": "NtSuspendThread"
+            },
+            {
+              "hint": 0,
+              "name": "NtTerminateProcess"
+            },
+            {
+              "hint": 0,
+              "name": "NtWriteFile"
+            },
+            {
+              "hint": 0,
+              "name": "ProcessPendingCrossProcessEmulatorWork"
+            },
+            {
+              "hint": 0,
+              "name": "RtlAcquirePebLock"
+            },
+            {
+              "hint": 0,
+              "name": "RtlAcquireSRWLockExclusive"
+            },
+            {
+              "hint": 0,
+              "name": "RtlAcquireSRWLockShared"
+            },
+            {
+              "hint": 0,
+              "name": "RtlAllocateHeap"
+            },
+            {
+              "hint": 0,
+              "name": "RtlCaptureContext"
+            },
+            {
+              "hint": 0,
+              "name": "RtlClearBits"
+            },
+            {
+              "hint": 0,
+              "name": "RtlCreateUnicodeStringFromAsciiz"
+            },
+            {
+              "hint": 0,
+              "name": "RtlDeleteCriticalSection"
+            },
+            {
+              "hint": 0,
+              "name": "RtlDosPathNameToNtPathName_U"
+            },
+            {
+              "hint": 0,
+              "name": "RtlEnterCriticalSection"
+            },
+            {
+              "hint": 0,
+              "name": "RtlFindClearBitsAndSet"
+            },
+            {
+              "hint": 0,
+              "name": "RtlFreeAnsiString"
+            },
+            {
+              "hint": 0,
+              "name": "RtlFreeHeap"
+            },
+            {
+              "hint": 0,
+              "name": "RtlFreeUnicodeString"
+            },
+            {
+              "hint": 0,
+              "name": "RtlGetCurrentDirectory_U"
+            },
+            {
+              "hint": 0,
+              "name": "RtlImageDirectoryEntryToData"
+            },
+            {
+              "hint": 0,
+              "name": "RtlImageNtHeader"
+            },
+            {
+              "hint": 0,
+              "name": "RtlInitAnsiString"
+            },
+            {
+              "hint": 0,
+              "name": "RtlInitUnicodeString"
+            },
+            {
+              "hint": 0,
+              "name": "RtlInitializeConditionVariable"
+            },
+            {
+              "hint": 0,
+              "name": "RtlInitializeCriticalSection"
+            },
+            {
+              "hint": 0,
+              "name": "RtlInitializeSRWLock"
+            },
+            {
+              "hint": 0,
+              "name": "RtlIsEcCode"
+            },
+            {
+              "hint": 0,
+              "name": "RtlLeaveCriticalSection"
+            },
+            {
+              "hint": 0,
+              "name": "RtlLocateExtendedFeature"
+            },
+            {
+              "hint": 0,
+              "name": "RtlLookupFunctionEntry"
+            },
+            {
+              "hint": 0,
+              "name": "RtlMultiByteToUnicodeN"
+            },
+            {
+              "hint": 0,
+              "name": "RtlMultiByteToUnicodeSize"
+            },
+            {
+              "hint": 0,
+              "name": "RtlNtStatusToDosError"
+            },
+            {
+              "hint": 0,
+              "name": "RtlQueryPerformanceCounter"
+            },
+            {
+              "hint": 0,
+              "name": "RtlQueryPerformanceFrequency"
+            },
+            {
+              "hint": 0,
+              "name": "RtlReleasePebLock"
+            },
+            {
+              "hint": 0,
+              "name": "RtlReleaseSRWLockExclusive"
+            },
+            {
+              "hint": 0,
+              "name": "RtlReleaseSRWLockShared"
+            },
+            {
+              "hint": 0,
+              "name": "RtlRestoreContext"
+            },
+            {
+              "hint": 0,
+              "name": "RtlRunOnceExecuteOnce"
+            },
+            {
+              "hint": 0,
+              "name": "RtlSleepConditionVariableSRW"
+            },
+            {
+              "hint": 0,
+              "name": "RtlTryAcquireSRWLockExclusive"
+            },
+            {
+              "hint": 0,
+              "name": "RtlTryAcquireSRWLockShared"
+            },
+            {
+              "hint": 0,
+              "name": "RtlTryEnterCriticalSection"
+            },
+            {
+              "hint": 0,
+              "name": "RtlUnicodeStringToAnsiString"
+            },
+            {
+              "hint": 0,
+              "name": "RtlUnicodeToMultiByteN"
+            },
+            {
+              "hint": 0,
+              "name": "RtlUnicodeToMultiByteSize"
+            },
+            {
+              "hint": 0,
+              "name": "RtlUnicodeToUTF8N"
+            },
+            {
+              "hint": 0,
+              "name": "RtlUnwindEx"
+            },
+            {
+              "hint": 0,
+              "name": "RtlVirtualUnwind"
+            },
+            {
+              "hint": 0,
+              "name": "RtlWaitOnAddress"
+            },
+            {
+              "hint": 0,
+              "name": "RtlWakeAddressAll"
+            },
+            {
+              "hint": 0,
+              "name": "RtlWakeAddressSingle"
+            },
+            {
+              "hint": 0,
+              "name": "RtlWakeAllConditionVariable"
+            },
+            {
+              "hint": 0,
+              "name": "RtlWakeConditionVariable"
+            },
+            {
+              "hint": 0,
+              "name": "_errno"
+            },
+            {
+              "hint": 0,
+              "name": "atan2"
+            },
+            {
+              "hint": 0,
+              "name": "atoi"
+            },
+            {
+              "hint": 0,
+              "name": "cos"
+            },
+            {
+              "hint": 0,
+              "name": "isxdigit"
+            },
+            {
+              "hint": 0,
+              "name": "memchr"
+            },
+            {
+              "hint": 0,
+              "name": "memcmp"
+            },
+            {
+              "hint": 0,
+              "name": "memcpy"
+            },
+            {
+              "hint": 0,
+              "name": "memmove"
+            },
+            {
+              "hint": 0,
+              "name": "memset"
+            },
+            {
+              "hint": 0,
+              "name": "sin"
+            },
+            {
+              "hint": 0,
+              "name": "sprintf"
+            },
+            {
+              "hint": 0,
+              "name": "sscanf"
+            },
+            {
+              "hint": 0,
+              "name": "strchr"
+            },
+            {
+              "hint": 0,
+              "name": "strcmp"
+            },
+            {
+              "hint": 0,
+              "name": "strlen"
+            },
+            {
+              "hint": 0,
+              "name": "strncmp"
+            },
+            {
+              "hint": 0,
+              "name": "strtol"
+            },
+            {
+              "hint": 0,
+              "name": "strtoul"
+            },
+            {
+              "hint": 0,
+              "name": "swprintf"
+            },
+            {
+              "hint": 0,
+              "name": "tan"
+            },
+            {
+              "hint": 0,
+              "name": "tolower"
+            },
+            {
+              "hint": 0,
+              "name": "toupper"
+            },
+            {
+              "hint": 0,
+              "name": "wcscmp"
+            },
+            {
+              "hint": 0,
+              "name": "wcscpy"
+            },
+            {
+              "hint": 0,
+              "name": "wcslen"
+            },
+            {
+              "hint": 0,
+              "name": "wcsncmp"
+            },
+            {
+              "hint": 0,
+              "name": "wcstol"
+            },
+            {
+              "hint": 0,
+              "name": "wcstoul"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "_assert"
+            },
+            {
+              "hint": 0,
+              "name": "__sys_nerr"
+            },
+            {
+              "hint": 0,
+              "name": "_beginthreadex"
+            },
+            {
+              "hint": 0,
+              "name": "_execute_onexit_table"
+            },
+            {
+              "hint": 0,
+              "name": "_exit"
+            },
+            {
+              "hint": 0,
+              "name": "_fpreset"
+            },
+            {
+              "hint": 0,
+              "name": "_initialize_onexit_table"
+            },
+            {
+              "hint": 0,
+              "name": "_initterm"
+            },
+            {
+              "hint": 0,
+              "name": "_initterm_e"
+            },
+            {
+              "hint": 0,
+              "name": "_register_onexit_function"
+            },
+            {
+              "hint": 0,
+              "name": "abort"
+            },
+            {
+              "hint": 0,
+              "name": "_getpid"
+            },
+            {
+              "hint": 0,
+              "name": "strerror_s"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-time-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "_strftime_l"
+            },
+            {
+              "hint": 0,
+              "name": "_time64"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "__acrt_iob_func"
+            },
+            {
+              "hint": 0,
+              "name": "__stdio_common_vfprintf"
+            },
+            {
+              "hint": 0,
+              "name": "__stdio_common_vsprintf"
+            },
+            {
+              "hint": 0,
+              "name": "_close"
+            },
+            {
+              "hint": 0,
+              "name": "_fileno"
+            },
+            {
+              "hint": 0,
+              "name": "_fseeki64"
+            },
+            {
+              "hint": 0,
+              "name": "_ftelli64"
+            },
+            {
+              "hint": 0,
+              "name": "_get_osfhandle"
+            },
+            {
+              "hint": 0,
+              "name": "_isatty"
+            },
+            {
+              "hint": 0,
+              "name": "_setmode"
+            },
+            {
+              "hint": 0,
+              "name": "_sopen"
+            },
+            {
+              "hint": 0,
+              "name": "_wfopen"
+            },
+            {
+              "hint": 0,
+              "name": "_wopen"
+            },
+            {
+              "hint": 0,
+              "name": "_close"
+            },
+            {
+              "hint": 0,
+              "name": "fclose"
+            },
+            {
+              "hint": 0,
+              "name": "fflush"
+            },
+            {
+              "hint": 0,
+              "name": "_fileno"
+            },
+            {
+              "hint": 0,
+              "name": "fopen"
+            },
+            {
+              "hint": 0,
+              "name": "fputc"
+            },
+            {
+              "hint": 0,
+              "name": "fputs"
+            },
+            {
+              "hint": 0,
+              "name": "fread"
+            },
+            {
+              "hint": 0,
+              "name": "fseek"
+            },
+            {
+              "hint": 0,
+              "name": "_chsize"
+            },
+            {
+              "hint": 0,
+              "name": "fwrite"
+            },
+            {
+              "hint": 0,
+              "name": "_lseek"
+            },
+            {
+              "hint": 0,
+              "name": "_open"
+            },
+            {
+              "hint": 0,
+              "name": "setbuf"
+            },
+            {
+              "hint": 0,
+              "name": "_write"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-math-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "exp2"
+            },
+            {
+              "hint": 0,
+              "name": "_fdopen"
+            },
+            {
+              "hint": 0,
+              "name": "fmod"
+            },
+            {
+              "hint": 0,
+              "name": "log2"
+            },
+            {
+              "hint": 0,
+              "name": "remainder"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-environment-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "__p__environ"
+            },
+            {
+              "hint": 0,
+              "name": "getenv"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-filesystem-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "rename"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-convert-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "_strtod_l"
+            },
+            {
+              "hint": 0,
+              "name": "atoll"
+            },
+            {
+              "hint": 0,
+              "name": "mbrtowc"
+            },
+            {
+              "hint": 0,
+              "name": "mbsrtowcs"
+            },
+            {
+              "hint": 0,
+              "name": "strtod"
+            },
+            {
+              "hint": 0,
+              "name": "strtof"
+            },
+            {
+              "hint": 0,
+              "name": "strtoll"
+            },
+            {
+              "hint": 0,
+              "name": "strtoull"
+            },
+            {
+              "hint": 0,
+              "name": "wcrtomb"
+            },
+            {
+              "hint": 0,
+              "name": "wcrtomb_s"
+            },
+            {
+              "hint": 0,
+              "name": "wcstod"
+            },
+            {
+              "hint": 0,
+              "name": "wcstoll"
+            },
+            {
+              "hint": 0,
+              "name": "wcstoull"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-heap-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "_aligned_free"
+            },
+            {
+              "hint": 0,
+              "name": "_aligned_malloc"
+            },
+            {
+              "hint": 0,
+              "name": "calloc"
+            },
+            {
+              "hint": 0,
+              "name": "free"
+            },
+            {
+              "hint": 0,
+              "name": "malloc"
+            },
+            {
+              "hint": 0,
+              "name": "realloc"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-locale-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "___lc_codepage_func"
+            },
+            {
+              "hint": 0,
+              "name": "___mb_cur_max_func"
+            },
+            {
+              "hint": 0,
+              "name": "__pctype_func"
+            },
+            {
+              "hint": 0,
+              "name": "_configthreadlocale"
+            },
+            {
+              "hint": 0,
+              "name": "_create_locale"
+            },
+            {
+              "hint": 0,
+              "name": "_free_locale"
+            },
+            {
+              "hint": 0,
+              "name": "localeconv"
+            },
+            {
+              "hint": 0,
+              "name": "setlocale"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-string-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "_iswalpha_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswcntrl_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswdigit_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswlower_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswprint_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswpunct_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswspace_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswupper_l"
+            },
+            {
+              "hint": 0,
+              "name": "_iswxdigit_l"
+            },
+            {
+              "hint": 0,
+              "name": "_strcoll_l"
+            },
+            {
+              "hint": 0,
+              "name": "_strdup"
+            },
+            {
+              "hint": 0,
+              "name": "_strxfrm_l"
+            },
+            {
+              "hint": 0,
+              "name": "_tolower_l"
+            },
+            {
+              "hint": 0,
+              "name": "_toupper_l"
+            },
+            {
+              "hint": 0,
+              "name": "_towlower_l"
+            },
+            {
+              "hint": 0,
+              "name": "_towupper_l"
+            },
+            {
+              "hint": 0,
+              "name": "_wcscoll_l"
+            },
+            {
+              "hint": 0,
+              "name": "_wcsxfrm_l"
+            },
+            {
+              "hint": 0,
+              "name": "mbrlen"
+            }
+          ]
+        },
+        {
+          "kind": "import",
+          "module": "api-ms-win-crt-multibyte-l1-1-0.dll",
+          "symbols": [
+            {
+              "hint": 0,
+              "name": "_mbtowc_l"
+            }
+          ]
+        }
+      ],
+      "llvm_counts": {
+        "delay_descriptors": 0,
+        "exports": 30,
+        "import_descriptors": 12,
+        "import_symbols": 211
+      },
+      "sha256": "c32578766cd125bb6a53539b11006d9f66948f92f3614d5c05e2755974e623ce",
+      "symbol_resolution": [
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "LdrGetDllFullName"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x904a0",
+          "resolved_symbol": "LdrGetDllFullName",
+          "symbol": "LdrGetDllFullName"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "LdrGetDllHandle"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x904b0",
+          "resolved_symbol": "LdrGetDllHandle",
+          "symbol": "LdrGetDllHandle"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "LdrGetProcedureAddress"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x904e0",
+          "resolved_symbol": "LdrGetProcedureAddress",
+          "symbol": "LdrGetProcedureAddress"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtAllocateVirtualMemory"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85300",
+          "resolved_symbol": "NtAllocateVirtualMemory",
+          "symbol": "NtAllocateVirtualMemory"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtAllocateVirtualMemoryEx"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85d60",
+          "resolved_symbol": "NtAllocateVirtualMemoryEx",
+          "symbol": "NtAllocateVirtualMemoryEx"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtClose"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x851e0",
+          "resolved_symbol": "NtClose",
+          "symbol": "NtClose"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtCreateFile"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85aa0",
+          "resolved_symbol": "NtCreateFile",
+          "symbol": "NtCreateFile"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtCreateSection"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85940",
+          "resolved_symbol": "NtCreateSection",
+          "symbol": "NtCreateSection"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtDelayExecution"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85680",
+          "resolved_symbol": "NtDelayExecution",
+          "symbol": "NtDelayExecution"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtDuplicateObject"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85780",
+          "resolved_symbol": "NtDuplicateObject",
+          "symbol": "NtDuplicateObject"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtFlushInstructionCache"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x86260",
+          "resolved_symbol": "NtFlushInstructionCache",
+          "symbol": "NtFlushInstructionCache"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtFreeVirtualMemory"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x853c0",
+          "resolved_symbol": "NtFreeVirtualMemory",
+          "symbol": "NtFreeVirtualMemory"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtGetContextThread"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x862e0",
+          "resolved_symbol": "NtGetContextThread",
+          "symbol": "NtGetContextThread"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtGetCurrentProcessorNumber"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x86300",
+          "resolved_symbol": "NtGetCurrentProcessorNumber",
+          "symbol": "NtGetCurrentProcessorNumber"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtMapViewOfSection"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85500",
+          "resolved_symbol": "NtMapViewOfSection",
+          "symbol": "NtMapViewOfSection"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtOpenFile"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85660",
+          "resolved_symbol": "NtOpenFile",
+          "symbol": "NtOpenFile"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtOpenKeyEx"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x86600",
+          "resolved_symbol": "NtOpenKeyEx",
+          "symbol": "NtOpenKeyEx"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtProtectVirtualMemory"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85a00",
+          "resolved_symbol": "NtProtectVirtualMemory",
+          "symbol": "NtProtectVirtualMemory"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQueryDirectoryFile"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x856a0",
+          "resolved_symbol": "NtQueryDirectoryFile",
+          "symbol": "NtQueryDirectoryFile"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQueryInformationFile"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85220",
+          "resolved_symbol": "NtQueryInformationFile",
+          "symbol": "NtQueryInformationFile"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQueryInformationThread"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x854a0",
+          "resolved_symbol": "NtQueryInformationThread",
+          "symbol": "NtQueryInformationThread"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQueryObject"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85200",
+          "resolved_symbol": "NtQueryObject",
+          "symbol": "NtQueryObject"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQuerySystemInformation"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x856c0",
+          "resolved_symbol": "NtQuerySystemInformation",
+          "symbol": "NtQuerySystemInformation"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQuerySystemTime"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85b40",
+          "resolved_symbol": "NtQuerySystemTime",
+          "symbol": "NtQuerySystemTime"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQueryValueKey"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x852e0",
+          "resolved_symbol": "NtQueryValueKey",
+          "symbol": "NtQueryValueKey"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtQueryVirtualMemory"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85460",
+          "resolved_symbol": "NtQueryVirtualMemory",
+          "symbol": "NtQueryVirtualMemory"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtReadFile"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x850c0",
+          "resolved_symbol": "NtReadFile",
+          "symbol": "NtReadFile"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtSetInformationFile"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x854e0",
+          "resolved_symbol": "NtSetInformationFile",
+          "symbol": "NtSetInformationFile"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtSetInformationThread"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x851a0",
+          "resolved_symbol": "NtSetInformationThread",
+          "symbol": "NtSetInformationThread"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtSuspendThread"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x86ea0",
+          "resolved_symbol": "NtSuspendThread",
+          "symbol": "NtSuspendThread"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtTerminateProcess"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85580",
+          "resolved_symbol": "NtTerminateProcess",
+          "symbol": "NtTerminateProcess"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "NtWriteFile"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x85100",
+          "resolved_symbol": "NtWriteFile",
+          "symbol": "NtWriteFile"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "ProcessPendingCrossProcessEmulatorWork"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x90740",
+          "resolved_symbol": "ProcessPendingCrossProcessEmulatorWork",
+          "symbol": "ProcessPendingCrossProcessEmulatorWork"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlAcquirePebLock"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x90770",
+          "resolved_symbol": "RtlAcquirePebLock",
+          "symbol": "RtlAcquirePebLock"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlAcquireSRWLockExclusive"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x907a0",
+          "resolved_symbol": "RtlAcquireSRWLockExclusive",
+          "symbol": "RtlAcquireSRWLockExclusive"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlAcquireSRWLockShared"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x907b0",
+          "resolved_symbol": "RtlAcquireSRWLockShared",
+          "symbol": "RtlAcquireSRWLockShared"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlAllocateHeap"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x90970",
+          "resolved_symbol": "RtlAllocateHeap",
+          "symbol": "RtlAllocateHeap"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlCaptureContext"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x90a70",
+          "resolved_symbol": "RtlCaptureContext",
+          "symbol": "RtlCaptureContext"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlClearBits"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x90ac0",
+          "resolved_symbol": "RtlClearBits",
+          "symbol": "RtlClearBits"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlCreateUnicodeStringFromAsciiz"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x90d90",
+          "resolved_symbol": "RtlCreateUnicodeStringFromAsciiz",
+          "symbol": "RtlCreateUnicodeStringFromAsciiz"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlDeleteCriticalSection"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x90ed0",
+          "resolved_symbol": "RtlDeleteCriticalSection",
+          "symbol": "RtlDeleteCriticalSection"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlDosPathNameToNtPathName_U"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91060",
+          "resolved_symbol": "RtlDosPathNameToNtPathName_U",
+          "symbol": "RtlDosPathNameToNtPathName_U"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlEnterCriticalSection"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91120",
+          "resolved_symbol": "RtlEnterCriticalSection",
+          "symbol": "RtlEnterCriticalSection"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlFindClearBitsAndSet"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x912c0",
+          "resolved_symbol": "RtlFindClearBitsAndSet",
+          "symbol": "RtlFindClearBitsAndSet"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlFreeAnsiString"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91470",
+          "resolved_symbol": "RtlFreeAnsiString",
+          "symbol": "RtlFreeAnsiString"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlFreeHeap"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91490",
+          "resolved_symbol": "RtlFreeHeap",
+          "symbol": "RtlFreeHeap"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlFreeUnicodeString"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x914d0",
+          "resolved_symbol": "RtlFreeUnicodeString",
+          "symbol": "RtlFreeUnicodeString"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlGetCurrentDirectory_U"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91570",
+          "resolved_symbol": "RtlGetCurrentDirectory_U",
+          "symbol": "RtlGetCurrentDirectory_U"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlImageDirectoryEntryToData"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91840",
+          "resolved_symbol": "RtlImageDirectoryEntryToData",
+          "symbol": "RtlImageDirectoryEntryToData"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlImageNtHeader"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91850",
+          "resolved_symbol": "RtlImageNtHeader",
+          "symbol": "RtlImageNtHeader"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlInitAnsiString"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91890",
+          "resolved_symbol": "RtlInitAnsiString",
+          "symbol": "RtlInitAnsiString"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlInitUnicodeString"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x918f0",
+          "resolved_symbol": "RtlInitUnicodeString",
+          "symbol": "RtlInitUnicodeString"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlInitializeConditionVariable"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91920",
+          "resolved_symbol": "RtlInitializeConditionVariable",
+          "symbol": "RtlInitializeConditionVariable"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlInitializeCriticalSection"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91940",
+          "resolved_symbol": "RtlInitializeCriticalSection",
+          "symbol": "RtlInitializeCriticalSection"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlInitializeSRWLock"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91a00",
+          "resolved_symbol": "RtlInitializeSRWLock",
+          "symbol": "RtlInitializeSRWLock"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlIsEcCode"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91c30",
+          "resolved_symbol": "RtlIsEcCode",
+          "symbol": "RtlIsEcCode"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlLeaveCriticalSection"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91ce0",
+          "resolved_symbol": "RtlLeaveCriticalSection",
+          "symbol": "RtlLeaveCriticalSection"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlLocateExtendedFeature"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91d40",
+          "resolved_symbol": "RtlLocateExtendedFeature",
+          "symbol": "RtlLocateExtendedFeature"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlLookupFunctionEntry"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91db0",
+          "resolved_symbol": "RtlLookupFunctionEntry",
+          "symbol": "RtlLookupFunctionEntry"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlMultiByteToUnicodeN"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91e00",
+          "resolved_symbol": "RtlMultiByteToUnicodeN",
+          "symbol": "RtlMultiByteToUnicodeN"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlMultiByteToUnicodeSize"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91e10",
+          "resolved_symbol": "RtlMultiByteToUnicodeSize",
+          "symbol": "RtlMultiByteToUnicodeSize"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlNtStatusToDosError"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x91e90",
+          "resolved_symbol": "RtlNtStatusToDosError",
+          "symbol": "RtlNtStatusToDosError"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlQueryPerformanceCounter"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92090",
+          "resolved_symbol": "RtlQueryPerformanceCounter",
+          "symbol": "RtlQueryPerformanceCounter"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlQueryPerformanceFrequency"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x920a0",
+          "resolved_symbol": "RtlQueryPerformanceFrequency",
+          "symbol": "RtlQueryPerformanceFrequency"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlReleasePebLock"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x922b0",
+          "resolved_symbol": "RtlReleasePebLock",
+          "symbol": "RtlReleasePebLock"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlReleaseSRWLockExclusive"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x922e0",
+          "resolved_symbol": "RtlReleaseSRWLockExclusive",
+          "symbol": "RtlReleaseSRWLockExclusive"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlReleaseSRWLockShared"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x922f0",
+          "resolved_symbol": "RtlReleaseSRWLockShared",
+          "symbol": "RtlReleaseSRWLockShared"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlRestoreContext"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92350",
+          "resolved_symbol": "RtlRestoreContext",
+          "symbol": "RtlRestoreContext"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlRunOnceExecuteOnce"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x923d0",
+          "resolved_symbol": "RtlRunOnceExecuteOnce",
+          "symbol": "RtlRunOnceExecuteOnce"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlSleepConditionVariableSRW"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92640",
+          "resolved_symbol": "RtlSleepConditionVariableSRW",
+          "symbol": "RtlSleepConditionVariableSRW"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlTryAcquireSRWLockExclusive"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92720",
+          "resolved_symbol": "RtlTryAcquireSRWLockExclusive",
+          "symbol": "RtlTryAcquireSRWLockExclusive"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlTryAcquireSRWLockShared"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92730",
+          "resolved_symbol": "RtlTryAcquireSRWLockShared",
+          "symbol": "RtlTryAcquireSRWLockShared"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlTryEnterCriticalSection"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92740",
+          "resolved_symbol": "RtlTryEnterCriticalSection",
+          "symbol": "RtlTryEnterCriticalSection"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlUnicodeStringToAnsiString"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92770",
+          "resolved_symbol": "RtlUnicodeStringToAnsiString",
+          "symbol": "RtlUnicodeStringToAnsiString"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlUnicodeToMultiByteN"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x927d0",
+          "resolved_symbol": "RtlUnicodeToMultiByteN",
+          "symbol": "RtlUnicodeToMultiByteN"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlUnicodeToMultiByteSize"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x927e0",
+          "resolved_symbol": "RtlUnicodeToMultiByteSize",
+          "symbol": "RtlUnicodeToMultiByteSize"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlUnicodeToUTF8N"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92800",
+          "resolved_symbol": "RtlUnicodeToUTF8N",
+          "symbol": "RtlUnicodeToUTF8N"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlUnwindEx"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92840",
+          "resolved_symbol": "RtlUnwindEx",
+          "symbol": "RtlUnwindEx"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlVirtualUnwind"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92990",
+          "resolved_symbol": "RtlVirtualUnwind",
+          "symbol": "RtlVirtualUnwind"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlWaitOnAddress"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x929b0",
+          "resolved_symbol": "RtlWaitOnAddress",
+          "symbol": "RtlWaitOnAddress"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlWakeAddressAll"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x929c0",
+          "resolved_symbol": "RtlWakeAddressAll",
+          "symbol": "RtlWakeAddressAll"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlWakeAddressSingle"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x929d0",
+          "resolved_symbol": "RtlWakeAddressSingle",
+          "symbol": "RtlWakeAddressSingle"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlWakeAllConditionVariable"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x929e0",
+          "resolved_symbol": "RtlWakeAllConditionVariable",
+          "symbol": "RtlWakeAllConditionVariable"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "RtlWakeConditionVariable"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x929f0",
+          "resolved_symbol": "RtlWakeConditionVariable",
+          "symbol": "RtlWakeConditionVariable"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "_errno"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x92f50",
+          "resolved_symbol": "_errno",
+          "symbol": "_errno"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "atan2"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93380",
+          "resolved_symbol": "atan2",
+          "symbol": "atan2"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "atoi"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93390",
+          "resolved_symbol": "atoi",
+          "symbol": "atoi"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "cos"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x933e0",
+          "resolved_symbol": "cos",
+          "symbol": "cos"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "isxdigit"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93550",
+          "resolved_symbol": "isxdigit",
+          "symbol": "isxdigit"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "memchr"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x935a0",
+          "resolved_symbol": "memchr",
+          "symbol": "memchr"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "memcmp"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x935b0",
+          "resolved_symbol": "memcmp",
+          "symbol": "memcmp"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "memcpy"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x935c0",
+          "resolved_symbol": "memcpy",
+          "symbol": "memcpy"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "memmove"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x935e0",
+          "resolved_symbol": "memmove",
+          "symbol": "memmove"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "memset"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93600",
+          "resolved_symbol": "memset",
+          "symbol": "memset"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "sin"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93640",
+          "resolved_symbol": "sin",
+          "symbol": "sin"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "sprintf"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93650",
+          "resolved_symbol": "sprintf",
+          "symbol": "sprintf"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "sscanf"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93680",
+          "resolved_symbol": "sscanf",
+          "symbol": "sscanf"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "strchr"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x936b0",
+          "resolved_symbol": "strchr",
+          "symbol": "strchr"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "strcmp"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x936c0",
+          "resolved_symbol": "strcmp",
+          "symbol": "strcmp"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "strlen"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93700",
+          "resolved_symbol": "strlen",
+          "symbol": "strlen"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "strncmp"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93730",
+          "resolved_symbol": "strncmp",
+          "symbol": "strncmp"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "strtol"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x937c0",
+          "resolved_symbol": "strtol",
+          "symbol": "strtol"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "strtoul"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x937d0",
+          "resolved_symbol": "strtoul",
+          "symbol": "strtoul"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "swprintf"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x937e0",
+          "resolved_symbol": "swprintf",
+          "symbol": "swprintf"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "tan"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93800",
+          "resolved_symbol": "tan",
+          "symbol": "tan"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "tolower"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93810",
+          "resolved_symbol": "tolower",
+          "symbol": "tolower"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "toupper"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93820",
+          "resolved_symbol": "toupper",
+          "symbol": "toupper"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "wcscmp"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x938d0",
+          "resolved_symbol": "wcscmp",
+          "symbol": "wcscmp"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "wcscpy"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x938e0",
+          "resolved_symbol": "wcscpy",
+          "symbol": "wcscpy"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "wcslen"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93910",
+          "resolved_symbol": "wcslen",
+          "symbol": "wcslen"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "wcsncmp"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93940",
+          "resolved_symbol": "wcsncmp",
+          "symbol": "wcsncmp"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "wcstol"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x939e0",
+          "resolved_symbol": "wcstol",
+          "symbol": "wcstol"
+        },
+        {
+          "chain": [
+            {
+              "module": "ntdll.dll",
+              "symbol": "wcstoul"
+            }
+          ],
+          "dependency": "ntdll.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ntdll.dll",
+          "resolved_rva": "0x93a00",
+          "resolved_symbol": "wcstoul",
+          "symbol": "wcstoul"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_assert"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0960",
+          "resolved_symbol": "_assert",
+          "symbol": "_assert"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "__sys_nerr"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0810",
+          "resolved_symbol": "__sys_nerr",
+          "symbol": "__sys_nerr"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_beginthreadex"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0a50",
+          "resolved_symbol": "_beginthreadex",
+          "symbol": "_beginthreadex"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_execute_onexit_table"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0ec0",
+          "resolved_symbol": "_execute_onexit_table",
+          "symbol": "_execute_onexit_table"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_exit"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0f10",
+          "resolved_symbol": "_exit",
+          "symbol": "_exit"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_fpreset"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa11b0",
+          "resolved_symbol": "_fpreset",
+          "symbol": "_fpreset"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_initialize_onexit_table"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1750",
+          "resolved_symbol": "_initialize_onexit_table",
+          "symbol": "_initialize_onexit_table"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_initterm"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1770",
+          "resolved_symbol": "_initterm",
+          "symbol": "_initterm"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_initterm_e"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1780",
+          "resolved_symbol": "_initterm_e",
+          "symbol": "_initterm_e"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_register_onexit_function"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa6d70",
+          "resolved_symbol": "_register_onexit_function",
+          "symbol": "_register_onexit_function"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "abort"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7f10",
+          "resolved_symbol": "abort",
+          "symbol": "abort"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "_getpid"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa15d0",
+          "resolved_symbol": "_getpid",
+          "symbol": "_getpid"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+              "symbol": "strerror_s"
+            }
+          ],
+          "dependency": "api-ms-win-crt-runtime-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9500",
+          "resolved_symbol": "strerror_s",
+          "symbol": "strerror_s"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-time-l1-1-0.dll",
+              "symbol": "_strftime_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-time-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7130",
+          "resolved_symbol": "_strftime_l",
+          "symbol": "_strftime_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-time-l1-1-0.dll",
+              "symbol": "_time64"
+            }
+          ],
+          "dependency": "api-ms-win-crt-time-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7400",
+          "resolved_symbol": "_time64",
+          "symbol": "_time64"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "__acrt_iob_func"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa03a0",
+          "resolved_symbol": "__acrt_iob_func",
+          "symbol": "__acrt_iob_func"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "__stdio_common_vfprintf"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa06d0",
+          "resolved_symbol": "__stdio_common_vfprintf",
+          "symbol": "__stdio_common_vfprintf"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "__stdio_common_vsprintf"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0770",
+          "resolved_symbol": "__stdio_common_vsprintf",
+          "symbol": "__stdio_common_vsprintf"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_close"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0ba0",
+          "resolved_symbol": "_close",
+          "symbol": "_close"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_fileno"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa10b0",
+          "resolved_symbol": "_fileno",
+          "symbol": "_fileno"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_fseeki64"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1250",
+          "resolved_symbol": "_fseeki64",
+          "symbol": "_fseeki64"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_ftelli64"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa12d0",
+          "resolved_symbol": "_ftelli64",
+          "symbol": "_ftelli64"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_get_osfhandle"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1450",
+          "resolved_symbol": "_get_osfhandle",
+          "symbol": "_get_osfhandle"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_isatty"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa17f0",
+          "resolved_symbol": "_isatty",
+          "symbol": "_isatty"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_setmode"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa6f80",
+          "resolved_symbol": "_setmode",
+          "symbol": "_setmode"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_sopen"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa6fb0",
+          "resolved_symbol": "_sopen",
+          "symbol": "_sopen"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_wfopen"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7ad0",
+          "resolved_symbol": "_wfopen",
+          "symbol": "_wfopen"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_wopen"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7bc0",
+          "resolved_symbol": "_wopen",
+          "symbol": "_wopen"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_close"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0ba0",
+          "resolved_symbol": "_close",
+          "symbol": "_close"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fclose"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8750",
+          "resolved_symbol": "fclose",
+          "symbol": "fclose"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fflush"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8840",
+          "resolved_symbol": "fflush",
+          "symbol": "fflush"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_fileno"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa10b0",
+          "resolved_symbol": "_fileno",
+          "symbol": "_fileno"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fopen"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8970",
+          "resolved_symbol": "fopen",
+          "symbol": "fopen"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fputc"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8990",
+          "resolved_symbol": "fputc",
+          "symbol": "fputc"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fputs"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa89a0",
+          "resolved_symbol": "fputs",
+          "symbol": "fputs"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fread"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa89d0",
+          "resolved_symbol": "fread",
+          "symbol": "fread"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fseek"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8a30",
+          "resolved_symbol": "fseek",
+          "symbol": "fseek"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_chsize"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0b70",
+          "resolved_symbol": "_chsize",
+          "symbol": "_chsize"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "fwrite"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8a60",
+          "resolved_symbol": "fwrite",
+          "symbol": "fwrite"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_lseek"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1ff0",
+          "resolved_symbol": "_lseek",
+          "symbol": "_lseek"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_open"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa6c10",
+          "resolved_symbol": "_open",
+          "symbol": "_open"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "setbuf"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa93c0",
+          "resolved_symbol": "setbuf",
+          "symbol": "setbuf"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+              "symbol": "_write"
+            }
+          ],
+          "dependency": "api-ms-win-crt-stdio-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7c30",
+          "resolved_symbol": "_write",
+          "symbol": "_write"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-math-l1-1-0.dll",
+              "symbol": "exp2"
+            }
+          ],
+          "dependency": "api-ms-win-crt-math-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa86d0",
+          "resolved_symbol": "exp2",
+          "symbol": "exp2"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-math-l1-1-0.dll",
+              "symbol": "_fdopen"
+            }
+          ],
+          "dependency": "api-ms-win-crt-math-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0fc0",
+          "resolved_symbol": "_fdopen",
+          "symbol": "_fdopen"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-math-l1-1-0.dll",
+              "symbol": "fmod"
+            }
+          ],
+          "dependency": "api-ms-win-crt-math-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8950",
+          "resolved_symbol": "fmod",
+          "symbol": "fmod"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-math-l1-1-0.dll",
+              "symbol": "log2"
+            }
+          ],
+          "dependency": "api-ms-win-crt-math-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8e60",
+          "resolved_symbol": "log2",
+          "symbol": "log2"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-math-l1-1-0.dll",
+              "symbol": "remainder"
+            }
+          ],
+          "dependency": "api-ms-win-crt-math-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9250",
+          "resolved_symbol": "remainder",
+          "symbol": "remainder"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-environment-l1-1-0.dll",
+              "symbol": "__p__environ"
+            }
+          ],
+          "dependency": "api-ms-win-crt-environment-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0580",
+          "resolved_symbol": "__p__environ",
+          "symbol": "__p__environ"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-environment-l1-1-0.dll",
+              "symbol": "getenv"
+            }
+          ],
+          "dependency": "api-ms-win-crt-environment-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8a90",
+          "resolved_symbol": "getenv",
+          "symbol": "getenv"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-filesystem-l1-1-0.dll",
+              "symbol": "rename"
+            }
+          ],
+          "dependency": "api-ms-win-crt-filesystem-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa92c0",
+          "resolved_symbol": "rename",
+          "symbol": "rename"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "_strtod_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7290",
+          "resolved_symbol": "_strtod_l",
+          "symbol": "_strtod_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "atoll"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8090",
+          "resolved_symbol": "atoll",
+          "symbol": "atoll"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "mbrtowc"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8f80",
+          "resolved_symbol": "mbrtowc",
+          "symbol": "mbrtowc"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "mbsrtowcs"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8f90",
+          "resolved_symbol": "mbsrtowcs",
+          "symbol": "mbsrtowcs"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "strtod"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa95d0",
+          "resolved_symbol": "strtod",
+          "symbol": "strtod"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "strtof"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa95e0",
+          "resolved_symbol": "strtof",
+          "symbol": "strtof"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "strtoll"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9640",
+          "resolved_symbol": "strtoll",
+          "symbol": "strtoll"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "strtoull"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9660",
+          "resolved_symbol": "strtoull",
+          "symbol": "strtoull"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "wcrtomb"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9810",
+          "resolved_symbol": "wcrtomb",
+          "symbol": "wcrtomb"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "wcrtomb_s"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9820",
+          "resolved_symbol": "wcrtomb_s",
+          "symbol": "wcrtomb_s"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "wcstod"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9990",
+          "resolved_symbol": "wcstod",
+          "symbol": "wcstod"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "wcstoll"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9a00",
+          "resolved_symbol": "wcstoll",
+          "symbol": "wcstoll"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-convert-l1-1-0.dll",
+              "symbol": "wcstoull"
+            }
+          ],
+          "dependency": "api-ms-win-crt-convert-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9a40",
+          "resolved_symbol": "wcstoull",
+          "symbol": "wcstoull"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-heap-l1-1-0.dll",
+              "symbol": "_aligned_free"
+            }
+          ],
+          "dependency": "api-ms-win-crt-heap-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa08e0",
+          "resolved_symbol": "_aligned_free",
+          "symbol": "_aligned_free"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-heap-l1-1-0.dll",
+              "symbol": "_aligned_malloc"
+            }
+          ],
+          "dependency": "api-ms-win-crt-heap-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa08f0",
+          "resolved_symbol": "_aligned_malloc",
+          "symbol": "_aligned_malloc"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-heap-l1-1-0.dll",
+              "symbol": "calloc"
+            }
+          ],
+          "dependency": "api-ms-win-crt-heap-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8180",
+          "resolved_symbol": "calloc",
+          "symbol": "calloc"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-heap-l1-1-0.dll",
+              "symbol": "free"
+            }
+          ],
+          "dependency": "api-ms-win-crt-heap-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa89f0",
+          "resolved_symbol": "free",
+          "symbol": "free"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-heap-l1-1-0.dll",
+              "symbol": "malloc"
+            }
+          ],
+          "dependency": "api-ms-win-crt-heap-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8f30",
+          "resolved_symbol": "malloc",
+          "symbol": "malloc"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-heap-l1-1-0.dll",
+              "symbol": "realloc"
+            }
+          ],
+          "dependency": "api-ms-win-crt-heap-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa9240",
+          "resolved_symbol": "realloc",
+          "symbol": "realloc"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "___lc_codepage_func"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0350",
+          "resolved_symbol": "___lc_codepage_func",
+          "symbol": "___lc_codepage_func"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "___mb_cur_max_func"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0380",
+          "resolved_symbol": "___mb_cur_max_func",
+          "symbol": "___mb_cur_max_func"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "__pctype_func"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0600",
+          "resolved_symbol": "__pctype_func",
+          "symbol": "__pctype_func"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "_configthreadlocale"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0bc0",
+          "resolved_symbol": "_configthreadlocale",
+          "symbol": "_configthreadlocale"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "_create_locale"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa0c70",
+          "resolved_symbol": "_create_locale",
+          "symbol": "_create_locale"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "_free_locale"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1230",
+          "resolved_symbol": "_free_locale",
+          "symbol": "_free_locale"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "localeconv"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8df0",
+          "resolved_symbol": "localeconv",
+          "symbol": "localeconv"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-locale-l1-1-0.dll",
+              "symbol": "setlocale"
+            }
+          ],
+          "dependency": "api-ms-win-crt-locale-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa93d0",
+          "resolved_symbol": "setlocale",
+          "symbol": "setlocale"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswalpha_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1cd0",
+          "resolved_symbol": "_iswalpha_l",
+          "symbol": "_iswalpha_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswcntrl_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1cf0",
+          "resolved_symbol": "_iswcntrl_l",
+          "symbol": "_iswcntrl_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswdigit_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1d30",
+          "resolved_symbol": "_iswdigit_l",
+          "symbol": "_iswdigit_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswlower_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1d50",
+          "resolved_symbol": "_iswlower_l",
+          "symbol": "_iswlower_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswprint_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1d60",
+          "resolved_symbol": "_iswprint_l",
+          "symbol": "_iswprint_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswpunct_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1d70",
+          "resolved_symbol": "_iswpunct_l",
+          "symbol": "_iswpunct_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswspace_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1d80",
+          "resolved_symbol": "_iswspace_l",
+          "symbol": "_iswspace_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswupper_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1d90",
+          "resolved_symbol": "_iswupper_l",
+          "symbol": "_iswupper_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_iswxdigit_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa1da0",
+          "resolved_symbol": "_iswxdigit_l",
+          "symbol": "_iswxdigit_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_strcoll_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa70d0",
+          "resolved_symbol": "_strcoll_l",
+          "symbol": "_strcoll_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_strdup"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7100",
+          "resolved_symbol": "_strdup",
+          "symbol": "_strdup"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_strxfrm_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa73a0",
+          "resolved_symbol": "_strxfrm_l",
+          "symbol": "_strxfrm_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_tolower_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7440",
+          "resolved_symbol": "_tolower_l",
+          "symbol": "_tolower_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_toupper_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7460",
+          "resolved_symbol": "_toupper_l",
+          "symbol": "_toupper_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_towlower_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7470",
+          "resolved_symbol": "_towlower_l",
+          "symbol": "_towlower_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_towupper_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7480",
+          "resolved_symbol": "_towupper_l",
+          "symbol": "_towupper_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_wcscoll_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7690",
+          "resolved_symbol": "_wcscoll_l",
+          "symbol": "_wcscoll_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "_wcsxfrm_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa7940",
+          "resolved_symbol": "_wcsxfrm_l",
+          "symbol": "_wcsxfrm_l"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-string-l1-1-0.dll",
+              "symbol": "mbrlen"
+            }
+          ],
+          "dependency": "api-ms-win-crt-string-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa8f50",
+          "resolved_symbol": "mbrlen",
+          "symbol": "mbrlen"
+        },
+        {
+          "chain": [
+            {
+              "api_set_target": "ucrtbase.dll",
+              "module": "api-ms-win-crt-multibyte-l1-1-0.dll",
+              "symbol": "_mbtowc_l"
+            }
+          ],
+          "dependency": "api-ms-win-crt-multibyte-l1-1-0.dll",
+          "kind": "import",
+          "ok": true,
+          "resolved_module": "ucrtbase.dll",
+          "resolved_rva": "0xa28f0",
+          "resolved_symbol": "_mbtowc_l",
+          "symbol": "_mbtowc_l"
+        }
+      ]
+    }
+  },
+  "overlay": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/audit-overlay-arm64ec-baseline",
+  "passed": true,
+  "resolved_api_set_uses": 98,
+  "runtime_tested": false,
+  "schema_version": 1
+}

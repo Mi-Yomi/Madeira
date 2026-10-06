@@ -8,3 +8,11 @@ build/wine-pe/receipts/loader-2026-10-05/** -text -whitespace
 build/wine-pe/receipts/msi-client-2026-10-05/** -text -whitespace
 tests/desktop/llvm_sdk/provider-requirements.json -text
 build/wine-pe/receipts/msi-startup-2026-10-05/** -text -whitespace
+# Exact reviewed FEX patch, license and source-fixture bytes.
+build/fex-ios/patches/0005-wow64-smc-write-fault-only.patch -text -whitespace
+build/fex-ios/patches/0006-arm64ec-require-jit-rw-alias.patch -text -whitespace
+build/fex-ios/patches/playport/** -text -whitespace
+tests/host/fixtures/fex-pe/** -text -whitespace
+# Exact FEX replacement evidence and supplemental bundled notice bytes.
+build/wine-pe/receipts/fex-2026-10-06/** -text -whitespace
+app/Madeira/legal/FEX-guest/** -text -whitespace

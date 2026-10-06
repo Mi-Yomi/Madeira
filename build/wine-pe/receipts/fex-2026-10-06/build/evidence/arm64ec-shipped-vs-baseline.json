@@ -1,0 +1,6 @@
+{
+  "shipped_vs_baseline_exports_equal": true,
+  "shipped_vs_baseline_imports_equal": true,
+  "shipped_extra_imports": {},
+  "baseline_extra_imports": {}
+}

@@ -32,6 +32,13 @@ plugins):
 | PE DLLs in `arm64ec-windows/` (Wine builtins, FEX `libarm64ecfex.dll`, `d3d12.dll`, `winemetal.dll`) | as their sources above | separate files in the bundle |
 | `arm64ec-windows/dockhost.exe` (Madeira Dock, when built) | GPL-3.0-or-later + additional permission, Copyright 2026 125hz; statically linked LLVM/MinGW-w64 runtime under their own notices | separate program run inside Wine; built from the `madeira-dock` submodule by `build/madeira-dock/build.sh`, which also writes `dock-notices.txt` beside it; not committed as a binary |
 
+Source-distribution inventory: the two Playport v0.3.3 FEX guard backports,
+full pinned-source host-test fixtures, exact source attribution, and retained
+GPL/additional-permission texts are listed in
+[`build/fex-ios/patches/playport/NOTICE.md`](../build/fex-ios/patches/playport/NOTICE.md).
+Whether a delivered PE DLL includes them is established by its own build and
+replacement receipt, not by a native FEX archive or source-repair record.
+
 ## Obligations that follow
 
 1. **GPL-3.0 code combined with the proprietary converter.** Allowed only

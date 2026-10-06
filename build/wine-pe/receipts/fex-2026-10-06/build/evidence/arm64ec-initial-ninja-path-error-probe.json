@@ -1,0 +1,44 @@
+{
+  "scope": "configure-and-single-production-object-only",
+  "architecture": "arm64ec",
+  "phase": "baseline",
+  "source_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "source_sha256": "f929af53a002a8186ba92e81cac401f7db1fa7432083f88f5d55b656fe7623be",
+  "commands": [
+    {
+      "step": "configure",
+      "argv": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-tools/cmake/data/bin/cmake",
+        "-S",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX",
+        "-B",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-baseline",
+        "-G",
+        "Ninja",
+        "-DCMAKE_MAKE_PROGRAM=/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-tools/ninja/data/bin/ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_TOOLCHAIN_FILE=/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Data/CMake/toolchain_mingw.cmake",
+        "-DMINGW_TRIPLE=arm64ec-w64-mingw32",
+        "-DFEX_IOS_HOST_BUILD=ON",
+        "-DENABLE_GUEST_WINDOW=OFF",
+        "-DCMAKE_C_FLAGS=-DFEX_IOS_HOST",
+        "-DCMAKE_CXX_FLAGS=-DFEX_IOS_HOST",
+        "-DCMAKE_ASM_FLAGS=-DFEX_IOS_HOST",
+        "-DENABLE_LTO=OFF",
+        "-DENABLE_ASSERTIONS=OFF",
+        "-DENABLE_JEMALLOC_GLIBC_ALLOC=OFF",
+        "-DENABLE_CCACHE=OFF",
+        "-DBUILD_TESTING=OFF",
+        "-DBUILD_THUNKS=OFF",
+        "-DBUILD_FEXCONFIG=OFF",
+        "-DTUNE_ARCH=generic",
+        "-DTUNE_CPU=none",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+      ],
+      "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006",
+      "exit_code": 1,
+      "elapsed_seconds": 0.008928298950195312,
+      "log": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/evidence/arm64ec-baseline-configure.log"
+    }
+  ]
+}

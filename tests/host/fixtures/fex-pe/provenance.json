@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_repository": "https://github.com/willfaust/FEX.git",
+  "source_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "files": [
+    {
+      "fixture": "ARM64EC/Module.cpp",
+      "source_path": "Source/Windows/ARM64EC/Module.cpp",
+      "source_url": "https://github.com/willfaust/FEX/blob/1adb337a2f2270434ba731346438c072337a5d5f/Source/Windows/ARM64EC/Module.cpp",
+      "git_blob_sha1": "fbaf76f115c51cc1ed40152936a03553bbe409e7",
+      "sha256": "f929af53a002a8186ba92e81cac401f7db1fa7432083f88f5d55b656fe7623be"
+    },
+    {
+      "fixture": "WOW64/Module.cpp",
+      "source_path": "Source/Windows/WOW64/Module.cpp",
+      "source_url": "https://github.com/willfaust/FEX/blob/1adb337a2f2270434ba731346438c072337a5d5f/Source/Windows/WOW64/Module.cpp",
+      "git_blob_sha1": "6732edc7860d21c482dceb53cfb3e29444cc64e8",
+      "sha256": "2ad9b8407cdeed0d0803cf5a3b8269b6c6c3561cb0e6a0fae8495228a7973e5e"
+    }
+  ]
+}

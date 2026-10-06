@@ -1,0 +1,118 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/Bin/libarm64ecfex.dll
+Format: COFF-ARM64EC
+Arch: aarch64
+AddressSize: 64bit
+LoadConfig [
+  Size: 0x138
+  TimeDateStamp: 1970-01-01 00:00:00 (0x0)
+  MajorVersion: 0x0
+  MinorVersion: 0x0
+  GlobalFlagsClear: 0x0
+  GlobalFlagsSet: 0x0
+  CriticalSectionDefaultTimeout: 0x0
+  DeCommitFreeBlockThreshold: 0x0
+  DeCommitTotalFreeThreshold: 0x0
+  LockPrefixTable: 0x0
+  MaximumAllocationSize: 0x0
+  VirtualMemoryThreshold: 0x0
+  ProcessHeapFlags: 0x0
+  ProcessAffinityMask: 0x0
+  CSDVersion: 0x0
+  DependentLoadFlags: 0x0
+  EditList: 0x0
+  SecurityCookie: 0x0
+  SEHandlerTable: 0x0
+  SEHandlerCount: 0
+  GuardCFCheckFunction: 0x18037BE08
+  GuardCFCheckDispatch: 0x0
+  GuardCFFunctionTable: 0x0
+  GuardCFFunctionCount: 0
+  GuardFlags [ (0x100)
+    CF_INSTRUMENTED (0x100)
+  ]
+  GuardAddressTakenIatEntryTable: 0x0
+  GuardAddressTakenIatEntryCount: 0
+  GuardLongJumpTargetTable: 0x0
+  GuardLongJumpTargetCount: 0
+  DynamicValueRelocTable: 0x0
+  CHPEMetadataPointer: 0x18036A510
+  GuardRFFailureRoutine: 0x0
+  GuardRFFailureRoutineFunctionPointer: 0x0
+  DynamicValueRelocTableOffset: 0x0
+  DynamicValueRelocTableSection: 0
+  GuardRFVerifyStackPointerFunctionPointer: 0x0
+  HotPatchTableOffset: 0x0
+  EnclaveConfigurationPointer: 0x0
+  VolatileMetadataPointer: 0x0
+  GuardEHContinuationTable: 0x0
+  GuardEHContinuationCount: 0
+]
+CHPEMetadata [
+  Version: 0x1
+  CodeMap [
+    0x1000 - 0x202C9C  ARM64EC
+    0x203000 - 0x204160  X64
+  ]
+  CodeRangesToEntryPoints [
+    0x204000 - 0x204010 -> 0x204000
+    0x204010 - 0x204020 -> 0x204010
+    0x204020 - 0x204030 -> 0x204020
+    0x204030 - 0x204040 -> 0x204030
+    0x204040 - 0x204050 -> 0x204040
+    0x204050 - 0x204060 -> 0x204050
+    0x204060 - 0x204070 -> 0x204060
+    0x204070 - 0x204080 -> 0x204070
+    0x204080 - 0x204090 -> 0x204080
+    0x204090 - 0x2040A0 -> 0x204090
+    0x2040A0 - 0x2040B0 -> 0x2040A0
+    0x2040B0 - 0x2040C0 -> 0x2040B0
+    0x2040C0 - 0x2040D0 -> 0x2040C0
+    0x2040D0 - 0x2040E0 -> 0x2040D0
+    0x2040E0 - 0x2040F0 -> 0x2040E0
+    0x2040F0 - 0x204100 -> 0x2040F0
+    0x204100 - 0x204110 -> 0x204100
+    0x204110 - 0x204120 -> 0x204110
+    0x204120 - 0x204130 -> 0x204120
+    0x204130 - 0x204140 -> 0x204130
+    0x204140 - 0x204150 -> 0x204140
+    0x204150 - 0x204160 -> 0x204150
+  ]
+  RedirectionMetadata [
+    0x204000 -> 0x1290
+    0x204010 -> 0x10D540
+    0x204020 -> 0x110C80
+    0x204030 -> 0x11081C
+    0x204040 -> 0x110824
+    0x204050 -> 0x10D9C0
+    0x204060 -> 0x10EF38
+    0x204070 -> 0x10D660
+    0x204080 -> 0x10D780
+    0x204090 -> 0x10D420
+    0x2040A0 -> 0x10CE3C
+    0x2040B0 -> 0x10D18C
+    0x2040C0 -> 0x10CCF4
+    0x2040D0 -> 0x10CD68
+    0x2040E0 -> 0x10CDD0
+    0x2040F0 -> 0x10D2BC
+    0x204100 -> 0x10AC14
+    0x204110 -> 0x10BDC8
+    0x204120 -> 0x10C8D8
+    0x204130 -> 0x10DBE8
+    0x204140 -> 0x10E82C
+    0x204150 -> 0x10EF5C
+  ]
+  __os_arm64x_dispatch_call_no_redirect: 0x37BD80
+  __os_arm64x_dispatch_ret: 0x37BD88
+  __os_arm64x_dispatch_call: 0x37BD98
+  __os_arm64x_dispatch_icall: 0x37BD90
+  __os_arm64x_dispatch_icall_cfg: 0x37BDA0
+  AlternateEntryPoint: 0x0
+  AuxiliaryIAT: 0x3AC000
+  GetX64InformationFunctionPointer: 0x37BDA8
+  SetX64InformationFunctionPointer: 0x37BDB0
+  ExtraRFETable: 0x3C5000
+  ExtraRFETableSize: 0x10000
+  __os_arm64x_dispatch_fptr: 0x37BDB8
+  AuxiliaryIATCopy: 0x37D9D0
+]

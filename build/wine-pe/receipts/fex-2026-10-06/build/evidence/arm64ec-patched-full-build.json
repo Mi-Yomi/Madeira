@@ -1,0 +1,24 @@
+{
+  "architecture": "arm64ec",
+  "phase": "patched",
+  "argv": [
+    "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-tools/cmake/data/bin/cmake",
+    "--build",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched",
+    "--parallel",
+    "2",
+    "--target",
+    "arm64ecfex",
+    "--verbose"
+  ],
+  "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006",
+  "module_source_sha256": "e8148f4f58bb7833627aaaac9daaf63e36287569c5823cf72bd8656c787b64f1",
+  "exit_code": 0,
+  "elapsed_seconds": 80.31198406219482,
+  "log": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/evidence/arm64ec-patched-full-build.log",
+  "dll": {
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/Bin/libarm64ecfex.dll",
+    "sha256": "4c508cea3d7fd66cee756ba08098c1df3eb334b275c2b6127c3dc313e81e2fb8",
+    "size": 5410816
+  }
+}

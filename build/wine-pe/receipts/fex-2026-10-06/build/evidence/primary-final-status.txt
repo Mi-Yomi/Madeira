@@ -1,0 +1,10 @@
+?? .github/ci/__pycache__/
+?? build/app-ios/__pycache__/
+?? build/dxmt-ios/__pycache__/
+?? build/i386-native-contract/__pycache__/
+?? build/llvm-ios/__pycache__/
+?? build/madeira-dock/__pycache__/
+?? tests/desktop/llvm_sdk/__pycache__/
+?? tests/desktop/mesa_wgl/__pycache__/
+?? tests/desktop/msi_wow64/__pycache__/
+?? tests/host/__pycache__/

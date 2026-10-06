@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "scope": "reviewed-source-and-host-tests-only",
+  "base_revision": "6406b09801026e7211b9f9e26d4f526327eb8c2b",
+  "checkout": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guard-integration-20261006",
+  "patch": {
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guard-source-review-20261006/madeira-fex-guards-source.patch",
+    "sha256": "dbd67ddae59bebf38dde4e4c417f9ad2cd2a1ce8688b93f0108efa683d0f1c51",
+    "size_bytes": 336106
+  },
+  "source_repair_manifest_sha256": "8ece9467d4bd9a00aa051336f1fc73654f907b15a91ba728ca7cff39226bfd1f",
+  "changed_files": {
+    ".gitattributes": {
+      "sha256": "9c56fe78a43c2c888a532d4c4b8ff6712dc7e665b4203feaea8897575c724e23",
+      "size_bytes": 921
+    },
+    ".github/ci/README.md": {
+      "sha256": "7fd2f712941cd4bcaa682d9714642ed0d668d2cb363cd7c1358165beb12ae8c2",
+      "size_bytes": 7108
+    },
+    ".github/workflows/desktop-compatibility.yml": {
+      "sha256": "8c5028079f42e9fddb3e0e0f6326748de7178e50cb68fe6e500f8a0041bef911",
+      "size_bytes": 6569
+    },
+    "THIRD-PARTY-NOTICES.md": {
+      "sha256": "1324958b9de78e66007881470489584c3e76000705f337317f6037d2a4cabaac",
+      "size_bytes": 16160
+    },
+    "build/fex-arm64ec/build.sh": {
+      "sha256": "ccba785bb9b6672ffdc72ad27d01a94f3e6dbc35fd0ab34e25a38382d0fb5d65",
+      "size_bytes": 1767
+    },
+    "build/fex-ios/README.md": {
+      "sha256": "b5a401a6f623492f947aa46c8ac5520c44820d1978ba40fcebb8b122fd26cf05",
+      "size_bytes": 13730
+    },
+    "build/fex-ios/check-pe-configuration.py": {
+      "sha256": "421171af75e3c8ebaa02059a7c33805d9243314af14d027e71e09c08c00bb2aa",
+      "size_bytes": 6265
+    },
+    "build/fex-ios/patches/0005-wow64-smc-write-fault-only.patch": {
+      "sha256": "9b96e5c5d88ceb39d59914b5eb5b164c9f29eeec3965b152885b1f6898ac53df",
+      "size_bytes": 2127
+    },
+    "build/fex-ios/patches/0006-arm64ec-require-jit-rw-alias.patch": {
+      "sha256": "487a848f22160680508aa53d4b0e3d806884f76a4229f5f262a9df158b3e7397",
+      "size_bytes": 2733
+    },
+    "build/fex-ios/patches/playport/NOTICE.md": {
+      "sha256": "631416301696f2a84e1449e44daf603e9fc004632b19f662697fddd72476f572",
+      "size_bytes": 2378
+    },
+    "build/fex-ios/patches/playport/PLAYPORT-LICENSE": {
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195",
+      "size_bytes": 35150
+    },
+    "build/fex-ios/patches/playport/PLAYPORT-LICENSE-EXCEPTION.md": {
+      "sha256": "4ab630ac8c8f8c5874d9fbb27e1c09f961aa1aeb00d7b2beec2f97f4c67e5576",
+      "size_bytes": 4319
+    },
+    "build/fex-ios/source-repairs.json": {
+      "sha256": "8ece9467d4bd9a00aa051336f1fc73654f907b15a91ba728ca7cff39226bfd1f",
+      "size_bytes": 2962
+    },
+    "build/fex-wow64/build.sh": {
+      "sha256": "a586d55ef37c21aabf0dcacb1f4ef2212a9d067fa97ada9bbbd776a9a4d79f16",
+      "size_bytes": 1748
+    },
+    "build/i386-native-contract/contract.json": {
+      "sha256": "eaec5455ead6b9e388fc40e7ec20b22303199f355890a887a5d4f5fe218b07f0",
+      "size_bytes": 5426
+    },
+    "docs/BUILDING.md": {
+      "sha256": "78588de84eaa3529011762ddca411f0811ce48a50fd772de4e2e29e20035fa50",
+      "size_bytes": 17968
+    },
+    "docs/LICENSING.md": {
+      "sha256": "2c709722bdfcb3360ef02353c01ec3d0dbecc53612a4b643359c87254aefe6de",
+      "size_bytes": 8015
+    },
+    "tests/host/check-fex-arm64ec-jit-rw-alias.py": {
+      "sha256": "c7fd521091147deabf96219038f1342bd81a5572c3f93006bd425ffd463ce20c",
+      "size_bytes": 8327
+    },
+    "tests/host/check-fex-pe-configuration.py": {
+      "sha256": "acd8ff578ffb84da9777ec3976d55cf5738e38ed445b06c7c30d849afd9c798d",
+      "size_bytes": 12139
+    },
+    "tests/host/check-fex-source-repairs.py": {
+      "sha256": "7594be0eaa45ba29cf5183e7fa87380ede9373e5356e619ea1d42b79fc9634b1",
+      "size_bytes": 42196
+    },
+    "tests/host/check-fex-wow64-smc-write-fault.py": {
+      "sha256": "c8b6f526cf254bcec0e39c3ed40dea073f0e176e9ae30a636ae37d3709a03723",
+      "size_bytes": 6716
+    },
+    "tests/host/fex_guard_test_support.py": {
+      "sha256": "5d3a8dd476d59a1d036191354deb0ab382fdb392630c6da697632edb350ea3e9",
+      "size_bytes": 4757
+    },
+    "tests/host/fixtures/fex-pe/ARM64EC/Module.cpp": {
+      "sha256": "f929af53a002a8186ba92e81cac401f7db1fa7432083f88f5d55b656fe7623be",
+      "size_bytes": 108367
+    },
+    "tests/host/fixtures/fex-pe/README.md": {
+      "sha256": "3b8ff9393e5dfb34278006e9a9b38e39bd29e465856427ae3073339167c3b24d",
+      "size_bytes": 1332
+    },
+    "tests/host/fixtures/fex-pe/WOW64/Module.cpp": {
+      "sha256": "2ad9b8407cdeed0d0803cf5a3b8269b6c6c3561cb0e6a0fae8495228a7973e5e",
+      "size_bytes": 100397
+    },
+    "tests/host/fixtures/fex-pe/provenance.json": {
+      "sha256": "9a5e3edd442d5a4f9b6ce082cd00931c826d91940fe0843f97d70f14dbfae6ef",
+      "size_bytes": 957
+    }
+  },
+  "tracked_dlls_changed": false,
+  "source_pins_changed": false,
+  "farm_seals_changed": false,
+  "native_contract_change": "Only the source-repair manifest SHA-256 changed; fresh native build/provenance/captures are required.",
+  "pe_build_limitation": "These scripts were configuration/failure tested; full matched pin+3/pin+5 PE builds were independently made under the 6406b098 base, not rebuilt from this integration diff. No staging or device execution performed here."
+}

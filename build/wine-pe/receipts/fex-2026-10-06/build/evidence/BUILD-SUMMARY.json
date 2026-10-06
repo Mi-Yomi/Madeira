@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "status": "local-build-and-static-audit-passed",
+  "runtime_tested": false,
+  "primary_staged": false,
+  "parent_revision": "6406b09801026e7211b9f9e26d4f526327eb8c2b",
+  "fex_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "existing_repairs_manifest_sha256": "e96b2afe2a2919e8a879f9ce7660c8c1b5916b5f8650cf4ddff037ba1eede0a9",
+  "proposed_five_repairs_manifest_sha256": "8ece9467d4bd9a00aa051336f1fc73654f907b15a91ba728ca7cff39226bfd1f",
+  "targets": {
+    "arm64ec": {
+      "shipped_sha256": "38b68f69909aea0dae3ce88934936275e9415accf22fc0823568eda244962b07",
+      "destination_after_separate_review": "/workspace/scratch/94ffb2b0bb2d/madeira-graphics-bootstrap/app/Madeira/arm64ec-windows/xtajit64.dll",
+      "baseline": {
+        "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-baseline/Bin/libarm64ecfex.dll",
+        "sha256": "c32578766cd125bb6a53539b11006d9f66948f92f3614d5c05e2755974e623ce",
+        "size": 5410816,
+        "build_seconds": 81.45799946784973,
+        "raw_machine": "0x8664",
+        "detected_architecture": "arm64ec",
+        "normalized_llvm_machine": "0xa641",
+        "imports_exports_identical_to_shipped": true,
+        "symbol_audit_passed": true,
+        "symbol_counts": {
+          "checked_export_forwarders": 0,
+          "checked_import_symbols": 211,
+          "exports": 30
+        },
+        "resolved_api_set_uses": 98,
+        "guest_window": false
+      },
+      "patched": {
+        "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/Bin/libarm64ecfex.dll",
+        "sha256": "4c508cea3d7fd66cee756ba08098c1df3eb334b275c2b6127c3dc313e81e2fb8",
+        "size": 5410816,
+        "build_seconds": 80.31198406219482,
+        "raw_machine": "0x8664",
+        "detected_architecture": "arm64ec",
+        "normalized_llvm_machine": "0xa641",
+        "imports_exports_identical_to_shipped": true,
+        "symbol_audit_passed": true,
+        "symbol_counts": {
+          "checked_export_forwarders": 0,
+          "checked_import_symbols": 211,
+          "exports": 30
+        },
+        "resolved_api_set_uses": 98,
+        "guest_window": false
+      }
+    },
+    "wow64": {
+      "shipped_sha256": "682ed22a3e60aff6f0bca8d5d62ec59bc67a2330dd318b70937174244c5c3cb6",
+      "destination_after_separate_review": "/workspace/scratch/94ffb2b0bb2d/madeira-graphics-bootstrap/app/Madeira/aarch64-windows/xtajit.dll",
+      "baseline": {
+        "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-wow64-baseline/Bin/libwow64fex.dll",
+        "sha256": "4773b1cafc3e343c0623ac56a53a7a1025a348b9845eccc08248c20793e1785c",
+        "size": 4857856,
+        "build_seconds": 82.3615198135376,
+        "raw_machine": "0xaa64",
+        "detected_architecture": "aarch64",
+        "normalized_llvm_machine": "0xaa64",
+        "imports_exports_identical_to_shipped": true,
+        "symbol_audit_passed": true,
+        "symbol_counts": {
+          "checked_export_forwarders": 0,
+          "checked_import_symbols": 216,
+          "exports": 24
+        },
+        "resolved_api_set_uses": 96,
+        "guest_window": true
+      },
+      "patched": {
+        "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-wow64-patched/Bin/libwow64fex.dll",
+        "sha256": "6c1e397f10c4bfbc7e4abc1eca97f2aba207dbbc301f01df7a089430b1ac830e",
+        "size": 4857856,
+        "build_seconds": 81.43676805496216,
+        "raw_machine": "0xaa64",
+        "detected_architecture": "aarch64",
+        "normalized_llvm_machine": "0xaa64",
+        "imports_exports_identical_to_shipped": true,
+        "symbol_audit_passed": true,
+        "symbol_counts": {
+          "checked_export_forwarders": 0,
+          "checked_import_symbols": 216,
+          "exports": 24
+        },
+        "resolved_api_set_uses": 96,
+        "guest_window": true
+      }
+    }
+  }
+}

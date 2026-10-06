@@ -66,6 +66,9 @@ python3 tests/host/check-native-bootstrap-artifacts.py
 python3 tests/host/check-native-bootstrap-workflow.py
 python3 tests/host/check-native-bootstrap-scripts.py
 python3 tests/host/check-fex-source-repairs.py
+python3 tests/host/check-fex-wow64-smc-write-fault.py
+python3 tests/host/check-fex-arm64ec-jit-rw-alias.py
+python3 tests/host/check-fex-pe-configuration.py
 python3 tests/host/check-fex-native-object.py
 python3 tests/host/check-fex-cmake-layout.py # requires installed CMake, Ninja and host C++ compiler
 python3 tests/host/check-metal-toolchain-setup.py

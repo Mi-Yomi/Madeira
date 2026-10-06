@@ -1,0 +1,50 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: The Playport authors <dev@playport.dev>
+Date: Mon, 28 Sep 2026 05:28:24 +0200
+Subject: [PATCH] ARM64EC: fail iOS initialization without a nonzero JIT alias offset
+
+Backport the fail-closed behavior from Playport v0.3.3 patches/fex/0007.
+The existing iOS branch logs a fatal zero RW-to-RX offset, then continues
+into InitCore, which emits the dispatcher. Return STATUS_UNSUCCESSFUL
+before that emission rather than relying on trap-mode replay of stores.
+
+Keep the existing environment parsing, offset calculation, valid-alias
+branch, and non-iOS behavior. This adds no pool-size requirement, new
+alias backend, mapping validation, or runtime policy switch. Adapt the error
+diagnostic to a fixed-size string: no environment-dependent snprintf return
+value is passed to WriteFile in the failing branch.
+
+Source: https://github.com/playportdev/playport/blob/e962e9b75b04503dfbf476e76cb7264d19368ed2/patches/fex/0007-ARM64EC-refuse-to-start-on-iOS-without-the-JIT-pool-.patch
+Base-commit: 1adb337a2f2270434ba731346438c072337a5d5f
+Original-author: The Playport authors <dev@playport.dev>
+Playport-contribution-license: GPL-3.0-or-later with the additional permission in Playport LICENSE-EXCEPTION.md
+License-source: https://github.com/playportdev/playport/blob/e962e9b75b04503dfbf476e76cb7264d19368ed2/docs/LICENSING.md
+Upstream-file-license: MIT; unchanged for the existing FEX source
+Class: upstream-bug
+Offered-upstream: no
+---
+ Source/Windows/ARM64EC/Module.cpp | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1044,10 +1044,12 @@
+           (unsigned long long)off, (unsigned long long)rw, (unsigned long long)rx);
+       if (stderr_h) { ULONG w = 0; WriteFile(stderr_h, buf, n, &w, nullptr); }
+     } else {
+-      int n = snprintf(buf, sizeof(buf),
+-          "[FEX-iOS] FATAL: WINE_IOS_JIT_RW/RX missing (RW=%s RX=%s) — JIT pool writes will corrupt!\n",
+-          rw_env ? rw_env : "(null)", rx_env ? rx_env : "(null)");
+-      if (stderr_h) { ULONG w = 0; WriteFile(stderr_h, buf, n, &w, nullptr); }
++      // Playport: fail before InitCore emits JIT stores through a zero alias offset.
++      // Keep the diagnostic bounded even when an environment value is malformed.
++      static constexpr char message[] =
++          "[FEX-iOS] FATAL: JIT RW/RX aliases missing or equal; refusing to start\n";
++      if (stderr_h) { ULONG w = 0; WriteFile(stderr_h, message, sizeof(message) - 1, &w, nullptr); }
++      return STATUS_UNSUCCESSFUL;
+     }
+   }
+ #endif
+-- 
+2.39.5

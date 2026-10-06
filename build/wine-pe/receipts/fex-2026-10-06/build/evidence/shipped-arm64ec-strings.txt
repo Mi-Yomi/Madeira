@@ -1,0 +1,29 @@
+[FEX-iOS] DispatcherPatch DONE.0
+WINE_IOS_JIT_RX
+WINE_IOS_JIT_SIZE
+WINE_IOS_JIT_RW
+[atomic-alias] LIVE: WINE_IOS_JIT_RX={} SIZE={} RW={} -- atomics whose target lands in the pool's RX alias get redirected to RX+WriteOffset
+[FEX-iOS] fast-write ENABLED (WriteOffset=0x%llx RW=0x%llx RX=0x%llx)
+[FEX-iOS] FATAL: WINE_IOS_JIT_RW/RX missing (RW=%s RX=%s) 
+[FEX-iOS] ThreadInit() entered
+[FEX-iOS] TI:lock
+[FEX-iOS] TI:crt
+[FEX-iOS] TI:stack
+[FEX-iOS] ThreadInit: thread state unavailable -- unwinding thread {:#x} and returning STATUS_NO_MEMORY
+[FEX-iOS] TI:createthread
+[FEX-iOS] FATAL: gs_cached STILL 0 after IOSLoadTEB!
+[FEX-iOS] ThreadInit: call-ret stack unavailable (band [{:#x},{:#x}]) -- unwinding thread {:#x} and returning STATUS_NO_MEMORY
+[FEX-iOS] TI:callret
+[FEX-iOS] DispatcherPatch: EnterEC=
+[FEX-iOS]   scan-patched broken sites: count=
+[FEX-iOS]   scan-skipped already-ok pair-0 sites: count=
+[FEX-iOS] ThreadInit() done: EmulatorData[0]=0x
+[TI-IC] THREADSTATE ALLOC FAILED: {} bytes, {} alignment -- the emulator address band is exhausted; refusing to start this thread
+WINE_IOS_JIT_RX
+WINE_IOS_JIT_SIZE
+[fexlock] UNPUB-COMPILE bail: buffer full, refusing swap mid-delivery rev=ml455
+WINE_IOS_JIT_RX
+WINE_IOS_JIT_SIZE
+[FEX-iOS] Logging::Init installing MsgHandler
+ProcessInit
+#ProcessInit

@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Playport <dev@playport.invalid>
+Date: Sun, 4 Oct 2026 07:59:22 +0200
+Subject: [PATCH] WOW64: offer only write faults to the SMC invalidation tracker
+
+Adapt Playport v0.3.3 patches/fex/0020 to willfaust/FEX at the pinned
+Madeira commit. The tracker removes write permission, retaining read
+access. A read fault within a tracked RWX interval is not an SMC fault;
+claiming it as handled may retry an uncommitted read indefinitely.
+
+Preserve this target's host-space FaultAddress. Unlike the Playport
+source, this target already receives host addresses from wow64.dll.
+No window address translation, dispatch default, or submodule pin changes.
+
+Source: https://github.com/playportdev/playport/blob/e962e9b75b04503dfbf476e76cb7264d19368ed2/patches/fex/0020-WOW64-leave-a-guest-s-read-fault-in-an-RWX-interval-.patch
+Base-commit: 1adb337a2f2270434ba731346438c072337a5d5f
+Original-author: Playport <dev@playport.invalid>
+Playport-contribution-license: GPL-3.0-or-later with the additional permission in Playport LICENSE-EXCEPTION.md
+License-source: https://github.com/playportdev/playport/blob/e962e9b75b04503dfbf476e76cb7264d19368ed2/docs/LICENSING.md
+Upstream-file-license: MIT; unchanged for the existing FEX source
+Class: ios-port
+Offered-upstream: no
+---
+ Source/Windows/WOW64/Module.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/Source/Windows/WOW64/Module.cpp b/Source/Windows/WOW64/Module.cpp
+--- a/Source/Windows/WOW64/Module.cpp
++++ b/Source/Windows/WOW64/Module.cpp
+@@ -1861,7 +1861,9 @@
+       return true;
+     }
+ 
+-    if (Thread) {
++    // Playport: SMC protection leaves pages readable; only writes can be its traps.
++    // Leave read/execute access violations for normal guest exception delivery.
++    if (Thread && Exception->ExceptionInformation[0] == EXCEPTION_WRITE_FAULT) {
+       std::scoped_lock Lock(ThreadCreationMutex);
+       FEXCORE_PROFILE_INSTANT_INCREMENT(Thread, AccumulatedSMCCount, 1);
+       if (InvalidationTracker->HandleRWXAccessViolation(Thread, Context->Pc, FaultAddress)) {
+-- 
+2.39.5

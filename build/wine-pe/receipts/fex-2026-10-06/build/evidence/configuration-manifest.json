@@ -1,0 +1,22 @@
+{
+  "arm64ec-baseline": {
+    "CMakeCache.txt": "590a81154b503e123467d3d3fc2d390c5342e5736a0f7e0dd416e2c659544b5e",
+    "compile_commands.json": "cd6c3730a400157ef136670ce4cdf8921be82bdeb42211c616843516ea3637c4",
+    "generator_guest_window": false
+  },
+  "arm64ec-patched": {
+    "CMakeCache.txt": "0a21dd55370582957afbb57cb1dd2d85b04b2873d9d2844512550dc48faead4d",
+    "compile_commands.json": "370419206a29aa1e8000f245540032f72b367c79e7ea7d971d38e4c19a7ad9ba",
+    "generator_guest_window": false
+  },
+  "wow64-baseline": {
+    "CMakeCache.txt": "cfde784ab32c88598b2e601322b5fe0404a823bd35d12c1dfd19b148cc060050",
+    "compile_commands.json": "6885498b2c80aefdc0492eb7f84eae035203909ed1ff7b32a900734b98768ec7",
+    "generator_guest_window": true
+  },
+  "wow64-patched": {
+    "CMakeCache.txt": "703569750520659d9bb98d2c8a7b360b1885903b3e7d5d20a2d7f81a71286a09",
+    "compile_commands.json": "183c5bffe70db5cb1ce4c95e2143782f1de163f80f0a53257841b226c17a45db",
+    "generator_guest_window": true
+  }
+}

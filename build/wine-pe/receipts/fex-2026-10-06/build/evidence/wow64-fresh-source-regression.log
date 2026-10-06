@@ -1,0 +1,11 @@
+baseline gate: Thread
+baseline call: InvalidationTracker->HandleRWXAccessViolation(Thread, Context->Pc, FaultAddress)
+wrong SMC routing: kind=0 thread=1 host=10203040 handled=1 calls=1
+wrong SMC routing: kind=0 thread=1 host=7123456780 handled=1 calls=1
+wrong SMC routing: kind=8 thread=1 host=10203040 handled=1 calls=1
+wrong SMC routing: kind=8 thread=1 host=7123456780 handled=1 calls=1
+12 extracted-production cases; failures=4
+patched gate: Thread && Exception->ExceptionInformation[0] == EXCEPTION_WRITE_FAULT
+patched call: InvalidationTracker->HandleRWXAccessViolation(Thread, Context->Pc, FaultAddress)
+12 extracted-production cases; failures=0
+PASS: baseline reproduced read/execute misrouting; patched gate passed all 12 cases

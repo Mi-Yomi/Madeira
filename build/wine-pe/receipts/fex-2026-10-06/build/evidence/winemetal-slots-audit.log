@@ -1,0 +1,5 @@
+Unadapted Playport check: 151 slots, 146 calls, 39 name mismatches
+Target-normalized check: 151 slots, 146 calls, 0 mismatches
+Mutation test: native slot swap is rejected by both table and thunk comparisons
+Mutation test: WOW64-only slot swap is rejected
+PASS: pinned-source slot order and thunk names agree after target-specific normalization

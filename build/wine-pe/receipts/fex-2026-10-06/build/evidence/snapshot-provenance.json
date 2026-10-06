@@ -1,0 +1,44 @@
+[
+  {
+    "repository_full_name": "willfaust/FEX",
+    "ref": "1adb337a2f2270434ba731346438c072337a5d5f",
+    "path": "Source/Windows/ARM64EC/Module.cpp",
+    "git_blob_sha1": "fbaf76f115c51cc1ed40152936a03553bbe409e7",
+    "url": "https://github.com/willfaust/FEX/blob/1adb337a2f2270434ba731346438c072337a5d5f/Source/Windows/ARM64EC/Module.cpp"
+  },
+  {
+    "repository_full_name": "willfaust/FEX",
+    "ref": "1adb337a2f2270434ba731346438c072337a5d5f",
+    "path": "Source/Windows/WOW64/Module.cpp",
+    "git_blob_sha1": "6732edc7860d21c482dceb53cfb3e29444cc64e8",
+    "url": "https://github.com/willfaust/FEX/blob/1adb337a2f2270434ba731346438c072337a5d5f/Source/Windows/WOW64/Module.cpp"
+  },
+  {
+    "repository_full_name": "willfaust/dxmt",
+    "ref": "020a848080b861266e04fc0e5f7f6d921614037c",
+    "path": "src/winemetal/unix/winemetal_unix.c",
+    "git_blob_sha1": "8cf497d1ce349cac862954a703fd412d1eafc9a0",
+    "url": "https://github.com/willfaust/dxmt/blob/020a848080b861266e04fc0e5f7f6d921614037c/src/winemetal/unix/winemetal_unix.c"
+  },
+  {
+    "repository_full_name": "willfaust/dxmt",
+    "ref": "020a848080b861266e04fc0e5f7f6d921614037c",
+    "path": "src/winemetal/winemetal_thunks.c",
+    "git_blob_sha1": "c473702dc8499b2da63f04e0c160a8cdf3119b6c",
+    "url": "https://github.com/willfaust/dxmt/blob/020a848080b861266e04fc0e5f7f6d921614037c/src/winemetal/winemetal_thunks.c"
+  },
+  {
+    "repository_full_name": "willfaust/dxmt",
+    "ref": "020a848080b861266e04fc0e5f7f6d921614037c",
+    "path": "src/winemetal/airconv_thunks.c",
+    "git_blob_sha1": "061143d54622a0f30e15c26f490263a74a76eb0c",
+    "url": "https://github.com/willfaust/dxmt/blob/020a848080b861266e04fc0e5f7f6d921614037c/src/winemetal/airconv_thunks.c"
+  },
+  {
+    "repository_full_name": "willfaust/dxmt",
+    "ref": "020a848080b861266e04fc0e5f7f6d921614037c",
+    "path": "src/winemetal/airconv_thunks.h",
+    "git_blob_sha1": "4b16e353e6b886cfa596bfd942c79e3d3c4bad1b",
+    "url": "https://github.com/willfaust/dxmt/blob/020a848080b861266e04fc0e5f7f6d921614037c/src/winemetal/airconv_thunks.h"
+  }
+]

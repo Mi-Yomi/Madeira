@@ -1,0 +1,24 @@
+{
+  "architecture": "wow64",
+  "phase": "baseline",
+  "argv": [
+    "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-tools/cmake/data/bin/cmake",
+    "--build",
+    "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-wow64-baseline",
+    "--parallel",
+    "2",
+    "--target",
+    "wow64fex",
+    "--verbose"
+  ],
+  "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006",
+  "module_source_sha256": "2ad9b8407cdeed0d0803cf5a3b8269b6c6c3561cb0e6a0fae8495228a7973e5e",
+  "exit_code": 0,
+  "elapsed_seconds": 82.3615198135376,
+  "log": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/evidence/wow64-baseline-full-build.log",
+  "dll": {
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-wow64-baseline/Bin/libwow64fex.dll",
+    "sha256": "4773b1cafc3e343c0623ac56a53a7a1025a348b9845eccc08248c20793e1785c",
+    "size": 4857856
+  }
+}

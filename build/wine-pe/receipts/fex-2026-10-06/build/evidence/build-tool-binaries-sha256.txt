@@ -1,0 +1,3 @@
+57452fa01ed0f69552c06d3e25edd0d9375347b982dfb709393526cb45396d6b  ../build-tools/cmake/data/bin/cmake
+eb408127882193c07fe3a32523009ad14d788dc867092840199d533de799f273  /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/clang
+1fe703341291deb7941bf53bfa859c89696e94d816431ad027841bb31ffb71ea  /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/ld.lld

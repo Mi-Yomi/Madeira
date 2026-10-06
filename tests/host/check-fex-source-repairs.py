@@ -70,8 +70,33 @@ class FEXSourceRepairTests(unittest.TestCase):
             b"  # Core drains rpmalloc diagnostics only when their real provider is linked.\n"
             b"  set_property(SOURCE Interface/Core/Core.cpp APPEND PROPERTY COMPILE_DEFINITIONS ENABLE_FEX_ALLOCATOR=1)\n")
         self.cmake_target.write_bytes(self.cmake_original)
+        # Full pinned Module.cpp snapshots keep the PE repair inputs disjoint
+        # and retain the production manifest hashes (no test hash substitution).
+        self.pe_sources = []
+        for repair in self.spec["repairs"][3:]:
+            entry, = repair["files"]
+            target = self.source / entry["path"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            fixture = FIXTURE.parent / "fex-pe" / Path(entry["path"]).relative_to("Source/Windows")
+            original = fixture.read_bytes()
+            self.assertEqual(module.sha256(original), entry["original_sha256"])
+            target.write_bytes(original)
+            self.pe_sources.append([repair, entry, target, original, None])
         (self.source / ".gitignore").write_text("/build-ios/\n")
         subprocess.run(["git", "init", "-q", str(self.source)], check=True)
+        for row in self.pe_sources:
+            repair, entry, target, original, _ = row
+            self.git("apply", "--check", str(ROOT / repair["patch"]))
+            self.git("apply", str(ROOT / repair["patch"]))
+            row[4] = target.read_bytes()
+            self.assertEqual(module.sha256(row[4]), entry["patched_sha256"])
+            target.write_bytes(original)
+        self.all_sources = [
+            (self.target, self.original, self.patched),
+            (self.caspal_target, self.caspal_original, self.caspal_patched),
+            (self.cmake_target, self.cmake_original, self.cmake_patched),
+            *((row[2], row[3], row[4]) for row in self.pe_sources),
+        ]
         self.git("add", ".")
         self.git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
                  "-c", "commit.gpgsign=false", "commit", "-qm", "Pinned source fixture")
@@ -95,7 +120,7 @@ class FEXSourceRepairTests(unittest.TestCase):
         return subprocess.check_output(["git", "-C", str(self.source), *args], stderr=subprocess.PIPE)
 
     def reject(self, message):
-        before = {path: path.read_bytes() for path in (self.target, self.caspal_target, self.cmake_target)}
+        before = {path: path.read_bytes() for path, _, _ in self.all_sources}
         record = self.source / module.RECORD
         previous_record = record.read_bytes() if record.exists() else None
         with self.assertRaisesRegex(ValueError, message):
@@ -173,7 +198,9 @@ class FEXSourceRepairTests(unittest.TestCase):
         self.assertEqual(self.caspal_target.read_bytes(), self.caspal_patched)
         self.assertEqual(self.cmake_target.read_bytes(), self.cmake_patched)
         self.assertEqual(self.git("diff", "--name-only").decode().splitlines(),
-                         sorted([self.entry["path"], self.caspal_entry["path"], self.cmake_entry["path"]]))
+                         sorted(str(path.relative_to(self.source)) for path, _, _ in self.all_sources))
+        for path, _, patched in self.all_sources:
+            self.assertEqual(path.read_bytes(), patched)
 
     def test_upgrade_exact_previous_repaired_core(self):
         self.target.write_bytes(self.previous_patched)
@@ -587,6 +614,8 @@ int main() {
                 module.apply(self.source)
         self.assertEqual(self.target.read_bytes(), self.original)
         self.assertEqual(self.caspal_target.read_bytes(), self.caspal_original)
+        for path, original, _ in self.all_sources:
+            self.assertEqual(path.read_bytes(), original)
         self.assertFalse(record.exists())
 
     def test_post_provenance_failure_restores_prior_repair_and_record(self):
@@ -658,6 +687,115 @@ int main() {
         record.parent.unlink()
         record.parent.write_text("not a directory\n")
         self.reject("provenance must be a regular file")
+
+
+    def test_upgrade_three_existing_repairs_to_five_is_idempotent(self):
+        complete = self.spec["repairs"]
+        self.spec["repairs"] = complete[:3]
+        module.apply(self.source)
+        for _, _, target, original, _ in self.pe_sources:
+            self.assertEqual(target.read_bytes(), original)
+        self.spec["repairs"] = complete
+        module.apply(self.source)
+        record = (self.source / module.RECORD).read_bytes()
+        module.apply(self.source)
+        self.assertEqual((self.source / module.RECORD).read_bytes(), record)
+        self.assertEqual(json.loads(record), self.spec)
+        for path, _, patched in self.all_sources:
+            self.assertEqual(path.read_bytes(), patched)
+
+    def test_preapplied_pe_guard_keeps_other_repairs_applicable(self):
+        for _, _, target, original, patched in self.pe_sources:
+            with self.subTest(path=target):
+                for path, original_bytes, _ in self.all_sources:
+                    path.write_bytes(original_bytes)
+                target.write_bytes(patched)
+                module.apply(self.source)
+                for path, _, expected in self.all_sources:
+                    self.assertEqual(path.read_bytes(), expected)
+
+    def test_each_pe_guard_hash_and_patch_preflight_precedes_all_writes(self):
+        for repair, entry, target, original, patched in self.pe_sources:
+            with self.subTest(path=entry["path"]):
+                target.write_bytes(original + b"// unknown PE source edit\n")
+                self.reject("working source hash")
+                target.write_bytes(patched + b"// unknown PE repaired edit\n")
+                self.reject("working source hash")
+                target.write_bytes(original)
+                patch = self.root / repair["patch"]
+                old_patch = patch.read_bytes()
+                patch.write_bytes(old_patch + b"\n")
+                self.reject("patch hash mismatch")
+                patch.write_bytes(old_patch)
+                old_hash = entry["patched_sha256"]
+                entry["patched_sha256"] = "0" * 64
+                self.reject("repaired source hash mismatch")
+                entry["patched_sha256"] = old_hash
+
+    def test_each_pe_guard_staged_edit_hidden_by_revert_rejected(self):
+        for _, entry, target, original, _ in self.pe_sources:
+            with self.subTest(path=entry["path"]):
+                target.write_bytes(original + b"// staged PE edit\n")
+                self.git("add", entry["path"])
+                target.write_bytes(original)
+                staged = self.git("diff", "--cached")
+                self.reject("staged FEX source modifications")
+                self.assertEqual(self.git("diff", "--cached"), staged)
+                self.git("reset", "-q", "HEAD", "--", entry["path"])
+
+    def test_second_pe_patch_failure_preserves_three_repairs_and_record(self):
+        complete = self.spec["repairs"]
+        self.spec["repairs"] = complete[:3]
+        module.apply(self.source)
+        self.spec["repairs"] = complete
+        real_git = module.git
+        before = {path: path.read_bytes() for path, _, _ in self.all_sources}
+        record = (self.source / module.RECORD).read_bytes()
+        def fail_last(source, *args):
+            if args[:2] == ("apply", "--check") and Path(args[-1]).name == "4.patch":
+                raise subprocess.CalledProcessError(1, "git apply --check", stderr=b"last PE repair mismatch")
+            return real_git(source, *args)
+        with mock.patch.object(module, "git", side_effect=fail_last):
+            with self.assertRaises(subprocess.CalledProcessError):
+                module.apply(self.source)
+        for path, data in before.items():
+            self.assertEqual(path.read_bytes(), data)
+        self.assertEqual((self.source / module.RECORD).read_bytes(), record)
+
+    def test_each_pe_source_write_failure_restores_all_five_inputs(self):
+        real_write = module.atomic_write
+        for _, _, failing_target, original, patched in self.pe_sources:
+            with self.subTest(path=failing_target):
+                def fail_pe(target, data):
+                    if target == failing_target and data == patched:
+                        raise OSError("injected PE source write failure")
+                    real_write(target, data)
+                with mock.patch.object(module, "atomic_write", side_effect=fail_pe):
+                    with self.assertRaisesRegex(OSError, "PE source write failure"):
+                        module.apply(self.source)
+                for path, expected, _ in self.all_sources:
+                    self.assertEqual(path.read_bytes(), expected)
+                self.assertFalse((self.source / module.RECORD).exists())
+        module.apply(self.source)
+        for path, _, patched in self.all_sources:
+            self.assertEqual(path.read_bytes(), patched)
+
+    def test_pe_guard_rollback_preserves_concurrent_edit(self):
+        real_write = module.atomic_write
+        _, _, wow_target, _, wow_patched = self.pe_sources[0]
+        _, _, ec_target, _, _ = self.pe_sources[1]
+        concurrent = wow_patched + b"// concurrent PE edit\n"
+        def fail_after_pe_write(target, data):
+            if target == ec_target:
+                wow_target.write_bytes(concurrent)
+                raise OSError("injected last source failure")
+            real_write(target, data)
+        with mock.patch.object(module, "atomic_write", side_effect=fail_after_pe_write):
+            with self.assertRaisesRegex(ValueError, "rollback incomplete:.*changed concurrently"):
+                module.apply(self.source)
+        for path, original, _ in self.all_sources:
+            self.assertEqual(path.read_bytes(), concurrent if path == wow_target else original)
+        self.assertFalse((self.source / module.RECORD).exists())
 
 
 if __name__ == "__main__":

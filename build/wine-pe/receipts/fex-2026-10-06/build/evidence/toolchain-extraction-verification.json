@@ -1,0 +1,29 @@
+{
+  "archive": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64.tar.xz",
+  "archive_sha256": "f8b8cce779affeab47bcaec6ce6e9e768b166094a366123ef64b2d0b389cc121",
+  "requested_tools": {
+    "bin/clang-22": "bin/clang-22",
+    "bin/lld": "bin/lld",
+    "bin/llvm-readobj": "bin/llvm-readobj",
+    "bin/llvm-dlltool": "bin/llvm-ar",
+    "bin/llvm-ar": "bin/llvm-ar"
+  },
+  "verified_files": {
+    "bin/clang-22": {
+      "sha256": "eb408127882193c07fe3a32523009ad14d788dc867092840199d533de799f273",
+      "matches_official_archive": true
+    },
+    "bin/lld": {
+      "sha256": "1fe703341291deb7941bf53bfa859c89696e94d816431ad027841bb31ffb71ea",
+      "matches_official_archive": true
+    },
+    "bin/llvm-ar": {
+      "sha256": "9952771e39db50c529c9576bc97d3777060f390128804b77ac6643f7efe5ead6",
+      "matches_official_archive": true
+    },
+    "bin/llvm-readobj": {
+      "sha256": "274a70238b165bbc79a92d8a64ee0c45a2feac915372d4e62f4957c5a584b90f",
+      "matches_official_archive": true
+    }
+  }
+}

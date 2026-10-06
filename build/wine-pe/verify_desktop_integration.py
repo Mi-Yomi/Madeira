@@ -18,6 +18,7 @@ import verify_msi_integration as msi
 import verify_loader_integration as loader
 import verify_msi_client_integration as client
 import verify_msi_startup_integration as startup
+import verify_fex_integration as fex
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORD = "build/wine-pe/desktop-integration.json"
@@ -45,7 +46,7 @@ def wine_gitlink(root):
                     "Current Wine gitlink differs from the reviewed desktop source")
 
 
-def validate_farms(root, stage, msi_extension=None, loader_extension=None):
+def validate_farms(root, stage, msi_extension=None, loader_extension=None, fex_extension=None):
     """Rebind existing same-architecture inputs before trusting the old audit."""
     counts = {}
     for arch in planner.ARCHES:
@@ -67,6 +68,11 @@ def validate_farms(root, stage, msi_extension=None, loader_extension=None):
             old = client.bind_reports(msi_extension["client"], old, arch)
             if msi_extension["client"].get("startup") is not None:
                 old = startup.bind_reports(msi_extension["client"]["startup"], old, arch)
+        if fex_extension is not None:
+            planner.require(msi_extension and msi_extension.get("client") and
+                            msi_extension["client"].get("startup"),
+                            "FEX requires all reviewed historical farm layers")
+            old = fex.bind_reports(fex_extension, old, arch)
         expected = old["modules"]
         paths = {}
         for path in planner.children(farm, inventory.MAX_FARM_FILES):
@@ -148,7 +154,8 @@ def validate(root, resources, tracked):
     # arbitrary additions still fail the exact combined farm inventory check.
     extension = msi.validate(root, resources, tracked) if msi.present(root) else None
     loader_extension = loader.validate(root, resources, tracked) if loader.present(root) else None
-    counts = validate_farms(root, stage, extension, loader_extension)
+    fex_extension = fex.validate(root, resources, tracked) if fex.present(root) else None
+    counts = validate_farms(root, stage, extension, loader_extension, fex_extension)
     planner.require(record.get("residual_dependency_counts") == msi.BASELINE_COUNTS and
                     counts == (msi.RESIDUAL_COUNTS if extension else msi.BASELINE_COUNTS),
                     "Do not silently clear pre-existing full-farm dependency gaps")
@@ -160,6 +167,7 @@ def validate(root, resources, tracked):
             "historical_dependency_counts": msi.BASELINE_COUNTS,
             "current_dependency_counts": counts,
             "msi": extension["summary"] if extension else None,
+            **({"fex": fex_extension["summary"]} if fex_extension else {}),
             "loader": loader_extension["summary"] if loader_extension else None,
             "msi_client": extension["client"]["summary"] if extension and extension.get("client") else None,
             "msi_startup": extension["client"]["startup"]["summary"]
@@ -175,7 +183,8 @@ def main():
     required = (set(COPIES) | MERGED_NOTICES | (msi.FILES if msi.present(root) else set()) |
                 (loader.FILES if loader.present(root) else set()) |
                 (client.FILES if client.present(root) else set()) |
-                (startup.FILES if startup.present(root) else set()))
+                (startup.FILES if startup.present(root) else set()) |
+                (fex.FILES if fex.present(root) else set()))
     resources = {name.removeprefix("app/Madeira/"): planner.identity(root / name)["sha256"]
                  for name in tracked if name.startswith("app/Madeira/") and
                  name.removeprefix("app/Madeira/") in required}

@@ -1,0 +1,12 @@
+{
+  "architecture": "aarch64",
+  "passed": true,
+  "runtime_tested": false,
+  "counts": {
+    "checked_import_symbols": 216,
+    "checked_export_forwarders": 0,
+    "exports": 24
+  },
+  "resolved_api_set_uses": 96,
+  "issues": []
+}

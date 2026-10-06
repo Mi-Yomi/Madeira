@@ -72,6 +72,10 @@ class MsiIntegrationTests(unittest.TestCase):
         for arch in desktop.planner.ARCHES:
             folder = arch + "-windows"
             shutil.copytree(ROOT / "app/Madeira" / folder, self.app / folder, dirs_exist_ok=True)
+            if desktop.fex.present(ROOT):
+                fex_name = "xtajit64.dll" if arch == "arm64ec" else "xtajit.dll"
+                shutil.copyfile(ROOT / desktop.fex.RECEIPT / "preserved-original" / folder / fex_name,
+                                self.app / folder / fex_name)
             # This fixture tests the historical MSI stage even when the checkout
             # has the separately reviewed client replacement installed.
             shutil.copyfile(self.root / msi.RECEIPT / "candidate" / folder / "msi.dll",
@@ -284,9 +288,14 @@ class MsiIntegrationTests(unittest.TestCase):
         for arch in desktop.planner.ARCHES:
             farm = target / "app/Madeira" / (arch + "-windows")
             shutil.copytree(ROOT / "app/Madeira" / (arch + "-windows"), farm)
+            if desktop.fex.present(ROOT):
+                fex_name = "xtajit64.dll" if arch == "arm64ec" else "xtajit.dll"
+                shutil.copyfile(ROOT / desktop.fex.RECEIPT / "preserved-original" / (arch + "-windows") / fex_name,
+                                farm / fex_name)
             for name in msi.NAMES | desktop.loader.NAMES:
                 (farm / name).unlink(missing_ok=True)
         shutil.copytree(ROOT / "app/Madeira/legal", target / "app/Madeira/legal")
+        shutil.rmtree(target / "app/Madeira/legal/FEX-guest", ignore_errors=True)
         for name in desktop.client.REQUIRED_NOTICES:
             (target / "app/Madeira" / name).unlink(missing_ok=True)
         for name in (desktop.loader.INTEGRATION_NOTICE, "legal/Wine-loader-SOURCE-REBUILD.md"):

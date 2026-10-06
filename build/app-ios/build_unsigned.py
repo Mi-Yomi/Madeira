@@ -32,6 +32,7 @@ import verify_msi_integration
 import verify_loader_integration
 import verify_msi_client_integration
 import verify_msi_startup_integration
+import verify_fex_integration
 import verified_build as dock
 
 CONVERTER = "d3d12/libmetalirconverter.dylib"
@@ -50,7 +51,7 @@ REQUIRED_NOTICES = (*GENERATED_LICENSES, "d3d12/NOTICE.txt", "d3d12/METAL-SHADER
 GRAPHICS_RECEIPTS = ("toolchains/llvm-host-build/madeira-build.json", "toolchains/llvm-ios-build/madeira-build.json",
                      "build/dxmt-ios/shader-headers/provenance.json", "build/dxmt-ios/graphics-build.json")
 LIMITATIONS = ("Existing tracked guest PE binaries reused; twelve reviewed source-built desktop DLLs and the source-built Dock host integrated. "
-               "The optional reviewed MSI provider pair has no Wine/iOS runtime proof. "
+               "The optional reviewed MSI and FEX replacements have no Wine/iOS runtime proof. "
                "Full-farm dependency gaps remain; 32-bit runtime missing; x86_64 VC runtime absent. "
                "No installation, device, rendering, JIT, 1C or Blender validation.")
 SCOPE = "Unsigned Debug app link and bundle validation only; no IPA created. " + LIMITATIONS
@@ -141,7 +142,9 @@ def resource_inputs():
                 verify_msi_integration.RECORD, verify_msi_integration.RECEIPT,
                 verify_loader_integration.RECORD, verify_loader_integration.RECEIPT,
                 verify_msi_client_integration.RECORD, verify_msi_client_integration.RECEIPT,
-                verify_msi_startup_integration.RECORD, verify_msi_startup_integration.RECEIPT).split("\0")
+                verify_msi_startup_integration.RECORD, verify_msi_startup_integration.RECEIPT,
+                verify_fex_integration.RECORD, verify_fex_integration.RECEIPT,
+                *verify_fex_integration.SOURCE_INPUTS).split("\0")
     expected = {name.removeprefix("app/Madeira/"): digest(ROOT / name) for name in names
                 if name.startswith("app/Madeira/")}
     for name in RESOURCE_FILES:
@@ -219,7 +222,7 @@ def guest_pe_evidence(pe):
         for name, item in verify_msi_startup_integration.CANDIDATES.items())
     has_client = has_startup or (has_msi and has_loader and all(pe.get(name) == item["sha256"]
         for name, item in verify_msi_client_integration.CANDIDATES.items()))
-    return {"status": ("tracked-existing-plus-reviewed-desktop-msi-loader-client-and-startup-fixes" if has_startup else
+    evidence = {"status": ("tracked-existing-plus-reviewed-desktop-msi-loader-client-and-startup-fixes" if has_startup else
                        "tracked-existing-plus-reviewed-desktop-msi-loader-and-client-fix" if has_client else
                        "tracked-existing-plus-reviewed-desktop-msi-and-loader" if has_loader else
                        "tracked-existing-plus-reviewed-desktop-and-msi" if has_msi else
@@ -246,6 +249,23 @@ def guest_pe_evidence(pe):
                                           verify_msi_startup_integration.BEFORE.items()} if has_startup else {},
             "source_built_msi_startup_sha256": {name: pe[name] for name in
                                                 verify_msi_startup_integration.BINARIES} if has_startup else {}}
+    # resource_inputs already requires the complete optional layer; derive its
+    # receipt from the exact output pair, as for the historical replacements.
+    has_fex = any(pe.get(name) == item["sha256"] for name, item in verify_fex_integration.CANDIDATES.items())
+    if has_fex:
+        if not all(pe.get(name) == item["sha256"] for name, item in verify_fex_integration.CANDIDATES.items()):
+            raise ValueError("App FEX evidence requires the exact reviewed output pair")
+        sealed = verify_fex_integration.seal(ROOT / verify_fex_integration.RECEIPT)
+        evidence["fex"] = {"stage_seal_sha256": verify_fex_integration.REVIEWED_SEAL,
+            "fex_revision": verify_fex_integration.FEX_REVISION,
+            "actual_build_parent_revision": verify_fex_integration.BUILD_PARENT,
+            "repairs_manifest_sha256": verify_fex_integration.REPAIRS_SHA256,
+            "source_integration_binding": sealed["source-integration.json"],
+            "before_sha256": {name: item["sha256"] for name, item in verify_fex_integration.BEFORE.items()},
+            "source_built_sha256": {name: pe[name] for name in verify_fex_integration.BINARIES},
+            "runtime_tested": False, "i386_activated": False, "rebuilt_at_integration_revision": False}
+    return evidence
+
 
 
 def verify_archives(native, actual, expected):

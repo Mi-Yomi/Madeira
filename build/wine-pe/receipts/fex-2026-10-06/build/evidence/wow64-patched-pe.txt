@@ -1,0 +1,506 @@
+
+File: /workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-wow64-patched/Bin/libwow64fex.dll
+Format: COFF-ARM64
+Arch: aarch64
+AddressSize: 64bit
+ImageFileHeader {
+  Machine: IMAGE_FILE_MACHINE_ARM64 (0xAA64)
+  SectionCount: 13
+  TimeDateStamp: 2026-10-06 06:35:20 (0x6AC496A8)
+  PointerToSymbolTable: 0x3B0000
+  SymbolCount: 11610
+  StringTableSize: 780065
+  OptionalHeaderSize: 240
+  Characteristics [ (0x2022)
+    IMAGE_FILE_DLL (0x2000)
+    IMAGE_FILE_EXECUTABLE_IMAGE (0x2)
+    IMAGE_FILE_LARGE_ADDRESS_AWARE (0x20)
+  ]
+}
+ImageOptionalHeader {
+  Magic: 0x20B
+  MajorLinkerVersion: 14
+  MinorLinkerVersion: 0
+  SizeOfCode: 1941504
+  SizeOfInitializedData: 1921024
+  SizeOfUninitializedData: 0
+  AddressOfEntryPoint: 0x1260
+  BaseOfCode: 0x1000
+  ImageBase: 0x180000000
+  SectionAlignment: 4096
+  FileAlignment: 4096
+  MajorOperatingSystemVersion: 6
+  MinorOperatingSystemVersion: 0
+  MajorImageVersion: 0
+  MinorImageVersion: 0
+  MajorSubsystemVersion: 6
+  MinorSubsystemVersion: 0
+  SizeOfImage: 3911680
+  SizeOfHeaders: 4096
+  CheckSum: 0x0
+  Subsystem: IMAGE_SUBSYSTEM_WINDOWS_GUI (0x2)
+  Characteristics [ (0x160)
+    IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE (0x40)
+    IMAGE_DLL_CHARACTERISTICS_HIGH_ENTROPY_VA (0x20)
+    IMAGE_DLL_CHARACTERISTICS_NX_COMPAT (0x100)
+  ]
+  SizeOfStackReserve: 1048576
+  SizeOfStackCommit: 4096
+  SizeOfHeapReserve: 1048576
+  SizeOfHeapCommit: 4096
+  NumberOfRvaAndSize: 16
+  DataDirectory {
+    ExportTableRVA: 0x351000
+    ExportTableSize: 0x354
+    ImportTableRVA: 0x351354
+    ImportTableSize: 0x118
+    ResourceTableRVA: 0x0
+    ResourceTableSize: 0x0
+    ExceptionTableRVA: 0x383000
+    ExceptionTableSize: 0x7600
+    CertificateTableRVA: 0x0
+    CertificateTableSize: 0x0
+    BaseRelocationTableRVA: 0x38C000
+    BaseRelocationTableSize: 0x97F8
+    DebugRVA: 0x375000
+    DebugSize: 0x1C
+    ArchitectureRVA: 0x0
+    ArchitectureSize: 0x0
+    GlobalPtrRVA: 0x0
+    GlobalPtrSize: 0x0
+    TLSTableRVA: 0x349560
+    TLSTableSize: 0x28
+    LoadConfigTableRVA: 0x33F7C0
+    LoadConfigTableSize: 0x130
+    BoundImportRVA: 0x0
+    BoundImportSize: 0x0
+    IATRVA: 0x351B98
+    IATSize: 0x728
+    DelayImportDescriptorRVA: 0x0
+    DelayImportDescriptorSize: 0x0
+    CLRRuntimeHeaderRVA: 0x0
+    CLRRuntimeHeaderSize: 0x0
+    ReservedRVA: 0x0
+    ReservedSize: 0x0
+  }
+}
+DOSHeader {
+  Magic: MZ
+  UsedBytesInTheLastPage: 120
+  FileSizeInPages: 1
+  NumberOfRelocationItems: 0
+  HeaderSizeInParagraphs: 4
+  MinimumExtraParagraphs: 0
+  MaximumExtraParagraphs: 0
+  InitialRelativeSS: 0
+  InitialSP: 0
+  Checksum: 0
+  InitialIP: 0
+  InitialRelativeCS: 0
+  AddressOfRelocationTable: 64
+  OverlayNumber: 0
+  OEMid: 0
+  OEMinfo: 0
+  AddressOfNewExeHeader: 120
+}
+Import {
+  Name: wow64.dll
+  ImportLookupTableRVA: 0x351470
+  ImportAddressTableRVA: 0x351B98
+  Symbol: Wow64ProcessPendingCrossProcessItems (19)
+  Symbol: Wow64SystemServiceEx (26)
+}
+Import {
+  Name: ntdll.dll
+  ImportLookupTableRVA: 0x351488
+  ImportAddressTableRVA: 0x351BB0
+  Symbol: LdrGetDllFullName (0)
+  Symbol: LdrGetDllHandle (0)
+  Symbol: LdrGetProcedureAddress (0)
+  Symbol: NtAllocateVirtualMemory (0)
+  Symbol: NtAllocateVirtualMemoryEx (0)
+  Symbol: NtClose (0)
+  Symbol: NtContinue (0)
+  Symbol: NtCreateFile (0)
+  Symbol: NtCreateSection (0)
+  Symbol: NtDelayExecution (0)
+  Symbol: NtDuplicateObject (0)
+  Symbol: NtFlushInstructionCache (0)
+  Symbol: NtFreeVirtualMemory (0)
+  Symbol: NtGetContextThread (0)
+  Symbol: NtGetCurrentProcessorNumber (0)
+  Symbol: NtMapViewOfSection (0)
+  Symbol: NtOpenFile (0)
+  Symbol: NtOpenKeyEx (0)
+  Symbol: NtProtectVirtualMemory (0)
+  Symbol: NtQueryDirectoryFile (0)
+  Symbol: NtQueryInformationFile (0)
+  Symbol: NtQueryInformationProcess (0)
+  Symbol: NtQueryInformationThread (0)
+  Symbol: NtQueryObject (0)
+  Symbol: NtQuerySystemInformation (0)
+  Symbol: NtQuerySystemTime (0)
+  Symbol: NtQueryValueKey (0)
+  Symbol: NtQueryVirtualMemory (0)
+  Symbol: NtReadFile (0)
+  Symbol: NtSetInformationFile (0)
+  Symbol: NtSetInformationThread (0)
+  Symbol: NtSuspendThread (0)
+  Symbol: NtTerminateProcess (0)
+  Symbol: NtWriteFile (0)
+  Symbol: RtlAcquirePebLock (0)
+  Symbol: RtlAcquireSRWLockExclusive (0)
+  Symbol: RtlAcquireSRWLockShared (0)
+  Symbol: RtlAllocateHeap (0)
+  Symbol: RtlCaptureContext (0)
+  Symbol: RtlClearBits (0)
+  Symbol: RtlCreateUnicodeStringFromAsciiz (0)
+  Symbol: RtlDeleteCriticalSection (0)
+  Symbol: RtlDosPathNameToNtPathName_U (0)
+  Symbol: RtlEnterCriticalSection (0)
+  Symbol: RtlFindClearBitsAndSet (0)
+  Symbol: RtlFreeAnsiString (0)
+  Symbol: RtlFreeHeap (0)
+  Symbol: RtlFreeUnicodeString (0)
+  Symbol: RtlGetCurrentDirectory_U (0)
+  Symbol: RtlImageDirectoryEntryToData (0)
+  Symbol: RtlImageNtHeader (0)
+  Symbol: RtlInitAnsiString (0)
+  Symbol: RtlInitUnicodeString (0)
+  Symbol: RtlInitializeConditionVariable (0)
+  Symbol: RtlInitializeCriticalSection (0)
+  Symbol: RtlInitializeSRWLock (0)
+  Symbol: RtlLeaveCriticalSection (0)
+  Symbol: RtlLookupFunctionEntry (0)
+  Symbol: RtlMultiByteToUnicodeN (0)
+  Symbol: RtlMultiByteToUnicodeSize (0)
+  Symbol: RtlNtStatusToDosError (0)
+  Symbol: RtlQueryPerformanceCounter (0)
+  Symbol: RtlQueryPerformanceFrequency (0)
+  Symbol: RtlReleasePebLock (0)
+  Symbol: RtlReleaseSRWLockExclusive (0)
+  Symbol: RtlReleaseSRWLockShared (0)
+  Symbol: RtlRestoreContext (0)
+  Symbol: RtlRunOnceExecuteOnce (0)
+  Symbol: RtlSleepConditionVariableSRW (0)
+  Symbol: RtlTryAcquireSRWLockExclusive (0)
+  Symbol: RtlTryAcquireSRWLockShared (0)
+  Symbol: RtlTryEnterCriticalSection (0)
+  Symbol: RtlUnicodeStringToAnsiString (0)
+  Symbol: RtlUnicodeToMultiByteN (0)
+  Symbol: RtlUnicodeToMultiByteSize (0)
+  Symbol: RtlUnicodeToUTF8N (0)
+  Symbol: RtlUnwindEx (0)
+  Symbol: RtlVirtualUnwind (0)
+  Symbol: RtlWaitOnAddress (0)
+  Symbol: RtlWakeAddressAll (0)
+  Symbol: RtlWakeAddressSingle (0)
+  Symbol: RtlWakeAllConditionVariable (0)
+  Symbol: RtlWakeConditionVariable (0)
+  Symbol: RtlWow64GetCurrentCpuArea (0)
+  Symbol: RtlWow64GetThreadContext (0)
+  Symbol: RtlWow64SetThreadContext (0)
+  Symbol: RtlWow64SuspendThread (0)
+  Symbol: __chkstk (0)
+  Symbol: _errno (0)
+  Symbol: atan2 (0)
+  Symbol: atoi (0)
+  Symbol: cos (0)
+  Symbol: isxdigit (0)
+  Symbol: memchr (0)
+  Symbol: memcmp (0)
+  Symbol: memcpy (0)
+  Symbol: memmove (0)
+  Symbol: memset (0)
+  Symbol: sin (0)
+  Symbol: sprintf (0)
+  Symbol: sscanf (0)
+  Symbol: strchr (0)
+  Symbol: strcmp (0)
+  Symbol: strlen (0)
+  Symbol: strncmp (0)
+  Symbol: strstr (0)
+  Symbol: strtol (0)
+  Symbol: strtoul (0)
+  Symbol: swprintf (0)
+  Symbol: tan (0)
+  Symbol: tolower (0)
+  Symbol: toupper (0)
+  Symbol: wcscmp (0)
+  Symbol: wcscpy (0)
+  Symbol: wcslen (0)
+  Symbol: wcsncmp (0)
+  Symbol: wcstol (0)
+  Symbol: wcstoul (0)
+}
+Import {
+  Name: api-ms-win-crt-environment-l1-1-0.dll
+  ImportLookupTableRVA: 0x351840
+  ImportAddressTableRVA: 0x351F68
+  Symbol: __p__environ (0)
+  Symbol: getenv (0)
+}
+Import {
+  Name: api-ms-win-crt-runtime-l1-1-0.dll
+  ImportLookupTableRVA: 0x351858
+  ImportAddressTableRVA: 0x351F80
+  Symbol: _assert (0)
+  Symbol: __sys_nerr (0)
+  Symbol: _beginthreadex (0)
+  Symbol: _execute_onexit_table (0)
+  Symbol: _exit (0)
+  Symbol: _fpreset (0)
+  Symbol: _getpid (0)
+  Symbol: _initialize_onexit_table (0)
+  Symbol: _initterm (0)
+  Symbol: _initterm_e (0)
+  Symbol: _register_onexit_function (0)
+  Symbol: abort (0)
+  Symbol: strerror_s (0)
+}
+Import {
+  Name: api-ms-win-crt-time-l1-1-0.dll
+  ImportLookupTableRVA: 0x3518C8
+  ImportAddressTableRVA: 0x351FF0
+  Symbol: _strftime_l (0)
+  Symbol: _time64 (0)
+}
+Import {
+  Name: api-ms-win-crt-math-l1-1-0.dll
+  ImportLookupTableRVA: 0x3518E0
+  ImportAddressTableRVA: 0x352008
+  Symbol: _fdopen (0)
+  Symbol: exp2 (0)
+  Symbol: fmod (0)
+  Symbol: log2 (0)
+  Symbol: remainder (0)
+}
+Import {
+  Name: api-ms-win-crt-filesystem-l1-1-0.dll
+  ImportLookupTableRVA: 0x351910
+  ImportAddressTableRVA: 0x352038
+  Symbol: rename (0)
+}
+Import {
+  Name: api-ms-win-crt-convert-l1-1-0.dll
+  ImportLookupTableRVA: 0x351920
+  ImportAddressTableRVA: 0x352048
+  Symbol: _strtod_l (0)
+  Symbol: atoll (0)
+  Symbol: mbrtowc (0)
+  Symbol: mbsrtowcs (0)
+  Symbol: strtod (0)
+  Symbol: strtof (0)
+  Symbol: strtoll (0)
+  Symbol: strtoull (0)
+  Symbol: wcrtomb (0)
+  Symbol: wcrtomb_s (0)
+  Symbol: wcstod (0)
+  Symbol: wcstoll (0)
+  Symbol: wcstoull (0)
+}
+Import {
+  Name: api-ms-win-crt-stdio-l1-1-0.dll
+  ImportLookupTableRVA: 0x351990
+  ImportAddressTableRVA: 0x3520B8
+  Symbol: __acrt_iob_func (0)
+  Symbol: __stdio_common_vfprintf (0)
+  Symbol: __stdio_common_vsprintf (0)
+  Symbol: _chsize (0)
+  Symbol: _close (0)
+  Symbol: _fileno (0)
+  Symbol: _fseeki64 (0)
+  Symbol: _ftelli64 (0)
+  Symbol: _get_osfhandle (0)
+  Symbol: _isatty (0)
+  Symbol: _lseek (0)
+  Symbol: _open (0)
+  Symbol: _setmode (0)
+  Symbol: _sopen (0)
+  Symbol: _wfopen (0)
+  Symbol: _wopen (0)
+  Symbol: _write (0)
+  Symbol: fclose (0)
+  Symbol: fflush (0)
+  Symbol: fopen (0)
+  Symbol: fputc (0)
+  Symbol: fputs (0)
+  Symbol: fread (0)
+  Symbol: fseek (0)
+  Symbol: fwrite (0)
+  Symbol: setbuf (0)
+}
+Import {
+  Name: api-ms-win-crt-heap-l1-1-0.dll
+  ImportLookupTableRVA: 0x351A68
+  ImportAddressTableRVA: 0x352190
+  Symbol: _aligned_free (0)
+  Symbol: _aligned_malloc (0)
+  Symbol: calloc (0)
+  Symbol: free (0)
+  Symbol: malloc (0)
+  Symbol: realloc (0)
+}
+Import {
+  Name: api-ms-win-crt-locale-l1-1-0.dll
+  ImportLookupTableRVA: 0x351AA0
+  ImportAddressTableRVA: 0x3521C8
+  Symbol: ___lc_codepage_func (0)
+  Symbol: ___mb_cur_max_func (0)
+  Symbol: __pctype_func (0)
+  Symbol: _configthreadlocale (0)
+  Symbol: _create_locale (0)
+  Symbol: _free_locale (0)
+  Symbol: localeconv (0)
+  Symbol: setlocale (0)
+}
+Import {
+  Name: api-ms-win-crt-string-l1-1-0.dll
+  ImportLookupTableRVA: 0x351AE8
+  ImportAddressTableRVA: 0x352210
+  Symbol: _iswalpha_l (0)
+  Symbol: _iswcntrl_l (0)
+  Symbol: _iswdigit_l (0)
+  Symbol: _iswlower_l (0)
+  Symbol: _iswprint_l (0)
+  Symbol: _iswpunct_l (0)
+  Symbol: _iswspace_l (0)
+  Symbol: _iswupper_l (0)
+  Symbol: _iswxdigit_l (0)
+  Symbol: _strcoll_l (0)
+  Symbol: _strdup (0)
+  Symbol: _strxfrm_l (0)
+  Symbol: _tolower_l (0)
+  Symbol: _toupper_l (0)
+  Symbol: _towlower_l (0)
+  Symbol: _towupper_l (0)
+  Symbol: _wcscoll_l (0)
+  Symbol: _wcsxfrm_l (0)
+  Symbol: mbrlen (0)
+}
+Import {
+  Name: api-ms-win-crt-multibyte-l1-1-0.dll
+  ImportLookupTableRVA: 0x351B88
+  ImportAddressTableRVA: 0x3522B0
+  Symbol: _mbtowc_l (0)
+}
+Export {
+  Ordinal: 1
+  Name: BTCpuFlushInstructionCache2
+  RVA: 0x10422C
+}
+Export {
+  Ordinal: 2
+  Name: BTCpuFlushInstructionCacheHeavy
+  RVA: 0x104290
+}
+Export {
+  Ordinal: 3
+  Name: BTCpuGetBopCode
+  RVA: 0x102DF4
+}
+Export {
+  Ordinal: 4
+  Name: BTCpuGetContext
+  RVA: 0x102E0C
+}
+Export {
+  Ordinal: 5
+  Name: BTCpuIosSetMonoBridge
+  RVA: 0x106124
+}
+Export {
+  Ordinal: 6
+  Name: BTCpuIsProcessorFeaturePresent
+  RVA: 0x104644
+}
+Export {
+  Ordinal: 7
+  Name: BTCpuNotifyMapViewOfSection
+  RVA: 0x104434
+}
+Export {
+  Ordinal: 8
+  Name: BTCpuNotifyMemoryAlloc
+  RVA: 0x104358
+}
+Export {
+  Ordinal: 9
+  Name: BTCpuNotifyMemoryDirty
+  RVA: 0x1042F4
+}
+Export {
+  Ordinal: 10
+  Name: BTCpuNotifyMemoryFree
+  RVA: 0x1043F0
+}
+Export {
+  Ordinal: 11
+  Name: BTCpuNotifyMemoryProtect
+  RVA: 0x1043A8
+}
+Export {
+  Ordinal: 12
+  Name: BTCpuNotifyProcessExecuteFlagsChange
+  RVA: 0x1045EC
+}
+Export {
+  Ordinal: 13
+  Name: BTCpuNotifyReadFile
+  RVA: 0x104500
+}
+Export {
+  Ordinal: 14
+  Name: BTCpuNotifyUnmapViewOfSection
+  RVA: 0x104490
+}
+Export {
+  Ordinal: 15
+  Name: BTCpuProcessInit
+  RVA: 0x1005A4
+}
+Export {
+  Ordinal: 16
+  Name: BTCpuProcessTerm
+  RVA: 0x1027A8
+}
+Export {
+  Ordinal: 17
+  Name: BTCpuResetToConsistentState
+  RVA: 0x1041FC
+}
+Export {
+  Ordinal: 18
+  Name: BTCpuSetContext
+  RVA: 0x103068
+}
+Export {
+  Ordinal: 19
+  Name: BTCpuSimulate
+  RVA: 0x103344
+}
+Export {
+  Ordinal: 20
+  Name: BTCpuSuspendLocalThread
+  RVA: 0x103448
+}
+Export {
+  Ordinal: 21
+  Name: BTCpuThreadInit
+  RVA: 0x1027AC
+}
+Export {
+  Ordinal: 22
+  Name: BTCpuThreadTerm
+  RVA: 0x102A84
+}
+Export {
+  Ordinal: 23
+  Name: BTCpuUpdateProcessorInformation
+  RVA: 0x104664
+}
+Export {
+  Ordinal: 24
+  Name: __wine_get_unix_opcode
+  RVA: 0x102E00
+}

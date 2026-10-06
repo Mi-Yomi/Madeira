@@ -1,0 +1,73 @@
+{
+  "scope": "configure-and-single-production-object-only",
+  "architecture": "arm64ec",
+  "phase": "patched",
+  "source_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "source_sha256": "e8148f4f58bb7833627aaaac9daaf63e36287569c5823cf72bd8656c787b64f1",
+  "commands": [
+    {
+      "step": "configure",
+      "argv": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-tools/cmake/data/bin/cmake",
+        "-S",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX",
+        "-B",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched",
+        "-G",
+        "Ninja",
+        "-DCMAKE_MAKE_PROGRAM=/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-tools/bin/ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_TOOLCHAIN_FILE=/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Data/CMake/toolchain_mingw.cmake",
+        "-DMINGW_TRIPLE=arm64ec-w64-mingw32",
+        "-DFEX_IOS_HOST_BUILD=ON",
+        "-DENABLE_GUEST_WINDOW=OFF",
+        "-DCMAKE_C_FLAGS=-DFEX_IOS_HOST",
+        "-DCMAKE_CXX_FLAGS=-DFEX_IOS_HOST",
+        "-DCMAKE_ASM_FLAGS=-DFEX_IOS_HOST",
+        "-DENABLE_LTO=OFF",
+        "-DENABLE_ASSERTIONS=OFF",
+        "-DENABLE_JEMALLOC_GLIBC_ALLOC=OFF",
+        "-DENABLE_CCACHE=OFF",
+        "-DBUILD_TESTING=OFF",
+        "-DBUILD_THUNKS=OFF",
+        "-DBUILD_FEXCONFIG=OFF",
+        "-DTUNE_ARCH=generic",
+        "-DTUNE_CPU=none",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+      ],
+      "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006",
+      "exit_code": 0,
+      "elapsed_seconds": 4.007826089859009,
+      "log": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/evidence/arm64ec-patched-configure.log"
+    },
+    {
+      "step": "object-compile",
+      "argv": [
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-tools/cmake/data/bin/cmake",
+        "--build",
+        "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched",
+        "--parallel",
+        "2",
+        "--target",
+        "Source/Windows/ARM64EC/CMakeFiles/arm64ecfex.dir/Module.cpp.obj",
+        "--verbose"
+      ],
+      "cwd": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006",
+      "exit_code": 0,
+      "elapsed_seconds": 3.0653159618377686,
+      "log": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/evidence/arm64ec-patched-object-compile.log"
+    }
+  ],
+  "module_compile_command": {
+    "directory": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched",
+    "command": "/workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/arm64ec-w64-mingw32-clang++ -DARCHITECTURE_arm64=1 -DARCHITECTURE_arm64ec=1 -DFEXCORE_HAS_PRESERVE_ALL_ATTR=0 -DFEXCORE_PRESERVE_ALL_ATTR=\"\" -DFEX_HAS_PRESERVE_ALL_ATTR=0 -DFEX_PRESERVE_ALL_ATTR=\"\" -DGLOBAL_DATA_DIRECTORY=\\\"/usr/local/share/fex-emu/\\\" -DHAS_PROGRAM_INVOCATION_NAME=\"\" -DINLINE=\"static inline\" -DINLINE_LEVEL=4 -DRANGES_DISABLE_DEPRECATED_WARNINGS -DSOFTFLOAT_BUILTIN_CLZ=1 -DSOFTFLOAT_FAST_DIV32TO16=1 -DSOFTFLOAT_FAST_DIV64TO32=1 -DSOFTFLOAT_FAST_INT64=1 -D_LARGEFILE64_SOURCE -Darm64ecfex_EXPORTS -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/Source/Windows/ARM64EC -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source/Windows/ARM64EC -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/Source -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source/Windows/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source/Windows -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/FEXCore/Source -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/FEXCore/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/fmt/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/xxhash/cmake_unofficial/.. -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/FEXHeaderUtils/. -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/CodeEmitter/. -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/cephes/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/SoftFloat-3e/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/SoftFloat-3e/include/SoftFloat-3e -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/unordered_dense/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source/Common/cpp-optparse -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/tiny-json -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/range-v3/include -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source/Tools/CommonTools -I/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/External/rpmalloc -DFEX_IOS_HOST -O3 -DNDEBUG -fomit-frame-pointer -std=gnu++20 -Wno-trigraphs -fdiagnostics-color=always -fcolor-diagnostics -Wno-deprecated-enum-enum-conversion -Wall -fno-strict-aliasing -o Source/Windows/ARM64EC/CMakeFiles/arm64ecfex.dir/Module.cpp.obj -c /workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source/Windows/ARM64EC/Module.cpp",
+    "file": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/FEX/Source/Windows/ARM64EC/Module.cpp",
+    "output": "Source/Windows/ARM64EC/CMakeFiles/arm64ecfex.dir/Module.cpp.obj"
+  },
+  "object": {
+    "path": "/workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-arm64ec-patched/Source/Windows/ARM64EC/CMakeFiles/arm64ecfex.dir/Module.cpp.obj",
+    "sha256": "ce0b0638b7c7737be30cc838c98653303ead98c99186247b4bd55aeb1ffe3336",
+    "size": 179479
+  },
+  "crt_ios_selected": true
+}

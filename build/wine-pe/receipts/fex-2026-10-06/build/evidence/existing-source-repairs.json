@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "component": "FEX",
+  "source_repository": "https://github.com/willfaust/FEX.git",
+  "source_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "repairs": [
+    {
+      "id": "ios-core-diagnostic-guards-v2",
+      "patch": "build/fex-ios/patches/0003-guard-core-allocator-diagnostics.patch",
+      "patch_sha256": "e3736a62efcb35732d619f4c521f6dd38fdc5e811b5fae1f4f4bfb20d2992670",
+      "files": [
+        {
+          "path": "FEXCore/Source/Interface/Core/Core.cpp",
+          "original_sha256": "26f6809cd187203a8d8dbb6d26249059944f0896b246716c8c066e495d77b858",
+          "patched_sha256": "d4b61e9aeec81529421a29f26d3cea85518d832d3e39a5625c8be9d5cfdd1337",
+          "previous_patched_sha256": [
+            "799d283a9e3b807d945d0bd9acdffea4367a8a351f49ce38e7204448ae7cab25"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "caspal-platform-diagnostic-split-v1",
+      "patch": "build/fex-ios/patches/0002-split-caspal-platform-diagnostics.patch",
+      "patch_sha256": "45162e4576e2618ebc32fa704f22570d98740fdf6871026b50803ada293bd758",
+      "files": [
+        {
+          "path": "FEXCore/Source/Utils/ArchHelpers/Arm64.cpp",
+          "original_sha256": "eed3325f9f15976e6964b963085334ad359bffd8a751e1070cd1c4b5d3df78dc",
+          "patched_sha256": "f592c9c5625ab80c948a4850432d5633da84e9ed618bdc07c236deb02a06a209"
+        }
+      ]
+    },
+    {
+      "id": "rpmalloc-snapshot-feature-definition-v1",
+      "patch": "build/fex-ios/patches/0004-wire-rpmalloc-snapshot-feature.patch",
+      "patch_sha256": "2a7e15972c9c6ec97594d36c7e9c6b21c498d46332f92384d5f773124c7a1343",
+      "files": [
+        {
+          "path": "FEXCore/Source/CMakeLists.txt",
+          "original_sha256": "753e1a34616a95da259e174ddff1c6186c9e1e366607a1fcbf7c75ec109f74b9",
+          "patched_sha256": "ae57a85e5e26ca482a523bac8cfce54d15e13488bf56a1b99f062bbc04a104d0"
+        }
+      ]
+    }
+  ]
+}

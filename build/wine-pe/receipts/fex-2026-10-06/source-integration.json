@@ -1,0 +1,88 @@
+{
+  "actual_build_parent_revision": "6406b09801026e7211b9f9e26d4f526327eb8c2b",
+  "binding_scope": "Current FEX build recipes, repair manifest, patches and exact license supplements; original source-integration manifest retains all26 changed-file identities separately.",
+  "files": {
+    "build/fex-arm64ec/build.sh": {
+      "bytes": 1767,
+      "sha256": "ccba785bb9b6672ffdc72ad27d01a94f3e6dbc35fd0ab34e25a38382d0fb5d65"
+    },
+    "build/fex-ios/README.md": {
+      "bytes": 13730,
+      "sha256": "b5a401a6f623492f947aa46c8ac5520c44820d1978ba40fcebb8b122fd26cf05"
+    },
+    "build/fex-ios/apply-source-repairs.py": {
+      "bytes": 11299,
+      "sha256": "294d17a29b4465f96bf73798b36b918264ce6d7e8c9f0037221c1b58ee938f4f"
+    },
+    "build/fex-ios/build.sh": {
+      "bytes": 1546,
+      "sha256": "38d5474f7d402125645c3e43c2d11b83bf99103c3602356dd8da34c03000b662"
+    },
+    "build/fex-ios/check-native-object.py": {
+      "bytes": 21565,
+      "sha256": "c45e34d513107682b4be9b6b9093c88627731462bd1ccbd6c7745e6b1482efd0"
+    },
+    "build/fex-ios/check-pe-configuration.py": {
+      "bytes": 6265,
+      "sha256": "421171af75e3c8ebaa02059a7c33805d9243314af14d027e71e09c08c00bb2aa"
+    },
+    "build/fex-ios/patches/.gitattributes": {
+      "bytes": 108,
+      "sha256": "6d26a044214e5ea0f7305c24030525755cb10429c1165bba63980e472bc13d1d"
+    },
+    "build/fex-ios/patches/0001-guard-ios-diagnostic-reporters.patch": {
+      "bytes": 630,
+      "sha256": "59e7ce069aa52a0a9e7cb7327996799101f8b381a194a101a2dcce27ba56e38a"
+    },
+    "build/fex-ios/patches/0002-split-caspal-platform-diagnostics.patch": {
+      "bytes": 1295,
+      "sha256": "45162e4576e2618ebc32fa704f22570d98740fdf6871026b50803ada293bd758"
+    },
+    "build/fex-ios/patches/0003-guard-core-allocator-diagnostics.patch": {
+      "bytes": 1779,
+      "sha256": "e3736a62efcb35732d619f4c521f6dd38fdc5e811b5fae1f4f4bfb20d2992670"
+    },
+    "build/fex-ios/patches/0004-wire-rpmalloc-snapshot-feature.patch": {
+      "bytes": 581,
+      "sha256": "2a7e15972c9c6ec97594d36c7e9c6b21c498d46332f92384d5f773124c7a1343"
+    },
+    "build/fex-ios/patches/0005-wow64-smc-write-fault-only.patch": {
+      "bytes": 2127,
+      "sha256": "9b96e5c5d88ceb39d59914b5eb5b164c9f29eeec3965b152885b1f6898ac53df"
+    },
+    "build/fex-ios/patches/0006-arm64ec-require-jit-rw-alias.patch": {
+      "bytes": 2733,
+      "sha256": "487a848f22160680508aa53d4b0e3d806884f76a4229f5f262a9df158b3e7397"
+    },
+    "build/fex-ios/patches/playport/NOTICE.md": {
+      "bytes": 2378,
+      "sha256": "631416301696f2a84e1449e44daf603e9fc004632b19f662697fddd72476f572"
+    },
+    "build/fex-ios/patches/playport/PLAYPORT-LICENSE": {
+      "bytes": 35150,
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195"
+    },
+    "build/fex-ios/patches/playport/PLAYPORT-LICENSE-EXCEPTION.md": {
+      "bytes": 4319,
+      "sha256": "4ab630ac8c8f8c5874d9fbb27e1c09f961aa1aeb00d7b2beec2f97f4c67e5576"
+    },
+    "build/fex-ios/source-repairs.json": {
+      "bytes": 2962,
+      "sha256": "8ece9467d4bd9a00aa051336f1fc73654f907b15a91ba728ca7cff39226bfd1f"
+    },
+    "build/fex-wow64/build.sh": {
+      "bytes": 1748,
+      "sha256": "a586d55ef37c21aabf0dcacb1f4ef2212a9d067fa97ada9bbbd776a9a4d79f16"
+    }
+  },
+  "rebuilt_at_integration_revision": false,
+  "schema_version": 1,
+  "source_patch": {
+    "bytes": 336106,
+    "sha256": "dbd67ddae59bebf38dde4e4c417f9ad2cd2a1ce8688b93f0108efa683d0f1c51"
+  },
+  "source_patch_manifest": {
+    "bytes": 5306,
+    "sha256": "0220e262b05d9cc9193db2c3c55ac85882b658e68f40ca79e2ac34572c5259cb"
+  }
+}

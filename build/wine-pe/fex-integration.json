@@ -1,0 +1,171 @@
+{
+  "actual_build_parent_revision": "6406b09801026e7211b9f9e26d4f526327eb8c2b",
+  "fex_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "files": {
+    "aarch64-windows/xtajit.dll": {
+      "bytes": 4857856,
+      "sha256": "6c1e397f10c4bfbc7e4abc1eca97f2aba207dbbc301f01df7a089430b1ac830e"
+    },
+    "arm64ec-windows/xtajit64.dll": {
+      "bytes": 5410816,
+      "sha256": "4c508cea3d7fd66cee756ba08098c1df3eb334b275c2b6127c3dc313e81e2fb8"
+    },
+    "legal/FEX-guest/PLAYPORT-LICENSE": {
+      "bytes": 35150,
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195"
+    },
+    "legal/FEX-guest/PLAYPORT-LICENSE-EXCEPTION.md": {
+      "bytes": 4319,
+      "sha256": "4ab630ac8c8f8c5874d9fbb27e1c09f961aa1aeb00d7b2beec2f97f4c67e5576"
+    },
+    "legal/FEX-guest/SOURCE-REBUILD.md": {
+      "bytes": 3845,
+      "sha256": "bc6deb0be4a13d6e1d44027f05ededd50d7bb3fb6337bf3aa6014cb424d11d62"
+    },
+    "legal/FEX-guest/licenses/FEX/COPYING.GPL-3.0": {
+      "bytes": 35150,
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195"
+    },
+    "legal/FEX-guest/licenses/FEX/External/SoftFloat-3e/COPYRIGHT-source-header.txt": {
+      "bytes": 1816,
+      "sha256": "7b1559d4f6181be267758c03dfbc007d97f6fe30cfd8c94f99544abf404e7a7d"
+    },
+    "legal/FEX-guest/licenses/FEX/External/cephes/LICENSE": {
+      "bytes": 4754,
+      "sha256": "edf1440b625e6d434a986cdb535c702001afab8959d94ce6275441a58cfd0ebb"
+    },
+    "legal/FEX-guest/licenses/FEX/External/fmt/LICENSE": {
+      "bytes": 1431,
+      "sha256": "07580f2a3b35709ce703d523f447b242f6dfec7582a8c0df102c7fa2849375f8"
+    },
+    "legal/FEX-guest/licenses/FEX/External/range-v3/LICENSE.txt": {
+      "bytes": 7233,
+      "sha256": "2b74ee37dd1a90b2b385534b7dbc171938409bda468673a123ff25302c9c5739"
+    },
+    "legal/FEX-guest/licenses/FEX/External/rpmalloc/COPYING.GPL-3.0": {
+      "bytes": 35150,
+      "sha256": "e6037104443f9a7829b2aa7c5370d0789a7bda3ca65a0b904cdc0c2e285d9195"
+    },
+    "legal/FEX-guest/licenses/FEX/External/rpmalloc/LICENSE": {
+      "bytes": 606,
+      "sha256": "9fdc653aacc736bef0cd12854f4a8d94f703ec5603fb5dca1be945b7f679918c"
+    },
+    "legal/FEX-guest/licenses/FEX/External/rpmalloc/LICENSE-MADEIRA.md": {
+      "bytes": 4113,
+      "sha256": "b5dba7ef27be8a3370113fa006935d8509be27dd2c1d4b143de83472206b6720"
+    },
+    "legal/FEX-guest/licenses/FEX/External/rpmalloc/UNLICENSE": {
+      "bytes": 1209,
+      "sha256": "79d0fc44716007dddc375601bca8879ad45bc1165bf9342b7a16572b4f41abe8"
+    },
+    "legal/FEX-guest/licenses/FEX/External/tiny-json/LICENSE": {
+      "bytes": 1068,
+      "sha256": "83c6abf07e7123427303b5f12cd995122c372a5cb96815ec130a18628396fb7c"
+    },
+    "legal/FEX-guest/licenses/FEX/External/unordered_dense/LICENSE": {
+      "bytes": 1078,
+      "sha256": "4f5a62734899ec0ba85d3e8264a7ed1fcb4bcb8f0b4359c0afd627b6314ae599"
+    },
+    "legal/FEX-guest/licenses/FEX/External/xxhash/LICENSE": {
+      "bytes": 1389,
+      "sha256": "6ffedbc0f7878612d2b23589f1ff2ab15633e1df7963a5d9fc750ec5500c7e7a"
+    },
+    "legal/FEX-guest/licenses/FEX/FEXCore/LICENSE": {
+      "bytes": 1094,
+      "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee"
+    },
+    "legal/FEX-guest/licenses/FEX/LICENSE": {
+      "bytes": 1094,
+      "sha256": "f34a779f56b36d22b20e1b990d23e583a6a7ca071331925fa46156441c77a1ee"
+    },
+    "legal/FEX-guest/licenses/FEX/LICENSE-MADEIRA.md": {
+      "bytes": 3764,
+      "sha256": "5a6a95e9e25f0c61d253f79a53d24eee5e8a0bad305ed56e67d5a29a7e18696f"
+    },
+    "legal/FEX-guest/licenses/FEX/Source/Common/cpp-optparse/LICENSE": {
+      "bytes": 1082,
+      "sha256": "d638447635afa6837615553bcebbba60bc80a0e62ed9b158b4ed969e8bb72421"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/LICENSE.TXT": {
+      "bytes": 15141,
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/aarch64-w64-mingw32/share/mingw32/COPYING": {
+      "bytes": 2326,
+      "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/aarch64-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt": {
+      "bytes": 12155,
+      "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/aarch64-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt": {
+      "bytes": 5905,
+      "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/aarch64-w64-mingw32/share/mingw32/COPYING.winpthreads.txt": {
+      "bytes": 2883,
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/arm64ec-w64-mingw32/share/mingw32/COPYING": {
+      "bytes": 2326,
+      "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/arm64ec-w64-mingw32/share/mingw32/COPYING.MinGW-w64-runtime.txt": {
+      "bytes": 12155,
+      "sha256": "1db8da07b436c68833c0673ffee3d9fcb2526047f3820b81661865dfedc79a1f"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/arm64ec-w64-mingw32/share/mingw32/COPYING.MinGW-w64.txt": {
+      "bytes": 5905,
+      "sha256": "f38e6194bd3bfa1b654f118e5acefe0aead437bbe669eee43957ccc65a7127f1"
+    },
+    "legal/FEX-guest/licenses/llvm-mingw/arm64ec-w64-mingw32/share/mingw32/COPYING.winpthreads.txt": {
+      "bytes": 2883,
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    }
+  },
+  "historical_seals": {
+    "desktop": "a0f56fd773375a2c2cc2bd76d01db0fbf28973ca1d7bf36a7dd6dbd6c9a02023",
+    "loader": "033316ebff397f5988935ecc653171c25f0341aecb856a79a2190abb6b694df5",
+    "msi": "3d748dc6f9fa84d386c79acdaf9b4952755719daa79f8ac161f1c07d27fee0fe",
+    "msi_client": "98c5adfb9a4e8bee95eadfcf390898eb7cc49059a4c436de86d29c4bfe61cc23",
+    "msi_startup": "98ba33f210fc2a01becb2be20e1f19242a2c8a15e28b0138782778f8ea8cd119"
+  },
+  "i386_activated": false,
+  "package_ready": false,
+  "rebuilt_at_integration_revision": false,
+  "receipt_directory": "build/wine-pe/receipts/fex-2026-10-06",
+  "repairs_manifest_sha256": "8ece9467d4bd9a00aa051336f1fc73654f907b15a91ba728ca7cff39226bfd1f",
+  "replacements": {
+    "aarch64-windows/xtajit.dll": {
+      "after": {
+        "bytes": 4857856,
+        "sha256": "6c1e397f10c4bfbc7e4abc1eca97f2aba207dbbc301f01df7a089430b1ac830e"
+      },
+      "before": {
+        "bytes": 4857856,
+        "sha256": "682ed22a3e60aff6f0bca8d5d62ec59bc67a2330dd318b70937174244c5c3cb6"
+      }
+    },
+    "arm64ec-windows/xtajit64.dll": {
+      "after": {
+        "bytes": 5410816,
+        "sha256": "4c508cea3d7fd66cee756ba08098c1df3eb334b275c2b6127c3dc313e81e2fb8"
+      },
+      "before": {
+        "bytes": 5435392,
+        "sha256": "38b68f69909aea0dae3ce88934936275e9415accf22fc0823568eda244962b07"
+      }
+    }
+  },
+  "residual_dependency_counts": {
+    "aarch64": 13,
+    "arm64ec": 10
+  },
+  "runtime_tested": false,
+  "schema_version": 1,
+  "source_integration_binding": {
+    "bytes": 3597,
+    "sha256": "a8b31861f18408b9cd3031d6c0d6051870fc76c55df9dc6bc5adb00a4e0cfa6a"
+  },
+  "stage_seal_sha256": "c492fab63b1af3b3342960c4602cbd29044cb6018e841d2f2978401b13bdade6"
+}

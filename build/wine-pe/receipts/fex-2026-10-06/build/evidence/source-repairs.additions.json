@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "component": "FEX",
+  "source_repository": "https://github.com/willfaust/FEX.git",
+  "source_revision": "1adb337a2f2270434ba731346438c072337a5d5f",
+  "repairs": [
+    {
+      "id": "wow64-smc-write-fault-only-v1",
+      "patch": "build/fex-ios/patches/0005-wow64-smc-write-fault-only.patch",
+      "patch_sha256": "9b96e5c5d88ceb39d59914b5eb5b164c9f29eeec3965b152885b1f6898ac53df",
+      "files": [
+        {
+          "path": "Source/Windows/WOW64/Module.cpp",
+          "original_sha256": "2ad9b8407cdeed0d0803cf5a3b8269b6c6c3561cb0e6a0fae8495228a7973e5e",
+          "patched_sha256": "1d6993abc9f58ea0db8350b332ec3703e89bdffad55abc74037ac6976e010a29"
+        }
+      ]
+    },
+    {
+      "id": "arm64ec-jit-rw-alias-required-v1",
+      "patch": "build/fex-ios/patches/0006-arm64ec-require-jit-rw-alias.patch",
+      "patch_sha256": "487a848f22160680508aa53d4b0e3d806884f76a4229f5f262a9df158b3e7397",
+      "files": [
+        {
+          "path": "Source/Windows/ARM64EC/Module.cpp",
+          "original_sha256": "f929af53a002a8186ba92e81cac401f7db1fa7432083f88f5d55b656fe7623be",
+          "patched_sha256": "e8148f4f58bb7833627aaaac9daaf63e36287569c5823cf72bd8656c787b64f1"
+        }
+      ]
+    }
+  ]
+}

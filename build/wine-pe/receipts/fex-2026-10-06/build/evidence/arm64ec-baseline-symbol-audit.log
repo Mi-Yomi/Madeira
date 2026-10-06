@@ -1,0 +1,12 @@
+{
+  "architecture": "arm64ec",
+  "passed": true,
+  "runtime_tested": false,
+  "counts": {
+    "checked_import_symbols": 211,
+    "checked_export_forwarders": 0,
+    "exports": 30
+  },
+  "resolved_api_set_uses": 98,
+  "issues": []
+}

@@ -1,0 +1,6 @@
+{
+  "baseline_old_guard_diagnostic": true,
+  "baseline_new_guard_diagnostic": false,
+  "patched_old_guard_diagnostic": false,
+  "patched_new_guard_diagnostic": true
+}

@@ -1,8 +1,9 @@
-# Pinned FEX native source repairs
+# Pinned FEX source repairs
 
-`build.sh` applies the ordered patches in `source-repairs.json` before
-configuring the seven app-linked native static archives. It does not change
-FEX's submodule pin, commit, index, build targets, or allocator configuration.
+`build.sh`, `../fex-arm64ec/build.sh` and `../fex-wow64/build.sh` apply the
+same ordered patches in `source-repairs.json` before configuring their native
+archives or PE DLL. The repair applier does not change FEX's submodule pin,
+commit, index, build targets, or allocator configuration.
 
 The pinned fork commit `1adb337a2f2270434ba731346438c072337a5d5f` declares
 `IosFfsBypassLog` and `IosCbEntryLog` only under `FEX_IOS_HOST` in
@@ -71,6 +72,64 @@ branches retain the early return and eight-report limit. `HandleCASPAL`,
 `RunCASPAL`, the aligned atomic operation and misaligned rejection are unchanged;
 this fixes native compilation, not unsupported misaligned atomic emulation.
 
+## Playport PE guards
+
+`0005-wow64-smc-write-fault-only.patch` routes only write access violations
+with an existing thread to the WOW64 SMC tracker. Read and execute faults
+continue normal exception delivery. The target's existing host-space
+`FaultAddress` reaches the tracker unchanged.
+
+`0006-arm64ec-require-jit-rw-alias.patch` returns `STATUS_UNSUCCESSFUL` from
+the existing iOS zero-offset branch before `CTX->InitCore()` can emit code.
+The error text is fixed and its `WriteFile` length is `sizeof(message) - 1`.
+Valid aliases and non-iOS initialization keep their existing behavior. This
+is not validation of alias mapping, pool size, or permissive `strtoull` parsing.
+
+These two repairs adapt Playport v0.3.3. Original authors, source URLs and
+exact GPL/additional-permission texts are retained in
+[patches/playport/NOTICE.md](patches/playport/NOTICE.md). The upstream MIT
+notice does not relicense Playport's or Madeira's additions.
+
+The standalone checks need a host C++ compiler, not initialized submodules:
+
+```sh
+python3 tests/host/check-fex-wow64-smc-write-fault.py
+python3 tests/host/check-fex-arm64ec-jit-rw-alias.py
+python3 tests/host/check-fex-pe-configuration.py
+```
+
+The first two verify complete pinned source snapshot and patch hashes, apply
+the actual patches in temporary directories, then compile extracted production
+control flow with dependency stubs. Original WOW64 fails 4 of 12 routing cases;
+original iOS ARM64EC fails 99 of 144 cases. Repaired code passes, with non-iOS,
+tracker-declines and deliberate broken-code controls. These host binaries do
+not execute FEX, Wine startup, Mach mappings or emitted iOS instructions.
+
+## Explicit PE configuration
+
+Both PE build scripts always configure, use the shared repair applier, and
+check the effective `Module.cpp` command and iOS CRT selection before building.
+Both require `FEX_IOS_HOST_BUILD=ON` plus `FEX_IOS_HOST` for C, C++ and ASM.
+ARM64EC explicitly selects `arm64ec-w64-mingw32` and disables the guest window;
+WOW64 selects `aarch64-w64-mingw32` and enables it. The WOW64 DLL is an aarch64
+PE backend for an i386 guest. Both disable LTO and use Ninja.
+
+Before reconfiguration, `check-pe-configuration.py` rejects incompatible
+source, toolchain, target, generator or cached compiler identities. It never
+deletes a cache. Set `FEX_PE_BUILD_DIR` to an empty build directory when an
+older configuration is incompatible. `LLVM_MINGW_ROOT` selects an installed
+LLVM-MinGW root; the default remains the existing macOS toolchain path.
+`BUILD_JOBS` defaults to 2. `FEX_PE_STAGE=0` builds without copying into the app.
+The default copies the DLL only after the complete link and configuration
+checks pass, then verifies source and destination bytes with `cmp`.
+
+Configuration checks are not build receipts. DLL delivery still needs exact
+source/toolchain/command/output hashes, PE architecture/export checks and the
+DLL farm's existing replacement/provenance gates. The configuration was
+exercised independently with official Linux LLVM-MinGW 20260421 for complete
+pin-plus-three and pin-plus-five ARM64EC/WOW64 builds. This does not establish
+the macOS build or device runtime, or prove inclusion in a packaged app.
+
 ## Verification and provenance
 
 `source-repairs.json` is the checked-in source-of-truth: exact revision,
@@ -88,7 +147,12 @@ If a write fails, it attempts to restore its own exact writes while preserving
 detected concurrent edits, and reports any incomplete rollback.
 Repeated runs are idempotent. It writes the same specification atomically to
 `FEX/build-ios/madeira-source-repairs.json` only after successful verification,
-for the native artifact provenance gate. A future FEX update must explicitly
+for the source and native artifact provenance gates. This path is a source
+record, not proof that either PE Module.cpp was built. Native archive builds
+do not compile those modules. Adding these repairs changes the shared source
+manifest and native contract hash, so old native provenance must be rebuilt
+and recaptured; no contract, ABI, farm seal or artifact gate is relaxed.
+A future FEX update must explicitly
 review and replace or remove these repairs; they cannot silently fuzz onto new code.
 
 Portable checks: `python3 tests/host/check-fex-source-repairs.py` exercises

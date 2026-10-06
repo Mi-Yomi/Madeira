@@ -1,0 +1,471 @@
+{
+  "architecture": "arm64ec",
+  "exports": [
+    {
+      "names": [
+        "BTCpu64FlushInstructionCache"
+      ],
+      "ordinal": 1
+    },
+    {
+      "names": [
+        "BTCpu64IosAddAliasMapping"
+      ],
+      "ordinal": 2
+    },
+    {
+      "names": [
+        "BTCpu64IosReleaseThreadHolds"
+      ],
+      "ordinal": 3
+    },
+    {
+      "names": [
+        "BTCpu64IosRipFromHostPC"
+      ],
+      "ordinal": 4
+    },
+    {
+      "names": [
+        "BTCpu64IosSetMonoBridge"
+      ],
+      "ordinal": 5
+    },
+    {
+      "names": [
+        "BTCpu64IsProcessorFeaturePresent"
+      ],
+      "ordinal": 6
+    },
+    {
+      "names": [
+        "BTCpu64NotifyMemoryDirty"
+      ],
+      "ordinal": 7
+    },
+    {
+      "names": [
+        "BTCpu64NotifyReadFile"
+      ],
+      "ordinal": 8
+    },
+    {
+      "names": [
+        "BeginSimulation"
+      ],
+      "ordinal": 9
+    },
+    {
+      "names": [
+        "DispatchJump"
+      ],
+      "ordinal": 10
+    },
+    {
+      "names": [
+        "ExitToX64"
+      ],
+      "ordinal": 11
+    },
+    {
+      "names": [
+        "FlushInstructionCacheHeavy"
+      ],
+      "ordinal": 12
+    },
+    {
+      "names": [
+        "IosXpFex"
+      ],
+      "ordinal": 13
+    },
+    {
+      "names": [
+        "NotifyImageMap"
+      ],
+      "ordinal": 14
+    },
+    {
+      "names": [
+        "NotifyMapViewOfSection"
+      ],
+      "ordinal": 15
+    },
+    {
+      "names": [
+        "NotifyMemoryAlloc"
+      ],
+      "ordinal": 16
+    },
+    {
+      "names": [
+        "NotifyMemoryFree"
+      ],
+      "ordinal": 17
+    },
+    {
+      "names": [
+        "NotifyMemoryProtect"
+      ],
+      "ordinal": 18
+    },
+    {
+      "names": [
+        "NotifyUnmapViewOfSection"
+      ],
+      "ordinal": 19
+    },
+    {
+      "names": [
+        "ProcessInit"
+      ],
+      "ordinal": 20
+    },
+    {
+      "names": [
+        "ProcessTerm"
+      ],
+      "ordinal": 21
+    },
+    {
+      "names": [
+        "ResetToConsistentState"
+      ],
+      "ordinal": 22
+    },
+    {
+      "names": [
+        "RetToEntryThunk"
+      ],
+      "ordinal": 23
+    },
+    {
+      "names": [
+        "ThreadInit"
+      ],
+      "ordinal": 24
+    },
+    {
+      "names": [
+        "ThreadTerm"
+      ],
+      "ordinal": 25
+    },
+    {
+      "names": [
+        "UpdateProcessorInformation"
+      ],
+      "ordinal": 26
+    },
+    {
+      "names": [
+        "ios_fex_band_base"
+      ],
+      "ordinal": 27
+    },
+    {
+      "names": [
+        "ios_fex_band_end"
+      ],
+      "ordinal": 28
+    },
+    {
+      "names": [
+        "ios_va_log"
+      ],
+      "ordinal": 29
+    },
+    {
+      "names": [
+        "ios_va_log_len"
+      ],
+      "ordinal": 30
+    }
+  ],
+  "imports": [
+    {
+      "kind": "import",
+      "module": "ntdll.dll",
+      "symbols": [
+        "LdrGetDllFullName",
+        "LdrGetDllHandle",
+        "LdrGetProcedureAddress",
+        "NtAllocateVirtualMemory",
+        "NtAllocateVirtualMemoryEx",
+        "NtClose",
+        "NtCreateFile",
+        "NtCreateSection",
+        "NtDelayExecution",
+        "NtDuplicateObject",
+        "NtFlushInstructionCache",
+        "NtFreeVirtualMemory",
+        "NtGetContextThread",
+        "NtGetCurrentProcessorNumber",
+        "NtMapViewOfSection",
+        "NtOpenFile",
+        "NtOpenKeyEx",
+        "NtProtectVirtualMemory",
+        "NtQueryDirectoryFile",
+        "NtQueryInformationFile",
+        "NtQueryInformationThread",
+        "NtQueryObject",
+        "NtQuerySystemInformation",
+        "NtQuerySystemTime",
+        "NtQueryValueKey",
+        "NtQueryVirtualMemory",
+        "NtReadFile",
+        "NtSetInformationFile",
+        "NtSetInformationThread",
+        "NtSuspendThread",
+        "NtTerminateProcess",
+        "NtWriteFile",
+        "ProcessPendingCrossProcessEmulatorWork",
+        "RtlAcquirePebLock",
+        "RtlAcquireSRWLockExclusive",
+        "RtlAcquireSRWLockShared",
+        "RtlAllocateHeap",
+        "RtlCaptureContext",
+        "RtlClearBits",
+        "RtlCreateUnicodeStringFromAsciiz",
+        "RtlDeleteCriticalSection",
+        "RtlDosPathNameToNtPathName_U",
+        "RtlEnterCriticalSection",
+        "RtlFindClearBitsAndSet",
+        "RtlFreeAnsiString",
+        "RtlFreeHeap",
+        "RtlFreeUnicodeString",
+        "RtlGetCurrentDirectory_U",
+        "RtlImageDirectoryEntryToData",
+        "RtlImageNtHeader",
+        "RtlInitAnsiString",
+        "RtlInitUnicodeString",
+        "RtlInitializeConditionVariable",
+        "RtlInitializeCriticalSection",
+        "RtlInitializeSRWLock",
+        "RtlIsEcCode",
+        "RtlLeaveCriticalSection",
+        "RtlLocateExtendedFeature",
+        "RtlLookupFunctionEntry",
+        "RtlMultiByteToUnicodeN",
+        "RtlMultiByteToUnicodeSize",
+        "RtlNtStatusToDosError",
+        "RtlQueryPerformanceCounter",
+        "RtlQueryPerformanceFrequency",
+        "RtlReleasePebLock",
+        "RtlReleaseSRWLockExclusive",
+        "RtlReleaseSRWLockShared",
+        "RtlRestoreContext",
+        "RtlRunOnceExecuteOnce",
+        "RtlSleepConditionVariableSRW",
+        "RtlTryAcquireSRWLockExclusive",
+        "RtlTryAcquireSRWLockShared",
+        "RtlTryEnterCriticalSection",
+        "RtlUnicodeStringToAnsiString",
+        "RtlUnicodeToMultiByteN",
+        "RtlUnicodeToMultiByteSize",
+        "RtlUnicodeToUTF8N",
+        "RtlUnwindEx",
+        "RtlVirtualUnwind",
+        "RtlWaitOnAddress",
+        "RtlWakeAddressAll",
+        "RtlWakeAddressSingle",
+        "RtlWakeAllConditionVariable",
+        "RtlWakeConditionVariable",
+        "_errno",
+        "atan2",
+        "atoi",
+        "cos",
+        "isxdigit",
+        "memchr",
+        "memcmp",
+        "memcpy",
+        "memmove",
+        "memset",
+        "sin",
+        "sprintf",
+        "sscanf",
+        "strchr",
+        "strcmp",
+        "strlen",
+        "strncmp",
+        "strtol",
+        "strtoul",
+        "swprintf",
+        "tan",
+        "tolower",
+        "toupper",
+        "wcscmp",
+        "wcscpy",
+        "wcslen",
+        "wcsncmp",
+        "wcstol",
+        "wcstoul"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-runtime-l1-1-0.dll",
+      "symbols": [
+        "_assert",
+        "__sys_nerr",
+        "_beginthreadex",
+        "_execute_onexit_table",
+        "_exit",
+        "_fpreset",
+        "_initialize_onexit_table",
+        "_initterm",
+        "_initterm_e",
+        "_register_onexit_function",
+        "abort",
+        "_getpid",
+        "strerror_s"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-time-l1-1-0.dll",
+      "symbols": [
+        "_strftime_l",
+        "_time64"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-stdio-l1-1-0.dll",
+      "symbols": [
+        "__acrt_iob_func",
+        "__stdio_common_vfprintf",
+        "__stdio_common_vsprintf",
+        "_close",
+        "_fileno",
+        "_fseeki64",
+        "_ftelli64",
+        "_get_osfhandle",
+        "_isatty",
+        "_setmode",
+        "_sopen",
+        "_wfopen",
+        "_wopen",
+        "_close",
+        "fclose",
+        "fflush",
+        "_fileno",
+        "fopen",
+        "fputc",
+        "fputs",
+        "fread",
+        "fseek",
+        "_chsize",
+        "fwrite",
+        "_lseek",
+        "_open",
+        "setbuf",
+        "_write"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-math-l1-1-0.dll",
+      "symbols": [
+        "exp2",
+        "_fdopen",
+        "fmod",
+        "log2",
+        "remainder"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-environment-l1-1-0.dll",
+      "symbols": [
+        "__p__environ",
+        "getenv"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "symbols": [
+        "rename"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-convert-l1-1-0.dll",
+      "symbols": [
+        "_strtod_l",
+        "atoll",
+        "mbrtowc",
+        "mbsrtowcs",
+        "strtod",
+        "strtof",
+        "strtoll",
+        "strtoull",
+        "wcrtomb",
+        "wcrtomb_s",
+        "wcstod",
+        "wcstoll",
+        "wcstoull"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-heap-l1-1-0.dll",
+      "symbols": [
+        "_aligned_free",
+        "_aligned_malloc",
+        "calloc",
+        "free",
+        "malloc",
+        "realloc"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-locale-l1-1-0.dll",
+      "symbols": [
+        "___lc_codepage_func",
+        "___mb_cur_max_func",
+        "__pctype_func",
+        "_configthreadlocale",
+        "_create_locale",
+        "_free_locale",
+        "localeconv",
+        "setlocale"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-string-l1-1-0.dll",
+      "symbols": [
+        "_iswalpha_l",
+        "_iswcntrl_l",
+        "_iswdigit_l",
+        "_iswlower_l",
+        "_iswprint_l",
+        "_iswpunct_l",
+        "_iswspace_l",
+        "_iswupper_l",
+        "_iswxdigit_l",
+        "_strcoll_l",
+        "_strdup",
+        "_strxfrm_l",
+        "_tolower_l",
+        "_toupper_l",
+        "_towlower_l",
+        "_towupper_l",
+        "_wcscoll_l",
+        "_wcsxfrm_l",
+        "mbrlen"
+      ]
+    },
+    {
+      "kind": "import",
+      "module": "api-ms-win-crt-multibyte-l1-1-0.dll",
+      "symbols": [
+        "_mbtowc_l"
+      ]
+    }
+  ],
+  "machine": "0x8664"
+}

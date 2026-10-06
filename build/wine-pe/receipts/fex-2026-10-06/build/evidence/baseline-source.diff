@@ -1,0 +1,117 @@
+diff --git a/External/rpmalloc b/External/rpmalloc
+index 812c2b9cf..2dc128f9a 160000
+--- a/External/rpmalloc
++++ b/External/rpmalloc
+@@ -1 +1 @@
+-Subproject commit 812c2b9cf4310ffacf14e6b64066e78ab0c394b5
++Subproject commit 2dc128f9aebb1bf1b525399612738a368569aed7-dirty
+diff --git a/External/unordered_dense b/External/unordered_dense
+index 3234af2c0..c164976d1 160000
+--- a/External/unordered_dense
++++ b/External/unordered_dense
+@@ -1 +1 @@
+-Subproject commit 3234af2c03549bc85656bfd3a86993bf1cd8aef1
++Subproject commit c164976d1426d623d87b98833ff60c7263fde4e1-dirty
+diff --git a/External/xxhash b/External/xxhash
+index e626a72bc..680bf463f 160000
+--- a/External/xxhash
++++ b/External/xxhash
+@@ -1 +1 @@
+-Subproject commit e626a72bc2321cd320e953a0ccf1584cad60f363
++Subproject commit 680bf463fa1ca0461b9a7c2dab7556e1f54cf4cf-dirty
+diff --git a/FEXCore/Source/CMakeLists.txt b/FEXCore/Source/CMakeLists.txt
+index 40b921444..556b8c602 100644
+--- a/FEXCore/Source/CMakeLists.txt
++++ b/FEXCore/Source/CMakeLists.txt
+@@ -301,6 +301,8 @@ endif()
+ # Only needed for targets that run emulation. For others, use JemallocDummy.
+ add_library(JemallocLibs STATIC Utils/AllocatorHooks.cpp)
+ if (ENABLE_FEX_ALLOCATOR)
++  # Core drains rpmalloc diagnostics only when their real provider is linked.
++  set_property(SOURCE Interface/Core/Core.cpp APPEND PROPERTY COMPILE_DEFINITIONS ENABLE_FEX_ALLOCATOR=1)
+   target_compile_definitions(JemallocLibs PRIVATE ENABLE_FEX_ALLOCATOR=1)
+   target_link_libraries(JemallocLibs PUBLIC rpmalloc)
+ endif()
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+index be5431125..b116a8154 100644
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -64,6 +64,7 @@ $end_info$
+ #include <chrono>
+ #include <cstring>
+ 
++#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR
+ /* iOS-Madeira ml622: mirror of rpmalloc's POD snapshot (rpmalloc.c). Declared here
+  * rather than in a shared header because rpmalloc is C and vendored; keep the two
+  * definitions in sync — the drain below is the only consumer. */
+@@ -77,6 +78,7 @@ struct rpm_cas_snapshot {
+ };
+ int rpm_cas_snapshot_take(struct rpm_cas_snapshot* out);
+ }
++#endif
+ #include <condition_variable>
+ #include <fcntl.h>
+ #include <functional>
+@@ -1464,6 +1466,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+   }
+ #endif
+ 
++#ifdef FEX_IOS_HOST
+   /* iOS-Madeira ml304 (task #51): REPORT CallbackPtr ENTRY ON ITS OWN, not via the bogus-RIP path.
+    *
+    * ml302 proved the JITCallback prologue writes the bad State.rip, and ml303 added an LR witness --
+@@ -1514,6 +1517,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+                         IosCbEntryLog[4], IosCbEntryLog[5], IosCbEntryLog[7]);
+     }
+   }
++#endif
+ 
+   /* iOS-Madeira: refuse to compile obviously-invalid guest RIPs. After a
+    * NULL-vtable virtual call (`call [rax+8]` with rax=0), control flow
+@@ -1955,6 +1959,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+                         Frame ? Frame->State.L1Mask : 0,
+                         (T && T->LookupCache) ? T->LookupCache->GetL1Pointer() : 0);
+ 
++#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR
+       /* iOS-Madeira ml622: drain the rpmalloc remote-free CAS snapshot HERE —
+        * outside rpmalloc, where formatting is safe. The allocator side only ever
+        * copies scalars into a POD and sets a flag; it must never format, because
+@@ -1979,6 +1984,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+                             Snap.fail_changed, Snap.fail_unchanged, Snap.fail_invalid);
+         }
+       }
++#endif
+     }
+   }
+ 
+diff --git a/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp b/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
+index b2eca70f8..6a75e6471 100644
+--- a/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
++++ b/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
+@@ -704,6 +704,7 @@ static void IosLogUnimplementedCASPAL(uint32_t Size, uint64_t* GPRs, uint32_t Ad
+    * which we DUAL-MAP (RW alias + RX alias). Aliased mappings are exactly where atomics
+    * can fault despite correct alignment. Report what the region actually is, so "guest
+    * data in a dual-mapped pool page" is distinguishable from ordinary private memory. */
++#ifdef _WIN32
+   MEMORY_BASIC_INFORMATION mbi {};
+   const char* type = "?";
+   if (VirtualQuery(reinterpret_cast<LPCVOID>(GPRs[AddressReg]), &mbi, sizeof(mbi))) {
+@@ -714,6 +715,12 @@ static void IosLogUnimplementedCASPAL(uint32_t Size, uint64_t* GPRs, uint32_t Ad
+                     Size, AddressReg, GPRs[AddressReg], GPRs[AddressReg] & 15,
+                     (GPRs[AddressReg] & 15) ? "yes" : "no", mbi.BaseAddress, mbi.RegionSize,
+                     mbi.Protect, type, mbi.State);
++#else
++  LogMan::Msg::EFmt("[caspal128] MISALIGNED-UNSUPPORTED Size={} addrReg=x{} addr={:#x} misalign={} "
++                    "crosses16B={}",
++                    Size, AddressReg, GPRs[AddressReg], GPRs[AddressReg] & 15,
++                    (GPRs[AddressReg] & 15) ? "yes" : "no");
++#endif
+ }
+ 
+ static bool HandleCASPAL(uint32_t Instr, uint64_t* GPRs, uint32_t* StrictSplitLockMutex) {
+diff --git a/Source/Common/cpp-optparse b/Source/Common/cpp-optparse
+--- a/Source/Common/cpp-optparse
++++ b/Source/Common/cpp-optparse
+@@ -1 +1 @@
+-Subproject commit 9f94388a339fcbb0bc95c17768eb786c85988f6e
++Subproject commit 9f94388a339fcbb0bc95c17768eb786c85988f6e-dirty

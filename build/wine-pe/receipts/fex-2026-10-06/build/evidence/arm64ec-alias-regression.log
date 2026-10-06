@@ -1,0 +1,14 @@
+baseline-ios: compile extracted block, ios=True
+failed: both missing stderr=0 size=unset result=0 init=1 writes=0 unsafe=0
+failed: both missing stderr=0 size=0 result=0 init=1 writes=0 unsafe=0
+failed: both missing stderr=0 size=40000000 result=0 init=1 writes=0 unsafe=0
+failed: both missing stderr=1 size=unset result=0 init=1 writes=0 unsafe=0
+failed: both missing stderr=1 size=0 result=0 init=1 writes=0 unsafe=0
+144 extracted-production cases; failures=99
+patched-ios: compile extracted block, ios=True
+144 extracted-production cases; failures=0
+baseline-non-ios: compile extracted block, ios=False
+144 extracted-production cases; failures=0
+patched-non-ios: compile extracted block, ios=False
+144 extracted-production cases; failures=0
+PASS: baseline reproduced the missing fail-closed guard; patched iOS and both non-iOS blocks passed

@@ -1,0 +1,111 @@
+-- The C compiler identification is Clang 22.1.4
+-- The CXX compiler identification is Clang 22.1.4
+-- The ASM compiler identification is Clang with GNU-like command-line
+-- Found assembler: /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-clang
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-clang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /workspace/scratch/94ffb2b0bb2d/madeira-desktop-overlay-build/toolchains/llvm-mingw-20260421-ucrt-ubuntu-22.04-x86_64/bin/aarch64-w64-mingw32-clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for include file gdb/jit-reader.h
+-- Looking for include file gdb/jit-reader.h - not found
+-- Building for MinGW
+-- Performing Test HAS_CLANG_PRESERVE_ALL
+-- Performing Test HAS_CLANG_PRESERVE_ALL - Success
+-- Ignoring broken clang::preserve_all support
+-- Performing Test HAS_PROGRAM_INVOCATION_NAME
+-- Performing Test HAS_PROGRAM_INVOCATION_NAME - Failed
+-- Found Python: /usr/bin/python3.13 (found suitable version "3.13.5", minimum required is "3.9") found components: Interpreter
+-- xxHash build type: RELEASE
+-- Architecture: x86_64
+-- {fmt} version: 12.1.0
+-- Build type: RELEASE
+-- Performing Test HAS_NULLPTR_WARNING
+-- Performing Test HAS_NULLPTR_WARNING - Success
+CMake Deprecation Warning at External/range-v3/CMakeLists.txt:8 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+CMake Warning at External/range-v3/cmake/ranges_env.cmake:92 (message):
+  [range-v3 warning]: unknown build type, defaults to release!
+Call Stack (most recent call first):
+  External/range-v3/CMakeLists.txt:24 (include)
+
+
+-- Found Git: /usr/local/bin/git (found version "2.52.0")
+-- [range-v3]: C++ std=2a
+-- Performing Test RANGES_HAS_CXXSTD
+-- Performing Test RANGES_HAS_CXXSTD - Success
+-- Performing Test RANGES_HAS_WALL
+-- Performing Test RANGES_HAS_WALL - Success
+-- Performing Test RANGES_HAS_WEXTRA
+-- Performing Test RANGES_HAS_WEXTRA - Success
+-- Performing Test RANGES_HAS_WERROR
+-- Performing Test RANGES_HAS_WERROR - Success
+-- Performing Test RANGES_HAS_FDIAGNOSTIC_SHOW_TEMPLATE_TREE
+-- Performing Test RANGES_HAS_FDIAGNOSTIC_SHOW_TEMPLATE_TREE - Success
+-- Performing Test RANGES_HAS_FTEMPLATE_BACKTRACE_LIMIT
+-- Performing Test RANGES_HAS_FTEMPLATE_BACKTRACE_LIMIT - Success
+-- Performing Test RANGES_HAS_FMACRO_BACKTRACE_LIMIT
+-- Performing Test RANGES_HAS_FMACRO_BACKTRACE_LIMIT - Success
+-- Performing Test RANGES_HAS_OMIT_FRAME_POINTER
+-- Performing Test RANGES_HAS_OMIT_FRAME_POINTER - Success
+-- Performing Test RANGES_HAS_OFAST
+-- Performing Test RANGES_HAS_OFAST - Success
+-- Performing Test RANGES_HAS_STRICT_ALIASING
+-- Performing Test RANGES_HAS_STRICT_ALIASING - Success
+-- Performing Test RANGES_HAS_STRICT_VTABLE_POINTERS
+-- Performing Test RANGES_HAS_STRICT_VTABLE_POINTERS - Success
+-- Performing Test RANGES_HAS_FAST_MATH
+-- Performing Test RANGES_HAS_FAST_MATH - Success
+-- Performing Test RANGES_HAS_VECTORIZE
+-- Performing Test RANGES_HAS_VECTORIZE - Success
+-- Performing Test RANGES_HAS_SIZED_DEALLOCATION
+-- Performing Test RANGES_HAS_SIZED_DEALLOCATION - Success
+-- Performing Test RANGES_HAS_MARCH_NATIVE
+-- Performing Test RANGES_HAS_MARCH_NATIVE - Failed
+-- Performing Test RANGES_HAS_MTUNE_NATIVE
+-- Performing Test RANGES_HAS_MTUNE_NATIVE - Failed
+-- Performing Test RANGE_V3_ALIGNED_NEW_PROBE
+-- Performing Test RANGE_V3_ALIGNED_NEW_PROBE - Success
+-- Performing Test RANGES_HAS_FCOROUTINES_TS
+-- Performing Test RANGES_HAS_FCOROUTINES_TS - Failed
+-- Performing Test RANGE_V3_HAS_FCONCEPTS
+-- Performing Test RANGE_V3_HAS_FCONCEPTS - Failed
+-- Performing Test GCC_COLOR
+-- Performing Test GCC_COLOR - Success
+-- Performing Test CLANG_COLOR
+-- Performing Test CLANG_COLOR - Success
+-- Performing Test ENUM_ENUM_WARNING
+-- Performing Test ENUM_ENUM_WARNING - Success
+-- FEX version: 
+-- FEX commit: 1adb337a2f2270434ba731346438c072337a5d5f
+-- Performing Test HAS_SYSCALL_GETCPU
+-- Performing Test HAS_SYSCALL_GETCPU - Failed
+-- Performing Test HAS_SYSCALL_GETTID
+-- Performing Test HAS_SYSCALL_GETTID - Failed
+-- Performing Test HAS_SYSCALL_TGKILL
+-- Performing Test HAS_SYSCALL_TGKILL - Failed
+-- Performing Test HAS_SYSCALL_STATX
+-- Performing Test HAS_SYSCALL_STATX - Failed
+-- Performing Test HAS_SYSCALL_RENAMEAT2
+-- Performing Test HAS_SYSCALL_RENAMEAT2 - Failed
+-- Configuring done (3.6s)
+-- Generating done (0.1s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_POLICY_VERSION_MINIMUM
+
+
+-- Build files have been written to: /workspace/scratch/94ffb2b0bb2d/madeira-fex-guest-preflight-20261006/build-wow64-patched

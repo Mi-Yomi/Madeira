@@ -40,6 +40,13 @@ executable's newer LLVM Apache notice is not a substitute for this source's
 runtime notice. These observations do not change any upstream license or
 establish full binary-distribution or relinking compliance.
 
+The reviewed Playport v0.3.3 FEX guard backports are source patches under
+GPL-3.0-or-later with Playport's additional permission. Their authors, exact
+source links and verbatim license texts are retained in
+[the Playport notice](build/fex-ios/patches/playport/NOTICE.md). Complete pinned
+FEX Module.cpp test snapshots retain upstream MIT and Madeira fork terms.
+This source notice does not establish inclusion in any existing DLL or IPA.
+
 ## Why GPL-3.0-or-later
 
 The intent is that derivatives stay open source. LGPL deliberately permits

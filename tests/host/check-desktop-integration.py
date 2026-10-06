@@ -104,6 +104,10 @@ class IntegratedDesktopTests(unittest.TestCase):
         for arch in integration.planner.ARCHES:
             folder = arch + "-windows"
             shutil.copytree(ROOT / "app/Madeira" / folder, self.app / folder, dirs_exist_ok=True)
+            if integration.fex.present(ROOT):
+                name = "xtajit64.dll" if arch == "arm64ec" else "xtajit.dll"
+                shutil.copyfile(ROOT / integration.fex.RECEIPT / "preserved-original" / folder / name,
+                                self.app / folder / name)
             # This fixture intentionally tests the original twelve-DLL state.
             # A production tree may also carry the separately sealed MSI pair.
             for name in integration.msi.NAMES | integration.loader.NAMES:
@@ -349,7 +353,14 @@ class ReviewedSourceTests(unittest.TestCase):
             stage = ROOT / integration.startup.RECEIPT
             integration.startup.check_source(stage, integration.startup.seal(stage), ROOT)
             extension["client"]["startup"] = {"combined": integration.startup.checked_reports(stage)}
-        counts = integration.validate_farms(ROOT, ROOT / integration.RECEIPT, extension, loader_extension)
+        fex_extension = None
+        if integration.fex.present(ROOT):
+            stage = ROOT / integration.fex.RECEIPT
+            integration.fex.check_source(ROOT, stage, integration.fex.seal(stage))
+            fex_extension = {"combined": integration.fex.checked_reports(stage),
+                "baselines": {arch: integration.planner.document(stage, arch + "-baseline-inventory.json")
+                              for arch in integration.planner.ARCHES}}
+        counts = integration.validate_farms(ROOT, ROOT / integration.RECEIPT, extension, loader_extension, fex_extension)
         self.assertEqual(counts, integration.msi.RESIDUAL_COUNTS if extension else integration.msi.BASELINE_COUNTS)
 
     def test_existing_farm_substitution_rejected_before_parser(self):
@@ -357,6 +368,9 @@ class ReviewedSourceTests(unittest.TestCase):
             root = Path(directory).resolve()
             farm = root / "app/Madeira/aarch64-windows"
             shutil.copytree(ROOT / "app/Madeira/aarch64-windows", farm)
+            if integration.fex.present(ROOT):
+                shutil.copyfile(ROOT / integration.fex.RECEIPT / "preserved-original/aarch64-windows/xtajit.dll",
+                                farm / "xtajit.dll")
             for name in integration.msi.NAMES | integration.loader.NAMES:
                 (farm / name).unlink(missing_ok=True)
             target = farm / "kernel32.dll"

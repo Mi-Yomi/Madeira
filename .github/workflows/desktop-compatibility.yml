@@ -11,9 +11,9 @@ permissions:
 jobs:
   portable-launch:
     runs-on: ubuntu-latest
-    # The full integration suite reached ten minutes before the final Unicode
-    # check; retain every normal/optimized check with bounded completion room.
-    timeout-minutes: 12
+    # The baseline portable suite nearly exhausted 12 minutes; retain every
+    # guard, mutation and normal/optimized check within a bounded 15 minutes.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -45,6 +45,13 @@ jobs:
           python3 tests/host/check-metal-toolchain-setup.py
           python3 tests/host/check-native-bootstrap-artifacts.py
           python3 tests/host/check-native-bootstrap-workflow.py
+      - name: Check extracted FEX PE guards and build configuration
+        run: |
+          python3 tests/host/check-fex-wow64-smc-write-fault.py
+          python3 tests/host/check-fex-arm64ec-jit-rw-alias.py
+          python3 tests/host/check-fex-pe-configuration.py
+          bash -n build/fex-arm64ec/build.sh
+          bash -n build/fex-wow64/build.sh
       - name: Check child lifetime and bounded crash diagnostics
         run: |
           python3 tests/host/check-child-lifetime.py
@@ -65,6 +72,8 @@ jobs:
           python3 -O tests/host/check-msi-client-integration.py
           python3 tests/host/check-msi-startup-integration.py
           python3 -O tests/host/check-msi-startup-integration.py
+          python3 tests/host/check-fex-pe-replacement.py
+          python3 -O tests/host/check-fex-pe-replacement.py
           python3 tests/host/check-msi-windows-reference.py
           python3 tests/host/check-msi-madeira-reference.py
           python3 tests/host/check-mesa-windows-reference.py

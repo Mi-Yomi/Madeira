@@ -1,0 +1,2 @@
+38b68f69909aea0dae3ce88934936275e9415accf22fc0823568eda244962b07  /workspace/scratch/94ffb2b0bb2d/madeira-graphics-bootstrap/app/Madeira/arm64ec-windows/xtajit64.dll
+682ed22a3e60aff6f0bca8d5d62ec59bc67a2330dd318b70937174244c5c3cb6  /workspace/scratch/94ffb2b0bb2d/madeira-graphics-bootstrap/app/Madeira/aarch64-windows/xtajit.dll

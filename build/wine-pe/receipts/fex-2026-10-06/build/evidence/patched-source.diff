@@ -1,0 +1,126 @@
+diff --git a/FEXCore/Source/CMakeLists.txt b/FEXCore/Source/CMakeLists.txt
+index 40b921444..556b8c602 100644
+--- a/FEXCore/Source/CMakeLists.txt
++++ b/FEXCore/Source/CMakeLists.txt
+@@ -301,6 +301,8 @@ endif()
+ # Only needed for targets that run emulation. For others, use JemallocDummy.
+ add_library(JemallocLibs STATIC Utils/AllocatorHooks.cpp)
+ if (ENABLE_FEX_ALLOCATOR)
++  # Core drains rpmalloc diagnostics only when their real provider is linked.
++  set_property(SOURCE Interface/Core/Core.cpp APPEND PROPERTY COMPILE_DEFINITIONS ENABLE_FEX_ALLOCATOR=1)
+   target_compile_definitions(JemallocLibs PRIVATE ENABLE_FEX_ALLOCATOR=1)
+   target_link_libraries(JemallocLibs PUBLIC rpmalloc)
+ endif()
+diff --git a/FEXCore/Source/Interface/Core/Core.cpp b/FEXCore/Source/Interface/Core/Core.cpp
+index be5431125..b116a8154 100644
+--- a/FEXCore/Source/Interface/Core/Core.cpp
++++ b/FEXCore/Source/Interface/Core/Core.cpp
+@@ -64,6 +64,7 @@ $end_info$
+ #include <chrono>
+ #include <cstring>
+ 
++#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR
+ /* iOS-Madeira ml622: mirror of rpmalloc's POD snapshot (rpmalloc.c). Declared here
+  * rather than in a shared header because rpmalloc is C and vendored; keep the two
+  * definitions in sync — the drain below is the only consumer. */
+@@ -77,6 +78,7 @@ struct rpm_cas_snapshot {
+ };
+ int rpm_cas_snapshot_take(struct rpm_cas_snapshot* out);
+ }
++#endif
+ #include <condition_variable>
+ #include <fcntl.h>
+ #include <functional>
+@@ -1464,6 +1466,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+   }
+ #endif
+ 
++#ifdef FEX_IOS_HOST
+   /* iOS-Madeira ml304 (task #51): REPORT CallbackPtr ENTRY ON ITS OWN, not via the bogus-RIP path.
+    *
+    * ml302 proved the JITCallback prologue writes the bad State.rip, and ml303 added an LR witness --
+@@ -1514,6 +1517,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+                         IosCbEntryLog[4], IosCbEntryLog[5], IosCbEntryLog[7]);
+     }
+   }
++#endif
+ 
+   /* iOS-Madeira: refuse to compile obviously-invalid guest RIPs. After a
+    * NULL-vtable virtual call (`call [rax+8]` with rax=0), control flow
+@@ -1955,6 +1959,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+                         Frame ? Frame->State.L1Mask : 0,
+                         (T && T->LookupCache) ? T->LookupCache->GetL1Pointer() : 0);
+ 
++#if defined(ENABLE_FEX_ALLOCATOR) && ENABLE_FEX_ALLOCATOR
+       /* iOS-Madeira ml622: drain the rpmalloc remote-free CAS snapshot HERE —
+        * outside rpmalloc, where formatting is safe. The allocator side only ever
+        * copies scalars into a POD and sets a flag; it must never format, because
+@@ -1979,6 +1984,7 @@ uintptr_t ContextImpl::CompileBlock(FEXCore::Core::CpuStateFrame* Frame, uint64_
+                             Snap.fail_changed, Snap.fail_unchanged, Snap.fail_invalid);
+         }
+       }
++#endif
+     }
+   }
+ 
+diff --git a/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp b/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
+index b2eca70f8..6a75e6471 100644
+--- a/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
++++ b/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp
+@@ -704,6 +704,7 @@ static void IosLogUnimplementedCASPAL(uint32_t Size, uint64_t* GPRs, uint32_t Ad
+    * which we DUAL-MAP (RW alias + RX alias). Aliased mappings are exactly where atomics
+    * can fault despite correct alignment. Report what the region actually is, so "guest
+    * data in a dual-mapped pool page" is distinguishable from ordinary private memory. */
++#ifdef _WIN32
+   MEMORY_BASIC_INFORMATION mbi {};
+   const char* type = "?";
+   if (VirtualQuery(reinterpret_cast<LPCVOID>(GPRs[AddressReg]), &mbi, sizeof(mbi))) {
+@@ -714,6 +715,12 @@ static void IosLogUnimplementedCASPAL(uint32_t Size, uint64_t* GPRs, uint32_t Ad
+                     Size, AddressReg, GPRs[AddressReg], GPRs[AddressReg] & 15,
+                     (GPRs[AddressReg] & 15) ? "yes" : "no", mbi.BaseAddress, mbi.RegionSize,
+                     mbi.Protect, type, mbi.State);
++#else
++  LogMan::Msg::EFmt("[caspal128] MISALIGNED-UNSUPPORTED Size={} addrReg=x{} addr={:#x} misalign={} "
++                    "crosses16B={}",
++                    Size, AddressReg, GPRs[AddressReg], GPRs[AddressReg] & 15,
++                    (GPRs[AddressReg] & 15) ? "yes" : "no");
++#endif
+ }
+ 
+ static bool HandleCASPAL(uint32_t Instr, uint64_t* GPRs, uint32_t* StrictSplitLockMutex) {
+diff --git a/Source/Windows/ARM64EC/Module.cpp b/Source/Windows/ARM64EC/Module.cpp
+index fbaf76f11..27fe6a8f5 100644
+--- a/Source/Windows/ARM64EC/Module.cpp
++++ b/Source/Windows/ARM64EC/Module.cpp
+@@ -1044,10 +1044,12 @@ NTSTATUS ProcessInit() {
+           (unsigned long long)off, (unsigned long long)rw, (unsigned long long)rx);
+       if (stderr_h) { ULONG w = 0; WriteFile(stderr_h, buf, n, &w, nullptr); }
+     } else {
+-      int n = snprintf(buf, sizeof(buf),
+-          "[FEX-iOS] FATAL: WINE_IOS_JIT_RW/RX missing (RW=%s RX=%s) — JIT pool writes will corrupt!\n",
+-          rw_env ? rw_env : "(null)", rx_env ? rx_env : "(null)");
+-      if (stderr_h) { ULONG w = 0; WriteFile(stderr_h, buf, n, &w, nullptr); }
++      // Playport: fail before InitCore emits JIT stores through a zero alias offset.
++      // Keep the diagnostic bounded even when an environment value is malformed.
++      static constexpr char message[] =
++          "[FEX-iOS] FATAL: JIT RW/RX aliases missing or equal; refusing to start\n";
++      if (stderr_h) { ULONG w = 0; WriteFile(stderr_h, message, sizeof(message) - 1, &w, nullptr); }
++      return STATUS_UNSUCCESSFUL;
+     }
+   }
+ #endif
+diff --git a/Source/Windows/WOW64/Module.cpp b/Source/Windows/WOW64/Module.cpp
+index 6732edc78..83a9c8356 100644
+--- a/Source/Windows/WOW64/Module.cpp
++++ b/Source/Windows/WOW64/Module.cpp
+@@ -1861,7 +1861,9 @@ bool BTCpuResetToConsistentStateImpl(EXCEPTION_POINTERS* Ptrs) {
+       return true;
+     }
+ 
+-    if (Thread) {
++    // Playport: SMC protection leaves pages readable; only writes can be its traps.
++    // Leave read/execute access violations for normal guest exception delivery.
++    if (Thread && Exception->ExceptionInformation[0] == EXCEPTION_WRITE_FAULT) {
+       std::scoped_lock Lock(ThreadCreationMutex);
+       FEXCORE_PROFILE_INSTANT_INCREMENT(Thread, AccumulatedSMCCount, 1);
+       if (InvalidationTracker->HandleRWXAccessViolation(Thread, Context->Pc, FaultAddress)) {
