@@ -276,16 +276,17 @@ class PackageTests(unittest.TestCase):
             self.assertIn(f"/tree/{SHA}\n", notes)
             self.assertIn(f"/blob/{SHA}/docs/JIT.md", notes)
 
-    def test_checksum_comments_work_with_available_real_verifiers(self):
+    def test_plain_checksum_records_work_with_available_real_verifiers(self):
         commands = [(tool, executable) for tool in ("sha256sum", "shasum")
                     if (executable := shutil.which(tool))]
         self.assertTrue(commands, "A real checksum verifier is required for this portability test")
         with PackageFixture() as fx:
             fx.prepare()
             sums = (fx.destination / "SHA256SUMS").read_text()
-            self.assertIn(f"# Source commit: {SHA}\n", sums)
-            self.assertIn("/actions/runs/1234/attempts/2\n", sums)
-            self.assertEqual(len([line for line in sums.splitlines() if not line.startswith("#")]), 2)
+            expected = "".join(f"{gate.digest(fx.destination / name)}  {name}\n" for name in delivery.ASSETS[:2])
+            self.assertEqual(sums, expected)
+            self.assertEqual(len(sums.splitlines()), 2)
+            self.assertNotIn("#", sums)
             for tool, executable in commands:
                 args = [executable, *(["-a", "256"] if tool == "shasum" else []), "--check", "SHA256SUMS"]
                 with self.subTest(tool=tool):
@@ -399,7 +400,9 @@ class DraftCheckTests(unittest.TestCase):
         self.assertEqual(result["tag"], "unsigned-ipa-20261005-" + SHA[:12])
         self.assertEqual(result["target_commitish"], SHA)
         self.assertIn("may be empty or incomplete", result["body"])
-        self.assertIn("After upload, SHA256SUMS records the actual Actions run/attempt", result["body"])
+        self.assertIn("After upload, SHA256SUMS records the exact hashes", result["body"])
+        self.assertIn("Actions run/attempt will be provided separately", result["body"])
+        self.assertNotIn("records the actual Actions run/attempt", result["body"])
         self.assertNotIn("integrity passed", result["body"])
         self.assertNotIn("/actions/runs/", result["body"])
         preflight.assert_not_called()
@@ -481,6 +484,44 @@ class DraftCheckTests(unittest.TestCase):
 
 
 class UploadTests(unittest.TestCase):
+    def test_trusted_temp_parent_alias_resolves_but_downloaded_symlink_is_rejected(self):
+        real_temporary_directory = tempfile.TemporaryDirectory
+        for symlink_asset in (False, True):
+            with self.subTest(symlink_asset=symlink_asset), PackageFixture() as fx:
+                fx.prepare()
+                gh = FakeGitHub(fx)
+                alias = fx.temp / "alias-parent"
+                alias.symlink_to(fx.temp, target_is_directory=True)
+                destinations = []
+                original_download = gh.download
+
+                @contextlib.contextmanager
+                def aliased_temporary_directory(*args, **kwargs):
+                    with real_temporary_directory(*args, dir=alias, **kwargs) as path:
+                        self.assertIn(alias, Path(path).parents)
+                        yield path
+
+                def download(asset_id, destination):
+                    destinations.append(destination)
+                    self.assertNotIn(alias, destination.parents)
+                    self.assertTrue(all(not parent.is_symlink() for parent in destination.parents))
+                    original_download(asset_id, destination)
+                    if symlink_asset:
+                        target = destination.with_name(destination.name + ".actual")
+                        destination.rename(target)
+                        destination.symlink_to(target)
+
+                with mock.patch.object(delivery, "GitHub", return_value=gh), \
+                        mock.patch.object(tempfile, "TemporaryDirectory", side_effect=aliased_temporary_directory), \
+                        mock.patch.object(gh, "download", side_effect=download):
+                    if symlink_asset:
+                        with self.assertRaisesRegex(ValueError, "unsafe regular file"):
+                            delivery.upload(fx.stage, fx.native, fx.destination, 42)
+                    else:
+                        result = delivery.upload(fx.stage, fx.native, fx.destination, 42)
+                        self.assertEqual(result["status"], "draft-delivered-and-downloaded-verified")
+                self.assertEqual(len(destinations), 1 if symlink_asset else 3)
+
     def test_success_always_downloads_all_three_even_with_api_digests(self):
         for digest in (True, False):
             with self.subTest(digest=digest), PackageFixture() as fx:

@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: [compatibility/desktop-apps]
-    # A reviewed request-file change opts in to this user's requested build.
+    # Reviewed workflow/request changes opt in to this user's requested build.
     paths:
+      - .github/workflows/unsigned-ipa-delivery.yml
       - build/app-ios/ipa-delivery-request.json
 
 permissions:

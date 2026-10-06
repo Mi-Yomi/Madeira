@@ -12,6 +12,8 @@ WORKFLOW = ROOT / ".github/workflows/unsigned-ipa-delivery.yml"
 def validate(text):
     events = text.split("\non:\n", 1)[1].split("\npermissions:\n", 1)[0]
     assert re.findall(r"^  ([a-z_]+):", events, re.M) == ["workflow_dispatch", "push"]
+    assert re.findall(r"^      - (.+)$", events, re.M) == [
+        ".github/workflows/unsigned-ipa-delivery.yml", "build/app-ios/ipa-delivery-request.json"]
     assert text.count("permissions:\n") == 2
     assert text.count("  unsigned-ipa:\n") == 1
     before, job = text.split("  unsigned-ipa:\n")
@@ -78,6 +80,8 @@ class WorkflowTests(unittest.TestCase):
                         ("link_diagnostic.py native", ".github/ci/native-bootstrap.sh"),
                         ('--release-id "$MADEIRA_DRAFT_ID"', '--release-id 1'),
                         ("  workflow_dispatch:\n", "  workflow_dispatch:\n  pull_request:\n"),
+                        ("      - .github/workflows/unsigned-ipa-delivery.yml\n", ""),
+                        ("      - build/app-ios/ipa-delivery-request.json\n", "      - app/**\n"),
                         ("  contents: read\n", "  contents: read\n  actions: write\n"),
                         ("      contents: write\n", "      contents: write\n      id-token: write\n"))
         for before, after in replacements:

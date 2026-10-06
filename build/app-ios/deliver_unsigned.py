@@ -162,7 +162,7 @@ def release_notes(source_commit):
         "To install a delivered IPA, sideload with development signing and get-task-allow, retain/provision the MadeiraJITHelper extension, re-sign embedded code, then enable JIT.",
         "This draft does not establish runtime compatibility, complete redistribution/relinking compliance, or public release approval.",
         "", f"Source commit: {source}",
-        "After upload, SHA256SUMS records the actual Actions run/attempt and exact hashes of the IPA and original provenance.json.",
+        "After upload, SHA256SUMS records the exact hashes of the IPA and original provenance.json. The Actions run/attempt will be provided separately from workflow evidence.",
         "Use provenance.json for the actual build/source evidence and package size; asset presence alone is not successful delivery verification.",
         "", "Planned bundled notices: Payload/Madeira.app/licenses/ and Payload/Madeira.app/legal/;",
         "converter terms: Payload/Madeira.app/d3d12/METAL-SHADER-CONVERTER-AGREEMENT.txt.",
@@ -190,9 +190,7 @@ def draft_body(source_commit):
 
 
 def delivery_metadata(context, assets):
-    header = (f"# Source commit: {context['source_commit']}\n"
-              f"# Actions run/attempt: https://github.com/{REPOSITORY}/actions/runs/{context['run_id']}/attempts/{context['run_attempt']}\n")
-    sums = (header + "".join(f"{assets[name]['sha256']}  {name}\n" for name in ASSETS[:2])).encode()
+    sums = "".join(f"{assets[name]['sha256']}  {name}\n" for name in ASSETS[:2]).encode()
     assets = {**assets, "SHA256SUMS": {"bytes": len(sums), "sha256": hashlib.sha256(sums).hexdigest()}}
     notes = release_notes(context["source_commit"]).encode()
     receipt = {"schema_version": 1, "status": "verified-offline", **context,
@@ -398,10 +396,13 @@ def upload(stage, native_receipt, delivery, release_id):
         uploaded = github.api(f"releases/{release_id}/assets?per_page=100")
         asset_ids = check_asset_inventory(uploaded, assets)
         with tempfile.TemporaryDirectory(prefix="madeira-download-check-") as temporary:
+            # Resolve this trusted fresh root's macOS /var ancestor alias only;
+            # asset paths are still checked by regular() without resolving them.
+            temporary_root = Path(temporary).resolve(strict=True)
             for row in uploaded:
                 name = row["name"]
                 expected = assets[name]
-                destination = Path(temporary) / name
+                destination = temporary_root / name
                 github.download(row.get("id"), destination)  # Always independently hash the downloaded bytes.
                 require(identity(destination) == expected, "Downloaded asset differs: " + name)
         check_remote_source(github, context)
