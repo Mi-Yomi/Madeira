@@ -47,6 +47,38 @@ evidence, real_directives = m.object_evidence(real)
 check(evidence['header']['machine'] == '0x8664', 'Captured compiler object is x64')
 check(real_directives['mismatch_tags']['RuntimeLibrary'] == ['MT_StaticRelease'], 'Captured LLVM /MT evidence')
 m.require_release_crt(real_directives)
+# This is the actual source-owned object from the second Windows diagnostic,
+# independent of the older upstream LLVM object and mocked orchestration.
+source_provenance = json.loads((FIXTURES / 'msvc-14.51-source-probe.json').read_text())
+source_object = (FIXTURES / source_provenance['object_file']).read_bytes()
+check(len(source_object) == source_provenance['object_size'] == 1374 and
+      hashlib.sha256(source_object).hexdigest() == source_provenance['object_sha256'], 'Exact real source-object identity')
+source_lf = (ROOT / source_provenance['source_path']).read_bytes().replace(b'\r\n', b'\n')
+check(b'\r' not in source_lf and hashlib.sha256(source_lf).hexdigest() == source_provenance['source_canonical_lf_sha256'] and
+      hashlib.sha256(source_lf.replace(b'\n', b'\r\n')).hexdigest() == source_provenance['source_sha256'],
+      'Captured object binds unchanged source and the actual Windows CRLF checkout')
+source_evidence, source_directives = m.object_evidence(source_object)
+check(source_directives == source_provenance['directives'] and
+      source_directives['default_libraries'] == ['libcmt', 'oldnames', 'uuid'] and
+      not source_directives['mismatch_tags'] and not source_directives['other_directives_unreviewed'],
+      'Real source object contains only the CRT pair and evidenced UUID default')
+check([x['raw_directives'] for x in source_evidence['sections'] if 'raw_directives' in x] ==
+      [x['raw_directives'] for x in source_provenance['raw_directive_sections']] and
+      source_provenance['raw_directive_sections'][0]['raw_directives'].count('/DEFAULTLIB:"uuid.lib"') == 2,
+      'Duplicate UUID pragmas remain in raw compiler evidence')
+m.require_release_crt(source_directives, True)
+check(True, 'Evidenced UUID default passes without changing the static CRT requirement')
+for replacement in [b'evil.lib', b'uuid.dll']:
+    bad_source = source_object.replace(b'uuid.lib', replacement)
+    reject(lambda b=bad_source: m.require_release_crt(m.object_evidence(b)[1], True),
+           'Actual-object UUID mutation remains rejected')
+reject(lambda: m.require_release_crt(m.object_evidence(source_object.replace(b'LIBCMT', b'MSVCRT'))[1], True),
+       'Actual-object dynamic CRT mutation remains rejected')
+for defaults in [['uuid'], ['oldnames', 'uuid'], ['libcmt', 'oldnames', 'uuid', 'ole32'],
+                 ['libcmt', 'oldnames', 'uuid', 'libcpmt'], ['libcmt', 'oldnames', 'uuid', 'custom']]:
+    bad_directives = copy.deepcopy(source_directives)
+    bad_directives['default_libraries'] = defaults
+    reject(lambda d=bad_directives: m.require_release_crt(d, True), 'Missing CRT or extra source default')
 for name in m.REQUIRED:
     corrupt = real.replace(name.encode(), ('X' + name[1:]).encode())
     reject(lambda b=corrupt: m.object_evidence(b), 'One required real COFF symbol removed: ' + name)
@@ -228,7 +260,7 @@ def exercise(compile_exit=0, link_exit=0, corrupt_provider=False, source_default
             check(captured_bytes[0]['size'] == len(real) and captured_bytes[0]['sha256'] == provenance['member_sha256'] and
                   captured_bytes[0]['semantic_gates'] == 'not-yet-evaluated', 'Encoded evidence carries identity without acceptance')
 for args in [{}, {'compile_exit': 1}, {'link_exit': 1}, {'corrupt_provider': True},
-             {'source_defaults': ['libcmt', 'oldnames', 'uuid']}, {'source_defaults': ['oldnames']},
+             {'source_defaults': ['libcmt', 'oldnames', 'uuid', 'ole32']}, {'source_defaults': ['oldnames']},
              {'object_parse_error': True}]:
     exercise(**args)
 

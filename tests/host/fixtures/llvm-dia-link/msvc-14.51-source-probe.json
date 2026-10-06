@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "scope": "Exact source-owned probe object; captured after compilation, never linked/executed",
+  "run_url": "https://github.com/Mi-Yomi/Madeira/actions/runs/37470687893",
+  "job_id": 112293058763,
+  "source_commit": "47781c7aa44ae334c0b8ad54d947a9daef0a9799",
+  "source_path": "tests/desktop/llvm_sdk/dia_link_probe.cpp",
+  "source_sha256": "57c8f3652d5843f513194cd0d8fe1d1091fd3a23ef3435c1adb70783dd7402b4",
+  "source_runner_line_endings": "CRLF",
+  "source_canonical_lf_sha256": "8e03fabd3f2078d789be0d544a20e328b1c75bb6b37727e8681fe8ffeb3d4a0d",
+  "compiler": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+    "sha256": "b0a1818ebae6da7f18230a84e76ce839212584ac4c2ab55b97a0d5268085da57"
+  },
+  "compile_command": {
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Enterprise\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+      "/nologo",
+      "/c",
+      "/O2",
+      "/MT",
+      "/W4",
+      "/WX",
+      "/std:c++17",
+      "/GR-",
+      "/EHs-c-",
+      "/D_HAS_EXCEPTIONS=0",
+      "/D_ITERATOR_DEBUG_LEVEL=0",
+      "/DNDEBUG",
+      "/FoD:\\a\\_temp\\llvm-dia-link-37470687893-1\\dia-probe.obj",
+      "D:\\a\\Madeira\\Madeira\\tests\\desktop\\llvm_sdk\\dia_link_probe.cpp"
+    ],
+    "exit": 0,
+    "log_sha256": "6f9396ec255051c503edaa09e1c828536bb19eed6903e244fec33cfdbb9f98fa",
+    "seconds": 4.422,
+    "stage": "dia-compile"
+  },
+  "object_file": "msvc-14.51-source-probe.coff",
+  "object_size": 1374,
+  "object_sha256": "98d2a3e99d118222c27e40b82202afe094f3d821a09831d6cbefefd522fa47b5",
+  "license": "MIT; source-owned diagnostic",
+  "directives": {
+    "default_libraries": [
+      "libcmt",
+      "oldnames",
+      "uuid"
+    ],
+    "directive_kinds": {
+      "defaultlib": 4
+    },
+    "mismatch_tags": {},
+    "other_directives_unreviewed": []
+  },
+  "raw_directive_sections": [
+    {
+      "index": 1,
+      "raw_directives": "   /DEFAULTLIB:\"uuid.lib\" /DEFAULTLIB:\"uuid.lib\" /DEFAULTLIB:\"LIBCMT\" /DEFAULTLIB:\"OLDNAMES\" ",
+      "raw_sha256": "c7366a9d7fda0fe26a40098fc6ae83ea281c3d5d1f666a434b407eede5ed6f0c",
+      "size": 93
+    }
+  ],
+  "linked": false,
+  "runtime_tested": false,
+  "source_log_bytes": 4288681,
+  "source_log_sha256": "74b74b5be49c39fd1d9f35c470ca278677b7839fca0a8e8c444935def51e9f55"
+}

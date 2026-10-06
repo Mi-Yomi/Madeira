@@ -112,7 +112,10 @@ def require_release_crt(row, require_default=False):
                 {'force', 'nodefaultlib', 'wholearchive', 'ignore', 'wx', 'libpath'},
                 'Selected member contains a linker override/suppression directive')
     if require_default:
-        require('libcmt' in defaults and defaults <= {'libcmt', 'oldnames'},
+        # The real source object from run 37470687893 also names uuid.lib.
+        # UUID is GUID data, already a mandatory inventoried/hash-bound explicit
+        # link input; it does not broaden the static CRT family or provider set.
+        require('libcmt' in defaults and defaults <= {'libcmt', 'oldnames', 'uuid'},
                 'Source object does not establish its ordinary release /MT defaults')
 
 

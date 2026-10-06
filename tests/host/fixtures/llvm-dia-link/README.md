@@ -20,3 +20,12 @@ GUIDs, and `stdafx.obj` carries MD_DynamicRelease. It is not a real link trace.
 The host test deliberately constructs synthetic link/map text and uses inert
 command substitutes for workflow orchestration. Only a future bounded native
 Windows job can establish the actual linker output and selected members.
+
+`msvc-14.51-source-probe.coff` is the actual 1,374-byte object compiled from this
+repository's MIT-licensed `dia_link_probe.cpp` on Windows in run 37470687893.
+Its companion JSON records source/compiler/object/log hashes, the exact compile
+command and actual raw/parsed directives. Source provenance distinguishes the
+actual Windows CRLF checkout from canonical LF bytes. The object was never
+linked or run. It demonstrates the two `uuid.lib` pragmas plus `LIBCMT`/`OLDNAMES`
+defaults; mutations verify that unrelated libraries and dynamic CRT substitutions
+remain rejected. This fixture is distinct from the upstream LLVM object above.

@@ -69,7 +69,9 @@ match the intended narrow release reference.
 
 Success requires all of the following:
 
-1. Successful compilation with `libcmt` defaults and no contradictory CRT tags
+1. Successful compilation with `libcmt` defaults, only `oldnames` and the
+   separately bound `uuid` GUID library additionally allowed, and no
+   contradictory CRT tags
 2. Successful `/WX` link with unchanged defaults and no FORCE, NODEFAULTLIB,
    WHOLEARCHIVE, IGNORE, LIBPATH or warning suppression in selected directives
 3. Exact DIA archive identity in `/VERBOSE:LIB` searched/loaded records,
@@ -112,6 +114,17 @@ therefore leaves its deciding evidence in the log while still stopping before
 linking. The decoded directive strings represent NUL bytes as spaces; exact
 original bytes remain in `DIA_COMPILED_OBJECT_BYTES`. This instrumentation does
 not add any accepted source default.
+
+The next source-default correction is grounded in the actual 1,374-byte
+MSVC 14.51 object from [run 37470687893](https://github.com/Mi-Yomi/Madeira/actions/runs/37470687893),
+SHA-256 `98d2a3e99d118222c27e40b82202afe094f3d821a09831d6cbefefd522fa47b5`.
+It contains `uuid.lib` twice, then `LIBCMT` and `OLDNAMES`, with no mismatch tags
+or other directives. The source gate permits that one evidenced GUID-library
+default because `uuid.lib` is already a mandatory, inventoried/hash-bound
+explicit link input. It remains separate from the static CRT family. Missing
+`libcmt`, any other source default, dynamic/debug CRTs and linker suppression
+remain rejected. The actual object and full provenance are regression fixtures;
+their acceptance is not a native link or complete LLVM dependency result.
 
 ## Neutral COFF collection correction
 
