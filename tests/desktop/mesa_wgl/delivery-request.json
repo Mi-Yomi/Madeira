@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "repository": "Mi-Yomi/Madeira",
+  "source_ref": "refs/heads/compatibility/desktop-apps",
+  "source_commit": null,
+  "request_id": null,
+  "release_id": null,
+  "target_ipa_sha256": null,
+  "delivery": "existing-private-draft",
+  "publish": false
+}

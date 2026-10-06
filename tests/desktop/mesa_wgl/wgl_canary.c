@@ -3,6 +3,7 @@
  * Build: x86_64-w64-mingw32-clang -std=c11 -Wall -Wextra -Werror -O2
  *        wgl_canary.c -o wgl-canary.exe -lgdi32 -luser32
  * Run: wgl-canary.exe --stage gdi|legacy|core43|modern [--hold-ms 3000]
+ * Double-click/no arguments, or --interactive: local report and visible softpipe frames.
  * Exit zero proves only the named stages printed here, never Blender support.
  */
 #define WIN32_LEAN_AND_MEAN
@@ -14,6 +15,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
+#include <io.h>
+#include <fcntl.h>
 
 #include "wgl_canary_pixels.h"
 
@@ -21,6 +25,10 @@ static HMODULE gl_module;
 static int source_built_reference;
 static int core_unavailable;
 static int strict_modern;
+static int interactive;
+static WCHAR interactive_report[32768];
+static HWND hidden_console;
+static UINT console_show_command;
 static PROC (WINAPI *get_gl_proc)(LPCSTR);
 static HGLRC (WINAPI *create_context)(HDC);
 static BOOL (WINAPI *make_current)(HDC, HGLRC);
@@ -102,6 +110,87 @@ static void pump_for(DWORD milliseconds)
         if (!milliseconds) break;
         Sleep(10);
     } while (GetTickCount() - start < milliseconds);
+}
+
+/* User-invoked diagnostics only: create a new report beside this EXE, never
+ * overwrite an existing file, collect other logs, or send anything anywhere. */
+static int open_interactive_report(void)
+{
+    WCHAR *slash;
+    DWORD n = GetModuleFileNameW(NULL, interactive_report, 32768);
+    HANDLE file = INVALID_HANDLE_VALUE;
+    int fd;
+    if (!n || n >= 32768 || !(slash = wcsrchr(interactive_report, L'\\'))) return 0;
+    size_t remaining = 32768 - (size_t)(slash + 1 - interactive_report);
+    if (remaining < 100) return 0;
+    for (unsigned i = 0; i < 32; ++i) {
+        swprintf(slash + 1, remaining, L"canary-result-%lu-%lu-%u.txt",
+                 (unsigned long)GetCurrentProcessId(), (unsigned long)GetTickCount(), i);
+        file = CreateFileW(interactive_report, GENERIC_WRITE, FILE_SHARE_READ, NULL,
+                           CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (file != INVALID_HANDLE_VALUE) break;
+        if (GetLastError() != ERROR_FILE_EXISTS && GetLastError() != ERROR_ALREADY_EXISTS) return 0;
+    }
+    if (file == INVALID_HANDLE_VALUE) return 0;
+    fd = _open_osfhandle((intptr_t)file, _O_WRONLY | _O_TEXT);
+    if (fd < 0) { CloseHandle(file); return 0; }
+    if (_dup2(fd, _fileno(stdout)) || _dup2(fd, _fileno(stderr))) { _close(fd); return 0; }
+    _close(fd);
+    setvbuf(stdout, NULL, _IONBF, 0);
+    return 1;
+}
+
+static void hide_owned_console(void)
+{
+    DWORD processes[2];
+    HWND console = GetConsoleWindow();
+    WINDOWPLACEMENT placement = {0};
+    placement.length = sizeof(placement);
+    /* Never hide an inherited/shared parent console. Restore only a visible
+     * console for which this process is the sole attached client. */
+    if (console && GetConsoleProcessList(processes, 2) == 1 &&
+        processes[0] == GetCurrentProcessId() && IsWindowVisible(console) &&
+        GetWindowPlacement(console, &placement)) {
+        console_show_command = placement.showCmd;
+        ShowWindow(console, SW_HIDE);
+        hidden_console = console;
+    }
+}
+
+static void restore_owned_console(void)
+{
+    if (hidden_console && IsWindow(hidden_console))
+        ShowWindow(hidden_console, (int)console_show_command);
+    hidden_console = NULL;
+}
+
+static int hold_interactive_frame(HDC dc, const WCHAR *title, const char *expected)
+{
+    if (!interactive) return 1;
+    HWND hwnd = WindowFromDC(dc);
+    printf("VISUAL_EXPECT %s; held=7000ms; visibility=UNVERIFIED\n", expected);
+    if (!hwnd || !SetWindowTextW(hwnd, title) || !GdiFlush()) return fail("interactive-frame");
+    pump_for(7000);
+    return IsWindow(hwnd) ? 1 : fail("interactive-window-closed");
+}
+
+static int show_interactive_gdi(HDC dc)
+{
+    BITMAPINFO info = {0};
+    RECT rect;
+    /* Two top-down rows, red/green above blue/white. */
+    const DWORD pixels[4] = {0x00ff0000, 0x0000ff00, 0x000000ff, 0x00ffffff};
+    if (!interactive) return 1;
+    info.bmiHeader.biSize = sizeof(info.bmiHeader);
+    info.bmiHeader.biWidth = 2;
+    info.bmiHeader.biHeight = -2;
+    info.bmiHeader.biPlanes = 1;
+    info.bmiHeader.biBitCount = 32;
+    if (!GetClientRect(WindowFromDC(dc), &rect) ||
+        StretchDIBits(dc, 0, 0, rect.right, rect.bottom, 0, 0, 2, 2, pixels, &info,
+                      DIB_RGB_COLORS, SRCCOPY) != 2) return fail("interactive-gdi-pattern");
+    return hold_interactive_frame(dc, L"GDI: red/green above blue/white (7 sec)",
+                                  "frame=GDI quadrants=red,green,blue,white");
 }
 
 /* Strict mode checks the cleanup of prerequisite GDI probes too. */
@@ -443,6 +532,7 @@ static int check_wgl(HDC dc, int modern)
     if (!SwapBuffers(dc)) goto out;
     pass("legacy-swap");
     if (!check_window_pixel(dc, "legacy-window-readback", 64, 128, 191)) goto out;
+    if (!hold_interactive_frame(dc, L"Mesa frame 1: blue (7 sec)", "frame=GL1 rgb=64,128,191")) goto out;
     clear_color(0.75f, 0.25f, 0.5f, 1.0f);
     clear(GL_COLOR_BUFFER_BIT);
     if (!check_pixel("legacy-second-readback", 191, 64, 128)) goto out;
@@ -450,6 +540,7 @@ static int check_wgl(HDC dc, int modern)
     if (!SwapBuffers(dc)) goto out;
     pass("legacy-second-swap");
     if (!check_window_pixel(dc, "legacy-second-window-readback", 191, 64, 128)) goto out;
+    if (!hold_interactive_frame(dc, L"Mesa frame 2: purple (7 sec)", "frame=GL2 rgb=191,64,128")) goto out;
     puts("LIMIT swap=window-backing-pixel-readback; compositor-display-unverified");
     if (!modern) { ok = 1; goto out; }
 
@@ -518,8 +609,23 @@ int main(int argc, char **argv)
     HWND window = NULL;
     HDC dc = NULL;
     int result = 1, registered = 0;
+    interactive = argc == 1 || (argc == 2 && !strcmp(argv[1], "--interactive"));
+    if (interactive) {
+        if (!open_interactive_report()) {
+            MessageBoxW(NULL, L"Cannot create a new local report beside this EXE. Extract the whole ZIP into a writable folder and try again.",
+                        L"Madeira softpipe canary", MB_OK | MB_ICONERROR);
+            return 1;
+        }
+        stage = "legacy";
+        source_built_reference = 1;
+        hide_owned_console();
+        if (!SetEnvironmentVariableA("GALLIUM_DRIVER", "softpipe") || _putenv_s("GALLIUM_DRIVER", "softpipe")) {
+            fail("interactive-renderer-environment"); goto out;
+        }
+        puts("INTERACTIVE local canary report only; no upload; compositor visibility requires your observation");
+    }
     setvbuf(stdout, NULL, _IONBF, 0);
-    for (int i = 1; i < argc; ++i) {
+    for (int i = interactive ? argc : 1; i < argc; ++i) {
         if (!strcmp(argv[i], "--source-built-reference")) source_built_reference = 1;
         else if (!strcmp(argv[i], "--stage") && i + 1 < argc) stage = argv[++i];
         else if (!strcmp(argv[i], "--hold-ms") && i + 1 < argc) {
@@ -541,8 +647,10 @@ int main(int argc, char **argv)
     if (!RegisterClassW(&cls)) { fail("window-class"); goto out; }
     registered = 1;
     window = CreateWindowW(cls.lpszClassName, L"Madeira WGL canary", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-                          CW_USEDEFAULT, CW_USEDEFAULT, 240, 180, NULL, NULL, cls.hInstance, NULL);
+                          CW_USEDEFAULT, CW_USEDEFAULT, interactive ? 400 : 240, interactive ? 300 : 180,
+                          NULL, NULL, cls.hInstance, NULL);
     if (!window) { fail("window-create"); goto out; }
+    if (interactive) SetForegroundWindow(window);
     dc = GetDC(window);
     if (!dc || WindowFromDC(dc) != window) { fail("window-dc"); goto out; }
     RECT client;
@@ -552,6 +660,7 @@ int main(int argc, char **argv)
     pass("window");
     pump_for(0);
     if (!check_gdi(dc)) goto out;
+    if (!show_interactive_gdi(dc)) goto out;
     if (strcmp(stage, "gdi") && !check_wgl(dc, strict_modern || !strcmp(stage, "core43"))) {
         if (core_unavailable && !strict_modern) result = 77;
         if (strict_modern) fail("modern-required");
@@ -571,7 +680,19 @@ out:
         if (dc) ReleaseDC(window, dc);
         if (window) DestroyWindow(window);
         if (gl_module) FreeLibrary(gl_module);
-        UnregisterClassW(cls.lpszClassName, cls.hInstance);
+        if (registered) UnregisterClassW(cls.lpszClassName, cls.hInstance);
+    }
+    if (interactive) {
+        WCHAR summary[34000];
+        restore_owned_console();
+        printf("INTERACTIVE_RESULT exit=%d compositor_display_proven=false\n", result);
+        fflush(stdout);
+        swprintf(summary, 34000,
+                 L"%ls\n\nDid you see all three pictures: GDI quadrants, blue, then purple? This program cannot verify what appeared on the iPhone.\n\nLocal report (not sent anywhere):\n%ls",
+                 result ? L"A canary check failed. Review the local report." :
+                          L"Backing-pixel and app-local Mesa checks passed. Visible output still needs your confirmation.",
+                 interactive_report);
+        MessageBoxW(NULL, summary, L"Madeira softpipe canary result", MB_OK | (result ? MB_ICONERROR : MB_ICONINFORMATION));
     }
     return result;
 }

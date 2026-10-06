@@ -1,0 +1,77 @@
+name: Requested standalone softpipe draft delivery
+
+on:
+  push:
+    branches: [compatibility/desktop-apps]
+    paths:
+      - tests/desktop/mesa_wgl/delivery-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mesa-softpipe-delivery-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      enabled: ${{ steps.request.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Check offline packaging and unchanged ordinary reference boundaries
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 tests/host/check-mesa-windows-reference.py
+          python3 tests/host/check-softpipe-delivery.py
+      - name: Require an explicit request-only activation commit
+        id: request
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python3 tests/desktop/mesa_wgl/softpipe_package.py request
+
+  standalone:
+    needs: request
+    if: needs.request.outputs.enabled == 'true'
+    runs-on: windows-2025
+    timeout-minutes: 35
+    permissions:
+      contents: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Check the exact empty private draft before a build
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tests/desktop/mesa_wgl/softpipe_release.py draft-check
+      - name: Build and run the unchanged bounded Windows softpipe reference
+        timeout-minutes: 23
+        run: python tests/desktop/mesa_wgl/windows_reference.py --work-root "$env:RUNNER_TEMP/mesa-wgl-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Prepare separate runtime and source ZIPs with verified receipts
+        timeout-minutes: 5
+        run: >-
+          python tests/desktop/mesa_wgl/softpipe_package.py package
+          --work "$env:RUNNER_TEMP/mesa-wgl-${{ github.run_id }}-${{ github.run_attempt }}"
+          --output "$env:RUNNER_TEMP/mesa-delivery-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Deliver only to the approved existing draft and download-verify every asset
+        timeout-minutes: 7
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          python tests/desktop/mesa_wgl/softpipe_release.py upload
+          --output "$env:RUNNER_TEMP/mesa-delivery-${{ github.run_id }}-${{ github.run_attempt }}"
+      # No Actions artifact/cache storage, larger runner, credentials supplied by
+      # the user, installation, IPA, release creation, publication or overwrite.
+      # The ordinary mesa-windows-reference.yml remains upload-free.

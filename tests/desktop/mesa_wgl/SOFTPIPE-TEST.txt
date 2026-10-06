@@ -1,0 +1,75 @@
+Madeira softpipe presentation test
+
+This is a standalone x64 Windows test folder, not an IPA or a Blender fix.
+Keep opengl32.dll, libgallium_wgl.dll, and wgl-canary.exe together. Do not put
+these DLLs in Windows/system32 or replace Madeira's bundled system DLLs.
+
+The Windows reference checked Mesa softpipe 3.3 and backing pixels. It did
+not run this interactive mode on an iPhone, test Blender, prove OpenGL 4.3,
+or prove that the iPhone compositor displays these pixels.
+
+Use the previously delivered, fixed Madeira IPA identified by SHA-256:
+{TARGET_IPA_SHA256}
+This ZIP does not modify, rebuild, install, or re-sign that IPA.
+
+Before starting
+1. Verify this ZIP and the separate source ZIP against the outer SHA256SUMS
+   and provenance.json. Extract the runtime ZIP into a new writable folder
+   accessible from Madeira's Windows Explorer. Keep both DLLs beside the EXE.
+2. Fully close Madeira. Start a fresh Desktop session with JIT available by
+   the already established setup. Do not first start a game-mode session.
+   Desktop mode must be chosen before Wine's display driver initializes:
+   the driver caches that choice. Open the test folder from that desktop.
+3. Remove any deliberately configured Mesa GL/GLSL capability overrides for
+   this test. The canary selects softpipe only for its own process. Leave the
+   test window smaller than the desktop; do not minimize or cover it.
+
+Run without a keyboard
+Double-click wgl-canary.exe in Windows Explorer. With no command-line
+arguments it opens a small visible window and hides only a console owned
+solely by this canary. It leaves a shared parent console alone and restores
+any console visibility it changed before the final result dialog. No
+command file, console input, or keyboard prompt is required.
+
+Watch these three pictures, each held for about seven seconds:
+  First: red/green quadrants above blue/white, drawn through ordinary GDI
+  Second: blue, RGB 64,128,191, drawn through Mesa and SwapBuffers
+  Third: purple, RGB 191,64,128, drawn through Mesa and SwapBuffers
+
+The final dialog reports programmatic success/failure and the saved report
+path. Tap OK to close it. Closing the test window early aborts that visual
+sequence and is reported as a failure. If initialization fails, record the
+first failed checkpoint; do not substitute different DLL packs or alter
+capability strings to turn a failure into a pass.
+
+A fresh canary-result-PID-TICK-N.txt is saved beside the EXE. The program
+never overwrites an existing report and never uploads it. It records only
+this canary's own checkpoints, module paths, renderer/version, pixel values,
+and result; it does not read other application or device logs. Module paths
+may contain your folder names. Review a report before choosing to share it.
+
+Record visible output separately
+Write down the delivered IPA hash, runtime ZIP hash, the report filename,
+and whether you actually saw each of the three pictures. A screenshot or
+screen recording is useful only if you choose to take/share it yourself.
+If all API/backing-pixel checks pass but a picture is missing or wrong,
+record that as a compositor/presentation failure. The report intentionally
+keeps compositor_display_proven=false, even when the API checks pass.
+
+GDI bitmap readback and SwapBuffers returning true do not prove visibility.
+Madeira's game-mode geometry gates can suppress desktop-sized GDI windows;
+the cold Desktop session avoids that known configuration trap.
+
+Automated Windows reference mode remains explicit and unchanged:
+  wgl-canary.exe --stage gdi --source-built-reference
+  wgl-canary.exe --stage legacy --source-built-reference
+Do not request modern/core43 from this softpipe bundle: that capability is
+outside the pinned renderer's source ceiling.
+
+Sources and notices
+The matching Madeira-softpipe-source.zip retains the exact official Mesa
+source archive, recipes, canary source, upstream notices, full build/runtime
+receipt, logs, and source hashes. The runtime ZIP also carries upstream
+license texts, source attribution comments, and LLVM-MinGW runtime notices.
+Build tools and proprietary application inputs are not runtime payloads.
+The two ZIPs are one delivery; preserve the source ZIP with the runtime.
