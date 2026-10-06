@@ -148,8 +148,14 @@ enum FrontendChoice {
     }
 }
 
-/// Describe the loader's status without guessing a missing DLL or logging a
-/// command that may contain credentials. Detailed Wine logs remain opt-in.
+/// Only the allowlisted startup summary is offered here, never the raw log.
+enum StartupReport {
+    static var url: URL {
+        LibraryModel.documents.appendingPathComponent("startup-diagnostics/madeira-startup.json")
+    }
+}
+
+/// Describe the reported status without guessing a specific missing DLL.
 enum LibraryLaunchFailure {
     static func message(_ status: UInt32) -> String {
         let reason: String
@@ -515,8 +521,11 @@ final class LibraryModel: ObservableObject {
     private func exitReport() -> String? {
         guard !quitRequested, MadeiraConfig.flag("MADEIRA_EXIT_REPORT") else { return nil }
         var status: UInt32 = 0
-        guard wine_crash_exit_status(&status) != 0 else { return nil }
+        guard wine_process_exit_status(&status) != 0, status != 0 else { return nil }
         LogStore.shared.log("[exit-report] status=0x\(String(status, radix: 16))")
+        if status < 0xC0000000 {
+            return "The application exited with code \(status) (0x\(String(status, radix: 16, uppercase: true))). Share the startup report from Settings → Diagnostics to help identify where it stopped."
+        }
         return LibraryLaunchFailure.message(status)
     }
     private var readOnly = false
@@ -896,6 +905,7 @@ final class LibraryModel: ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in self?.poll() }
     }
     private func poll() {
+        madeira_startup_flush()
         let dockStart = DockStartScreen.shared
         if dockStart.active {
             // A Dock start: the desktop's own frames (explorer, the host's console window)
@@ -914,7 +924,11 @@ final class LibraryModel: ObservableObject {
         if wine_process_is_running() != 0 {
             sawProcess = true
             if sessionMessage == "Starting…" { sessionMessage = "" }
-        } else if sawProcess && wineserver_is_running() == 0 { finish() }
+        } else if wineserver_is_running() == 0 {
+            // A short-lived process can start and exit between the UI's polls.
+            var status: UInt32 = 0
+            if sawProcess || wine_process_exit_status(&status) != 0 { finish() }
+        }
         // The first frame gives Aspect and Fill height the drawable's shape.
         if current != nil, !laidOutAfterFirstPresent, madeira_get_present_count() != MetalBackedView.presentCountAtLaunch {
             laidOutAfterFirstPresent = true
@@ -928,7 +942,11 @@ final class LibraryModel: ObservableObject {
         guard current != nil && !sawProcess else { return }
         finish()
         if offerJIT, let reason { jitNotice = reason }
-        else { error = reason ?? "The session could not start. Check the diagnostic log and JIT status." }
+        else if let reason { error = reason }
+        // A short-lived console/background program may exit before any UI poll.
+        // An observed exit (including zero) is not a failure to start; finish()
+        // already applies the exit-report preference and nonzero-code guidance.
+        else if error == nil, wine_process_exit_status(nil) == 0 { error = "The session could not start. Share the startup report from Settings → Diagnostics and check JIT status." }
     }
     /// Both flags change in one transaction without animation: the animated
     /// removal of a scrolling view with live content could leave the starting
@@ -936,6 +954,7 @@ final class LibraryModel: ObservableObject {
     func showGameView(reason: String = "button") {
         if launching && !launchDismissLogged {
             launchDismissLogged = true
+            if reason == "present" || reason == "surface" { madeira_startup_record(MDS_FIRST_FRAME_OBSERVED, 0) }
             fputs("[launch-view] dismissed reason=\(reason) logs=\(launchLogs ? 1 : 0)\n", stderr)
         }
         LogStore.shared.setDisplayActive(liveLogs)
@@ -983,6 +1002,7 @@ final class LibraryModel: ObservableObject {
     func requestQuit() {
         LibraryKeyboard.hide()
         quitRequested = true
+        madeira_startup_record(MDS_CLOSE_REQUESTED, 0)
         // Ask the application to close (Alt+F4) through the normal input queue,
         // so it can save; the surface stays up until the native session ends.
         winios_post_key(0x12, 1); winios_post_key(0x73, 1)
@@ -1012,7 +1032,8 @@ final class LibraryModel: ObservableObject {
         }
     }
     private func finish() {
-        if sawProcess, let report = exitReport() { error = report }
+        madeira_startup_flush()
+        if let report = exitReport() { error = report }
         timer?.invalidate(); timer = nil
         saveCurrentProfile()
         controllerMode = nil
@@ -2167,7 +2188,17 @@ struct LibraryView: View {
             if settingsShow("diagnostics", "extended logging", "logging", "log") {
                 Section {
                     Toggle("Extended logging", isOn: $input.diagnostics)
-                } header: { Text("Diagnostics") }
+                    if FileManager.default.fileExists(atPath: StartupReport.url.path) {
+                        ShareLink(item: StartupReport.url) {
+                            Label("Share last startup report", systemImage: "square.and.arrow.up")
+                        }
+                    } else {
+                        Text("A startup report will appear after a launch attempt.")
+                            .foregroundStyle(.secondary)
+                    }
+                } header: { Text("Diagnostics") } footer: {
+                    Text("The startup report keeps timing, startup stages and numeric exit codes. It excludes command arguments, credentials, program names, file paths and raw application logs. Loader entry or a frame alone does not confirm the application started successfully.")
+                }
             }
             if settingsShow("pointer", "mouse", "cursor", "touch", "trackpad", "sensitivity") {
                 Section("Pointer") { LibraryPointerSettings() }

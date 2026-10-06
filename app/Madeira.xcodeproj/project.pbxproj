@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D1A600000000000000000001 /* StartupDiagnostics.c in Sources */ = {isa = PBXBuildFile; fileRef = D1A600000000000000000002 /* StartupDiagnostics.c */; };
 		B1000060 /* MemorySetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000060 /* MemorySetup.swift */; };
 		A1000520 /* MadeiraDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000520 /* MadeiraDock.swift */; };
 		A1000521 /* MadeiraDockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000521 /* MadeiraDockView.swift */; };
@@ -172,6 +173,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D1A600000000000000000002 /* StartupDiagnostics.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = StartupDiagnostics.c; sourceTree = "<group>"; };
+		D1A600000000000000000003 /* StartupDiagnostics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StartupDiagnostics.h; sourceTree = "<group>"; };
 		B2000060 /* MemorySetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySetup.swift; sourceTree = "<group>"; };
 		A2000520 /* MadeiraDock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MadeiraDock.swift"; sourceTree = "<group>"; };
 		A2000521 /* MadeiraDockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MadeiraDockView.swift"; sourceTree = "<group>"; };
@@ -454,6 +457,8 @@
 				A200000C /* FEXBridge.h */,
 				A200001E /* WineServerBridge.m */,
 				A200001F /* WineServerBridge.h */,
+				D1A600000000000000000002 /* StartupDiagnostics.c */,
+				D1A600000000000000000003 /* StartupDiagnostics.h */,
 				A2000030 /* WineProcessBridge.m */,
 				A2000031 /* WineProcessBridge.h */,
 				A200000A /* EntitlementChecker.swift */,
@@ -758,6 +763,7 @@
 				A1000005 /* EntitlementChecker.swift in Sources */,
 				A1000006 /* FEXBridge.mm in Sources */,
 				A1000020 /* WineServerBridge.m in Sources */,
+				D1A600000000000000000001 /* StartupDiagnostics.c in Sources */,
 				A1000030 /* WineProcessBridge.m in Sources */,
 				A1000033 /* wine_stubs.c in Sources */,
 				A1000041 /* PrefixExtractor.c in Sources */,

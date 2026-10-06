@@ -55,6 +55,7 @@ jobs:
       - name: Check child lifetime and bounded crash diagnostics
         run: |
           python3 tests/host/check-child-lifetime.py
+          python3 tests/host/check-startup-report.py
           python3 tests/host/check-jit-dump.py
       - name: Check desktop DLL inventory, evidence and integration plans
         run: |
@@ -127,6 +128,7 @@ jobs:
         run: |
           python3 tests/host/check-working-directory.py
           python3 tests/host/check-launch-diagnostics.py
+          python3 tests/host/check-launch-exit-ui.py
           python3 tests/host/check-frontend.py
           python3 tests/host/check-display-size.py
           python3 tests/host/check-steam-games.py

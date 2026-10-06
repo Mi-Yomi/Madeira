@@ -23,7 +23,7 @@ class WorkflowTests(unittest.TestCase):
         condition = "if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'"
         self.assertEqual(TEXT.count(condition), 2)
         self.assertIn("needs: portable-validation", JOB)
-        self.assertIn("    runs-on: xcode-27\n    timeout-minutes: 45\n", JOB)
+        self.assertIn("    runs-on: xcode-27\n    timeout-minutes: 60\n", JOB)
         self.assertEqual(re.findall(r"^    runs-on: (.+)$", TEXT, re.M), ["ubuntu-latest", "xcode-27"])
         self.assertIn("contents: read", TEXT)
         self.assertEqual(TEXT.count("persist-credentials: false"), 2)
@@ -54,6 +54,9 @@ class WorkflowTests(unittest.TestCase):
         offsets = [JOB.index(step) for step in steps]
         self.assertEqual(offsets, sorted(offsets))
         self.assertIn("submodules: recursive", JOB)
+        self.assertEqual(TEXT.count("python3 tests/host/check-startup-report.py"), 2)
+        for check in ("check-launch-diagnostics.py", "check-launch-exit-ui.py"):
+            self.assertLess(JOB.index("python3 tests/host/" + check), JOB.index("python3 build/app-ios/link_diagnostic.py native"))
         gate_steps = JOB[JOB.index("- name: Verify integration"):JOB.index("- name: Independently scan")]
         self.assertNotIn("if:", gate_steps)
         self.assertIn('--native-receipt "$NATIVE_ARTIFACT_DIR/provenance.json"', JOB)

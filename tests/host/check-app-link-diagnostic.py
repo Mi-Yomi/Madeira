@@ -325,7 +325,7 @@ class LinkTests(unittest.TestCase):
     def test_fixed_request_has_no_mutable_runner_packaging_or_budget_knobs(self):
         with self.fixture():
             for field, value in (("ipa_creation", True), ("ipa_creation", 0), ("max_compile_jobs", 3),
-                                 ("max_minutes", 46), ("runner", "xcode-27-large"), ("desktop_dll_count", 11),
+                                 ("max_minutes", 61), ("runner", "xcode-27-large"), ("desktop_dll_count", 11),
                                  ("desktop_stage_seal_sha256", "0" * 64), ("extra", True)):
                 with self.subTest(field=field, value=value):
                     data = dict(link.EXPECTED_REQUEST, **{field: value})

@@ -2640,7 +2640,13 @@ struct ContentView: View {
     /// `profile` is a library entry whose launch profile applies to this run.
     private func runWineFullSequence(profile: LibraryEntry? = nil) {
         guard canStartWineLaunch() else { return }
+        let diagnosticsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        if madeira_startup_begin(diagnosticsDirectory.path) != 0 {
+            logStore.log("Startup report could not be saved (error \(errno)).", level: .error)
+        }
+        wine_exit_status_reset()
         guard jit_check_debugged() else {
+            madeira_startup_record(MDS_JIT_UNAVAILABLE, 0)
             logStore.log("JIT not enabled. Press 'Enable JIT' first.", level: .error)
             if profile != nil { LibraryModel.shared.launchFailed() }
             return
@@ -2711,6 +2717,7 @@ struct ContentView: View {
                 _ = try? MadeiraConfig.applyGame(nil)   // no library game: no game's own lines
             }
 
+            madeira_startup_record(MDS_JIT_PREPARING, 0)
             // Step 1: Allocate JIT pool (BRK suspends entire process)
             // 128 MB was enough for cube but Thumper exhausts it (more PE
             // copies + larger FEX block cache). Desktop mode holds the
@@ -3150,6 +3157,7 @@ struct ContentView: View {
                 // executing with no JIT pool, and it cost a diagnostic cycle plus a
                 // wrong conclusion I wrote into the source. A run without the pool can
                 // only manufacture misleading secondary crashes, so refuse to start one.
+                madeira_startup_record(MDS_JIT_POOL_FAILED, 0)
                 logStore.log("JIT pool allocation FAILED — not starting Wine.", level: .error)
                 // The reason allocatePool recorded (no debugger, placement, alias);
                 // the lines above this one in the log carry the detail.
@@ -3191,7 +3199,9 @@ struct ContentView: View {
             let earlyDetach = true
             if earlyDetach, pool != nil {
                 let dt0 = CFAbsoluteTimeGetCurrent()
+                madeira_startup_record(MDS_DETACH_BEGIN, 0)
                 StikJITHelper.detachDebugger()
+                madeira_startup_record(MDS_DETACH_END, 0)
                 let dms = (CFAbsoluteTimeGetCurrent() - dt0) * 1000.0
                 logStore.log(String(format: "[early-detach] rev=ml524 took %.0f ms", dms),
                              level: dms > 5000 ? .error : .success)
@@ -3205,7 +3215,9 @@ struct ContentView: View {
             // for this JIT (JITNetwork.swift). The pool is mapped and the debugger is
             // gone, so put them back now: running the shortcut leaves Madeira for a
             // moment, which is safe only before Wine starts drawing.
+            madeira_startup_record(MDS_NETWORK_RESTORE_BEGIN, 0)
             JITNetworkShortcut.restoreBlocking()
+            madeira_startup_record(MDS_NETWORK_RESTORE_END, 0)
 
             // Steps 2–3: start Wine only after a successful server start and
             // observed readiness. The old two-second timeout fell through and
@@ -3213,6 +3225,7 @@ struct ContentView: View {
             let result = WineServerLaunchGate.run(
                 fastStart: MadeiraConfig.flag("MADEIRA_FAST_SERVER_START"),
                 startServer: {
+                    madeira_startup_record(MDS_SERVER_START_REQUESTED, 0)
                     guard self.startWineserver() else { return false }
                     winios_phase("wineserver-up")
                     return true
@@ -3222,19 +3235,29 @@ struct ContentView: View {
                 now: { ProcessInfo.processInfo.systemUptime },
                 sleep: { Thread.sleep(forTimeInterval: $0) },
                 serverReady: { elapsed in
+                    madeira_startup_record(MDS_SERVER_READY, 0)
                     logStore.log(String(format: "[launch] wineserver ready after %.0f ms", elapsed * 1000))
                 },
                 startWine: {
                     winios_phase("wine-start")
+                    madeira_startup_record(MDS_WINE_START_REQUESTED, 0)
                     return self.startWineProcess()
                 })
             if result != .started {
                 let reason: String
                 switch result {
-                case .serverStartFailed: reason = "The wineserver thread could not start."
-                case .serverStopped: reason = "Wineserver stopped before it was ready."
-                case .timedOut: reason = "Wineserver did not become ready within \(Int(WineServerLaunchGate.readinessTimeout)) seconds."
-                case .wineStartFailed: reason = "The Wine process could not start."
+                case .serverStartFailed:
+                    madeira_startup_record(MDS_SERVER_START_FAILED, 0)
+                    reason = "The wineserver thread could not start."
+                case .serverStopped:
+                    madeira_startup_record(MDS_SERVER_STOPPED, 0)
+                    reason = "Wineserver stopped before it was ready."
+                case .timedOut:
+                    madeira_startup_record(MDS_SERVER_READY_TIMEOUT, UInt32(WineServerLaunchGate.readinessTimeout * 1000))
+                    reason = "Wineserver did not become ready within \(Int(WineServerLaunchGate.readinessTimeout)) seconds."
+                case .wineStartFailed:
+                    madeira_startup_record(MDS_WINE_START_FAILED, 0)
+                    reason = "The Wine process could not start."
                 case .started: preconditionFailure("handled above")
                 }
                 logStore.log("[launch] \(reason) Wine launch aborted.", level: .error)
@@ -3281,6 +3304,7 @@ struct ContentView: View {
             var lastHeartbeat = CFAbsoluteTimeGetCurrent()
             while wine_process_is_running() != 0 {
                 Thread.sleep(forTimeInterval: 0.25)
+                madeira_startup_flush()
                 let now = CFAbsoluteTimeGetCurrent()
                 // Diagnostic heartbeat: 2026-07-03's detach-at-#1 run never
                 // triggered despite presents visibly counting — log what this
@@ -3301,17 +3325,20 @@ struct ContentView: View {
                         logStore.log("Game is presenting (#1, splash) — early detach in \(Int(settleAfterFirstPresent))s")
                     }
                     if let t = presentingSince, now - t > settleAfterFirstPresent {
+                        madeira_startup_record(MDS_OBSERVATION_SETTLED, 0)
                         logStore.log("Early detach: game presenting and settled", level: .success)
                         break
                     }
                 }
                 if now - pollStart > maxWait {
+                    madeira_startup_record(MDS_OBSERVATION_LIMIT, UInt32(maxWait * 1000))
                     logStore.log("Wine still running after \(Int(maxWait))s, proceeding with detach", level: .error)
                     break
                 }
             }
+            madeira_startup_flush()
             let wineElapsed = CFAbsoluteTimeGetCurrent() - pollStart
-            logStore.log("Wine finished after \(String(format: "%.1f", wineElapsed))s")
+            logStore.log("Wine observation ended after \(String(format: "%.1f", wineElapsed))s; process running=\(wine_process_is_running())")
 
             // Step 5: Resume UI + os_log, give main thread time to recover before detach
             DispatchQueue.main.async {

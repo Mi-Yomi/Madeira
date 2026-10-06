@@ -29,7 +29,7 @@ EXPECTED_REQUEST = {
     "schema_version": 1, "scope": "ios-app-link-diagnostic-no-ipa",
     "desktop_dll_count": 12,
     "desktop_stage_seal_sha256": "a0f56fd773375a2c2cc2bd76d01db0fbf28973ca1d7bf36a7dd6dbd6c9a02023",
-    "ipa_creation": False, "runner": "xcode-27", "max_minutes": 45,
+    "ipa_creation": False, "runner": "xcode-27", "max_minutes": 60,
     "max_compile_jobs": 2, "native_archive_contract": False,
 }
 

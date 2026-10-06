@@ -71,6 +71,9 @@ harness = r'''
 #include <time.h>
 #include <unistd.h>
 #include "child_lifetime_ios.h"
+/* Diagnostic persistence is separately compiled by check-startup-report.py. */
+#include "StartupDiagnostics.h"
+int madeira_startup_record(MadeiraStartupEvent event, uint32_t code) { (void)event; (void)code; return 0; }
 #define WINE_IOS 1
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 typedef uint16_t WCHAR;
@@ -411,7 +414,7 @@ with tempfile.TemporaryDirectory(prefix='madeira-child-lifetime-') as tmp:
     src.write_text(harness)
     flags = shlex.split(os.environ.get('CFLAGS', '-O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer'))
     subprocess.run([os.environ.get('CC', 'cc'), '-std=gnu11', '-Wall', '-Wextra', '-Werror',
-                    '-Wno-address', '-pthread', *flags, '-I', str(ROOT / 'build/ntdll-unix'),
+                    '-Wno-address', '-pthread', *flags, '-I', str(ROOT / 'build/ntdll-unix'), '-I', str(ROOT / 'app/Madeira'),
                     str(src), '-o', str(exe)], check=True)
     subprocess.run([str(exe)], check=True, timeout=30)
 print('PASS: production spawn/bind/teardown ordering, default-off policy, existing Alt+F4 semantics')

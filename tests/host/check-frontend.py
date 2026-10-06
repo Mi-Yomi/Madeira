@@ -30,9 +30,13 @@ Run from anywhere; needs `swift` and `cc` on PATH.
 from pathlib import Path
 import re
 import subprocess
+import argparse
 import sys
 import tempfile
 
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--c-only', action='store_true', help='skip Swift when no Swift toolchain is installed')
+args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 lib = (root / 'app/Madeira/Library.swift').read_text()
 display = (root / 'app/Madeira/GuestDisplay.swift').read_text()
@@ -314,6 +318,7 @@ c_src = r'''
 start = bridge.index('static uint64_t g_launch_exit')
 end = bridge.index('static char *g_prefix_path')
 c_src += 'void wine_launched_process_did_exit(int status);\nvoid wine_exit_status_reset(void);\nint wine_crash_exit_status(uint32_t *status);\n'
+c_src += '#include "StartupDiagnostics.h"\nvoid madeira_startup_note_exit(uint32_t code) { (void)code; }\n'
 c_src += bridge[start:end]
 c_src += r'''
 static int failed;
@@ -324,8 +329,10 @@ int main(void) {
     expect(!wine_crash_exit_status(&status), "nothing recorded at the start of a session");
     wine_launched_process_did_exit(0);
     expect(!wine_crash_exit_status(&status), "clean exit: no report");
+    wine_exit_status_reset();
     wine_launched_process_did_exit(0x40010004);
     expect(!wine_crash_exit_status(&status), "an informational status is not an error");
+    wine_exit_status_reset();
     wine_launched_process_did_exit((int)0xC0000005);
     expect(wine_crash_exit_status(&status) && status == 0xC0000005u, "the launched program's error status is recorded");
     expect(wine_crash_exit_status(NULL), "a NULL status pointer is allowed");
@@ -338,15 +345,18 @@ int main(void) {
 with tempfile.TemporaryDirectory() as tmp:
     sp = Path(tmp) / 'frontend.swift'
     sp.write_text(swift)
-    r = subprocess.run(['swift', str(sp)], capture_output=True, text=True)
-    sys.stdout.write(r.stdout)
-    if r.returncode:
-        sys.stdout.write(r.stderr[-4000:])
-        failures.append('swift harness')
+    if not args.c_only:
+        r = subprocess.run(['swift', str(sp)], capture_output=True, text=True)
+        sys.stdout.write(r.stdout)
+        if r.returncode:
+            sys.stdout.write(r.stderr[-4000:])
+            failures.append('swift harness')
+    else:
+        print('SKIP: Swift frontend execution (--c-only)')
     cp = Path(tmp) / 'exit.c'
     cp.write_text(c_src)
     exe = Path(tmp) / 'exit'
-    r = subprocess.run(['cc', '-std=c11', '-Wall', '-Werror', '-D_DEFAULT_SOURCE', '-o', str(exe), str(cp)],
+    r = subprocess.run(['cc', '-std=c11', '-Wall', '-Werror', '-D_DEFAULT_SOURCE', '-I', str(root / 'app/Madeira'), '-o', str(exe), str(cp)],
                        capture_output=True, text=True)
     if r.returncode:
         sys.stdout.write(r.stderr[-4000:])

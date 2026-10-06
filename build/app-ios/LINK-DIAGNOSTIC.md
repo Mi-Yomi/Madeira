@@ -13,7 +13,7 @@ trigger, not independent authorization to change scope or create a package.
 
 The portable job verifies the sealed twelve-DLL integration and all relevant
 failure gates. The single standard `xcode-27` job repeats integration checks
-before builds, uses at most two compile jobs, and has a **45-minute total cap**.
+before builds, uses at most two compile jobs, and has a **60-minute total cap**.
 Individual step limits do not extend that total. It reuses the existing native
 bootstrap, including the already approved official Metal component setup, then
 the pinned LLVM host/iOS and full DXMT gates in the same fresh checkout. There

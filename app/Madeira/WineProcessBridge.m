@@ -292,25 +292,33 @@ extern void wine_log_set_file(const char *path);
 static pthread_t g_wine_thread;
 static volatile int g_wine_running = 0;
 
-/* Session exit report for the library front end. The app marks one process as
- * its own: the program it hands to __wine_main below, which is the session's
- * initial process. ntdll's common exit wrapper (build/ntdll-unix/server_ios.c)
- * calls wine_launched_process_did_exit() for that process only, on whichever
- * thread ends it. Only the status is kept: no names, no allocation, no
- * logging. g_launch_exit holds (1 << 32) | status when the program ended with
- * an NTSTATUS error (0xC...), else 0. */
+/* Capture all initial-process exit codes, including normal/ordinary nonzero
+ * exits. The compatibility crash accessor still reports only NTSTATUS errors.
+ * This hook records observed process exit, not a diagnosis of the cause. */
 static uint64_t g_launch_exit = 0;
 void wine_launched_process_did_exit(int status) {
-    if ((uint32_t)status >= 0xC0000000u)
+    uint64_t expected = 0;
+    /* Bit 33 claims capture; readers only observe the fully published bit 32.
+     * This callback can run in signal teardown: atomics and clock only, no I/O. */
+    if (__atomic_compare_exchange_n(&g_launch_exit, &expected,
+            UINT64_C(1) << 33, 0, __ATOMIC_ACQ_REL, __ATOMIC_ACQUIRE)) {
+        madeira_startup_note_exit((uint32_t)status);
         __atomic_store_n(&g_launch_exit, (UINT64_C(1) << 32) | (uint32_t)status, __ATOMIC_RELEASE);
+    }
 }
 void wine_exit_status_reset(void) {
     __atomic_store_n(&g_launch_exit, 0, __ATOMIC_RELEASE);
 }
-int wine_crash_exit_status(uint32_t *status) {
+int wine_process_exit_status(uint32_t *status) {
     uint64_t value = __atomic_load_n(&g_launch_exit, __ATOMIC_ACQUIRE);
-    if (!(value >> 32)) return 0;
+    if (!(value & (UINT64_C(1) << 32))) return 0;
     if (status) *status = (uint32_t)value;
+    return 1;
+}
+int wine_crash_exit_status(uint32_t *status) {
+    uint32_t value;
+    if (!wine_process_exit_status(&value) || value < 0xC0000000u) return 0;
+    if (status) *status = value;
     return 1;
 }
 static char *g_prefix_path = NULL;
@@ -883,6 +891,7 @@ static int madeira_prepare_launch_directory(const char *exe_path, const char *pr
 }
 
 static void *wine_process_thread(void *arg) {
+    madeira_startup_record(MDS_THREAD_ENTERED, 0);
     const int pending_client_fd = (int)(intptr_t)arg;
     @autoreleasepool {
         /* Perf: the guest main thread runs ON this pthread. Promote to
@@ -1545,6 +1554,7 @@ static void *wine_process_thread(void *arg) {
         if (extra_argc < 0 || exe_path_length < 0 || exe_path_length >= (int)sizeof(exe_path)) {
             LOG("Launch path or arguments exceed supported bounds; refusing a truncated command");
             dprintf(STDERR_FILENO, "[WineProc] launch rejected: maximum path 1023 bytes, arguments 64 tokens / 4095 UTF-8 bytes\n");
+            madeira_startup_record(MDS_ARGUMENTS_REJECTED, 0);
             wine_ios_exit_code = (int)0xc000000d; /* STATUS_INVALID_PARAMETER */
             wine_launched_process_did_exit(wine_ios_exit_code);
             /* __wine_main has not consumed this end of the launch socket yet. */
@@ -1570,6 +1580,7 @@ static void *wine_process_thread(void *arg) {
          * a missing/invalid folder rather than silently use another directory. */
         if (madeira_prepare_launch_directory(exe_path, g_prefix_path)) {
             dprintf(STDERR_FILENO, "[WineProc] launch working directory unavailable (errno=%d); launch refused\n", errno);
+            madeira_startup_record(MDS_DIRECTORY_REJECTED, (uint32_t)errno);
             wine_ios_exit_code = (int)0xc000003a; /* STATUS_OBJECT_PATH_NOT_FOUND */
             wine_launched_process_did_exit(wine_ios_exit_code);
             close(pending_client_fd);
@@ -1591,10 +1602,14 @@ static void *wine_process_thread(void *arg) {
         ios_main_image_i386 = is_i386_target ? 1 : 0;
         if (has_i386_set) madeira_publish_host_probe();
 
+        madeira_startup_record(MDS_LOADER_ENTERED, target_machine);
         if (setjmp(wine_ios_exit_jmpbuf) == 0) {
             __wine_main(argc, argv);
+            madeira_startup_record(MDS_LOADER_RETURNED, 0);
             dprintf(STDERR_FILENO, "[WineProc] __wine_main returned normally\n");
         } else {
+            madeira_startup_record(MDS_LOADER_LONGJMP, (uint32_t)wine_ios_exit_code);
+            wine_launched_process_did_exit(wine_ios_exit_code);
             dprintf(STDERR_FILENO, "[WineProc] Wine exited with code %d (caught by longjmp)\n", wine_ios_exit_code);
         }
 
@@ -1615,6 +1630,7 @@ static void *wine_process_thread(void *arg) {
             const char *wc = getenv("MADEIRA_WAIT_CHILDREN");
             char names[256];
             int n = madeira_live_game_children(names, sizeof names, 60.0);
+            madeira_startup_record(MDS_LIVE_CHILDREN_OBSERVED, (uint32_t)n);
             if (n > 0 && !(wc && wc[0] == '1')) {
                 dprintf(STDERR_FILENO, "[WineProc] the main process exited while %d child process(es) it started "
                         "still run (%s); the session ends with it (MADEIRA_WAIT_CHILDREN=1 keeps it while they run)\n",
@@ -1634,6 +1650,7 @@ static void *wine_process_thread(void *arg) {
             }
         }
 
+        madeira_startup_record(MDS_THREAD_FINISHED, 0);
         g_wine_running = 0;
 
         // Stop wineserver to prevent CPU spin (iOS kills for excessive CPU)
@@ -1676,7 +1693,9 @@ int wine_process_start(const char *prefix_path) {
     // pair[1] = ntdll side (used as fd_socket)
     int pair[2];
     if (socketpair(AF_UNIX, SOCK_STREAM, 0, pair) == -1) {
-        LOG("socketpair failed: %{public}s", strerror(errno));
+        int socket_error = errno;
+        madeira_startup_record(MDS_SOCKET_FAILED, (uint32_t)socket_error);
+        LOG("socketpair failed: %{public}s", strerror(socket_error));
         g_wine_running = 0;
         return -1;
     }
@@ -1704,6 +1723,7 @@ int wine_process_start(const char *prefix_path) {
     int ret = pthread_create(&g_wine_thread, &attr, wine_process_thread, (void *)(intptr_t)pair[1]);
     pthread_attr_destroy(&attr);
     if (ret != 0) {
+        madeira_startup_record(MDS_THREAD_CREATE_FAILED, (uint32_t)ret);
         LOG("Failed to create Wine process thread: %d", ret);
         close(pair[0]);
         close(pair[1]);

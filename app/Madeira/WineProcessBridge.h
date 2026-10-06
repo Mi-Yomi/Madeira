@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "StartupDiagnostics.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,8 @@ int wine_process_is_running(void);
 // (0xC...) since the last reset.
 void wine_launched_process_did_exit(int status);
 int wine_crash_exit_status(uint32_t *status);
+// All exit codes, including zero and ordinary nonzero application exits.
+int wine_process_exit_status(uint32_t *status);
 // Forget the recorded status; called when a session begins.
 void wine_exit_status_reset(void);
 

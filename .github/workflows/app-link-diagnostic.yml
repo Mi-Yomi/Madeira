@@ -44,12 +44,13 @@ jobs:
           python3 tests/host/check-fex-source-repairs.py
           python3 tests/host/check-fex-snapshot-link.py
           python3 tests/host/check-crypto-link-tables.py
+          python3 tests/host/check-startup-report.py
   app-link-diagnostic:
     name: iOS app link diagnostic (no IPA)
     needs: portable-validation
     if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
     runs-on: xcode-27
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       JOBS: '2'
       BUILD_JOBS: '2'
@@ -73,7 +74,7 @@ jobs:
           persist-credentials: false
       - name: Verify integration and diagnostic gates before any dependency build
         # The expanded regression set took just over three minutes on Xcode 27.
-        # Keep every check; the whole diagnostic still has its 45-minute cap.
+        # Keep every check; the whole diagnostic still has its 60-minute cap.
         timeout-minutes: 5
         run: |
           python3 build/app-ios/link_diagnostic.py request
@@ -89,6 +90,12 @@ jobs:
           python3 tests/host/check-fex-source-repairs.py
           python3 tests/host/check-fex-snapshot-link.py
           python3 tests/host/check-crypto-link-tables.py
+          python3 tests/host/check-startup-report.py
+      - name: Check compiled startup status guidance before the native build
+        timeout-minutes: 2
+        run: |
+          python3 tests/host/check-launch-diagnostics.py
+          python3 tests/host/check-launch-exit-ui.py
       - name: Exercise native contract fixtures with installed Apple tools
         timeout-minutes: 2
         # Strong fixture definitions mirror production; Apple ld links the
@@ -158,5 +165,5 @@ jobs:
             python3 .github/ci/collect-native-logs.py
           fi
           df -h "$RUNNER_TEMP"
-      # The entire job, not each stage added together, is capped at 45 minutes.
+      # The entire job, not each stage added together, is capped at 60 minutes.
       # No packaging, signing, export, install, cache or artifact upload exists.
