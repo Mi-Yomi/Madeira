@@ -228,7 +228,7 @@ MainActor.assumeIsolated {
         flush(); neutral(connected: false)
         print("PASS: production bridge honors disabled touch/global XInput")
     } else {
-        func pressAll() {
+        @MainActor func pressAll() {
             pad.touch(owner: owners[0], control: button, value: TouchPadAction.sample("A"))
             pad.touch(owner: owners[1], control: trigger, value: TouchPadAction.sample("LT"))
             pad.touch(owner: owners[2], control: trigger, value: TouchPadAction.sample("RT"))
