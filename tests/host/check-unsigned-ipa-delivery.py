@@ -43,7 +43,9 @@ class PackageFixture:
         for name in set().union(*layers):
             fixtures.put(self.app / name, b"MZ synthetic MSI-layer fixture")
             self.resources[name] = gate.digest(self.app / name)
-        self.pe = {name: value for name, value in self.resources.items()
+        self.source_resources = fixtures.farm_resources(self.resources)
+        self.dock_build = fixtures.dock_evidence(self.resources)
+        self.pe = {name: value for name, value in self.source_resources.items()
                    if Path(name).suffix.lower() in gate.verify_desktop_integration.inventory.PE_SUFFIXES}
         candidates = {name: {"bytes": (self.app / name).stat().st_size, "sha256": self.pe[name]}
                       for name in gate.verify_msi_startup_integration.BINARIES}
@@ -52,7 +54,7 @@ class PackageFixture:
         self.stack.enter_context(mock.patch.object(gate, "ROOT", self.root))
         self.stack.enter_context(mock.patch.object(delivery, "ROOT", self.root))
         self.stack.enter_context(mock.patch.dict(os.environ, ENV, clear=True))
-        for name in self.resources:
+        for name in self.source_resources:
             fixtures.put(self.root / "app/Madeira" / name, (self.app / name).read_bytes())
         fixtures.put(self.root / gate.FRAMEWORK_SOURCE, (self.app / "Frameworks/StikJIT.framework/StikJIT").read_bytes())
         fixtures.put(self.root / delivery.REQUEST_PATH, delivery.json_bytes(delivery.expected_request()))
@@ -64,9 +66,10 @@ class PackageFixture:
             "graphics_receipt_sha256": {"fixture": "a" * 64},
             "prerequisite_sha256": {gate.FRAMEWORK_SOURCE: framework}, "scope": gate.SCOPE}
         self.prereq_mock = self.stack.enter_context(mock.patch.object(gate, "prerequisites", return_value=self.prerequisite))
-        self.resource_mock = self.stack.enter_context(mock.patch.object(gate, "resource_inputs", return_value=(self.resources, self.pe)))
+        self.resource_mock = self.stack.enter_context(mock.patch.object(gate, "resource_inputs", return_value=(self.source_resources, self.pe)))
+        self.dock_mock = self.stack.enter_context(mock.patch.object(gate, "dock_inputs", return_value=self.dock_build))
         self.receipt = {**self.prerequisite, "schema_version": 1, "status": "passed",
-            "app_source_sha256": self.sources, "resources_sha256": self.resources,
+            "app_source_sha256": self.sources, "resources_sha256": self.resources, "dock_build": self.dock_build,
             "guest_pe": gate.guest_pe_evidence(self.pe), "app": gate.validate_app(self.app, self.resources, framework),
             "build_command": gate.build_command(self.temp / "products", self.temp / "intermediates"),
             "scope": gate.PACKAGE_SCOPE, "packaging": {"requested": True, "status": "passed"}, "signing": delivery.SIGNING}
@@ -184,7 +187,7 @@ class RequestTests(unittest.TestCase):
             first = delivery.preflight()
             with mock.patch.dict(os.environ, {"GITHUB_RUN_ID": "5678", "GITHUB_RUN_ATTEMPT": "3"}):
                 second = delivery.preflight()
-            self.assertEqual(first["tag"], "unsigned-ipa-20261005-" + SHA[:12])
+            self.assertEqual(first["tag"], "unsigned-ipa-20261006-" + SHA[:12])
             self.assertEqual(first["tag"], second["tag"])
             self.assertNotEqual(first["run_id"], second["run_id"])
 
@@ -212,7 +215,7 @@ class RequestTests(unittest.TestCase):
                 git("add", ".")
                 git("commit", "--quiet", "-m", "Forbidden app change")
                 with mock.patch.dict(os.environ, {**ENV, "GITHUB_SHA": git("rev-parse", "HEAD")}, clear=True), \
-                        self.assertRaisesRegex(ValueError, "five-file allowlist"):
+                        self.assertRaisesRegex(ValueError, "reviewed Dock packaging allowlist"):
                     delivery.preflight(clean=True)
 
     def test_exact_request_accepts_push_and_dispatch_offline(self):
@@ -299,7 +302,7 @@ class PackageTests(unittest.TestCase):
             "packaging": {"requested": False, "status": "not_requested"}, "ipa_sha256": "f" * 64,
             "ipa_bytes": 1, "schema_version": True, "signing": "signed", "scope": gate.SCOPE,
             "app_source_sha256": {}, "resources_sha256": {}, "guest_pe": {}, "private_data": "must never upload",
-            "graphics_receipt_sha256": {}, "app": {}}
+            "graphics_receipt_sha256": {}, "dock_build": {}, "app": {}}
         for key, value in mutations.items():
             with self.subTest(key=key), PackageFixture() as fx:
                 fx.receipt[key] = value
@@ -323,9 +326,17 @@ class PackageTests(unittest.TestCase):
             fx.write_receipt()
             with mock.patch.object(gate, "guest_pe_evidence", return_value=expected), self.assertRaises(ValueError): fx.verify()
 
+    def test_changed_dock_evidence_during_verification_rejected(self):
+        with PackageFixture() as fx:
+            changed = copy.deepcopy(fx.dock_build)
+            changed["source_commit"] = "c" * 40
+            fx.dock_mock.side_effect = [fx.dock_build, changed]
+            with self.assertRaises(ValueError): fx.verify()
+            self.assertEqual(fx.dock_mock.call_count, 2)
+
     def test_stage_source_and_payload_mutations_rejected(self):
         for mutation in ("private-stage-file", "stage-link", "ipa-link", "modified-source", "native-receipt",
-                         "changed-app", "missing-placeholder", "extra-payload"):
+                         "changed-app", "missing-dock", "missing-dock-notices", "missing-placeholder", "extra-payload"):
             with self.subTest(mutation=mutation), PackageFixture() as fx:
                 if mutation == "private-stage-file": fixtures.put(fx.stage / "private.txt")
                 if mutation == "stage-link":
@@ -339,6 +350,8 @@ class PackageTests(unittest.TestCase):
                 if mutation == "modified-source": (fx.root / "app/Madeira/cacert.pem").write_bytes(b"changed")
                 if mutation == "native-receipt": fx.native.write_bytes(b"changed")
                 if mutation == "changed-app": (fx.app / "cacert.pem").write_bytes(b"changed")
+                if mutation == "missing-dock": (fx.app / "arm64ec-windows/dockhost.exe").unlink()
+                if mutation == "missing-dock-notices": (fx.app / "arm64ec-windows/dock-notices.txt").unlink()
                 if mutation == "missing-placeholder": (fx.app / "x86_64-vcruntime").rmdir()
                 if mutation == "extra-payload": fixtures.put(fx.stage / "Payload/secret")
                 with self.assertRaises((ValueError, OSError)): fx.verify()
@@ -397,7 +410,7 @@ class DraftCheckTests(unittest.TestCase):
             delivery.main()
         result = json.loads(output.getvalue())
         self.assertEqual(result["body"], delivery.release_notes(SHA))
-        self.assertEqual(result["tag"], "unsigned-ipa-20261005-" + SHA[:12])
+        self.assertEqual(result["tag"], "unsigned-ipa-20261006-" + SHA[:12])
         self.assertEqual(result["target_commitish"], SHA)
         self.assertIn("may be empty or incomplete", result["body"])
         self.assertIn("After upload, SHA256SUMS records the exact hashes", result["body"])
@@ -432,7 +445,7 @@ class DraftCheckTests(unittest.TestCase):
                 result = delivery.draft_check()
             self.assertEqual(result["release_id"], 42)
             self.assertEqual(result["status"], "empty-draft-verified")
-            self.assertEqual(result["tag"], "unsigned-ipa-20261005-" + SHA[:12])
+            self.assertEqual(result["tag"], "unsigned-ipa-20261006-" + SHA[:12])
             self.assertTrue(all(method == "GET" and data is None for _, method, data in gh.calls))
             self.assertEqual(sum(endpoint.startswith("releases?") for endpoint, _, _ in gh.calls), 2)
             self.assertFalse(gh.writes)

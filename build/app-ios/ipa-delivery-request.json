@@ -2,9 +2,15 @@
   "schema_version": 1,
   "repository": "Mi-Yomi/Madeira",
   "source_ref": "refs/heads/compatibility/desktop-apps",
-  "base_code_commit": "5647319638e49b912e569eb42179bdc771fdba17",
+  "base_code_commit": "d8037faa7c2153ed172da685f94ee5eb4d9a0cc5",
   "package_unsigned": true,
   "delivery": "draft-prerelease",
   "publish": false,
-  "required_msi_layers": ["desktop", "msi", "loader", "msi_client", "msi_startup"]
+  "required_msi_layers": [
+    "desktop",
+    "msi",
+    "loader",
+    "msi_client",
+    "msi_startup"
+  ]
 }

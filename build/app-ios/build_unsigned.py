@@ -23,7 +23,8 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path[:0] = [str(ROOT / "build/llvm-ios"), str(ROOT / "build/dxmt-ios"), str(ROOT / "build/wine-pe")]
+sys.path[:0] = [str(ROOT / "build/llvm-ios"), str(ROOT / "build/dxmt-ios"), str(ROOT / "build/wine-pe"),
+               str(ROOT / "build/madeira-dock")]
 import common
 import generate_shaders
 import verify_desktop_integration
@@ -31,6 +32,7 @@ import verify_msi_integration
 import verify_loader_integration
 import verify_msi_client_integration
 import verify_msi_startup_integration
+import verified_build as dock
 
 CONVERTER = "d3d12/libmetalirconverter.dylib"
 CONVERTER_SHA256 = "073f903be98e973ff38f4d79f2c48d61ef938754a77b1caedda79c9f05a068c2"
@@ -39,6 +41,7 @@ GENERATED_LICENSES = {"licenses/LICENSE-MADEIRA-GPL-3.0.txt": "COPYING",
                       "licenses/LICENSE-MADEIRA-EXCEPTION.txt": "LICENSE-EXCEPTION.md"}
 RESOURCE_DIRS = ("nls", "aarch64-windows", "arm64ec-windows", "i386-windows", "d3d12", "licenses", "legal")
 RESOURCE_FILES = ("prefix-template.tar.gz", "cacert.pem", "madeira-jit.js", "Madeira JIT.shortcut")
+DOCK_RESOURCES = frozenset("arm64ec-windows/" + name for name in dock.FILES)
 REQUIRED_NOTICES = (*GENERATED_LICENSES, "d3d12/NOTICE.txt", "d3d12/METAL-SHADER-CONVERTER-AGREEMENT.txt",
                     "d3d12/LICENSE-metal-shader-converter-headers.txt", "licenses/THIRD-PARTY-NOTICES.txt",
                     "licenses/LLVM-Apache-2.0-with-exception.txt", "legal/THIRD-PARTY-NOTICES.md",
@@ -46,7 +49,7 @@ REQUIRED_NOTICES = (*GENERATED_LICENSES, "d3d12/NOTICE.txt", "d3d12/METAL-SHADER
                     "legal/LICENSE-idevice-MIT.txt", *verify_desktop_integration.REQUIRED_NOTICES)
 GRAPHICS_RECEIPTS = ("toolchains/llvm-host-build/madeira-build.json", "toolchains/llvm-ios-build/madeira-build.json",
                      "build/dxmt-ios/shader-headers/provenance.json", "build/dxmt-ios/graphics-build.json")
-LIMITATIONS = ("Existing tracked guest PE binaries reused; twelve reviewed source-built desktop DLLs integrated. "
+LIMITATIONS = ("Existing tracked guest PE binaries reused; twelve reviewed source-built desktop DLLs and the source-built Dock host integrated. "
                "The optional reviewed MSI provider pair has no Wine/iOS runtime proof. "
                "Full-farm dependency gaps remain; 32-bit runtime missing; x86_64 VC runtime absent. "
                "No installation, device, rendering, JIT, 1C or Blender validation.")
@@ -174,6 +177,38 @@ def resource_inputs():
         raise ValueError("This gate requires an empty x86_64-vcruntime placeholder")
     verify_desktop_integration.validate(ROOT, expected, names)
     return expected, pe
+
+
+def dock_inputs():
+    """Separate provenance lane; never relax the sealed source farm inventory."""
+    return dock.validate(ROOT)
+
+
+def dock_resources(evidence):
+    outputs = evidence.get("outputs_sha256")
+    if not isinstance(outputs, dict) or set(outputs) != dock.FILES or any(
+            not isinstance(value, str) or not re.fullmatch(r"[a-f0-9]{64}", value) for value in outputs.values()):
+        raise ValueError("Dock evidence lacks the exact host/notices SHA-256 set")
+    return {"arm64ec-windows/" + name: value for name, value in outputs.items()}
+
+
+def stage_dock(app, evidence):
+    """Copy exactly two verified files after Xcode; exclusive creation only."""
+    expected = dock_resources(evidence)
+    directory = app / "arm64ec-windows"
+    if directory.is_symlink() or not directory.is_dir() or any(p.is_symlink() for p in directory.parents):
+        raise ValueError("Missing or unsafe Dock bundle destination")
+    if any((app / name).exists() or (app / name).is_symlink() for name in expected):
+        raise ValueError("Dock output unexpectedly present before verified staging")
+    for name, value in expected.items():
+        source = regular(ROOT / dock.OUTPUT / Path(name).name)
+        data = source.read_bytes()
+        if hashlib.sha256(data).hexdigest() != value:
+            raise ValueError("Dock output changed before bundle staging: " + name)
+        with (app / name).open("xb") as stream:
+            stream.write(data)
+        (app / name).chmod(0o755 if name.endswith("/dockhost.exe") else 0o644)
+    hashes_match(expected, app)
 
 
 def guest_pe_evidence(pe):
@@ -319,6 +354,8 @@ def bundle_plist(directory, executable, package_type):
 
 
 def validate_app(app, resources, framework_hash):
+    if not DOCK_RESOURCES.issubset(resources):
+        raise ValueError("Package evidence lacks required source-built Dock host/notices")
     files = tree_files(app)
     if app.name != "Madeira.app" or not files:
         raise ValueError("Expected a nonempty Madeira.app")
@@ -423,6 +460,7 @@ def build(native_receipt, products, intermediates, stage, *, package=False):
     products, intermediates, stage = fresh_outputs(products, intermediates, stage)
     native_receipt = native_receipt.parent.resolve() / native_receipt.name
     evidence = prerequisites(native_receipt)
+    dock_evidence = dock_inputs()
     if sys.platform != "darwin" or git("rev-parse", "--show-toplevel") != str(ROOT):
         raise ValueError("App build requires the same macOS source checkout as native/graphics")
     xcode = subprocess.check_output(["xcodebuild", "-version"], env=common.environment(), text=True)
@@ -437,11 +475,14 @@ def build(native_receipt, products, intermediates, stage, *, package=False):
     placeholder.mkdir(exist_ok=True)
     run(["bash", "build/stage-licenses.sh"])
     resources, pe = resource_inputs()
+    if DOCK_RESOURCES & resources.keys():
+        raise ValueError("Dock generated outputs must stay outside the sealed source farm")
+    resources = {**resources, **dock_resources(dock_evidence)}
     source_names = git("ls-files", "-z", "--", "app", "build/app-ios", "build/stage-licenses.sh",
-                       "build/wine-pe").split("\0")
+                       "build/wine-pe", "build/madeira-dock").split("\0")
     source_snapshot = {name: digest(ROOT / name) for name in source_names if name}
     evidence.update({"app_source_sha256": source_snapshot, "resources_sha256": resources,
-                     "guest_pe": guest_pe_evidence(pe)})
+                     "guest_pe": guest_pe_evidence(pe), "dock_build": dock_evidence})
     command = build_command(products, intermediates)
     run(command)
     # Fail if any prerequisites were replaced while Xcode was running.
@@ -452,6 +493,9 @@ def build(native_receipt, products, intermediates, stage, *, package=False):
     if digest(native_receipt) != evidence["native_receipt_sha256"]:
         raise ValueError("Native receipt changed during app build")
     app = products / "Debug-iphoneos/Madeira.app"
+    if dock_inputs() != dock_evidence:
+        raise ValueError("Dock inputs or receipt changed during app build")
+    stage_dock(app, dock_evidence)
     framework_hash = evidence["prerequisite_sha256"][FRAMEWORK_SOURCE]
     built = validate_app(app, resources, framework_hash)
     # Recheck before creating; never reuse prior diagnostics or a package.

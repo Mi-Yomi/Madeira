@@ -7,7 +7,22 @@ these commands document the driver, not permission to restart a build or package
 Run only after `.github/ci/native-bootstrap.sh` and the complete graphics
 bootstrap in the **same fresh Xcode 27 ARM64 runner checkout**, native first.
 Keep `FEX/build-ios` and its generated headers; restoring the archive bundle is
-not enough. No app/device success is implied by the native or graphics gates.
+not enough. Build Dock in this same checkout/job after native bootstrap has
+verified and installed the pinned LLVM-MinGW release:
+
+```sh
+python3 build/madeira-dock/verified_build.py build
+```
+
+This required step writes only `dockhost.exe`, `dock-notices.txt` and its
+provenance to the fresh `build/madeira-dock/generated/` directory. It checks
+the exact Dock gitlink, clean source bytes, recipe, official archive and every
+installed toolchain member before and after compilation. It runs Dock's four
+source-owned host suites with ASan/UBSan in a temporary source copy. The app gate rejects
+a missing, stale, altered or foreign-job receipt. The default producer paths
+reuse the retained macOS toolchain/archive from native bootstrap; standalone
+host builds may select the other reviewed host toolchain with `--toolchain`
+and `--toolchain-archive`. No app/device success is implied by these gates.
 
 ```sh
 python3 build/app-ios/build_unsigned.py \
@@ -28,7 +43,13 @@ remain those in the project. There is no shared-scheme requirement.
 
 After a successful link it validates the app, helper and StikJIT Mach-O platform
 and architecture, unchanged tracked converter bytes, processed bundle metadata,
-resources and notices. By default, `--stage` contains only `provenance.json`:
+resources and notices. It rechecks the Dock receipt and exclusively copies only
+the verified host and notices into the linked app's `arm64ec-windows/` folder
+before final app/ZIP validation. `dockhost.exe` is deliberately an x86-64 PE32+
+with no ARM64EC CHPE metadata, despite that bundle folder's name. Generated Dock
+files never enter the sealed source farm, whose exact inventory and historical
+receipt seals remain mandatory. The app receipt carries a separate `dock_build`
+record; final resource hashes include both generated files. By default, `--stage` contains only `provenance.json`:
 its packaging status is `not_requested`, and there is no `Payload` directory,
 IPA file or `ditto` invocation. A compact log summary describes only this link
 and bundle-validation scope.
@@ -63,11 +84,15 @@ The 32-bit Wine runtime and x86_64 VC runtime are
 missing. A passed default gate establishes only unsigned app linking and bundle
 validation. An explicitly requested package gate also establishes local package
 integrity. Neither establishes device launch, JIT, rendering, 1C or Blender
-compatibility.
+compatibility. Dock's presence makes the default Steam library/Dock availability
+condition satisfiable; the proprietary Valve client is downloaded separately by
+the app and is not bundled here. Steam sign-in, downloads and game launch still
+require device testing.
 
 Portable regression checks (synthetic fixtures; no Xcode or external downloads):
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 tests/host/check-app-bootstrap.py
+PYTHONDONTWRITEBYTECODE=1 python3 tests/host/check-dock-packaging.py
 PYTHONDONTWRITEBYTECODE=1 python3 tests/host/check-desktop-integration.py
 ```

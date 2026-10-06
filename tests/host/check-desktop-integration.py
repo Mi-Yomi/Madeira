@@ -39,7 +39,7 @@ class IntegratedDesktopTests(unittest.TestCase):
         self.root = Path(self.temp.name).resolve()
         self.app = self.root / "app/Madeira"
         self.stage = self.root / integration.RECEIPT
-        app_tests.fixture(self.app)
+        app_tests.fixture(self.app, include_dock=False)  # Generated Dock is never a source-farm input.
         # Keep the existing app-gate fixtures synthetic. The complete reviewed
         # evidence is copied but no captured recipe/tool/guest is executed.
         shutil.copytree(ROOT / integration.RECEIPT, self.stage)

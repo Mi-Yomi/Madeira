@@ -37,9 +37,15 @@ source checkout. `--package`, abbreviated flags, `--stage`, Xcode flags and
 extra positional arguments are rejected; environment variables cannot opt in.
 The wrapper calls the existing app library directly with `package=False`, not
 its package-capable CLI. During that call its command dispatcher permits only
-license staging followed by the exact unsigned Debug Xcode build command. All
+the exact verified Dock producer, license staging, then the exact unsigned Debug Xcode build command. All
 other commands, including `ditto`, ZIP tools, signing and archive/export, fail
 before execution. Its ZIP-validation entry point and Python ZIP API are also disabled.
+
+The wrapper runs the mandatory same-job Dock producer first. Its fresh outputs
+stay outside the sealed source farm in `build/madeira-dock/generated/`; the app
+gate exclusively copies and checks the verified x86-64 host and notices after
+linking. The diagnostic verifier independently rebinds the Dock receipt and all
+final resource hashes. See `README.md` for the source/toolchain contract.
 
 A successful diagnostic directory contains exactly `provenance.json` from the
 existing app gate and `link-diagnostic.json` from the wrapper. The second receipt

@@ -44,6 +44,7 @@ def validate(text):
         assert forbidden not in text, forbidden
     stages = ("deliver_unsigned.py --mode request", "deliver_unsigned.py --mode draft-check",
               "check-i386-native-contract.py -v", "link_diagnostic.py native",
+              "build/madeira-dock/verified_build.py build",
               "build/llvm-ios/build.sh fetch", "build/dxmt-ios/generate-shaders.sh preflight",
               "build/llvm-ios/build.sh host", "build/dxmt-ios/generate-shaders.sh\n",
               "build/llvm-ios/build.sh ios", "build/dxmt-ios/clean_build.py",
@@ -51,6 +52,10 @@ def validate(text):
               "deliver_unsigned.py --mode upload")
     offsets = [steps.index(stage) for stage in stages]
     assert offsets == sorted(offsets)
+    assert text.count("python3 tests/host/check-dock-packaging.py") == 2
+    assert steps.count("python3 build/madeira-dock/verified_build.py build") == 1
+    assert steps.count("python3 tests/host/check-memory-setup.py\n") == 1
+    assert steps.count("python3 tests/host/check-memory-setup.py --ios-typecheck\n") == 1
     assert steps.count('GH_TOKEN: ${{ github.token }}') == 2
     for block in steps.split("      - name: ")[1:]:
         if "GH_TOKEN:" in block:
@@ -78,6 +83,9 @@ class WorkflowTests(unittest.TestCase):
                         ("private == false", "private == true"), ("cancel-in-progress: false", "cancel-in-progress: true"),
                         ("--mode draft-check", "--mode request"), ("--package\n", "\n"),
                         ("link_diagnostic.py native", ".github/ci/native-bootstrap.sh"),
+                        ("build/madeira-dock/verified_build.py build", "build/madeira-dock/verified_build.py verify"),
+                        ("          python3 tests/host/check-dock-packaging.py\n", ""),
+                        ("          python3 tests/host/check-memory-setup.py --ios-typecheck\n", ""),
                         ('--release-id "$MADEIRA_DRAFT_ID"', '--release-id 1'),
                         ("  workflow_dispatch:\n", "  workflow_dispatch:\n  pull_request:\n"),
                         ("      - .github/workflows/unsigned-ipa-delivery.yml\n", ""),

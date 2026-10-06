@@ -29,7 +29,7 @@ them.
 ## Source and licence
 
 - Source: the `madeira-dock` submodule
-  (`https://github.com/125hz/madeira-dock`, pinned at `0c5bbd1`), about 1,850 lines of
+  (`https://github.com/125hz/madeira-dock`, pinned at `3cadfbea700e4da4b04e331dd7ef1ba633dfacef`), about 1,850 lines of
   C. Copyright 2026 125hz, **GPL-3.0-or-later with the Madeira
   Converter Exception** (the owner open-sourced it on 2026-09-27; it used to
   be a closed executable).

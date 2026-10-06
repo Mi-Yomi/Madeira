@@ -57,12 +57,16 @@ class LinkTests(unittest.TestCase):
                           json.dumps(link.EXPECTED_REQUEST).encode())
             evidence = {"source_commit": "a" * 40, "native_receipt_sha256": link.gate.digest(native),
                         "prerequisite_sha256": {link.gate.FRAMEWORK_SOURCE: framework}, "scope": link.gate.SCOPE}
-            pe = {name: value for name, value in resources.items() if name.endswith((".dll", ".exe"))}
+            source_resources = fixtures.farm_resources(resources)
+            pe = {name: value for name, value in source_resources.items() if name.endswith((".dll", ".exe"))}
             executed = []
             def fake_run(args):
                 command = list(map(str, args))
                 executed.append(command)
-                if command[0] == "bash":
+                if command[0] == "python3":
+                    self.assertEqual(command, ["python3", "build/madeira-dock/verified_build.py", "build"])
+                    if failure == "dock": raise subprocess.CalledProcessError(1, command)
+                elif command[0] == "bash":
                     self.assertEqual(command, ["bash", "build/stage-licenses.sh"])
                 elif command[0] == "xcodebuild":
                     self.assertIn("CODE_SIGNING_ALLOWED=NO", command)
@@ -88,7 +92,9 @@ class LinkTests(unittest.TestCase):
                     (link.gate.sys, "platform", "darwin")):
                 stack.enter_context(mock.patch.object(module, name, value))
             stack.enter_context(mock.patch.object(link.gate, "prerequisites", return_value=evidence))
-            stack.enter_context(mock.patch.object(link.gate, "resource_inputs", return_value=(resources, pe)))
+            stack.enter_context(mock.patch.object(link.gate, "resource_inputs", return_value=(source_resources, pe)))
+            stack.enter_context(mock.patch.object(link.gate, "dock_inputs", return_value=fixtures.dock_evidence(resources)))
+            stack.enter_context(mock.patch.object(link.gate, "stage_dock"))
             stack.enter_context(mock.patch.object(link.gate, "git", side_effect=fake_git))
             stack.enter_context(mock.patch.object(link.gate.subprocess, "check_output", side_effect=fake_output))
             stack.enter_context(mock.patch.dict(os.environ, {"GITHUB_SHA": "a" * 40, "PACKAGE": "true", "CREATE_IPA": "1"}))
@@ -103,7 +109,7 @@ class LinkTests(unittest.TestCase):
             self.assertFalse(result["ipa_created"])
             self.assertFalse(result["runtime_tested"])
             self.assertEqual(result["commands"], executed)
-            self.assertEqual([cmd[0] for cmd in executed], ["bash", "xcodebuild"])
+            self.assertEqual([cmd[0] for cmd in executed], ["python3", "bash", "xcodebuild"])
             self.assertIs(link.gate.run, runner)
             zipper.assert_not_called()
             self.assertEqual({p.name for p in diagnostics.iterdir()}, {"provenance.json", link.RECEIPT})
@@ -121,6 +127,16 @@ class LinkTests(unittest.TestCase):
             self.assertEqual(link.scan(products, objects, diagnostics)["ipa_files"], 0)
             with self.assertRaises(ValueError):
                 link.verify(products, objects, diagnostics)
+
+    def test_failed_dock_build_stops_before_licenses_and_xcode(self):
+        with self.fixture(failure="dock") as (native, products, objects, diagnostics, executed, runner, zipper):
+            with self.assertRaises(subprocess.CalledProcessError):
+                link.build(native, products, objects, diagnostics)
+            self.assertEqual(executed, [["python3", "build/madeira-dock/verified_build.py", "build"]])
+            self.assertFalse(products.exists())
+            self.assertFalse(diagnostics.exists())
+            self.assertIs(link.gate.run, runner)
+            zipper.assert_not_called()
 
     def test_legacy_msi_and_loader_receipts_use_exact_resource_contracts(self):
         statuses = {"desktop": "tracked-existing-plus-reviewed-source-built-desktop",
@@ -169,7 +185,7 @@ class LinkTests(unittest.TestCase):
                     else: link.gate.run(bad)
                 with mock.patch.object(link.gate, "build", side_effect=bad_build), self.assertRaises(ValueError):
                     link.build(native, products, objects, diagnostics)
-                self.assertEqual(executed, [])
+                self.assertEqual(executed, [["python3", "build/madeira-dock/verified_build.py", "build"]])
                 self.assertIs(link.gate.run, runner)
                 zipper.assert_not_called()
                 self.assertFalse((diagnostics / link.RECEIPT).exists())
@@ -253,7 +269,7 @@ class LinkTests(unittest.TestCase):
                         link.verify(products, objects, diagnostics)
                     path.write_bytes(original)
 
-    def test_failure_finally_scan_catches_package_stage_even_without_commands(self):
+    def test_failure_finally_scan_catches_package_stage_before_app_commands(self):
         with self.fixture() as (native, products, objects, diagnostics, *_):
             def bad_build(*args, **kwargs):
                 (diagnostics / "Payload").mkdir(parents=True)
@@ -263,7 +279,7 @@ class LinkTests(unittest.TestCase):
             self.assertFalse((diagnostics / link.RECEIPT).exists())
 
     def test_receipt_and_app_mutations_fail_independent_verification(self):
-        cases = ("package", "ipa-field", "commit", "command", "guest", "app", "request", "diagnostic", "extra-file", "receipt-missing")
+        cases = ("package", "ipa-field", "commit", "command", "guest", "dock", "dock-file", "app", "request", "diagnostic", "extra-file", "receipt-missing")
         for mutation in cases:
             with self.subTest(mutation=mutation), self.fixture() as (native, products, objects, diagnostics, *_):
                 link.build(native, products, objects, diagnostics)
@@ -274,12 +290,14 @@ class LinkTests(unittest.TestCase):
                 elif mutation == "commit": data["source_commit"] = "b" * 40
                 elif mutation == "command": data["build_command"][-1] = "archive"
                 elif mutation == "guest": data["guest_pe"]["source_built_desktop_sha256"].pop(next(iter(link.gate.verify_desktop_integration.DLLS)))
+                elif mutation == "dock": data.pop("dock_build")
+                elif mutation == "dock-file": (products / "Debug-iphoneos/Madeira.app/arm64ec-windows/dockhost.exe").unlink()
                 elif mutation == "app": (products / "Debug-iphoneos/Madeira.app/Madeira").write_bytes(b"changed")
                 elif mutation == "request": link.REQUEST.write_text('{}')
                 elif mutation == "diagnostic": (diagnostics / link.RECEIPT).write_text('{}')
                 elif mutation == "extra-file": put(diagnostics / "extra.json")
                 elif mutation == "receipt-missing": (diagnostics / link.RECEIPT).unlink()
-                if mutation in {"package", "ipa-field", "commit", "command", "guest"}:
+                if mutation in {"package", "ipa-field", "commit", "command", "guest", "dock"}:
                     path.write_text(json.dumps(data))
                 with self.assertRaises(ValueError): link.verify(products, objects, diagnostics)
 

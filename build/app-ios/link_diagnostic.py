@@ -4,7 +4,7 @@
 """Fixed compile/link-only entry point. No packaging option exists here.
 
 Reuse the app gate's native/graphics provenance and unsigned bundle validation.
-Only license staging and the fixed unsigned Xcode build may run through its
+Only the verified Dock producer, license staging and fixed unsigned Xcode build run through its
 command dispatcher. Packaging/ZIP validation is disabled at runtime as well as
 at the CLI. Receipts and scans establish this diagnostic's scope, not device,
 JIT, rendering, 1C or Blender success. No files are uploaded.
@@ -24,6 +24,7 @@ import build_unsigned as gate
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST = ROOT / "build/app-ios/link-diagnostic-request.json"
 RECEIPT = "link-diagnostic.json"
+DOCK_COMMAND = ["python3", "build/madeira-dock/verified_build.py", "build"]
 EXPECTED_REQUEST = {
     "schema_version": 1, "scope": "ios-app-link-diagnostic-no-ipa",
     "desktop_dll_count": 12,
@@ -146,12 +147,18 @@ def app_receipt(products, intermediates, diagnostics):
     desktop = guest.get("source_built_desktop_sha256", {})
     # Re-run the complete source resource gate, including exact optional MSI
     # and loader receipts. A changed status string alone cannot grant support.
-    _, pe = gate.resource_inputs()
+    resources, pe = gate.resource_inputs()
+    dock_evidence = gate.dock_inputs()
+    if record.get("dock_build") != dock_evidence:
+        raise ValueError("App receipt differs from this job's required source-built Dock")
+    resources = {**resources, **gate.dock_resources(dock_evidence)}
+    if record.get("resources_sha256") != resources:
+        raise ValueError("App resource receipt differs from sealed farm plus verified Dock")
     if (guest != gate.guest_pe_evidence(pe) or
             guest.get("desktop_stage_seal_sha256") != EXPECTED_REQUEST["desktop_stage_seal_sha256"] or
             set(desktop) != gate.verify_desktop_integration.DLLS or len(desktop) != 12):
         raise ValueError("App receipt differs from the reviewed desktop/MSI/loader resource contract")
-    gate.hashes_match(pe, products / "Debug-iphoneos/Madeira.app")
+    gate.hashes_match(resources, products / "Debug-iphoneos/Madeira.app")
     # Independently bind the final check to every app file, not just a status bit.
     actual = gate.tree_files(products / "Debug-iphoneos/Madeira.app")
     if not actual or actual != record.get("app", {}).get("files_sha256"):
@@ -168,7 +175,7 @@ def verify(products, intermediates, diagnostics):
         "schema_version": 1, "status": "passed", "scope": EXPECTED_REQUEST["scope"],
         "source_commit": record["source_commit"], "request_sha256": request(),
         "app_receipt_sha256": gate.digest(diagnostics / "provenance.json"),
-        "commands": [["bash", "build/stage-licenses.sh"], gate.build_command(products, intermediates)],
+        "commands": [DOCK_COMMAND, ["bash", "build/stage-licenses.sh"], gate.build_command(products, intermediates)],
         "packaging": "disabled", "ipa_created": False, "runtime_tested": False,
     }
     if (json.dumps(receipt, sort_keys=True) != json.dumps(expected, sort_keys=True) or
@@ -184,7 +191,7 @@ def build(native_receipt, products, intermediates, diagnostics):
     request_hash = request()
     products, intermediates, diagnostics = outputs(products, intermediates, diagnostics)
     scan(products, intermediates, diagnostics)
-    expected = [["bash", "build/stage-licenses.sh"], gate.build_command(products, intermediates)]
+    expected = [DOCK_COMMAND, ["bash", "build/stage-licenses.sh"], gate.build_command(products, intermediates)]
     commands = []
     original_run, original_zip, original_archive = gate.run, gate.verify_zip, gate.zipfile.ZipFile
     def guarded_run(args):
@@ -197,6 +204,7 @@ def build(native_receipt, products, intermediates, diagnostics):
         raise ValueError("ZIP/package validation is disabled in this link-only diagnostic")
     gate.run, gate.verify_zip, gate.zipfile.ZipFile = guarded_run, forbidden_zip, forbidden_zip
     try:
+        guarded_run(DOCK_COMMAND)
         # Never forwards arbitrary flags or calls the package-capable CLI.
         gate.build(Path(native_receipt), products, intermediates, diagnostics, package=False)
     finally:

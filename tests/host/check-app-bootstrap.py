@@ -24,6 +24,7 @@ spec = importlib.util.spec_from_file_location("app_gate", ROOT / "build/app-ios/
 gate = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(gate)
 PROJECT = ROOT / "app/Madeira.xcodeproj/project.pbxproj"
+DOCK_RESOURCES = ("arm64ec-windows/dockhost.exe", "arm64ec-windows/dock-notices.txt")
 
 
 def object_text(identifier):
@@ -56,7 +57,7 @@ def put(path, data=b"fixture resource\n"):
     return path
 
 
-def fixture(app):
+def fixture(app, *, include_dock=True):
     resources = {}
     for directory in gate.RESOURCE_DIRS:
         put(app / directory / "fixture.txt")
@@ -64,6 +65,9 @@ def fixture(app):
         put(app / name)
     for name in ("aarch64-windows/example.dll", "arm64ec-windows/example.exe"):
         put(app / name, b"MZ fixture tracked PE")
+    if include_dock:
+        put(app / DOCK_RESOURCES[0], b"MZ fixture source-built Dock PE")
+        put(app / DOCK_RESOURCES[1], b"fixture source-built Dock notices\n")
     (app / "x86_64-vcruntime").mkdir()
     put(app / "Assets.car")
     put(app / "default.metallib", b"MTLB fixture app shaders")
@@ -81,6 +85,20 @@ def fixture(app):
         resources.update({directory + "/" + name: value for name, value in gate.tree_files(app / directory).items()})
     resources.update({name: gate.digest(app / name) for name in gate.RESOURCE_FILES})
     return resources, gate.digest(app / "Frameworks/StikJIT.framework/StikJIT"), gate.digest(app / gate.CONVERTER)
+
+
+def farm_resources(resources):
+    """Generated Dock outputs are part of the final app, never the tracked farm."""
+    return {name: value for name, value in resources.items() if name not in DOCK_RESOURCES}
+
+
+def dock_evidence(resources):
+    # Generic app suites mock the source-build validator. The dedicated Dock
+    # suite exercises actual source, PE, receipt and copy validation.
+    return {"schema_version": 1, "source_commit": "a" * 40,
+            "source": {}, "recipe_sha256": {}, "toolchain": {}, "run": {},
+            "outputs_sha256": {Path(name).name: resources[name] for name in DOCK_RESOURCES},
+            "pe": {}, "scope": "synthetic Dock build fixture"}
 
 
 def zip_payload(path, payload):
@@ -219,6 +237,9 @@ class SafetyTests(unittest.TestCase):
                 app = root / "app/Madeira"
                 resources, _, _ = fixture(app)
                 # Source inventory contains resources, not built app products.
+                for name in DOCK_RESOURCES:
+                    (app / name).unlink()
+                resources = farm_resources(resources)
                 for target, source in gate.GENERATED_LICENSES.items():
                     put(root / source, (app / target).read_bytes())
                 names = ["app/Madeira/" + name for name in resources if name not in gate.GENERATED_LICENSES]
@@ -260,13 +281,15 @@ class BuildModeTests(unittest.TestCase):
         """Synthetic Mach-O/ZIP fixtures only: never launches Xcode or ditto."""
         seed = root / "synthetic/Madeira.app"
         resources, framework, converter = fixture(seed)
+        dock_build = dock_evidence(resources)
+        source_resources = farm_resources(resources)
         put(root / "app/Madeira/source.c", b"fixture source")
         put(root / gate.FRAMEWORK_SOURCE, (seed / "Frameworks/StikJIT.framework/StikJIT").read_bytes())
         receipt = put(root / "native/provenance.json", b"fixture native receipt")
         products, intermediates, stage = (root / name for name in ("products", "objects", "diagnostics"))
         evidence = {"source_commit": "a" * 40, "native_receipt_sha256": gate.digest(receipt),
                     "prerequisite_sha256": {gate.FRAMEWORK_SOURCE: framework}, "scope": gate.SCOPE}
-        pe = {name: value for name, value in resources.items() if name.endswith((".dll", ".exe"))}
+        pe = {name: value for name, value in source_resources.items() if name.endswith((".dll", ".exe"))}
         calls = []
         def fake_run(args):
             calls.append(list(map(str, args)))
@@ -297,7 +320,9 @@ class BuildModeTests(unittest.TestCase):
             stack.enter_context(mock.patch.object(gate, "CONVERTER_SHA256", converter))
             stack.enter_context(mock.patch.object(gate.sys, "platform", "darwin"))
             stack.enter_context(mock.patch.object(gate, "prerequisites", return_value=evidence))
-            stack.enter_context(mock.patch.object(gate, "resource_inputs", return_value=(resources, pe)))
+            stack.enter_context(mock.patch.object(gate, "resource_inputs", return_value=(source_resources, pe)))
+            dock_validation = stack.enter_context(mock.patch.object(gate, "dock_inputs", return_value=dock_build))
+            dock_staging = stack.enter_context(mock.patch.object(gate, "stage_dock"))
             stack.enter_context(mock.patch.object(gate, "git", side_effect=fake_git))
             stack.enter_context(mock.patch.object(gate.subprocess, "check_output", side_effect=fake_output))
             stack.enter_context(mock.patch.object(gate, "run", side_effect=fake_run))
@@ -321,6 +346,10 @@ class BuildModeTests(unittest.TestCase):
             result = json.loads((stage / "provenance.json").read_text())
             summary = json.loads(output.getvalue())
             self.assertEqual(result["status"], "passed")
+            self.assertEqual(result["dock_build"], dock_build)
+            self.assertEqual(result["resources_sha256"], resources)
+            self.assertEqual(dock_validation.call_count, 2)
+            dock_staging.assert_called_once_with(products / "Debug-iphoneos/Madeira.app", dock_build)
             self.assertIn("CODE_SIGNING_ALLOWED=NO", result["build_command"])
             self.assertIn("CODE_SIGNING_REQUIRED=NO", result["build_command"])
             if mode == "default":

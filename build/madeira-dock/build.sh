@@ -14,6 +14,8 @@
 #   --check  also build and run Dock's own unit tests with the host compiler
 #            (madeira-dock/tools/check.sh; needs cc with ASan/UBSan).
 # LLVM_MINGW=<dir with x86_64-w64-mingw32-clang> overrides the toolchain.
+# DOCK_OUTPUT_DIR=<dir> overrides staging (verified_build.py keeps generated
+# files outside the sealed source farm until the unsigned app is linked).
 set -eu
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -21,7 +23,7 @@ REPO_ROOT="$(cd "$DIR/../.." && pwd)"
 SRC="$REPO_ROOT/madeira-dock"
 MINGW="${LLVM_MINGW:-$REPO_ROOT/toolchains/llvm-mingw-20260421-ucrt-macos-universal/bin}"
 CC="$MINGW/x86_64-w64-mingw32-clang"
-OUT="$REPO_ROOT/app/Madeira/arm64ec-windows"
+OUT="${DOCK_OUTPUT_DIR:-$REPO_ROOT/app/Madeira/arm64ec-windows}"
 
 [ -f "$SRC/src/main.c" ] || { echo "madeira-dock is missing: git submodule update --init madeira-dock" >&2; exit 1; }
 [ -x "$CC" ] || { echo "missing cross compiler: $CC (set LLVM_MINGW)" >&2; exit 1; }

@@ -23,17 +23,35 @@ import build_unsigned as gate
 ROOT = gate.ROOT
 REPOSITORY = "Mi-Yomi/Madeira"
 SOURCE_REF = "refs/heads/compatibility/desktop-apps"
-BASE_CODE_COMMIT = "5647319638e49b912e569eb42179bdc771fdba17"
+BASE_CODE_COMMIT = "d8037faa7c2153ed172da685f94ee5eb4d9a0cc5"
 REQUEST_PATH = "build/app-ios/ipa-delivery-request.json"
-ALLOWED_CHANGES = frozenset((".github/workflows/unsigned-ipa-delivery.yml",
-    "build/app-ios/deliver_unsigned.py", REQUEST_PATH,
-    "tests/host/check-unsigned-ipa-delivery.py", "tests/host/check-unsigned-ipa-workflow.py"))
+ALLOWED_CHANGES = frozenset((
+    '.github/workflows/unsigned-ipa-delivery.yml',
+    '.gitignore',
+    'build/app-ios/LINK-DIAGNOSTIC.md',
+    'build/app-ios/README.md',
+    'build/app-ios/build_unsigned.py',
+    'build/app-ios/deliver_unsigned.py',
+    'build/app-ios/ipa-delivery-request.json',
+    'build/app-ios/link_diagnostic.py',
+    'build/madeira-dock/build.sh',
+    'build/madeira-dock/verified_build.py',
+    'docs/MADEIRA_DOCK.md',
+    'tests/host/check-app-bootstrap.py',
+    'tests/host/check-app-link-diagnostic.py',
+    'tests/host/check-desktop-integration.py',
+    'tests/host/check-msi-integration.py',
+    'tests/host/check-dock-contract.py',
+    'tests/host/check-dock-packaging.py',
+    'tests/host/check-unsigned-ipa-delivery.py',
+    'tests/host/check-unsigned-ipa-workflow.py',
+))
 ASSETS = ("Madeira-unsigned.ipa", "provenance.json", "SHA256SUMS")
 OUTPUTS = frozenset((*ASSETS, "release-notes.md", "verification.json"))
 MAX_ASSET_BYTES = 2 * 1024 ** 3  # Each GitHub release asset must be strictly smaller.
 MAX_RELEASE_PAGES = 5  # Fail closed if a complete list needs more than 500 entries.
 MSI_LAYERS = ("desktop", "msi", "loader", "msi_client", "msi_startup")
-SOURCE_PATHS = ("app", "build/app-ios", "build/stage-licenses.sh", "build/wine-pe")
+SOURCE_PATHS = ("app", "build/app-ios", "build/stage-licenses.sh", "build/wine-pe", "build/madeira-dock")
 SIGNING = "disabled; pre-existing vendor converter signature/bytes preserved"
 
 
@@ -57,7 +75,7 @@ def source_identity(sha):
     require(isinstance(sha, str) and re.fullmatch(r"[0-9a-f]{40}", sha),
             "Source commit must be exactly 40 lowercase hexadecimal characters")
     return {"source_commit": sha, "source_url": f"https://github.com/{REPOSITORY}/tree/{sha}",
-            "tag": f"unsigned-ipa-20261005-{sha[:12]}"}
+            "tag": f"unsigned-ipa-20261006-{sha[:12]}"}
 
 
 def preflight(*, clean=False):
@@ -78,7 +96,7 @@ def preflight(*, clean=False):
     changed = set(filter(None, gate.git("diff", "--name-only", "--no-renames", "-z",
                                        BASE_CODE_COMMIT, "HEAD", "--").split("\0")))
     require(changed and changed <= ALLOWED_CHANGES and REQUEST_PATH in changed,
-            "Delivery request changes source outside the five-file allowlist")
+            "Delivery request changes source outside the reviewed Dock packaging allowlist")
     if clean:
         require(not gate.git("diff", "--name-only", "--ignore-submodules=all", "HEAD", "--"),
                 "Request checkout has uncommitted tracked changes")
@@ -111,7 +129,7 @@ def verify_package(stage, native_receipt):
             "Package stage must contain only Payload, IPA and provenance.json")
     receipt = gate.document(stage / "provenance.json")
     prerequisite = gate.prerequisites(native_receipt)
-    required_keys = {*prerequisite, "app_source_sha256", "resources_sha256", "guest_pe",
+    required_keys = {*prerequisite, "app_source_sha256", "resources_sha256", "guest_pe", "dock_build",
         "schema_version", "status", "build_command", "app", "packaging", "signing", "ipa_sha256", "ipa_bytes"}
     require(set(receipt) == required_keys and type(receipt.get("schema_version")) is int
             and receipt.get("schema_version") == 1 and receipt.get("status") == "passed"
@@ -125,6 +143,11 @@ def verify_package(stage, native_receipt):
     sources = source_snapshot()
     require(sources and receipt["app_source_sha256"] == sources, "App source inventory changed")
     resources, pe = gate.resource_inputs()  # Includes all five sealed integration validators.
+    dock_evidence = gate.dock_inputs()
+    require(receipt["dock_build"] == dock_evidence,
+            "Dock evidence differs from this job's validated source-built host/notices")
+    require(not gate.DOCK_RESOURCES & resources.keys(), "Generated Dock files entered the sealed source farm")
+    resources = {**resources, **gate.dock_resources(dock_evidence)}
     guest = gate.guest_pe_evidence(pe)
     require(guest["status"] == "tracked-existing-plus-reviewed-desktop-msi-loader-client-and-startup-fixes"
             and all(guest.get(layer + "_stage_seal_sha256") for layer in MSI_LAYERS),
@@ -146,6 +169,7 @@ def verify_package(stage, native_receipt):
             "IPA bytes or ZIP payload differ from the package receipt")
     gate.hashes_match(sources, ROOT)
     gate.hashes_match(prerequisite["prerequisite_sha256"], ROOT)
+    require(gate.dock_inputs() == dock_evidence, "Dock inputs changed during package verification")
     require(preflight() == context and gate.digest(native_receipt) == receipt["native_receipt_sha256"],
             "Source/run/native receipt changed during package verification")
     return context, {ASSETS[0]: ipa, ASSETS[1]: identity(stage / ASSETS[1])}
@@ -158,6 +182,7 @@ def release_notes(source_commit):
         "This draft may be empty or incomplete. Delivery is complete only after the workflow verifies all three uploaded assets by downloading and hashing them.",
         "If attached, the approved assets will be Madeira-unsigned.ipa, provenance.json and SHA256SUMS.",
         "Delivery requires static app/bundle/ZIP integrity checks. This pipeline does not sign, install or test device launch, rendering, JIT, 1C or Blender.",
+        "This replacement requires the pinned source-built Dock host and its notices in the final app, restoring the missing Steam/Dock bundle entry. Valve client components still download separately on device.",
         "The planned package preserves the tracked vendor converter bytes/signature. The 32-bit runtime and x86_64 VC runtime remain absent; full-farm dependency gaps remain.",
         "To install a delivered IPA, sideload with development signing and get-task-allow, retain/provision the MadeiraJITHelper extension, re-sign embedded code, then enable JIT.",
         "This draft does not establish runtime compatibility, complete redistribution/relinking compliance, or public release approval.",
@@ -170,6 +195,7 @@ def release_notes(source_commit):
         f"Third-party licenses/source notices: {blob}/app/Madeira/licenses/THIRD-PARTY-NOTICES.txt",
         f"Third-party source details: {blob}/app/Madeira/legal/THIRD-PARTY-NOTICES.md",
         f"Build/relink instructions and remaining limits: {blob}/docs/BUILDING.md",
+        f"Dock source, notices and client setup: {blob}/docs/MADEIRA_DOCK.md",
         f"Installation/signing and JIT setup: {blob}/docs/JIT.md",
         f"Pinned submodule source locations: {blob}/.gitmodules (commit gitlinks are retained at that exact source commit)",
         f"LLVM corresponding source pin and URL: {blob}/build/llvm-ios/manifest.json",

@@ -39,7 +39,7 @@ class MsiIntegrationTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name).resolve()
         self.app = self.root / "app/Madeira"
-        app_tests.fixture(self.app)
+        app_tests.fixture(self.app, include_dock=False)  # Generated Dock is never a source-farm input.
         for module in (desktop, msi):
             shutil.copytree(ROOT / module.RECEIPT, self.root / module.RECEIPT)
             for name, source in module.COPIES.items():

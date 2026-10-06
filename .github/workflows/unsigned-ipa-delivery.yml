@@ -33,6 +33,7 @@ jobs:
           python3 build/app-ios/deliver_unsigned.py --mode request
           python3 tests/host/check-unsigned-ipa-delivery.py
           python3 tests/host/check-unsigned-ipa-workflow.py
+          python3 tests/host/check-dock-packaging.py
           python3 build/app-ios/link_diagnostic.py request
           python3 tests/host/check-i386-native-capture-wiring.py
           python3 build/wine-pe/verify_desktop_integration.py
@@ -85,6 +86,9 @@ jobs:
           python3 build/app-ios/deliver_unsigned.py --mode request
           python3 tests/host/check-unsigned-ipa-delivery.py
           python3 tests/host/check-unsigned-ipa-workflow.py
+          python3 tests/host/check-dock-packaging.py
+          python3 tests/host/check-memory-setup.py
+          python3 tests/host/check-memory-setup.py --ios-typecheck
           python3 build/app-ios/link_diagnostic.py request
           python3 tests/host/check-i386-native-capture-wiring.py
           python3 build/wine-pe/verify_desktop_integration.py
@@ -131,6 +135,9 @@ jobs:
           python3 build/app-ios/link_diagnostic.py native \
             --native-log-dir "$NATIVE_LOG_DIR" \
             --native-artifact-dir "$NATIVE_ARTIFACT_DIR"
+      - name: Build verified pinned Dock host and notices
+        timeout-minutes: 5
+        run: python3 build/madeira-dock/verified_build.py build
       - name: Fetch pinned LLVM and preflight every Metal source
         timeout-minutes: 5
         run: |
