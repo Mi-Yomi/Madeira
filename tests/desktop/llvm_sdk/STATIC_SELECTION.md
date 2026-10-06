@@ -118,8 +118,9 @@ original observations, all six pairwise field differences, both content hashes,
 and bounded Python/Windows version metadata in the rejecting exception. All
 stat scalars are decimal strings (or null when unavailable), preserving
 nanoseconds and 128-bit file IDs in JSON consumers. The actual gate still
-compares native integer values. Birth/access times and file attributes are
-diagnostic only. There are no extra file observations or retries, and no
+compares native integer values. Access time and file attributes are diagnostic
+only; the Windows exception below also checks birthtime. There are no extra
+file observations or retries, and no
 payload bytes or paths in this record. The failure message, including its JSON
 evidence and fixed prefix, is capped at 8 KiB; an
 overflow records only its size/hash and still rejects. Existing overall log
@@ -130,11 +131,41 @@ overwrites change time with birth time for compatibility, whereas its
 [handle stat implementation](https://github.com/python/cpython/blob/0cc81280367df838c4b199f8f0378837165071c2/Python/fileutils.c#L1271)
 retains native `ChangeTime`. Microsoft defines `CreationTime`, `LastWriteTime`
 and `ChangeTime` as [separate fields](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_basic_info).
-This is a plausible cross-API discrepancy, not the established cause of the
-revision-5 failure. The diagnostic must show stable path-to-path and
-handle-to-handle observations, only cross-API `st_ctime_ns` disagreement, and
-the expected birthtime relationship before that explanation is supported for
-the actual sample. No identity field is removed or normalized by this change.
+Revision 6 [run 37488195911](https://github.com/Mi-Yomi/Madeira/actions/runs/37488195911)
+captured two actual failures on CPython 3.12.10 / Windows 10.0.26100. Both show
+stable path-to-path and handle-to-handle observations, only cross-API ctime
+disagreement, and matching birthtimes, IDs, sizes, mtimes and content hashes.
+Path ctime equals birthtime. The fixtures preserve those exact string-valued
+records and their provenance; independent source reconstruction also matches
+each captured archive size and content hash.
+
+The original five-field equality rule runs first. Every previously successful
+comparison still succeeds without requiring optional birthtime or a recognized
+runtime. Only a failed comparison can enter the narrowly recognized CPython
+3.12.10 final / Windows platform-version 10.0.26100 exception. This requires:
+
+- Native integer metadata; supported nonzero volume/file identifiers and
+  birthtime, with no absent or differently typed required field
+- Matching device, inode, size, mtime and birthtime across all four observations
+- Stable ctime within each API's before/after pair
+- The reviewed path-ctime/birthtime relationship on both path observations
+- The existing matching content hashes, native index comparison and every
+  remaining archive, CRT and DIA proof check
+
+The handle ctime is never inferred from mtime. Unknown Windows semantics and
+missing metadata cannot use the exception. Non-Windows mismatches still fail
+under their original rule. Successful special-case comparisons retain a
+`file_identity` metadata record with exact decimal values and the applied
+profile. Failures preserve the reason and birthtime differences within the
+existing 8 KiB exception cap.
+
+The source reader uses unbuffered file I/O so the second content hash reads
+current file bytes through the same open descriptor. A negative test showed
+that a buffered backward seek can otherwise reuse old bytes after an external
+write. The regression changes real file contents while holding the test's
+metadata snapshots fixed and requires the content-hash gate itself to reject
+before identity normalization. This content-read correction is independent of
+the Windows timestamp exception.
 
 ## Verification boundary
 

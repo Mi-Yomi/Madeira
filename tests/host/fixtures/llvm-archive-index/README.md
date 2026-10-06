@@ -1,9 +1,17 @@
-# Reconstructed COFF archive-index fixtures
+# COFF archive-index and captured identity fixtures
 
 These fixtures are source-owned, inert reconstructions. They contain no captured
 vendor object bytes and are never linked or executed. `reconstructed-index.json`
 describes three minimal COFF headers and the symbolic inputs used to construct
 both archive linker members. Two objects deliberately have the same basename.
+
+`archive-identity-112353662278-1.json` and `-2.json` are actual, byte-preserved
+Windows stat evidence from revision 6, rather than reconstructed observations.
+Their provenance file binds the source commit, full log, run/job, exact JSON
+hashes and original failing tests. All captured scalar values remain decimal
+strings. The integration tests independently reconstruct each source-owned
+archive with the exact recorded size/hash and replay its unchanged observations.
+No vendor object bytes, native link result or UCRT selection is present.
 
 `check-llvm-archive-index.py` builds the archive in a temporary directory, then
 constructs negative variants for malformed counts, offsets, indices, ordering,

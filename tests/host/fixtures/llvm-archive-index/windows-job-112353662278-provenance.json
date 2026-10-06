@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "kind": "captured-windows-archive-identity-provenance",
+  "request": "llvm-dia-member-link-20261006-6",
+  "repository": "Mi-Yomi/Madeira",
+  "source_sha": "abb1bb034d97dda3940983fa0f4144bf78e8a278",
+  "source_tree": "72e285c23cbed4bceb1abeb4c94c518452926ada",
+  "source_checkout_verified_in_log_line_1_based": 178,
+  "run_id": 37488195911,
+  "run_url": "https://github.com/Mi-Yomi/Madeira/actions/runs/37488195911",
+  "job_id": 112353662278,
+  "job_url": "https://github.com/Mi-Yomi/Madeira/actions/runs/37488195911/job/112353662278",
+  "job_conclusion": "failure",
+  "failure_step": "Exercise inert member and link-evidence controls",
+  "failure_command": "python tests/host/check-llvm-archive-index.py",
+  "tests_run": 22,
+  "test_errors": 2,
+  "runtime": {
+    "implementation": "cpython",
+    "os_name": "nt",
+    "platform": "win32",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "windows_platform_version": [
+      10,
+      0,
+      26100
+    ],
+    "windows_reported_version": [
+      10,
+      0,
+      26100
+    ]
+  },
+  "complete_log": {
+    "file": "windows-job-112353662278.log",
+    "bytes": 31529,
+    "sha256": "d3942b63ef1e9c9fe5cae2ec2bd5c4a428d88cd7e9f6d8b7e367d2236eb32696",
+    "matches_publication_ledger": true
+  },
+  "publication_ledger": {
+    "file": "sha-publication-ledger.json",
+    "sha256_at_verification": "91146aba841ae1660f72ba661d59d278b03e94b9d34865399f8a0bd87493a7ff",
+    "updated_at_observed": "2026-10-06T15:36:36.093Z"
+  },
+  "source_files": [
+    {
+      "path": "tests/host/check-llvm-archive-index.py",
+      "bytes": 25768,
+      "sha256": "abd36325de38f60a8db8ddf996a6899d0438a0c7f9b1cd60921c3b029d400a12",
+      "git_blob": "522d027b43fd7889cf277d4befff6c74509ab5be",
+      "source_url": "https://github.com/Mi-Yomi/Madeira/blob/abb1bb034d97dda3940983fa0f4144bf78e8a278/tests/host/check-llvm-archive-index.py"
+    },
+    {
+      "path": "tests/host/fixtures/llvm-archive-index/reconstructed-index.json",
+      "bytes": 597,
+      "sha256": "096937da8bd7fa62e32ee07e7ab442028c87b4dc9b97d673705f8c01dfbb0d23",
+      "git_blob": "3741c251ef74fe8a127c74d5f7a2bb8050c9fc77",
+      "source_url": "https://github.com/Mi-Yomi/Madeira/blob/abb1bb034d97dda3940983fa0f4144bf78e8a278/tests/host/fixtures/llvm-archive-index/reconstructed-index.json"
+    },
+    {
+      "path": "tests/desktop/llvm_sdk/archive_symbol_index.py",
+      "bytes": 20824,
+      "sha256": "f02d2f32674ea975091d38d0b8bce6c4e84adcee2e777febc22c7b7ddafd3327",
+      "git_blob": "237bb3a47bca532d44556f663f03579e057b6650",
+      "source_url": "https://github.com/Mi-Yomi/Madeira/blob/abb1bb034d97dda3940983fa0f4144bf78e8a278/tests/desktop/llvm_sdk/archive_symbol_index.py"
+    },
+    {
+      "path": "tests/desktop/llvm_sdk/dia-link-request.json",
+      "bytes": 480,
+      "sha256": "b0d7ecc09a1920d1964dcd594142de738d77736f904b7d3e15bebfa1194e199e",
+      "git_blob": "3bae299b0e2b342db1a019f060bf540d0b56bbea",
+      "source_url": "https://github.com/Mi-Yomi/Madeira/blob/abb1bb034d97dda3940983fa0f4144bf78e8a278/tests/desktop/llvm_sdk/dia-link-request.json"
+    }
+  ],
+  "records": [
+    {
+      "file": "archive-identity-112353662278-1.json",
+      "bytes": 2438,
+      "sha256": "e03920fe0a78395eff81319bdf95450794ece2f2ceedd20e7383ab13f4292222",
+      "log_line_1_based": 247,
+      "log_json_offset_0_based": 21563,
+      "log_json_bytes": 2438,
+      "log_payload_exact_match": true,
+      "file_has_final_newline": false,
+      "test": "__main__.ArchiveIndexTests.test_padding_only_when_justified",
+      "test_source_line_1_based": 243,
+      "raw_scalar_encoding": "decimal-string-or-null",
+      "same_api_snapshots_equal_in_all_fields": true,
+      "cross_api_differing_identity_fields": [
+        "st_ctime_ns"
+      ],
+      "path_ctime_equals_birthtime": true,
+      "handle_ctime_equals_mtime": true,
+      "archive_content_sha256": "7e3b9f5b1d427f87a835336a26a180f1b37d743f0d5726ba79dcf632a78abe29",
+      "archive_bytes": 592,
+      "reconstruction": {
+        "kind": "source-owned inert COFF archive bytes",
+        "recipe": "reconstruct(inside_pad=False)",
+        "source_sha": "abb1bb034d97dda3940983fa0f4144bf78e8a278",
+        "source_fixture": "tests/host/fixtures/llvm-archive-index/reconstructed-index.json",
+        "source_helper": "tests/host/check-llvm-archive-index.py",
+        "verified_matches_recorded_before_and_after_sha256": true,
+        "verified_matches_all_recorded_sizes": true
+      }
+    },
+    {
+      "file": "archive-identity-112353662278-2.json",
+      "bytes": 2442,
+      "sha256": "d73e3803c9f380784485d4a81cbca410d1c3bdfc51fe96c14e8a9007659af1e6",
+      "log_line_1_based": 261,
+      "log_json_offset_0_based": 25550,
+      "log_json_bytes": 2442,
+      "log_payload_exact_match": true,
+      "file_has_final_newline": false,
+      "test": "__main__.ArchiveIndexTests.test_short_names_without_longnames_table",
+      "test_source_line_1_based": 279,
+      "raw_scalar_encoding": "decimal-string-or-null",
+      "same_api_snapshots_equal_in_all_fields": true,
+      "cross_api_differing_identity_fields": [
+        "st_ctime_ns"
+      ],
+      "path_ctime_equals_birthtime": true,
+      "handle_ctime_equals_mtime": true,
+      "archive_content_sha256": "cc473382b1d8bc013a192117216495bfe621830e74bf41f2e72898335d87bdc1",
+      "archive_bytes": 466,
+      "reconstruction": {
+        "kind": "source-owned inert COFF archive bytes",
+        "recipe": "reconstruct(fixture, short_names=True), after assigning object0.obj, object1.obj, object2.obj",
+        "source_sha": "abb1bb034d97dda3940983fa0f4144bf78e8a278",
+        "source_fixture": "tests/host/fixtures/llvm-archive-index/reconstructed-index.json",
+        "source_helper": "tests/host/check-llvm-archive-index.py",
+        "verified_matches_recorded_before_and_after_sha256": true,
+        "verified_matches_all_recorded_sizes": true
+      }
+    }
+  ],
+  "scope": {
+    "observation_origin": "Actual Windows CPython stat/fstat observations recorded by inert reconstructed archive controls",
+    "record_bytes_preserved": true,
+    "record_content_resampled": false,
+    "fixture_reconstruction_only": true,
+    "native_inventory_compile_link_step_conclusion": "skipped",
+    "native_compilation_attempted": false,
+    "native_link_attempted": false,
+    "generated_executable_run": false,
+    "provider_approved": false,
+    "sdk_abi_jit_mesa_madeira_runtime_result": false
+  },
+  "interpretation_limit": "The captured samples show stable path and handle observations with cross-API st_ctime_ns differences. They do not establish a generally safe normalization rule, approve any provider, or prove native linking or runtime behavior."
+}

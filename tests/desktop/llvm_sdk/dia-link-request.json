@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "request": "llvm-dia-member-link-20261006-6",
+  "request": "llvm-dia-member-link-20261006-7",
   "scope": "Preinstalled MSVC x64 release /MT DIA archive member selection only",
   "maximum_job_minutes": 10,
   "maximum_compile_jobs": 1,

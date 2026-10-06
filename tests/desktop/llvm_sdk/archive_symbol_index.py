@@ -40,6 +40,8 @@ PRINTABLE = re.compile(rb'[\x20-\x7e]+\Z')
 MAX_IDENTITY_EVIDENCE = 8 * 1024
 IDENTITY_EVIDENCE_PREFIX = 'Archive identity changed during index reading; ARCHIVE_IDENTITY_EVIDENCE='
 IDENTITY_FIELDS = ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns')
+WINDOWS_IDENTITY_FIELDS = IDENTITY_FIELDS + ('st_birthtime_ns',)
+WINDOWS_IDENTITY_PROFILE = 'cpython-3.12.10-final-windows-10.0.26100'
 STAT_EVIDENCE_FIELDS = IDENTITY_FIELDS + ('st_mode', 'st_nlink', 'st_atime_ns',
                                        'st_birthtime_ns', 'st_file_attributes', 'st_reparse_tag')
 
@@ -49,11 +51,12 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def _identity_failure(initial, before, after, current, digest, digest_after):
+def _identity_failure(initial, before, after, current, digest, digest_after, *, reason=None,
+                      identity_fields=IDENTITY_FIELDS):
     """Bounded failure evidence from existing observations; no extra file reads.
 
-    Birth/access times and other diagnostic fields do not participate in the
-    gate. In particular, do not equate Windows birth time with change time here.
+    Access time and other diagnostic fields do not participate in the gate.
+    Windows birth time and change time retain their distinct meanings.
     """
     observations = [('initial_path_stat', initial), ('before_handle_fstat', before),
                     ('after_handle_fstat', after), ('current_path_stat', current)]
@@ -66,20 +69,25 @@ def _identity_failure(initial, before, after, current, digest, digest_after):
     for ordinal, (left, left_value) in enumerate(observations):
         for right, right_value in observations[ordinal + 1:]:
             differences.append({'left': left, 'right': right,
-                                'fields': [field for field in IDENTITY_FIELDS
-                                           if getattr(left_value, field) != getattr(right_value, field)]})
+                                'fields': [field for field in identity_fields
+                                           if getattr(left_value, field, None) != getattr(right_value, field, None)]})
     evidence = {'schema_version': 1, 'kind': 'archive-identity-mismatch',
                 'stat_scalar_encoding': 'decimal-string-or-null',
-                'identity_fields': list(IDENTITY_FIELDS), 'snapshots': snapshots,
+                'identity_fields': list(identity_fields), 'snapshots': snapshots,
                 'identity_differences': differences,
                 'sha256_before': digest, 'sha256_after': digest_after,
                 'provider_approved': False,
                 'runtime': {'python': sys.version[:512], 'implementation': sys.implementation.name[:32],
                             'os_name': os.name[:32], 'platform': sys.platform[:32]}}
+    if reason is not None:
+        evidence['failure_reason'] = reason
     if hasattr(sys, 'getwindowsversion'):
-        windows = sys.getwindowsversion()
-        evidence['runtime']['windows_reported_version'] = list(windows[:3])
-        evidence['runtime']['windows_platform_version'] = list(windows.platform_version)
+        try:
+            windows = sys.getwindowsversion()
+            evidence['runtime']['windows_reported_version'] = list(windows[:3])
+            evidence['runtime']['windows_platform_version'] = list(windows.platform_version)
+        except (AttributeError, TypeError, ValueError, OSError) as exc:
+            evidence['runtime']['windows_version_error'] = type(exc).__name__
     encoded = json.dumps(evidence, sort_keys=True, separators=(',', ':'), ensure_ascii=True)
     if len(IDENTITY_EVIDENCE_PREFIX) + len(encoded.encode('ascii')) > MAX_IDENTITY_EVIDENCE:
         # Never truncate a snapshot into apparently complete evidence or turn a
@@ -90,6 +98,58 @@ def _identity_failure(initial, before, after, current, digest, digest_after):
                               'evidence_sha256': hashlib.sha256(encoded.encode('ascii')).hexdigest()},
                              sort_keys=True, separators=(',', ':'))
     return IDENTITY_EVIDENCE_PREFIX + encoded
+
+
+def _windows_identity_profile():
+    """Recognize only the source-reviewed and actually captured Windows runtime."""
+    if os.name != 'nt' and sys.platform != 'win32':
+        return None
+    require(os.name == 'nt' and sys.platform == 'win32' and sys.implementation.name == 'cpython' and
+            tuple(sys.version_info) == (3, 12, 10, 'final', 0),
+            'Unsupported Windows archive identity runtime')
+    require(hasattr(sys, 'getwindowsversion'), 'Missing Windows archive identity platform metadata')
+    try:
+        version = sys.getwindowsversion()
+    except (AttributeError, TypeError, ValueError, OSError) as exc:
+        raise ValueError('Unavailable Windows archive identity platform metadata') from exc
+    require(getattr(version, 'platform_version', None) == (10, 0, 26100),
+            'Unsupported Windows archive identity platform version')
+    return WINDOWS_IDENTITY_PROFILE
+
+
+def _file_identity(initial, before, after, current):
+    """Compare native observations without overwriting or equating timestamps."""
+    # Preserve every previously successful comparison, including Windows hosts
+    # without optional birthtime metadata. The special case only resolves a
+    # mismatch with proved API semantics; it does not replace the original gate.
+    identity = lambda value: (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, value.st_ctime_ns)
+    try:
+        if identity(initial) == identity(before) == identity(after) == identity(current):
+            return None
+    except AttributeError as exc:
+        raise ValueError('Missing archive identity metadata') from exc
+    profile = _windows_identity_profile()
+    observations = (initial, before, after, current)
+    if profile is None:
+        # Preserve the original rule for Linux and every other non-Windows host.
+        raise ValueError('Archive identity changed during index reading')
+    require(all(type(getattr(value, field, None)) is int
+                for value in observations for field in WINDOWS_IDENTITY_FIELDS),
+            'Missing/noninteger Windows archive identity metadata')
+    require(all(0 < value.st_dev < 2**64 and 0 < value.st_ino < 2**128 and value.st_birthtime_ns != 0 and
+                8 <= value.st_size <= MAX_ARCHIVE
+                for value in observations), 'Unsupported Windows archive identity identifiers/birthtime')
+    cross_fields = ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_birthtime_ns')
+    cross = lambda value: tuple(getattr(value, field) for field in cross_fields)
+    require(cross(initial) == cross(before) == cross(after) == cross(current),
+            'Windows cross-API file identity changed')
+    require(initial.st_ctime_ns == current.st_ctime_ns and before.st_ctime_ns == after.st_ctime_ns,
+            'Windows same-API change time changed')
+    require(initial.st_ctime_ns == initial.st_birthtime_ns and current.st_ctime_ns == current.st_birthtime_ns,
+            'Windows path-stat creation-time semantics disagree with reviewed profile')
+    return {'profile': profile, 'cross_api_fields': {field: str(getattr(initial, field)) for field in cross_fields},
+            'path_ctime_ns': str(initial.st_ctime_ns), 'handle_ctime_ns': str(before.st_ctime_ns),
+            'same_api_ctime_stable': True, 'path_ctime_is_birthtime': True}
 
 
 def _integer(field, label, base=10, optional=False):
@@ -341,7 +401,9 @@ def read_archive_index(path, inventory, guard=lambda: None):
     initial = path.stat()
     require(stat.S_ISREG(initial.st_mode) and 8 <= initial.st_size <= MAX_ARCHIVE,
             'Missing/oversized/nonregular archive')
-    with path.open('rb') as stream:
+    # Each hash must read current file bytes. A BufferedReader may satisfy a
+    # backward seek from its old buffer after an external write.
+    with path.open('rb', buffering=0) as stream:
         before = os.fstat(stream.fileno())
         require(stat.S_ISREG(before.st_mode) and 8 <= before.st_size <= MAX_ARCHIVE,
                 'Missing/oversized/nonregular archive')
@@ -356,16 +418,19 @@ def read_archive_index(path, inventory, guard=lambda: None):
         require(digest_after == digest, 'Archive changed during index reading')
         after = os.fstat(stream.fileno())
         current = path.stat()
-        identity = lambda value: (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, value.st_ctime_ns)
-        if not identity(initial) == identity(before) == identity(after) == identity(current):
-            raise ValueError(_identity_failure(initial, before, after, current, digest, digest_after))
+        try:
+            file_identity = _file_identity(initial, before, after, current)
+        except ValueError as exc:
+            fields = WINDOWS_IDENTITY_FIELDS if os.name == 'nt' or sys.platform == 'win32' else IDENTITY_FIELDS
+            raise ValueError(_identity_failure(initial, before, after, current, digest, digest_after,
+                                              reason=str(exc), identity_fields=fields)) from exc
     first_metadata, second_metadata = indexes[0][0], indexes[1][0]
     first_metadata.update(symbol_count=len(first), alignment_padding_bytes=first_padding,
                           offsets_order='nondecreasing', integer_encoding='big-endian-u32')
     second_metadata.update(symbol_count=len(second), member_count=len(members),
                            alignment_padding_bytes=second_padding, offsets_order='strictly-increasing',
                            symbols_order='ascii-lexical', integer_encoding='little-endian-u32/u16')
-    return {'metadata': {'schema_version': 1, 'format': 'coff-two-linker-members',
+    result = {'metadata': {'schema_version': 1, 'format': 'coff-two-linker-members',
                          'archive_sha256': digest, 'archive_size': before.st_size,
                          'symbol_count': len(owners), 'member_count': len(members),
                          'index_agreement': True, 'inventory_cross_checked': True,
@@ -375,6 +440,9 @@ def read_archive_index(path, inventory, guard=lambda: None):
                          'longnames_member': longnames},
             'symbol_to_header_offsets': owners, 'symbol_entries': {'first': first, 'second': second},
             'members_by_header_offset': members}
+    if file_identity is not None:
+        result['metadata']['file_identity'] = file_identity
+    return result
 
 
 def resolve_symbols(index, symbols):
