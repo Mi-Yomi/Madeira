@@ -106,6 +106,36 @@ with raw date bytes/hash. The native archive's actual sentinel serialization
 has not been observed, and this is not a claim that the raw Microsoft header
 dialect has already passed this reader.
 
+### File identity failure evidence
+
+Revision 5 stopped in three reconstructed test fixtures at the unchanged
+five-field `stat`/`fstat` equality check. The two content hashes had already
+matched, but the failing fields and exact Python version were not recorded.
+That result proves neither archive mutation nor a particular Windows cause.
+
+On an identity mismatch, `ARCHIVE_IDENTITY_EVIDENCE` now carries the four
+original observations, all six pairwise field differences, both content hashes,
+and bounded Python/Windows version metadata in the rejecting exception. All
+stat scalars are decimal strings (or null when unavailable), preserving
+nanoseconds and 128-bit file IDs in JSON consumers. The actual gate still
+compares native integer values. Birth/access times and file attributes are
+diagnostic only. There are no extra file observations or retries, and no
+payload bytes or paths in this record. The failure message, including its JSON
+evidence and fixed prefix, is capped at 8 KiB; an
+overflow records only its size/hash and still rejects. Existing overall log
+and evidence caps continue to apply.
+
+[CPython 3.12.10 path stat](https://github.com/python/cpython/blob/0cc81280367df838c4b199f8f0378837165071c2/Modules/posixmodule.c#L2138)
+overwrites change time with birth time for compatibility, whereas its
+[handle stat implementation](https://github.com/python/cpython/blob/0cc81280367df838c4b199f8f0378837165071c2/Python/fileutils.c#L1271)
+retains native `ChangeTime`. Microsoft defines `CreationTime`, `LastWriteTime`
+and `ChangeTime` as [separate fields](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_basic_info).
+This is a plausible cross-API discrepancy, not the established cause of the
+revision-5 failure. The diagnostic must show stable path-to-path and
+handle-to-handle observations, only cross-API `st_ctime_ns` disagreement, and
+the expected birthtime relationship before that explanation is supported for
+the actual sample. No identity field is removed or normalized by this change.
+
 ## Verification boundary
 
 The fixtures separate actual captured evidence from reconstructions:

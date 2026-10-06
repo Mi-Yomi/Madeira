@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import struct
 import tempfile
+import types
 import unittest
 from unittest.mock import patch
 
@@ -317,6 +318,107 @@ class ArchiveIndexTests(unittest.TestCase):
         self.path.write_bytes(self.data)
         with self.assertRaisesRegex(RuntimeError, 'budget'):
             reader.read_archive_index(self.path, self.inventory, lambda: (_ for _ in ()).throw(RuntimeError('budget')))
+
+    def identity_snapshots(self):
+        # Reconstructed API observations, not captured Windows stat results.
+        base = dict(st_dev=2**63 + 17, st_ino=2**127 + 23, st_size=len(self.data),
+                    st_mtime_ns=2**60 + 100200300, st_ctime_ns=2**60 + 100100100,
+                    st_mode=0o100644, st_nlink=1, st_atime_ns=2**60 + 100300400,
+                    st_birthtime_ns=2**60 + 100100100, st_file_attributes=32, st_reparse_tag=0)
+        return [dict(base) for _ in range(4)]
+
+    def read_with_identity_snapshots(self, snapshots):
+        self.path.write_bytes(self.data)
+        values = [types.SimpleNamespace(**row) for row in snapshots]
+        with patch.object(reader.Path, 'stat', side_effect=[values[0], values[3]]), \
+                patch.object(reader.os, 'fstat', side_effect=values[1:3]):
+            return reader.read_archive_index(self.path, self.inventory)
+
+    def captured_identity_failure(self, snapshots):
+        with self.assertRaisesRegex(ValueError, 'Archive identity changed') as caught:
+            self.read_with_identity_snapshots(snapshots)
+        text = str(caught.exception)
+        self.assertLessEqual(len(text.encode('ascii')), reader.MAX_IDENTITY_EVIDENCE)
+        encoded = text.split('ARCHIVE_IDENTITY_EVIDENCE=', 1)[1]
+        return json.loads(encoded)
+
+    def test_every_identity_field_still_rejects_and_records_exact_observations(self):
+        expected_fields = ['st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns']
+        for field in expected_fields:
+            with self.subTest(field=field):
+                snapshots = self.identity_snapshots()
+                snapshots[2][field] += 1
+                evidence = self.captured_identity_failure(snapshots)
+                self.assertEqual(evidence['identity_fields'], expected_fields)
+                labels = ['initial_path_stat', 'before_handle_fstat', 'after_handle_fstat', 'current_path_stat']
+                expected = {label: {key: str(value) for key, value in row.items()}
+                            for label, row in zip(labels, snapshots)}
+                self.assertEqual(evidence['snapshots'], expected)
+                self.assertEqual(evidence['stat_scalar_encoding'], 'decimal-string-or-null')
+                differences = {(row['left'], row['right']): row['fields']
+                               for row in evidence['identity_differences']}
+                self.assertEqual(len(differences), 6)
+                self.assertEqual(differences[('before_handle_fstat', 'after_handle_fstat')], [field])
+                self.assertEqual(differences[('initial_path_stat', 'current_path_stat')], [])
+                self.assertFalse(evidence['provider_approved'])
+                self.assertEqual(evidence['sha256_before'], hashlib.sha256(self.data).hexdigest())
+                self.assertEqual(evidence['sha256_before'], evidence['sha256_after'])
+                self.assertTrue(evidence['runtime']['python'])
+                self.assertNotIn('payload', evidence)
+
+    def test_cross_api_ctime_pattern_is_evidence_not_an_exception_to_gate(self):
+        snapshots = self.identity_snapshots()
+        snapshots[1]['st_ctime_ns'] += 100
+        snapshots[2]['st_ctime_ns'] += 100
+        evidence = self.captured_identity_failure(snapshots)
+        differences = {(row['left'], row['right']): row['fields']
+                       for row in evidence['identity_differences']}
+        self.assertEqual(differences[('initial_path_stat', 'before_handle_fstat')], ['st_ctime_ns'])
+        self.assertEqual(differences[('before_handle_fstat', 'after_handle_fstat')], [])
+        self.assertEqual(differences[('initial_path_stat', 'current_path_stat')], [])
+        for ordinal in range(4):
+            with self.subTest(observation=ordinal):
+                snapshots = self.identity_snapshots()
+                snapshots[ordinal]['st_ctime_ns'] += 1
+                self.captured_identity_failure(snapshots)
+
+    def test_diagnostic_only_fields_do_not_expand_identity_gate(self):
+        snapshots = self.identity_snapshots()
+        for ordinal, row in enumerate(snapshots):
+            row['st_atime_ns'] += ordinal
+            row.pop('st_birthtime_ns')  # absent on some supported hosts
+            row.pop('st_file_attributes')
+            row.pop('st_reparse_tag')
+        result = self.read_with_identity_snapshots(snapshots)
+        self.assertEqual(reader.resolve_symbols(result, ['alpha'])['alpha'], self.inventory[1])
+        snapshots[2]['st_ino'] += 1
+        evidence = self.captured_identity_failure(snapshots)
+        self.assertIsNone(evidence['snapshots']['after_handle_fstat']['st_birthtime_ns'])
+
+    def test_identity_evidence_cap_preserves_rejection_without_truncated_snapshots(self):
+        snapshots = self.identity_snapshots()
+        snapshots[2]['st_ctime_ns'] += 1
+        with patch.object(reader, 'MAX_IDENTITY_EVIDENCE', 1024):
+            evidence = self.captured_identity_failure(snapshots)
+        self.assertEqual(evidence['diagnostic_status'], 'evidence-cap-exceeded')
+        self.assertGreater(evidence['evidence_bytes'], 1024)
+        self.assertEqual(len(evidence['evidence_sha256']), 64)
+        self.assertFalse(evidence['provider_approved'])
+        self.assertNotIn('snapshots', evidence)
+
+    def test_failure_records_runtime_and_both_windows_version_views(self):
+        class WindowsVersion(tuple):
+            platform_version = (10, 0, 26100)
+
+        snapshots = self.identity_snapshots()
+        snapshots[2]['st_ctime_ns'] += 1
+        version = WindowsVersion((6, 2, 9200, 2, ''))  # reconstructed compatibility view
+        with patch.object(reader.sys, 'getwindowsversion', return_value=version, create=True):
+            evidence = self.captured_identity_failure(snapshots)
+        self.assertEqual(evidence['runtime']['python'], reader.sys.version[:512])
+        self.assertEqual(evidence['runtime']['implementation'], reader.sys.implementation.name)
+        self.assertEqual(evidence['runtime']['windows_reported_version'], [6, 2, 9200])
+        self.assertEqual(evidence['runtime']['windows_platform_version'], [10, 0, 26100])
 
 
 def crosscheck_sdk(directory):

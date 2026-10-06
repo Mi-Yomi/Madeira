@@ -20,11 +20,13 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from collections.abc import Mapping
 import hashlib
+import json
 import os
 from pathlib import Path
 import re
 import stat
 import struct
+import sys
 
 MIB = 1024 ** 2
 MAX_ARCHIVE = 256 * MIB
@@ -35,11 +37,59 @@ MAX_MEMBERS = 100_000
 MAX_SYMBOL_BYTES = 64 * 1024
 MAX_MEMBER_NAME_BYTES = 4096
 PRINTABLE = re.compile(rb'[\x20-\x7e]+\Z')
+MAX_IDENTITY_EVIDENCE = 8 * 1024
+IDENTITY_EVIDENCE_PREFIX = 'Archive identity changed during index reading; ARCHIVE_IDENTITY_EVIDENCE='
+IDENTITY_FIELDS = ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns')
+STAT_EVIDENCE_FIELDS = IDENTITY_FIELDS + ('st_mode', 'st_nlink', 'st_atime_ns',
+                                       'st_birthtime_ns', 'st_file_attributes', 'st_reparse_tag')
 
 
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def _identity_failure(initial, before, after, current, digest, digest_after):
+    """Bounded failure evidence from existing observations; no extra file reads.
+
+    Birth/access times and other diagnostic fields do not participate in the
+    gate. In particular, do not equate Windows birth time with change time here.
+    """
+    observations = [('initial_path_stat', initial), ('before_handle_fstat', before),
+                    ('after_handle_fstat', after), ('current_path_stat', current)]
+    # Decimal strings preserve 128-bit IDs and nanoseconds in JSON consumers
+    # that otherwise round numbers above 2**53. Comparisons use native integers.
+    snapshots = {label: {field: (str(getattr(value, field)) if getattr(value, field, None) is not None else None)
+                        for field in STAT_EVIDENCE_FIELDS}
+                 for label, value in observations}
+    differences = []
+    for ordinal, (left, left_value) in enumerate(observations):
+        for right, right_value in observations[ordinal + 1:]:
+            differences.append({'left': left, 'right': right,
+                                'fields': [field for field in IDENTITY_FIELDS
+                                           if getattr(left_value, field) != getattr(right_value, field)]})
+    evidence = {'schema_version': 1, 'kind': 'archive-identity-mismatch',
+                'stat_scalar_encoding': 'decimal-string-or-null',
+                'identity_fields': list(IDENTITY_FIELDS), 'snapshots': snapshots,
+                'identity_differences': differences,
+                'sha256_before': digest, 'sha256_after': digest_after,
+                'provider_approved': False,
+                'runtime': {'python': sys.version[:512], 'implementation': sys.implementation.name[:32],
+                            'os_name': os.name[:32], 'platform': sys.platform[:32]}}
+    if hasattr(sys, 'getwindowsversion'):
+        windows = sys.getwindowsversion()
+        evidence['runtime']['windows_reported_version'] = list(windows[:3])
+        evidence['runtime']['windows_platform_version'] = list(windows.platform_version)
+    encoded = json.dumps(evidence, sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+    if len(IDENTITY_EVIDENCE_PREFIX) + len(encoded.encode('ascii')) > MAX_IDENTITY_EVIDENCE:
+        # Never truncate a snapshot into apparently complete evidence or turn a
+        # diagnostic overflow into acceptance. Real native stat scalars fit.
+        encoded = json.dumps({'kind': 'archive-identity-mismatch', 'provider_approved': False,
+                              'diagnostic_status': 'evidence-cap-exceeded',
+                              'evidence_bytes': len(encoded),
+                              'evidence_sha256': hashlib.sha256(encoded.encode('ascii')).hexdigest()},
+                             sort_keys=True, separators=(',', ':'))
+    return IDENTITY_EVIDENCE_PREFIX + encoded
 
 
 def _integer(field, label, base=10, optional=False):
@@ -302,12 +352,13 @@ def read_archive_index(path, inventory, guard=lambda: None):
         second, second_padding = _second(indexes[1][1], members, guard)
         owners = _owners(second)
         require(_owners(first) == owners, 'COFF archive linker members disagree on symbol ownership')
-        require(_hash(stream, before.st_size, guard) == digest, 'Archive changed during index reading')
+        digest_after = _hash(stream, before.st_size, guard)
+        require(digest_after == digest, 'Archive changed during index reading')
         after = os.fstat(stream.fileno())
         current = path.stat()
         identity = lambda value: (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns, value.st_ctime_ns)
-        require(identity(initial) == identity(before) == identity(after) == identity(current),
-                'Archive identity changed during index reading')
+        if not identity(initial) == identity(before) == identity(after) == identity(current):
+            raise ValueError(_identity_failure(initial, before, after, current, digest, digest_after))
     first_metadata, second_metadata = indexes[0][0], indexes[1][0]
     first_metadata.update(symbol_count=len(first), alignment_padding_bytes=first_padding,
                           offsets_order='nondecreasing', integer_encoding='big-endian-u32')
