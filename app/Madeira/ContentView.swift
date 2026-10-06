@@ -1704,7 +1704,7 @@ struct ContentView: View {
         // The memory limit is the entitlement a session needs; the address map may
         // be the standard 63 GB one.
         if !ents.increasedMemory {
-            logStore.log("  Tip: Use GetMoreRam to add increased-memory-limit", level: .info)
+            logStore.log("  Tip: Open Memory+ setup to check signing and provisioning requirements", level: .info)
         }
     }
 
@@ -1720,6 +1720,8 @@ struct ContentView: View {
                         .buttonStyle(.bordered)
                 }
                 Button("All settings") { devSheet = .allSettings }
+                    .buttonStyle(.bordered)
+                Button("Memory+ setup") { devSheet = .memorySetup }
                     .buttonStyle(.bordered)
                 Button("Enable JIT") {
                     enableJIT()
@@ -2208,6 +2210,7 @@ struct ContentView: View {
             case .steamSignIn: SteamSignInView()
             case .dock: MadeiraDockView { startDock($0, compactPool: $1) }
             case .allSettings: AllSettingsView()
+            case .memorySetup: MemorySetupSheet()
             }
         }
     }
@@ -3590,26 +3593,26 @@ struct SetupGuideView: View {
                     guideRow(
                         icon: "cpu",
                         title: "JIT Compilation",
-                        detail: "Required for x86 code translation. On iOS 26, StikDebug must stay attached — assign the 'universal' or 'MeloNX' JIT script to Madeira in StikDebug."
+                        detail: "Required for x86 code translation. Use Settings → JIT → JIT setup, then enable JIT from Madeira."
                     )
                     guideRow(
                         icon: "memorychip",
                         title: "Increased Memory Limit",
-                        detail: "Raises the Jetsam memory threshold. Included in the app entitlements. If not detected, use GetMoreRam to inject it."
+                        detail: "Requests a higher memory limit on supported devices. The installed signature and provisioning profile must grant it. Open Memory+ setup to check this copy."
                     )
                     guideRow(
                         icon: "arrow.up.left.and.arrow.down.right",
                         title: "Extended Virtual Addressing",
-                        detail: "Expands virtual address space to ~64GB. Required for large games. Must be injected via GetMoreRam (free accounts can't provision this)."
+                        detail: "Allows a larger virtual address space when provisioned. It does not add physical RAM and is separate from Increased Memory Limit."
                     )
                 }
 
                 Section("Setup Steps") {
                     stepRow(number: 1, text: "Install Madeira via SideStore or Xcode")
-                    stepRow(number: 2, text: "Install GetMoreRam and run it to inject memory entitlements into your App ID")
-                    stepRow(number: 3, text: "Reinstall Madeira with the same IPA to apply injected entitlements")
-                    stepRow(number: 4, text: "In StikDebug, assign the 'universal' JIT script to Madeira and launch it")
-                    stepRow(number: 5, text: "Launch Madeira and tap 'Test JIT' to verify")
+                    NavigationLink("Memory+ setup") { MemorySetupView() }
+                    stepRow(number: 2, text: "Check Memory+ setup. If missing, enable the signing capability and re-sign/reinstall without deleting the app")
+                    stepRow(number: 3, text: "Complete JIT setup in Settings, then enable JIT from Madeira")
+                    stepRow(number: 4, text: "Return to Settings to verify JIT and Memory+")
                 }
 
                 Section("About") {

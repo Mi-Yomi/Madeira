@@ -2161,6 +2161,9 @@ struct LibraryView: View {
             if settingsShow("JIT", "StikDebug", "built-in", "pairing", "LocalDevVPN") {
                 JITSettingsSection()
             }
+            if settingsShow("Memory+", "memory", "RAM", "GetMoreRAM", "entitlement", "signing") {
+                MemorySettingsSection()
+            }
             if settingsShow("diagnostics", "extended logging", "logging", "log") {
                 Section {
                     Toggle("Extended logging", isOn: $input.diagnostics)
@@ -2226,6 +2229,7 @@ struct LibraryView: View {
             case .allSettings: AllSettingsView()
             case .steamSignIn: SteamSignInView()
             case .dock: MadeiraDockView(start: startDock)
+            case .memorySetup: MemorySetupSheet()
             }
         }
     }
@@ -3081,7 +3085,7 @@ struct MadeiraCredit: View {
 /// MADEIRA_RUNTIME_SETTINGS=0 hides this section.
 /// A sheet opened from Settings; LibraryView presents it from the Form itself.
 enum SettingsSheet: String, Identifiable {
-    case allSettings, steamSignIn, dock
+    case allSettings, steamSignIn, dock, memorySetup
     var id: String { rawValue }
 }
 

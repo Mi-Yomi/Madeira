@@ -2,24 +2,25 @@ import Foundation
 import Security
 import UIKit
 
-private typealias SecTaskRef = OpaquePointer
-
 @_silgen_name("SecTaskCopyValueForEntitlement")
 private func _SecTaskCopyValueForEntitlement(
-    _ task: SecTaskRef,
+    _ task: CFTypeRef,
     _ entitlement: NSString,
     _ error: NSErrorPointer
-) -> CFTypeRef?
+) -> Unmanaged<CFTypeRef>?
 
 @_silgen_name("SecTaskCreateFromSelf")
 private func _SecTaskCreateFromSelf(
     _ allocator: CFAllocator?
-) -> SecTaskRef?
+) -> Unmanaged<CFTypeRef>?
 
 func checkAppEntitlement(_ ent: String) -> Bool {
-    guard let task = _SecTaskCreateFromSelf(nil) else { return false }
+    // These manually declared Create/Copy functions return +1 CF objects.
+    // Balance both even when the entitlement is absent or has the wrong type;
+    // Settings and Memory+ setup query this repeatedly.
+    guard let task = _SecTaskCreateFromSelf(nil)?.takeRetainedValue() else { return false }
 
-    guard let value = _SecTaskCopyValueForEntitlement(task, ent as NSString, nil) else {
+    guard let value = _SecTaskCopyValueForEntitlement(task, ent as NSString, nil)?.takeRetainedValue() else {
         return false
     }
 

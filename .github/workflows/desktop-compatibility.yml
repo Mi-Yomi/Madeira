@@ -79,6 +79,7 @@ jobs:
           python3 tests/host/check-launch-readiness.py --source-only
           python3 tests/host/check-dock-watch-lifetime.py --source-only
           python3 tests/host/check-memory-overlay.py --source-only
+          python3 tests/host/check-memory-setup.py --source-only
       - name: Check Unicode input queue with sanitizers
         env:
           CFLAGS: -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer
@@ -105,6 +106,10 @@ jobs:
           python3 tests/host/check-dock-watch-lifetime.py
       - name: Check compiled memory overlay and timer lifecycle
         run: python3 tests/host/check-memory-overlay.py
+      - name: Check compiled Memory+ setup and advisory sampling
+        run: |
+          python3 tests/host/check-memory-setup.py
+          python3 tests/host/check-memory-setup.py --ios-typecheck
       - name: Check compiled launch-profile validation
         run: python3 tests/host/check-launch-validation.py
       - name: Check compiled executable paths and Unicode confinement
