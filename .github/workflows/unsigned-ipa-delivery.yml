@@ -1,0 +1,186 @@
+name: Requested unsigned IPA draft delivery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [compatibility/desktop-apps]
+    # A reviewed request-file change opts in to this user's requested build.
+    paths:
+      - build/app-ios/ipa-delivery-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unsigned-ipa-delivery-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  portable-validation:
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify source freeze, package validation and draft delivery gates
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 build/app-ios/deliver_unsigned.py --mode request
+          python3 tests/host/check-unsigned-ipa-delivery.py
+          python3 tests/host/check-unsigned-ipa-workflow.py
+          python3 build/app-ios/link_diagnostic.py request
+          python3 tests/host/check-i386-native-capture-wiring.py
+          python3 build/wine-pe/verify_desktop_integration.py
+          python3 tests/host/check-desktop-integration.py
+          python3 tests/host/check-desktop-overlay-plan.py
+          python3 tests/host/check-app-link-diagnostic.py
+          python3 tests/host/check-app-link-workflow.py
+          python3 tests/host/check-app-bootstrap.py
+          python3 tests/host/check-app-workflow.py
+          python3 tests/host/check-graphics-bootstrap.py
+          python3 tests/host/check-native-bootstrap-artifacts.py
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-snapshot-link.py
+          python3 tests/host/check-crypto-link-tables.py
+  unsigned-ipa:
+    name: Build unsigned IPA and deliver to existing private draft
+    permissions:
+      contents: write
+    needs: portable-validation
+    if: github.repository == 'Mi-Yomi/Madeira' && github.event.repository.private == false && github.ref == 'refs/heads/compatibility/desktop-apps'
+    runs-on: xcode-27
+    timeout-minutes: 60
+    env:
+      JOBS: '2'
+      BUILD_JOBS: '2'
+      CMAKE_BUILD_PARALLEL_LEVEL: '2'
+      CARGO_BUILD_JOBS: '2'
+      MAKEFLAGS: -j2
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+      HOMEBREW_NO_INSTALL_CLEANUP: '1'
+      HOMEBREW_NO_ANALYTICS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Initialize isolated temporary paths
+        run: |
+          printf 'NATIVE_LOG_DIR=%s\nNATIVE_ARTIFACT_DIR=%s\n' "$RUNNER_TEMP/madeira-ipa-native-logs" "$RUNNER_TEMP/madeira-ipa-native-artifacts" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/madeira-ipa-native-logs"
+      - name: Checkout exact public sources and recursive pins
+        timeout-minutes: 5
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify frozen source and package gates before dependency builds
+        # The expanded regression set took just over three minutes on Xcode 27.
+        # Keep every check; the whole delivery still has its 60-minute cap.
+        timeout-minutes: 5
+        run: |
+          python3 build/app-ios/deliver_unsigned.py --mode request
+          python3 tests/host/check-unsigned-ipa-delivery.py
+          python3 tests/host/check-unsigned-ipa-workflow.py
+          python3 build/app-ios/link_diagnostic.py request
+          python3 tests/host/check-i386-native-capture-wiring.py
+          python3 build/wine-pe/verify_desktop_integration.py
+          python3 tests/host/check-desktop-integration.py
+          python3 tests/host/check-desktop-overlay-plan.py
+          python3 tests/host/check-app-link-diagnostic.py
+          python3 tests/host/check-app-link-workflow.py
+          python3 tests/host/check-app-bootstrap.py
+          python3 tests/host/check-app-workflow.py
+          python3 tests/host/check-graphics-bootstrap.py
+          python3 tests/host/check-fex-source-repairs.py
+          python3 tests/host/check-fex-snapshot-link.py
+          python3 tests/host/check-crypto-link-tables.py
+      - name: Require the exact empty private draft before expensive compilation
+        id: draft
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 build/app-ios/deliver_unsigned.py --mode draft-check > "$RUNNER_TEMP/madeira-ipa-draft.json"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          draft = json.loads((Path(os.environ['RUNNER_TEMP']) / 'madeira-ipa-draft.json').read_text())
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+              stream.write('release_id=' + str(draft['release_id']) + '\n')
+          print(json.dumps(draft, sort_keys=True))
+          PY
+      - name: Exercise native contract fixtures with installed Apple tools
+        timeout-minutes: 2
+        # Strong fixture definitions mirror production; Apple ld links the
+        # selected iPhoneOS SDK's real libSystem before map verification.
+        # Compiler-generated nested NSI records also exercise direct-field parsing.
+        run: |
+          CLANG="$(xcrun --sdk iphoneos --find clang)" \
+          LLVM_AR="$(xcrun --find ar)" \
+          LD64_LLD="$(xcrun --find ld)" \
+            python3 tests/host/check-i386-native-contract.py -v
+      - name: Build and validate native dependencies first
+        timeout-minutes: 35
+        # Reuses the approved official Metal installer and its fail-closed gate.
+        # All subsequent stages stay in this fresh checkout, with no restore.
+        run: |
+          python3 build/app-ios/link_diagnostic.py native \
+            --native-log-dir "$NATIVE_LOG_DIR" \
+            --native-artifact-dir "$NATIVE_ARTIFACT_DIR"
+      - name: Fetch pinned LLVM and preflight every Metal source
+        timeout-minutes: 5
+        run: |
+          bash build/llvm-ios/build.sh fetch
+          bash build/dxmt-ios/generate-shaders.sh preflight
+      - name: Build LLVM host tools and require every AIR decode
+        timeout-minutes: 12
+        run: |
+          bash build/llvm-ios/build.sh host
+          bash build/dxmt-ios/generate-shaders.sh
+      - name: Build and validate iOS LLVM archives
+        timeout-minutes: 25
+        run: bash build/llvm-ios/build.sh ios
+      - name: Build and validate the complete DXMT archive
+        timeout-minutes: 10
+        run: python3 build/dxmt-ios/clean_build.py
+      - name: Build and validate explicitly requested unsigned IPA
+        timeout-minutes: 10
+        run: |
+          python3 build/app-ios/build_unsigned.py \
+            --native-receipt "$NATIVE_ARTIFACT_DIR/provenance.json" \
+            --products "$RUNNER_TEMP/madeira-ipa-products" \
+            --intermediates "$RUNNER_TEMP/madeira-ipa-intermediates" \
+            --stage "$RUNNER_TEMP/madeira-ipa-stage" \
+            --package
+      - name: Independently verify the package and prepare three delivery files
+        timeout-minutes: 4
+        run: |
+          python3 build/app-ios/deliver_unsigned.py --mode verify \
+            --native-receipt "$NATIVE_ARTIFACT_DIR/provenance.json" \
+            --stage "$RUNNER_TEMP/madeira-ipa-stage" \
+            --delivery "$RUNNER_TEMP/madeira-ipa-delivery"
+      - name: Upload to the existing draft and verify downloaded bytes
+        timeout-minutes: 7
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MADEIRA_DRAFT_ID: ${{ steps.draft.outputs.release_id }}
+        run: |
+          python3 build/app-ios/deliver_unsigned.py --mode upload \
+            --native-receipt "$NATIVE_ARTIFACT_DIR/provenance.json" \
+            --stage "$RUNNER_TEMP/madeira-ipa-stage" \
+            --delivery "$RUNNER_TEMP/madeira-ipa-delivery" \
+            --release-id "$MADEIRA_DRAFT_ID"
+      - name: Collect bounded native diagnostics
+        if: always()
+        timeout-minutes: 1
+        run: |
+          if [ -f .github/ci/collect-native-logs.py ]; then
+            python3 .github/ci/collect-native-logs.py
+          fi
+          df -h "$RUNNER_TEMP"
+      # The whole build remains capped at 60 minutes on the standard public runner.
+      # Only an existing private draft receives the verified three files. No
+      # Actions artifacts/cache, public release, signing, installation or persistent credentials.
